@@ -442,6 +442,8 @@ v2.43は今回のCSVを出力しないため、旧版のパターン別比較に
 python3 tests/run_all.py
 ```
 
+GitHub Actions の CI も Ubuntu、Python 3.11、g++ で同じオフライン検証を実行し、失敗時を含めて `verification/` の診断JSON/TXTをartifactとして保存します。CIのC++検証はMT5モックであり、MetaEditorによるネイティブMQL5コンパイル、MT5実機・市場バックテスト、実AI/API通信、収益性の検証ではありません。
+
 `verification/` のJSON結果は配布ソースのSHA-256と対応しています。ZIP内の `SHA256SUMS.txt` で配布ファイルの整合性を確認できます。生成される検証用C++・バイナリはMT5用のEX5ではありません。
 
 技術仕様の確認先: [MQL5 OnTimer](https://www.mql5.com/en/docs/event_handlers/ontimer)、[銘柄プロパティ](https://www.mql5.com/en/docs/constants/environment_state/marketinfoconstants)、[GlobalVariableSetOnCondition](https://www.mql5.com/en/docs/globals/globalvariablesetoncondition)、[ストラテジーテスター](https://www.mql5.com/en/docs/runtime/testing)。

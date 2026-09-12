@@ -1,0 +1,62 @@
+name: CI
+
+"on":
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare current-run diagnostics
+        shell: bash
+        run: |
+          rm -f \
+            verification/cpp_diagnostics.txt \
+            verification/integration_results.json \
+            verification/json_results.json \
+            verification/source_audit.json \
+            verification/stats_results.json
+          : > verification/ci_run.log
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Check toolchain
+        run: |
+          python --version
+          g++ --version
+
+      - name: Run shipped offline validation
+        shell: bash
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          set -o pipefail
+          python tests/run_all.py 2>&1 | tee verification/ci_run.log
+
+      - name: Upload validation diagnostics
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: offline-validation-diagnostics
+          path: |
+            verification/ci_run.log
+            verification/cpp_diagnostics.txt
+            verification/integration_results.json
+            verification/json_results.json
+            verification/source_audit.json
+            verification/stats_results.json
+          if-no-files-found: warn
+          retention-days: 14
