@@ -1,0 +1,225 @@
+{
+  "scope": "Actual MT3Json.mqh parser adapted to UTF-16 C++ with MQL primitive shims. No API call or MT5 compiler.",
+  "cases": [
+    {
+      "case": "valid_order_space_unicode_0",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_1",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_2",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_3",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_4",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_5",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_6",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_7",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_8",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_9",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_10",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_11",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_12",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_13",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_14",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_15",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_16",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_17",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_18",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_19",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_20",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_21",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_22",
+      "passed": true
+    },
+    {
+      "case": "valid_order_space_unicode_23",
+      "passed": true
+    },
+    {
+      "case": "valid_exponent",
+      "passed": true
+    },
+    {
+      "case": "truncated",
+      "passed": true
+    },
+    {
+      "case": "missing_reason",
+      "passed": true
+    },
+    {
+      "case": "out_of_range",
+      "passed": true
+    },
+    {
+      "case": "negative",
+      "passed": true
+    },
+    {
+      "case": "string_number",
+      "passed": true
+    },
+    {
+      "case": "leading_plus",
+      "passed": true
+    },
+    {
+      "case": "leading_zero",
+      "passed": true
+    },
+    {
+      "case": "truncated_exponent",
+      "passed": true
+    },
+    {
+      "case": "nan",
+      "passed": true
+    },
+    {
+      "case": "overflow",
+      "passed": true
+    },
+    {
+      "case": "trailing_json",
+      "passed": true
+    },
+    {
+      "case": "duplicate_key",
+      "passed": true
+    },
+    {
+      "case": "duplicate_escaped_key",
+      "passed": true
+    },
+    {
+      "case": "extra_field",
+      "passed": true
+    },
+    {
+      "case": "lone_surrogate",
+      "passed": true
+    },
+    {
+      "case": "invalid_escape",
+      "passed": true
+    },
+    {
+      "case": "wrong_decision",
+      "passed": true
+    },
+    {
+      "case": "status_incomplete",
+      "passed": true
+    },
+    {
+      "case": "status_failed",
+      "passed": true
+    },
+    {
+      "case": "status_queued",
+      "passed": true
+    },
+    {
+      "case": "status_in_progress",
+      "passed": true
+    },
+    {
+      "case": "status_cancelled",
+      "passed": true
+    },
+    {
+      "case": "original_R1",
+      "passed": true
+    },
+    {
+      "case": "message_incomplete",
+      "passed": true
+    },
+    {
+      "case": "wrong_role",
+      "passed": true
+    },
+    {
+      "case": "error_envelope",
+      "passed": true
+    },
+    {
+      "case": "mixed_refusal",
+      "passed": true
+    },
+    {
+      "case": "ambiguous_multiple_outputs",
+      "passed": true
+    },
+    {
+      "case": "commentary_then_final",
+      "passed": true
+    },
+    {
+      "case": "depth_limit",
+      "passed": true
+    }
+  ]
+}

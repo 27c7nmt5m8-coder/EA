@@ -1,0 +1,70 @@
+# CHANGELOG — v2.43 → v2.44
+
+日付: 2026-09-08
+
+基点: 添付 `MTFAutoTrader_3Mode_AI_v2_43_Package(1).zip`。
+
+```text
+SHA-256: 86d92447782e8bc72ce28264b2c8040c41b46040248948b234912ca4ea97e00a
+```
+
+## 総ポートフォリオリスク上限
+
+- `EnablePortfolioRiskLimit=true`、`MaxPortfolioRiskPercent=3.0` を追加。比率はOnInitで有限・0超〜100以下を検証する。
+- 同じMagicの全銘柄の保有ポジションについて、建値→現在SLの想定価格損失をOrderCalcProfitで口座通貨に換算して合算する。
+- 建値SL・利益側SLは0。含み益を負の保有リスクとして他の損失と相殺しない。
+- SLなし、価格/数量異常、損益計算失敗、管理中の未確定注文は新規拒否。Nettingは履歴で所有権を確認し、混在・反転合流・判定不能も安全拒否。
+- 口座実行ミューテックス内で保有リスク再計算→既存ロット計算→予定リスク確認を行う。ログを含む注文準備後、送信直前にも再計算し、同一Timer・AI承認待ちの間の他銘柄保有増加を反映する。
+- 予定リスクは既存のエントリー/SLスリッページ予約・手数料見積もりを含む。Fintokeiの従来のDD余力計算は独立して維持し、新上限と両方を通す。
+- 超過時は見送り。上限に合わせたロット縮小や、この上限だけを理由にした既存保有の強制決済は追加しない。
+- 分析用に銘柄ごとの拒否M1バー数を保存。重複再評価を加算せず、保存済みの同一バーは再起動後も重複させない。
+
+## パターン別SL
+
+- 123はP3、Failed Breakoutは実episode極値、Double/Tripleは全構造の最安値/最高値、H&SはHeadを優先アンカーにする。
+- BUYはアンカー−既存Adaptive Buffer、SELLはアンカー＋Buffer。tick刻みで外側へ丸める。
+- 従来のATR/StopsLevel/2 ticks/互換points下限のBufferを再利用。StopsLevel、FreezeLevel、Bid/Ask、tick、SL比スプレッドを再確認する。
+- パターンアンカーやSLが無効な場合だけ従来の汎用BuildStopsへfallbackし、SLSourceと理由を記録する。fallback側も無効なら見送り。
+- パターンSLをブローカー距離に合わせて任意にさらに広げない。TPのRRとロット計算本体は既存のまま、新SLへ追従させる。
+- 裁量の指定SLはMANUAL、パターンを使わないAI単独の汎用SLはGENERIC_SWINGとして区別する。
+
+## 成績ログ・集計
+
+- `EnableTradeLog=true` を追加。口座/サーバー/Magic/端末ごと、およびLIVE/テスター実行ごとに分析フォルダを分離する。
+- 実PositionIdentifierごとに63列のUTF-8 BOM付きCSVを保存。実約定のEntryPrice/数量、初期SL/TP/R、パターン、全スコア、コスト比率、総リスク、AI情報、構造価格、SLSourceとfallback理由を記録する。
+- 部分約定・部分決済を同じ行へ集約し、完全決済でOPEN→CLOSEDへ更新。決済価格・理由・利益/手数料/swap/fees・費用後NetProfit・RealizedR・保有秒数・WIN/LOSS/BEを記録する。
+- InitialRiskは記録済み金額を後日の換算で書き換えず、追加部分約定だけ加える。建値/トレーリング後も元のリスクをRの分母に使う。
+- 同一履歴の再通知、再起動、遅延約定をPositionIdentifierと注文tokenで照合。履歴へ反映された費用訂正も同じ記録に反映する。
+- MFE/MAEは稼働中の観測値をRで出力。SAMPLED/SAMPLED_WITH_GAPSを明記し、真の全ティック最大値とは区別する。
+- 分析文脈が欠落した旧取引はUNKNOWN/MISSING_ENTRY_CONTEXTとし、スコアやパターンを推測しない。混在Nettingを1つのパターン成績へ帰属させない。
+- 分析用CSV/JSONと重要な注文/パターン消費永続化を分離。分析保存失敗は警告・再試行し、既存保護を停止しない。重要保存失敗の発注停止は維持する。
+- 売買後の分析保存は銘柄を巡回。パターン統計はEAで重く計算せず、付属 `tools/build_pattern_stats.py` でオフライン生成する。
+- 統合TradeLog、PatternStats、SLSourceStats、RunSummary、PortfolioRejects、AggregationReportを生成。Dataset/口座/Magicを分離し、重複・欠損・不正値・不一致コピーを明示的に処理する。
+
+## 変更していないエントリー・安全機構
+
+10種の既存パターンと検出条件、M1エントリー、MinimumSignalScore=70、最終比率80/15/5とinput検証、MTF重み20/25/22/15/10/5/3、Trend/MACD 70/30、各足MACD、Weighted Agreement、H1/H4両強逆行・M1/M5両強MACD逆行拒否を維持。
+
+1銘柄1M1バー最大1自動発注試行、最高PatternScore選択、反対方向競合の安全拒否、同方向の同時成立パターン消費・再利用防止も維持。
+
+4種ScanMode、OnTimer、SymbolState、ATR相対スプレッド、OrderCalcProfit数量、MIN/MAX/STEP/VOLUME_LIMIT、Netting/Hedging、Magic＋銘柄所有、ORDER UNRESOLVED、他銘柄新規停止、口座ミューテックス、価格鮮度・AI期限/ドリフト、共有Worker・高スコアキュー・限定FailOpenを保持。
+
+3リスクモード、Monte Carlo、Fintokei、Smart BreakEven、ATR/Structure Trailing、裁量、TradingView風テーマ、水平線・トレンドラインを保持。SL計算結果が変わるため、数量・TP・コスト比率や実際のエントリー可否・決済結果は旧版と一致するとは限らない。
+
+## バージョン・互換性
+
+本体/Workerの表示バージョンを2.44へ更新。本体名は `MTFAutoTrader_3Mode_AI_v2_44.mq5`。新ヘッダーはPortfolioRisk、PatternStops、TradeLog、TradeJournalの4個で、srcは計13ファイル。
+
+Worker通信プロトコル242・JSON schemaを維持し、v2.42/v2.43 Workerとソース上で互換。ScopeDigestの既存salt、口座予約・注文token・発注バー・パターン消費・初期リスク等のキーは変更しない。v2.41からの移行処理も保持する。
+
+全既存inputを残し、今回の追加inputは総リスク2個とEnableTradeLogの3個。旧本体を停止して13ソースをまとめて入れ替え、同じ口座・銘柄名・Magicで引き継ぐ。
+
+## 検証・配布
+
+本体/Worker模擬500チェック（既存326＋新規174）、JSON回帰55、静的監査495、CSV集計20が通過。全ソースのSHA-256、再現用テストと監査、README_JA、VALIDATION_JAを同梱。
+
+ネイティブMQL5コンパイル、MT5実機・市場バックテスト、実API接続、頻度/勝率/PF/DD改善の実測は未実施。EX5なしのソースパッケージとして配布する。検証の具体的な限界とv2.43比較項目はVALIDATION_JAを参照。
+
+## 以前の変更
+
+v2.43は123/Failed Breakoutと最終比率input、最高点選択・構造IDの消費を追加。v2.42は重み付きMTF、マルチシンボル、相対コスト、共有AIキュー、口座共通注文保護、銘柄別Monte Carloを追加。v2.44はこれらの品質フィルターを維持する。

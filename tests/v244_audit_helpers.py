@@ -1,0 +1,52 @@
+"""Remove only reviewed analytics hooks when comparing legacy safety fingerprints.
+
+The exact text must be present once. Trading conditions and order arguments are
+never masked; the projected functions still have to match the old SHA-256 values.
+"""
+from json_support import extract
+
+
+def replace_once(code, old, new=''):
+    if code.count(old) != 1:
+        raise AssertionError('reviewed v2.44 hook changed: ' + old[:100])
+    return code.replace(old, new, 1)
+
+
+def legacy_engine_function(name, code):
+    code = extract(name, code)
+    if name == 'UpdatePropProtection':
+        code = replace_once(code, 'ulong logId=(ulong)PositionGetInteger(POSITION_IDENTIFIER);')
+        code = replace_once(code, 'else JournalMarkDD(logId);')
+    elif name == 'ManagePositions':
+        code = replace_once(code, '''else
+  {
+   double smart=buy?entry+r*SmartLockR(currentR):entry-r*SmartLockR(currentR);
+   JournalMarkSL(id,EnableSmartBreakEven && MathAbs(candidate-smart)<=TickSize()?1:2,candidate);
+  }''')
+    elif name == 'Maintain':
+        code = replace_once(code, 'ProcessAIReply();JournalSample();', 'ProcessAIReply();')
+    elif name == 'TradeEvent':
+        code = replace_once(code, 'm_journalDirty=true;')
+    elif name == 'Init':
+        code = replace_once(code, '''m_journalFrom=(datetime)StateGet(g_statePrefix+"log.from",(double)TimeCurrent());
+ if(m_journalFrom<=0 || m_journalFrom>TimeCurrent()) m_journalFrom=TimeCurrent();
+ m_portfolioRejects=StateGet(g_statePrefix+"log.portfolio.rejects");
+ m_lastPortfolioRejectBar=(datetime)StateGet(g_statePrefix+"log.portfolio.bar");
+ m_portfolioReportDirty=m_portfolioRejects>0;''')
+    elif name == 'Shutdown':
+        code = replace_once(code, 'CancelAIRequest();if(g_lockOwned) JournalMaintenance();', 'CancelAIRequest();')
+    return code
+
+
+def legacy_main(code):
+    for name in ['RestoreJournalSymbols', 'ServiceTradeJournals']:
+        code = replace_once(code, extract(name, code))
+    for old, new in [
+        ('#include "MT3PortfolioRisk.mqh"', ''), ('#include "MT3TradeLog.mqh"', ''),
+        ('g_scanCursor=0,g_mcCursor=0,g_journalCursor=0;', 'g_scanCursor=0,g_mcCursor=0;'),
+        ('DispatchQueue();ServiceTradeJournals();RenderDashboard();', 'DispatchQueue();RenderDashboard();'),
+        ('g_chartSymbol=_Symbol;g_logRun="";g_journalCursor=0;', 'g_chartSymbol=_Symbol;'),
+        ('RefreshAccountHistory(true);RefreshUniverse();RestoreJournalSymbols();', 'RefreshAccountHistory(true);RefreshUniverse();'),
+    ]:
+        code = replace_once(code, old, new)
+    return code.replace('2.44', '2.42')

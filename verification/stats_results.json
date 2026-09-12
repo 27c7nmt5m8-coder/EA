@@ -1,0 +1,88 @@
+{
+  "passed": 20,
+  "failed": 0,
+  "scope": "Offline Python CSV aggregation with independent numerical fixtures.",
+  "cases": [
+    {
+      "case": "duplicate snapshots merge by immutable RecordKey",
+      "passed": true
+    },
+    {
+      "case": "partial/open trades excluded from completed counts",
+      "passed": true
+    },
+    {
+      "case": "123 pattern names and cross-symbol grouping",
+      "passed": true
+    },
+    {
+      "case": "win rate denominator includes break-even",
+      "passed": true
+    },
+    {
+      "case": "known initial R total and average",
+      "passed": true
+    },
+    {
+      "case": "profit factor uses summed net wins/losses",
+      "passed": true
+    },
+    {
+      "case": "expectancy uses account-currency net profit",
+      "passed": true
+    },
+    {
+      "case": "chronological maximum consecutive losses",
+      "passed": true
+    },
+    {
+      "case": "score and spread averages",
+      "passed": true
+    },
+    {
+      "case": "unknown initial R and scores stay unknown",
+      "passed": true
+    },
+    {
+      "case": "PF with wins and no losses is explicit INF",
+      "passed": true
+    },
+    {
+      "case": "tester and live datasets are separated",
+      "passed": true
+    },
+    {
+      "case": "SL source groups preserve structural reasons",
+      "passed": true
+    },
+    {
+      "case": "portfolio rejection counters summed once per symbol",
+      "passed": true
+    },
+    {
+      "case": "64-bit IDs retained as exact decimal text",
+      "passed": true
+    },
+    {
+      "case": "repeated aggregation produces no double counting",
+      "passed": true
+    },
+    {
+      "case": "output has Excel UTF-8 BOM",
+      "passed": true
+    },
+    {
+      "case": "conflicting closed revisions rejected",
+      "passed": true
+    },
+    {
+      "case": "input errors leave previous output intact",
+      "passed": true
+    },
+    {
+      "case": "nonfinite financial values rejected",
+      "passed": true
+    }
+  ],
+  "tool_sha256": "d970c41056522861befb142d756e6da0998b4c6349c24e69758c8bbbf3887119"
+}

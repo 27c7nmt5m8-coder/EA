@@ -1,0 +1,2009 @@
+{
+  "scope": "Static source audit, not a native MT5 compilation.",
+  "passed": 495,
+  "failed": 0,
+  "cases": [
+    {
+      "case": "MT3AIProtocol.mqh delimiters balanced",
+      "passed": true
+    },
+    {
+      "case": "MT3AIProtocol.mqh local includes resolved",
+      "passed": true
+    },
+    {
+      "case": "MT3Config.mqh delimiters balanced",
+      "passed": true
+    },
+    {
+      "case": "MT3Config.mqh local includes resolved",
+      "passed": true
+    },
+    {
+      "case": "MT3Json.mqh delimiters balanced",
+      "passed": true
+    },
+    {
+      "case": "MT3Json.mqh local includes resolved",
+      "passed": true
+    },
+    {
+      "case": "MT3PatternStops.mqh delimiters balanced",
+      "passed": true
+    },
+    {
+      "case": "MT3PatternStops.mqh local includes resolved",
+      "passed": true
+    },
+    {
+      "case": "MT3PortfolioRisk.mqh delimiters balanced",
+      "passed": true
+    },
+    {
+      "case": "MT3PortfolioRisk.mqh local includes resolved",
+      "passed": true
+    },
+    {
+      "case": "MT3ReversalPatterns.mqh delimiters balanced",
+      "passed": true
+    },
+    {
+      "case": "MT3ReversalPatterns.mqh local includes resolved",
+      "passed": true
+    },
+    {
+      "case": "MT3Scoring.mqh delimiters balanced",
+      "passed": true
+    },
+    {
+      "case": "MT3Scoring.mqh local includes resolved",
+      "passed": true
+    },
+    {
+      "case": "MT3SymbolState.mqh delimiters balanced",
+      "passed": true
+    },
+    {
+      "case": "MT3SymbolState.mqh local includes resolved",
+      "passed": true
+    },
+    {
+      "case": "MT3TradeJournal.mqh delimiters balanced",
+      "passed": true
+    },
+    {
+      "case": "MT3TradeJournal.mqh local includes resolved",
+      "passed": true
+    },
+    {
+      "case": "MT3TradeLog.mqh delimiters balanced",
+      "passed": true
+    },
+    {
+      "case": "MT3TradeLog.mqh local includes resolved",
+      "passed": true
+    },
+    {
+      "case": "MT3Types.mqh delimiters balanced",
+      "passed": true
+    },
+    {
+      "case": "MT3Types.mqh local includes resolved",
+      "passed": true
+    },
+    {
+      "case": "MTFAutoTrader_3Mode_AI_v2_44.mq5 delimiters balanced",
+      "passed": true
+    },
+    {
+      "case": "MTFAutoTrader_3Mode_AI_v2_44.mq5 local includes resolved",
+      "passed": true
+    },
+    {
+      "case": "MTFAutoTrader_AI_Worker.mq5 delimiters balanced",
+      "passed": true
+    },
+    {
+      "case": "MTFAutoTrader_AI_Worker.mq5 local includes resolved",
+      "passed": true
+    },
+    {
+      "case": "only intentional host chart _Symbol reference",
+      "passed": true
+    },
+    {
+      "case": "no _Point _Digits _Period or PERIOD_CURRENT in engine",
+      "passed": true
+    },
+    {
+      "case": "no old 4/7 or higher 2/3 hard-filter inputs",
+      "passed": true
+    },
+    {
+      "case": "MinimumSignalScore 70 preserved",
+      "passed": true
+    },
+    {
+      "case": "default MARKET_WATCH",
+      "passed": true
+    },
+    {
+      "case": "versions coordinated",
+      "passed": true
+    },
+    {
+      "case": "no HTTP in main/engine",
+      "passed": true
+    },
+    {
+      "case": "worker does not place orders",
+      "passed": true
+    },
+    {
+      "case": "ATR-normalized EMA slope",
+      "passed": true
+    },
+    {
+      "case": "trend MACD 70/30 blend",
+      "passed": true
+    },
+    {
+      "case": "all seven frame identities checked",
+      "passed": true
+    },
+    {
+      "case": "D1 excluded from higher veto",
+      "passed": true
+    },
+    {
+      "case": "state fields inside class",
+      "passed": true
+    },
+    {
+      "case": "no function-static state in symbol engine",
+      "passed": true
+    },
+    {
+      "case": "constructor initializes state",
+      "passed": true
+    },
+    {
+      "case": "dual-hash scope includes account symbol magic",
+      "passed": true
+    },
+    {
+      "case": "loaded state hash collision rejected",
+      "passed": true
+    },
+    {
+      "case": "v241 migration retained",
+      "passed": true
+    },
+    {
+      "case": "intent durable before broker send",
+      "passed": true
+    },
+    {
+      "case": "account execution mutex wraps whole order",
+      "passed": true
+    },
+    {
+      "case": "account unresolved order gate",
+      "passed": true
+    },
+    {
+      "case": "final order awaits visible or fully closed position",
+      "passed": true
+    },
+    {
+      "case": "all modes share ExecuteEntry",
+      "passed": true
+    },
+    {
+      "case": "exact one-use reconcile token",
+      "passed": true
+    },
+    {
+      "case": "netting mixed ownership guard",
+      "passed": true
+    },
+    {
+      "case": "all-owner directional volume limit",
+      "passed": true
+    },
+    {
+      "case": "relative spread thresholds before sizing",
+      "passed": true
+    },
+    {
+      "case": "fresh quote polling tracks symbol time_msc",
+      "passed": true
+    },
+    {
+      "case": "M1/age/drift rechecked before send",
+      "passed": true
+    },
+    {
+      "case": "AI only locally qualified candidates",
+      "passed": true
+    },
+    {
+      "case": "AI snapshots include actual timeframe MACD",
+      "passed": true
+    },
+    {
+      "case": "worker protocol checked before reservation",
+      "passed": true
+    },
+    {
+      "case": "cancellation preserves busy worker slot",
+      "passed": true
+    },
+    {
+      "case": "worker releases only matching nonce",
+      "passed": true
+    },
+    {
+      "case": "worker confidence precision preserved",
+      "passed": true
+    },
+    {
+      "case": "queue score and FIFO tie-break",
+      "passed": true
+    },
+    {
+      "case": "timer drives scanning independent of ticks",
+      "passed": true
+    },
+    {
+      "case": "retired universe cancels requests",
+      "passed": true
+    },
+    {
+      "case": "manual chart operations host-only",
+      "passed": true
+    },
+    {
+      "case": "chart draw independent of virtual levels",
+      "passed": true
+    },
+    {
+      "case": "incremental MC per-symbol random state",
+      "passed": true
+    },
+    {
+      "case": "old blocking MC helper not called",
+      "passed": true
+    },
+    {
+      "case": "MC immutable return snapshot",
+      "passed": true
+    },
+    {
+      "case": "Fintokei completed-position account loss streak",
+      "passed": true
+    },
+    {
+      "case": "AUTO tester allowed AI explicitly rejected",
+      "passed": true
+    },
+    {
+      "case": "v241 preserved function DetectDoubleBottom",
+      "passed": true
+    },
+    {
+      "case": "v241 preserved function DetectDoubleTop",
+      "passed": true
+    },
+    {
+      "case": "v241 preserved function DetectInverseHeadShoulders",
+      "passed": true
+    },
+    {
+      "case": "v241 preserved function DetectHeadShoulders",
+      "passed": true
+    },
+    {
+      "case": "v241 preserved function DetectTriplePattern",
+      "passed": true
+    },
+    {
+      "case": "v241 preserved function DetectTripleBottom",
+      "passed": true
+    },
+    {
+      "case": "v241 preserved function DetectTripleTop",
+      "passed": true
+    },
+    {
+      "case": "v241 preserved function DetectReversalPattern",
+      "passed": true
+    },
+    {
+      "case": "v241 preserved function BuildManualStops",
+      "passed": true
+    },
+    {
+      "case": "v241 preserved function SmartLockR",
+      "passed": true
+    },
+    {
+      "case": "v241 preserved function CalculateFixedAdjustedRisk",
+      "passed": true
+    },
+    {
+      "case": "v241 preserved function NormalizeVolume",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SetThemeProperty",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) RestoreChartTheme",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ApplyChartTheme",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetBid",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetAsk",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetPointValue",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetDigitsValue",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) NormalizePrice",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetSpreadPoints",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) IsNewBar",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) NormalizeVolume",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ClampRisk",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) IsBuyAllowed",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) IsSellAllowed",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CountOurPositions",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) HasOurPosition",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) LogMessage",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CachedIndicator",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ReadIndicator",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetATR",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) IsSwingHigh",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) IsSwingLow",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetRecentSwingLows",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetRecentSwingHighs",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PriceDifferencePercent",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DetectDoubleBottom",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DetectDoubleTop",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DetectInverseHeadShoulders",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DetectHeadShoulders",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DetectTriplePattern",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DetectTripleBottom",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DetectTripleTop",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DetectReversalPattern",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PrintPatternSignal",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetEMA",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetADXValues",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetMACDValues",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) AnalyzeTimeframe",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) AnalyzeAllTimeframes",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CountBullishTimeframes",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CountBearishTimeframes",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CountBullishMACD",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CountBearishMACD",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CalculateBuyMTFScore",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CalculateSellMTFScore",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) HigherTimeframeBuyOK",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) HigherTimeframeSellOK",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) TimeframeToString",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PrintMTFResults",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CreateOrUpdateHLine",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CreateOrUpdateTrendLine",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) IsPriceNear",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetLatestSwingLow",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetSecondSwingLow",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetLatestSwingHigh",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetSecondSwingHigh",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) IsDuplicateHorizontalLevel",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DeleteAutoHorizontalLines",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DeleteAutoTrendLines",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UpdateAutoHorizontalLines",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UpdateAutoTrendLines",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetNearestSupportDistance",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetNearestResistanceDistance",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) BuySupportConfirmation",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SellResistanceConfirmation",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) BuyTrendLineConfirmation",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SellTrendLineConfirmation",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UpdateAllAutoLines",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CalculateLineScore",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetPatternScore",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) BuySignalOK",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SellSignalOK",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PositionKey",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) StateGet",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PositionIdOpen",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PositionResult",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) RefreshHistory",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) LimitRisk",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CalculateFixedAdjustedRisk",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CalculateMonteCarlo95DD",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UpdateMonteCarloRisk",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UTCNow",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UTCDay",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DailyLimit",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) OverallLimit",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SavePropDay",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UpdatePropDay",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DailyFloor",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) OverallFloor",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UpdatePropProtection",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) OpenRiskReserve",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PropRiskCap",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CalculateFinalRisk",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PriceFloor",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PriceCeil",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) EntryExposureBlocked",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) BuildStops",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CalculateLotByRisk",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) HasUnresolvedOrder",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PendingOrderToken",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PendingOrderComment",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ClearPendingOrder",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) BeginPendingOrder",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DefinitiveEntryRejection",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PendingHistoryOrderFinal",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ReconcilePendingOrder",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) RefreshEntryState",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) EntryPreflight",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) TFName",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) BuildAISnapshot",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CancelAIRequest",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) AIContextFresh",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) AIPriceFresh",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) MarkAIBarUsed",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) IsPatternAlreadyUsed",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CaptureInitialRisks",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) AIExecutionFresh",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) RecordEntryAttempt",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ManualFixedRisk",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CalculateManualRisk",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) EntryModeAllowed",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) BuildManualStops",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ManualName",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ManualLabel",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ManualButton",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) InitializeManualPanel",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DeleteManualPanel",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UpdateManualAnalysis",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) RefreshManualPanel",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) HandleManualEntry",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SmartLockR",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ManagePositions",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SelfTests",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UpdatePanel",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) Maintain",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) TradeEvent",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ChartEvent",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) MTFSnapshotCurrent",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) TickSize",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) StopBuffer",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DeviationPoints",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) StopSlippage",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SymbolDirectionAllowed",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) FreshQuote",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SpreadOK",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) AvailableDirectionalVolume",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ExecuteEntry",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SolePositionOwner",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) StoreLevel",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) NearestLevel",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) StoreTrend",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) NearTrend",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) NextMCRandom",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) AdvanceMonteCarlo",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) InUniverseNow",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DispatchCandidate",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) MigrateLegacy",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) Init",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ReleaseIndicators",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) Shutdown",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SetScanEnabled",
+      "passed": true
+    },
+    {
+      "case": "v242 safety fingerprint (reviewed analytics hooks removed) Scan",
+      "passed": true
+    },
+    {
+      "case": "v242 protocol/controller preserved after reviewed hooks MT3AIProtocol.mqh",
+      "passed": true
+    },
+    {
+      "case": "v242 protocol/controller preserved after reviewed hooks MT3Json.mqh",
+      "passed": true
+    },
+    {
+      "case": "v242 protocol/controller preserved after reviewed hooks MTFAutoTrader_3Mode_AI_v2_42.mq5",
+      "passed": true
+    },
+    {
+      "case": "v242 protocol/controller preserved after reviewed hooks MTFAutoTrader_AI_Worker.mq5",
+      "passed": true
+    },
+    {
+      "case": "all old weighted scoring math unchanged",
+      "passed": true
+    },
+    {
+      "case": "all existing inputs and defaults unchanged",
+      "passed": true
+    },
+    {
+      "case": "v243 three final weights and v244 three inputs only",
+      "passed": true
+    },
+    {
+      "case": "all legacy enum IDs retained in original order",
+      "passed": true
+    },
+    {
+      "case": "four new pattern directions appended",
+      "passed": true
+    },
+    {
+      "case": "weight finiteness and individual range enforced",
+      "passed": true
+    },
+    {
+      "case": "weight sum tolerance is .001 with explicit error",
+      "passed": true
+    },
+    {
+      "case": "weight validation participates in OnInit rejection",
+      "passed": true
+    },
+    {
+      "case": "weights never automatically reassigned",
+      "passed": true
+    },
+    {
+      "case": "all final components normalized to 0..100",
+      "passed": true
+    },
+    {
+      "case": "both entry directions use new final score",
+      "passed": true
+    },
+    {
+      "case": "123 confirmed M1 bars and ATR basis",
+      "passed": true
+    },
+    {
+      "case": "123 geometry and age bounds",
+      "passed": true
+    },
+    {
+      "case": "123 rejects earlier closed triggers and P1 breaches",
+      "passed": true
+    },
+    {
+      "case": "123 HL LH preference capped at 100",
+      "passed": true
+    },
+    {
+      "case": "new detectors never read forming OHLC bar",
+      "passed": true
+    },
+    {
+      "case": "FB reference confirmed before break",
+      "passed": true
+    },
+    {
+      "case": "FB requires separate closed outside bar",
+      "passed": true
+    },
+    {
+      "case": "FB min max penetration and distance preserved",
+      "passed": true
+    },
+    {
+      "case": "FB measures deepest excursion through reclaim",
+      "passed": true
+    },
+    {
+      "case": "FB rejects revived old sweeps",
+      "passed": true
+    },
+    {
+      "case": "FB small bodies capped without lowering entry threshold",
+      "passed": true
+    },
+    {
+      "case": "all ten directional patterns gathered",
+      "passed": true
+    },
+    {
+      "case": "each detector receives cleared independent signal",
+      "passed": true
+    },
+    {
+      "case": "incomplete candidate allocation fails closed",
+      "passed": true
+    },
+    {
+      "case": "highest PatternScore wins deterministic ties",
+      "passed": true
+    },
+    {
+      "case": "ambiguous opposite direction safely rejected",
+      "passed": true
+    },
+    {
+      "case": "MTF eligibility resolves directional conflict",
+      "passed": true
+    },
+    {
+      "case": "all coincident same-side identities consumed",
+      "passed": true
+    },
+    {
+      "case": "pattern IDs contain per-symbol account magic scope",
+      "passed": true
+    },
+    {
+      "case": "FB identity uses reference pivot, not breakout episode",
+      "passed": true
+    },
+    {
+      "case": "new receipts persist independently of last-pattern guard",
+      "passed": true
+    },
+    {
+      "case": "pattern claims durable before any broker submission",
+      "passed": true
+    },
+    {
+      "case": "receipt persistence failure blocks execution",
+      "passed": true
+    },
+    {
+      "case": "one attempted order per symbol M1 bar unchanged",
+      "passed": true
+    },
+    {
+      "case": "new live price guard enforced prequeue and presend",
+      "passed": true
+    },
+    {
+      "case": "AI revalidates full structure ID",
+      "passed": true
+    },
+    {
+      "case": "AI carries currently matched structure claims",
+      "passed": true
+    },
+    {
+      "case": "AUTO HYBRID use new routing without full-universe AI sends",
+      "passed": true
+    },
+    {
+      "case": "v244 changed engine functions are explicitly bounded",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged AIContextFresh",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged AIExecutionFresh",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged AIPriceFresh",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged AdvanceMonteCarlo",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged AnalyzeAllTimeframes",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged AnalyzeTimeframe",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged ApplyChartTheme",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged AvailableDirectionalVolume",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged BeginPendingOrder",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged BuildAISnapshot",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged BuildManualStops",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged BuildStops",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged BuySignalOK",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged BuySupportConfirmation",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged BuyTrendLineConfirmation",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CachedIndicator",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CalculateBuyMTFScore",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CalculateFinalBuyScore",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CalculateFinalRisk",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CalculateFinalSellScore",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CalculateFixedAdjustedRisk",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CalculateLineScore",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CalculateLotByRisk",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CalculateManualRisk",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CalculateMonteCarlo95DD",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CalculateSellMTFScore",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CancelAIRequest",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CaptureInitialRisks",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged ChartEvent",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged ClampRisk",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged ClearPendingOrder",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CountBearishMACD",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CountBearishTimeframes",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CountBullishMACD",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CountBullishTimeframes",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CountOurPositions",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CreateOrUpdateHLine",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged CreateOrUpdateTrendLine",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged DailyFloor",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged DailyLimit",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged DefinitiveEntryRejection",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged DeleteAutoHorizontalLines",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged DeleteAutoTrendLines",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged DeleteManualPanel",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged DetectDoubleBottom",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged DetectDoubleTop",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged DetectHeadShoulders",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged DetectInverseHeadShoulders",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged DetectLegacyReversalPattern",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged DetectTripleBottom",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged DetectTriplePattern",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged DetectTripleTop",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged DeviationPoints",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged DispatchCandidate",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged EntryExposureBlocked",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged EntryModeAllowed",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged EntryPreflight",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged ExecuteEntry",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged FreshQuote",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged GetADXValues",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged GetATR",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged GetAsk",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged GetBid",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged GetDigitsValue",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged GetEMA",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged GetLatestSwingHigh",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged GetLatestSwingLow",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged GetMACDValues",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged GetNearestResistanceDistance",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged GetNearestSupportDistance",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged GetPatternScore",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged GetPointValue",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged GetRecentSwingHighs",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged GetRecentSwingLows",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged GetSecondSwingHigh",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged GetSecondSwingLow",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged GetSpreadPoints",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged HandleManualEntry",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged HasOurPosition",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged HasUnresolvedOrder",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged HigherTimeframeBuyOK",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged HigherTimeframeSellOK",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged InUniverseNow",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged InitializeManualPanel",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged IsBuyAllowed",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged IsDuplicateHorizontalLevel",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged IsNewBar",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged IsPriceNear",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged IsSellAllowed",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged IsSwingHigh",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged IsSwingLow",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged LegacyPatternAlreadyUsed",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged LimitRisk",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged LogMessage",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged MTFSnapshotCurrent",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged ManualButton",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged ManualFixedRisk",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged ManualLabel",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged ManualName",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged MarkAIBarUsed",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged MarkPatternUsed",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged MigrateLegacy",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged NearTrend",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged NearestLevel",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged NextMCRandom",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged NormalizePrice",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged NormalizeVolume",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged OpenRiskReserve",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged OverallFloor",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged OverallLimit",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged PatternName",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged PendingHistoryOrderFinal",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged PendingOrderComment",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged PendingOrderToken",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged PositionIdOpen",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged PositionKey",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged PositionResult",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged PriceCeil",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged PriceDifferencePercent",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged PriceFloor",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged PrintMTFResults",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged PrintPatternSignal",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged PropRiskCap",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged ReadIndicator",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged ReconcilePendingOrder",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged RecordEntryAttempt",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged RefreshEntryState",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged RefreshHistory",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged RefreshManualPanel",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged ReleaseIndicators",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged RestoreChartTheme",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged SavePropDay",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged Scan",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged SelfTests",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged SellResistanceConfirmation",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged SellSignalOK",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged SellTrendLineConfirmation",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged SetScanEnabled",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged SetThemeProperty",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged SmartLockR",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged SolePositionOwner",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged SpreadOK",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged StateGet",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged StopBuffer",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged StopSlippage",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged StoreLevel",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged StoreTrend",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged SymbolDirectionAllowed",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged TFName",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged TickSize",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged TimeframeToString",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged UTCDay",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged UTCNow",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged UpdateAllAutoLines",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged UpdateAutoHorizontalLines",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged UpdateAutoTrendLines",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged UpdateManualAnalysis",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged UpdateMonteCarloRisk",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged UpdatePanel",
+      "passed": true
+    },
+    {
+      "case": "v243 engine function unchanged UpdatePropDay",
+      "passed": true
+    },
+    {
+      "case": "v243 entire module unchanged MT3Types.mqh",
+      "passed": true
+    },
+    {
+      "case": "v243 entire module unchanged MT3Scoring.mqh",
+      "passed": true
+    },
+    {
+      "case": "v243 entire module unchanged MT3ReversalPatterns.mqh",
+      "passed": true
+    },
+    {
+      "case": "v243 entire module unchanged MT3AIProtocol.mqh",
+      "passed": true
+    },
+    {
+      "case": "v243 entire module unchanged MT3Json.mqh",
+      "passed": true
+    },
+    {
+      "case": "all v243 input declarations and defaults unchanged",
+      "passed": true
+    },
+    {
+      "case": "three v244 new inputs only",
+      "passed": true
+    },
+    {
+      "case": "new modules use no implicit chart symbol/period properties",
+      "passed": true
+    },
+    {
+      "case": "portfolio limit finite positive at initialization",
+      "passed": true
+    },
+    {
+      "case": "portfolio enumerates positions across entire account",
+      "passed": true
+    },
+    {
+      "case": "portfolio from entry to current SL via OrderCalcProfit",
+      "passed": true
+    },
+    {
+      "case": "profitable stops never offset losing risk",
+      "passed": true
+    },
+    {
+      "case": "missing SL and failed calculation block risk approval",
+      "passed": true
+    },
+    {
+      "case": "portfolio ownership hedging/netting and mixed history guards",
+      "passed": true
+    },
+    {
+      "case": "working managed orders block unknown portfolio exposure",
+      "passed": true
+    },
+    {
+      "case": "portfolio uses equity cap with small numerical tolerance",
+      "passed": true
+    },
+    {
+      "case": "risk is recalculated before lot sizing inside locked execution",
+      "passed": true
+    },
+    {
+      "case": "latest risk check follows analytical preparation precedes final quote and send",
+      "passed": true
+    },
+    {
+      "case": "risk over budget rejects without lot cutting",
+      "passed": true
+    },
+    {
+      "case": "new risk reserve includes existing entry deviation stop slippage and commission",
+      "passed": true
+    },
+    {
+      "case": "AI preview risk checked before sending worker request",
+      "passed": true
+    },
+    {
+      "case": "original generic SL and sizing remain available",
+      "passed": true
+    },
+    {
+      "case": "all ten pattern SL cases and five source categories",
+      "passed": true
+    },
+    {
+      "case": "123 uses P3 and failed breakout uses episode extreme",
+      "passed": true
+    },
+    {
+      "case": "pattern SL tick rounding outward with reused adaptive buffer",
+      "passed": true
+    },
+    {
+      "case": "invalid pattern stop falls back with explicit reason",
+      "passed": true
+    },
+    {
+      "case": "broker constraints not silently used to stretch pattern anchor",
+      "passed": true
+    },
+    {
+      "case": "StopsLevel FreezeLevel latest price tick lattice verified",
+      "passed": true
+    },
+    {
+      "case": "analytics calls never decide approval",
+      "passed": true
+    },
+    {
+      "case": "safety persistence gates remain mandatory before send",
+      "passed": true
+    },
+    {
+      "case": "actual position identity drives journal filenames",
+      "passed": true
+    },
+    {
+      "case": "analytical path includes terminal account magic and test session",
+      "passed": true
+    },
+    {
+      "case": "CSV contains 63 required entry/exit columns",
+      "passed": true
+    },
+    {
+      "case": "CSV strings escape quotes and spreadsheet formula prefixes",
+      "passed": true
+    },
+    {
+      "case": "JSON log uses exact ulong text parser and account/magic validation",
+      "passed": true
+    },
+    {
+      "case": "logging remains per-symbol with no static mutable engine state",
+      "passed": true
+    },
+    {
+      "case": "all partial fill and exit deals join one position row",
+      "passed": true
+    },
+    {
+      "case": "initial money risk frozen across later currency conversion",
+      "passed": true
+    },
+    {
+      "case": "net profit includes both entry/exit deal fees",
+      "passed": true
+    },
+    {
+      "case": "all requested exit reason categories present",
+      "passed": true
+    },
+    {
+      "case": "analysis failure warns and retries without deleting dirty record",
+      "passed": true
+    },
+    {
+      "case": "memory failure does not advance analytical history cursor",
+      "passed": true
+    },
+    {
+      "case": "recovery markers restore off-universe state without new entries",
+      "passed": true
+    },
+    {
+      "case": "journal service runs after exposure protection and queue",
+      "passed": true
+    },
+    {
+      "case": "MFE MAE labelled sampled including restart gaps",
+      "passed": true
+    },
+    {
+      "case": "reject counter separated from safety reservation and per-bar persisted",
+      "passed": true
+    }
+  ],
+  "symbol_references": [
+    {
+      "file": "MTFAutoTrader_3Mode_AI_v2_44.mq5",
+      "line": 284,
+      "text": "g_chartSymbol=_Symbol;g_logRun=\"\";g_journalCursor=0;"
+    }
+  ],
+  "source_sha256": {
+    "MT3AIProtocol.mqh": "25340f89525ddaa7ffd425fddad0b22919864e0f8ce3db9961775eb299db24de",
+    "MT3Config.mqh": "f75363429a3b1abc1759140910773c2e1a0f58278e83ca757d6a09d1ad117fd7",
+    "MT3Json.mqh": "b392a69a399f8759d725e2ab7c6b30abd4c20656e227a90373ef1304b8b7c429",
+    "MT3PatternStops.mqh": "c336b7e5d113dd11aa8c5792aff49e941c373f971a701ddeb6a9dd637ee63a07",
+    "MT3PortfolioRisk.mqh": "3904bd36f35cecd6c14c5ea0874ee7a9daf76a00eaa2ebe5ba9fe22d21de0787",
+    "MT3ReversalPatterns.mqh": "abb3c28a163e7530bd5db757bca4c74b519e866d00633823b72250d92e4d2289",
+    "MT3Scoring.mqh": "f57d1e185752e0676a08682c70e76cfd8441fb29c35d9c1c05975cf3eea4aa4d",
+    "MT3SymbolState.mqh": "c6dbe42de52cf2e022abac1e2d811416e264d43042914c93d01ff9756cb516a4",
+    "MT3TradeJournal.mqh": "8eb98a1c866eb56d4bf695689353b3ae4c64bfd466c00353df6981aa60909931",
+    "MT3TradeLog.mqh": "f3b32e3cd6b746bb5c86a03fc687c4e17be4c6e8193de24a96b4dcf9e914234a",
+    "MT3Types.mqh": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2",
+    "MTFAutoTrader_3Mode_AI_v2_44.mq5": "7f3a8d7c1eb8398abf2bcff98b8f9edfdba9ef0ccf8e41de0cfb2421f850ebc4",
+    "MTFAutoTrader_AI_Worker.mq5": "9f244a44609baad8a50044744577432db75c08761187b2642be8f36c5de7ab98"
+  }
+}

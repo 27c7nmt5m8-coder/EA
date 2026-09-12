@@ -1,0 +1,31 @@
+{
+  "version": "2.44",
+  "date": "2026-09-08",
+  "base_version": "2.43",
+  "base_zip_sha256": "86d92447782e8bc72ce28264b2c8040c41b46040248948b234912ca4ea97e00a",
+  "native_mql_compile": "NOT_PERFORMED",
+  "market_backtest": "NOT_PERFORMED",
+  "live_api": "NOT_PERFORMED",
+  "ex5_included": false,
+  "runtime_source_files": 13,
+  "cpp_adapter_errors": 0,
+  "cpp_adapter_warnings": 31,
+  "checks": {
+    "integration_results.json": {
+      "passed": 500,
+      "failed": 0
+    },
+    "source_audit.json": {
+      "passed": 495,
+      "failed": 0
+    },
+    "json_results.json": {
+      "passed": 55,
+      "failed": 0
+    },
+    "stats_results.json": {
+      "passed": 20,
+      "failed": 0
+    }
+  }
+}
