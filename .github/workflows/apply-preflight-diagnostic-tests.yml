@@ -1,35 +1,29 @@
-name: Apply preflight diagnostic tests
+name: Apply tester diagnostic implementation
 on:
-  push:
-    branches:
-      - diag/v244-tester-preflight
+  pull_request:
+    types: [opened, reopened]
 permissions:
   contents: write
 jobs:
   apply:
-    if: ${{ !startsWith(github.event.head_commit.message, 'test: add tester preflight diagnostic regression') }}
+    if: ${{ github.event.pull_request.head.ref == 'diag/v244-tester-preflight' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: diag/v244-tester-preflight
           fetch-depth: 0
-      - name: Apply test-first regression and commit
+      - name: Apply diagnostics and validate
         shell: bash
         run: |
           set -euo pipefail
-          python - <<'PY'
-          from pathlib import Path
-          p=Path('tests/scenarios.cpp')
-          s=p.read_text()
-          needle=''' for(bool testing:{false,true}){\n  reset();tester=testing;connected=!testing;permissions=false;SymbolState s;setup(s);\n  check(!s.EntryPreflight(false),testing?"tester still requires trading permissions":"live still requires trading permissions");s.Shutdown();\n }\n\n reset();tester=true;connected=false;ScanMode=CURRENT_SYMBOL;fixture_pattern(u"FX");'''
-          replacement=''' for(bool testing:{false,true}){\n  reset();tester=testing;connected=!testing;permissions=false;SymbolState s;setup(s);\n  check(!s.EntryPreflight(false),testing?"tester still requires trading permissions":"live still requires trading permissions");s.Shutdown();\n }\n\n reset();tester=true;connected=false;SymbolState diagnostic;setup(diagnostic);\n check(diagnostic.EntryPreflight(false),"tester diagnostic pass path remains eligible");\n check(diagnostic.m_lastTesterPreflightDiagnostic==u"PASS"&&diagnostic.m_testerPreflightDiagnosticCount==1,"tester diagnostic records preflight pass once");\n check(diagnostic.EntryPreflight(false)&&diagnostic.m_testerPreflightDiagnosticCount==1,"tester diagnostic suppresses duplicate pass reason");\n permissions=false;\n check(!diagnostic.EntryPreflight(false)&&diagnostic.m_lastTesterPreflightDiagnostic==u"Trading permission or broker connection is OFF"&&diagnostic.m_testerPreflightDiagnosticCount==2,"tester diagnostic records permission rejection");\n check(!diagnostic.EntryPreflight(false)&&diagnostic.m_testerPreflightDiagnosticCount==2,"tester diagnostic suppresses duplicate rejection reason");diagnostic.Shutdown();\n\n reset();permissions=false;SymbolState liveDiagnostic;setup(liveDiagnostic);\n check(!liveDiagnostic.EntryPreflight(false)&&liveDiagnostic.m_lastTesterPreflightDiagnostic==u""&&liveDiagnostic.m_testerPreflightDiagnosticCount==0,"live preflight emits no tester diagnostics");liveDiagnostic.Shutdown();\n\n reset();tester=true;RiskMode=RISK_COMBINED;SymbolState mcDiagnostic;setup(mcDiagnostic);mcDiagnostic.g_mcReady=false;mcDiagnostic.g_mcAllowed=false;\n check(!mcDiagnostic.EntryPreflight(false)&&mcDiagnostic.m_lastTesterPreflightDiagnostic==u"Monte Carlo blocks entry","tester diagnostic identifies Monte Carlo rejection");mcDiagnostic.Shutdown();\n\n reset();tester=true;connected=false;ScanMode=CURRENT_SYMBOL;fixture_pattern(u"FX");'''
-          if s.count(needle)!=1:
-              raise SystemExit('expected tester_connection_tests insertion point not found exactly once')
-          p.write_text(s.replace(needle,replacement,1))
-          PY
-          rm .github/workflows/apply-preflight-diagnostic-tests.yml
+          python scripts/apply_tester_diagnostic.py
+          python3 tests/run_all.py
+          python scripts/finalize_tester_diagnostic.py
+          rm -f .github/workflows/apply-preflight-diagnostic-tests.yml scripts/apply_tester_diagnostic.py scripts/finalize_tester_diagnostic.py
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
-          git commit -m 'test: add tester preflight diagnostic regression'
-          git push
+          git diff --cached --check
+          git commit -m 'diag: add tester-only status diagnostics'
+          git push origin HEAD:diag/v244-tester-preflight
