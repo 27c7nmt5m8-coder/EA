@@ -2513,7 +2513,7 @@ bool EntryPreflight(bool manual)
  if(!EntryModeAllowed(manual)) {g_status="Selected execution mode does not allow this entry";return false;}
  if(HasUnresolvedOrder()) {g_status="ORDER UNRESOLVED | reconcile token "+PendingOrderToken();return false;}
  if(EntryExposureBlocked()) {g_status="Existing exposure blocks entry";return false;}
- if(!TerminalInfoInteger(TERMINAL_CONNECTED) || !TerminalInfoInteger(TERMINAL_TRADE_ALLOWED) || !MQLInfoInteger(MQL_TRADE_ALLOWED) ||
+ if((!MQLInfoInteger(MQL_TESTER) && !TerminalInfoInteger(TERMINAL_CONNECTED)) || !TerminalInfoInteger(TERMINAL_TRADE_ALLOWED) || !MQLInfoInteger(MQL_TRADE_ALLOWED) ||
     !AccountInfoInteger(ACCOUNT_TRADE_ALLOWED) || !AccountInfoInteger(ACCOUNT_TRADE_EXPERT))
  {g_status="Trading permission or broker connection is OFF";return false;}
  if(!g_historyOK) {g_status="Waiting for trade history";return false;}

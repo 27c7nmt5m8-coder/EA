@@ -1,4 +1,4 @@
-"""Project reviewed analytics hooks, local initializers and lock creation guards.
+"""Project reviewed analytics hooks, local initializers, lock guards and tester exception.
 
 The exact text must be present once. Trading conditions and order arguments are
 never masked; the projected functions still have to match the old SHA-256 values.
@@ -24,7 +24,11 @@ def legacy_lock_guards(code, keys):
 
 def legacy_engine_function(name, code):
     code = extract(name, code)
-    if name == 'UpdateAutoTrendLines':
+    if name == 'EntryPreflight':
+        code = replace_once(code,
+            '(!MQLInfoInteger(MQL_TESTER) && !TerminalInfoInteger(TERMINAL_CONNECTED))',
+            '!TerminalInfoInteger(TERMINAL_CONNECTED)')
+    elif name == 'UpdateAutoTrendLines':
         # Preserve the previous warning fix and the historical fingerprints.
         for variable in ['highShift1', 'highShift2', 'lowShift1', 'lowShift2']:
             code = replace_once(code, 'int ' + variable + '=-1;', 'int ' + variable + ';')

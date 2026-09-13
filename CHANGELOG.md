@@ -1,5 +1,13 @@
 # CHANGELOG — v2.43 → v2.44
 
+## 2026-09-13：Strategy Testerのライブ接続必須条件を修正
+
+- `EntryPreflight()` のライブ接続拒否を `!MQL_TESTER && !TERMINAL_CONNECTED` に限定し、Strategy Tester時だけライブサーバー接続を不要にした。
+- 実運用時の未接続拒否、端末・MQL・口座の売買許可、未解決注文、総ポートフォリオリスク、スコア、SL/TP、ロット計算は維持。
+- 未接続テスター／実運用、売買許可OFF、OnInit→OnTimer発注、同一M1重複防止、再接続、総リスク上限、未解決注文の22チェックを追加。
+- 既存の再初期化ロック修正43チェックと合わせ、模擬565チェックを実行する。過去の監査ハッシュは変更せず、監査時だけ承認済みの接続式を旧式へ投影して比較する。
+- **MetaEditorネイティブコンパイルと、修正後の実機Strategy Testerバックテストはこの統合作業では未実測。**
+
 ## 2026-09-13：v2.44 再初期化ロック修正（バージョン据え置き）
 
 - `MT3SymbolState.mqh` の `g_lockKey`、本体 `AcquireExecution()` の `g_execKey`、Fintokei `g_propControllerKey`、Worker owner lockの4か所を修正。Global Variableが存在しない場合だけ `GlobalVariableTemp()` を呼び、その後の `GlobalVariableSetOnCondition(key,1,0)` で排他的に取得する。
