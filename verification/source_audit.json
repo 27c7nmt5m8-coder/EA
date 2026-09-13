@@ -336,651 +336,651 @@
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SetThemeProperty",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) SetThemeProperty",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) RestoreChartTheme",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) RestoreChartTheme",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ApplyChartTheme",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) ApplyChartTheme",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetBid",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) GetBid",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetAsk",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) GetAsk",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetPointValue",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) GetPointValue",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetDigitsValue",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) GetDigitsValue",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) NormalizePrice",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) NormalizePrice",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetSpreadPoints",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) GetSpreadPoints",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) IsNewBar",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) IsNewBar",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) NormalizeVolume",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) NormalizeVolume",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ClampRisk",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) ClampRisk",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) IsBuyAllowed",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) IsBuyAllowed",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) IsSellAllowed",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) IsSellAllowed",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CountOurPositions",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) CountOurPositions",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) HasOurPosition",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) HasOurPosition",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) LogMessage",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) LogMessage",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CachedIndicator",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) CachedIndicator",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ReadIndicator",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) ReadIndicator",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetATR",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) GetATR",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) IsSwingHigh",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) IsSwingHigh",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) IsSwingLow",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) IsSwingLow",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetRecentSwingLows",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) GetRecentSwingLows",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetRecentSwingHighs",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) GetRecentSwingHighs",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PriceDifferencePercent",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) PriceDifferencePercent",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DetectDoubleBottom",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) DetectDoubleBottom",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DetectDoubleTop",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) DetectDoubleTop",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DetectInverseHeadShoulders",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) DetectInverseHeadShoulders",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DetectHeadShoulders",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) DetectHeadShoulders",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DetectTriplePattern",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) DetectTriplePattern",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DetectTripleBottom",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) DetectTripleBottom",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DetectTripleTop",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) DetectTripleTop",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DetectReversalPattern",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) DetectReversalPattern",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PrintPatternSignal",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) PrintPatternSignal",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetEMA",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) GetEMA",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetADXValues",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) GetADXValues",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetMACDValues",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) GetMACDValues",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) AnalyzeTimeframe",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) AnalyzeTimeframe",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) AnalyzeAllTimeframes",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) AnalyzeAllTimeframes",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CountBullishTimeframes",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) CountBullishTimeframes",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CountBearishTimeframes",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) CountBearishTimeframes",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CountBullishMACD",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) CountBullishMACD",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CountBearishMACD",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) CountBearishMACD",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CalculateBuyMTFScore",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) CalculateBuyMTFScore",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CalculateSellMTFScore",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) CalculateSellMTFScore",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) HigherTimeframeBuyOK",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) HigherTimeframeBuyOK",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) HigherTimeframeSellOK",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) HigherTimeframeSellOK",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) TimeframeToString",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) TimeframeToString",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PrintMTFResults",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) PrintMTFResults",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CreateOrUpdateHLine",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) CreateOrUpdateHLine",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CreateOrUpdateTrendLine",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) CreateOrUpdateTrendLine",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) IsPriceNear",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) IsPriceNear",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetLatestSwingLow",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) GetLatestSwingLow",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetSecondSwingLow",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) GetSecondSwingLow",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetLatestSwingHigh",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) GetLatestSwingHigh",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetSecondSwingHigh",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) GetSecondSwingHigh",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) IsDuplicateHorizontalLevel",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) IsDuplicateHorizontalLevel",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DeleteAutoHorizontalLines",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) DeleteAutoHorizontalLines",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DeleteAutoTrendLines",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) DeleteAutoTrendLines",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UpdateAutoHorizontalLines",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) UpdateAutoHorizontalLines",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UpdateAutoTrendLines",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) UpdateAutoTrendLines",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetNearestSupportDistance",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) GetNearestSupportDistance",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetNearestResistanceDistance",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) GetNearestResistanceDistance",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) BuySupportConfirmation",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) BuySupportConfirmation",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SellResistanceConfirmation",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) SellResistanceConfirmation",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) BuyTrendLineConfirmation",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) BuyTrendLineConfirmation",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SellTrendLineConfirmation",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) SellTrendLineConfirmation",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UpdateAllAutoLines",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) UpdateAllAutoLines",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CalculateLineScore",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) CalculateLineScore",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) GetPatternScore",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) GetPatternScore",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) BuySignalOK",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) BuySignalOK",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SellSignalOK",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) SellSignalOK",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PositionKey",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) PositionKey",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) StateGet",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) StateGet",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PositionIdOpen",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) PositionIdOpen",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PositionResult",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) PositionResult",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) RefreshHistory",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) RefreshHistory",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) LimitRisk",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) LimitRisk",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CalculateFixedAdjustedRisk",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) CalculateFixedAdjustedRisk",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CalculateMonteCarlo95DD",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) CalculateMonteCarlo95DD",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UpdateMonteCarloRisk",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) UpdateMonteCarloRisk",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UTCNow",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) UTCNow",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UTCDay",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) UTCDay",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DailyLimit",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) DailyLimit",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) OverallLimit",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) OverallLimit",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SavePropDay",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) SavePropDay",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UpdatePropDay",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) UpdatePropDay",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DailyFloor",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) DailyFloor",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) OverallFloor",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) OverallFloor",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UpdatePropProtection",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) UpdatePropProtection",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) OpenRiskReserve",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) OpenRiskReserve",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PropRiskCap",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) PropRiskCap",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CalculateFinalRisk",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) CalculateFinalRisk",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PriceFloor",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) PriceFloor",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PriceCeil",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) PriceCeil",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) EntryExposureBlocked",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) EntryExposureBlocked",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) BuildStops",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) BuildStops",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CalculateLotByRisk",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) CalculateLotByRisk",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) HasUnresolvedOrder",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) HasUnresolvedOrder",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PendingOrderToken",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) PendingOrderToken",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PendingOrderComment",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) PendingOrderComment",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ClearPendingOrder",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) ClearPendingOrder",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) BeginPendingOrder",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) BeginPendingOrder",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DefinitiveEntryRejection",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) DefinitiveEntryRejection",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) PendingHistoryOrderFinal",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) PendingHistoryOrderFinal",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ReconcilePendingOrder",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) ReconcilePendingOrder",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) RefreshEntryState",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) RefreshEntryState",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) EntryPreflight",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) EntryPreflight",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) TFName",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) TFName",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) BuildAISnapshot",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) BuildAISnapshot",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CancelAIRequest",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) CancelAIRequest",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) AIContextFresh",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) AIContextFresh",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) AIPriceFresh",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) AIPriceFresh",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) MarkAIBarUsed",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) MarkAIBarUsed",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) IsPatternAlreadyUsed",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) IsPatternAlreadyUsed",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CaptureInitialRisks",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) CaptureInitialRisks",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) AIExecutionFresh",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) AIExecutionFresh",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) RecordEntryAttempt",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) RecordEntryAttempt",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ManualFixedRisk",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) ManualFixedRisk",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) CalculateManualRisk",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) CalculateManualRisk",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) EntryModeAllowed",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) EntryModeAllowed",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) BuildManualStops",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) BuildManualStops",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ManualName",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) ManualName",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ManualLabel",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) ManualLabel",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ManualButton",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) ManualButton",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) InitializeManualPanel",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) InitializeManualPanel",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DeleteManualPanel",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) DeleteManualPanel",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UpdateManualAnalysis",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) UpdateManualAnalysis",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) RefreshManualPanel",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) RefreshManualPanel",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) HandleManualEntry",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) HandleManualEntry",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SmartLockR",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) SmartLockR",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ManagePositions",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) ManagePositions",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SelfTests",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) SelfTests",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) UpdatePanel",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) UpdatePanel",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) Maintain",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) Maintain",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) TradeEvent",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) TradeEvent",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ChartEvent",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) ChartEvent",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) MTFSnapshotCurrent",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) MTFSnapshotCurrent",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) TickSize",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) TickSize",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) StopBuffer",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) StopBuffer",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DeviationPoints",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) DeviationPoints",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) StopSlippage",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) StopSlippage",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SymbolDirectionAllowed",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) SymbolDirectionAllowed",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) FreshQuote",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) FreshQuote",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SpreadOK",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) SpreadOK",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) AvailableDirectionalVolume",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) AvailableDirectionalVolume",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ExecuteEntry",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) ExecuteEntry",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SolePositionOwner",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) SolePositionOwner",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) StoreLevel",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) StoreLevel",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) NearestLevel",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) NearestLevel",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) StoreTrend",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) StoreTrend",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) NearTrend",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) NearTrend",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) NextMCRandom",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) NextMCRandom",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) AdvanceMonteCarlo",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) AdvanceMonteCarlo",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) InUniverseNow",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) InUniverseNow",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) DispatchCandidate",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) DispatchCandidate",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) MigrateLegacy",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) MigrateLegacy",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) Init",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) Init",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) ReleaseIndicators",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) ReleaseIndicators",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) Shutdown",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) Shutdown",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) SetScanEnabled",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) SetScanEnabled",
       "passed": true
     },
     {
-      "case": "v242 safety fingerprint (reviewed analytics hooks removed) Scan",
+      "case": "v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) Scan",
       "passed": true
     },
     {
@@ -1160,643 +1160,643 @@
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged AIContextFresh",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) AIContextFresh",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged AIExecutionFresh",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) AIExecutionFresh",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged AIPriceFresh",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) AIPriceFresh",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged AdvanceMonteCarlo",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) AdvanceMonteCarlo",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged AnalyzeAllTimeframes",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) AnalyzeAllTimeframes",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged AnalyzeTimeframe",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) AnalyzeTimeframe",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged ApplyChartTheme",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) ApplyChartTheme",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged AvailableDirectionalVolume",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) AvailableDirectionalVolume",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged BeginPendingOrder",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) BeginPendingOrder",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged BuildAISnapshot",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) BuildAISnapshot",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged BuildManualStops",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) BuildManualStops",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged BuildStops",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) BuildStops",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged BuySignalOK",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) BuySignalOK",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged BuySupportConfirmation",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) BuySupportConfirmation",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged BuyTrendLineConfirmation",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) BuyTrendLineConfirmation",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CachedIndicator",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CachedIndicator",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CalculateBuyMTFScore",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateBuyMTFScore",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CalculateFinalBuyScore",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateFinalBuyScore",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CalculateFinalRisk",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateFinalRisk",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CalculateFinalSellScore",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateFinalSellScore",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CalculateFixedAdjustedRisk",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateFixedAdjustedRisk",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CalculateLineScore",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateLineScore",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CalculateLotByRisk",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateLotByRisk",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CalculateManualRisk",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateManualRisk",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CalculateMonteCarlo95DD",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateMonteCarlo95DD",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CalculateSellMTFScore",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateSellMTFScore",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CancelAIRequest",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CancelAIRequest",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CaptureInitialRisks",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CaptureInitialRisks",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged ChartEvent",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) ChartEvent",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged ClampRisk",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) ClampRisk",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged ClearPendingOrder",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) ClearPendingOrder",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CountBearishMACD",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CountBearishMACD",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CountBearishTimeframes",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CountBearishTimeframes",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CountBullishMACD",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CountBullishMACD",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CountBullishTimeframes",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CountBullishTimeframes",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CountOurPositions",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CountOurPositions",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CreateOrUpdateHLine",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CreateOrUpdateHLine",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged CreateOrUpdateTrendLine",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) CreateOrUpdateTrendLine",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged DailyFloor",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) DailyFloor",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged DailyLimit",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) DailyLimit",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged DefinitiveEntryRejection",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) DefinitiveEntryRejection",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged DeleteAutoHorizontalLines",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) DeleteAutoHorizontalLines",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged DeleteAutoTrendLines",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) DeleteAutoTrendLines",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged DeleteManualPanel",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) DeleteManualPanel",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged DetectDoubleBottom",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) DetectDoubleBottom",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged DetectDoubleTop",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) DetectDoubleTop",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged DetectHeadShoulders",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) DetectHeadShoulders",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged DetectInverseHeadShoulders",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) DetectInverseHeadShoulders",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged DetectLegacyReversalPattern",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) DetectLegacyReversalPattern",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged DetectTripleBottom",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) DetectTripleBottom",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged DetectTriplePattern",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) DetectTriplePattern",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged DetectTripleTop",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) DetectTripleTop",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged DeviationPoints",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) DeviationPoints",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged DispatchCandidate",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) DispatchCandidate",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged EntryExposureBlocked",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) EntryExposureBlocked",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged EntryModeAllowed",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) EntryModeAllowed",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged EntryPreflight",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) EntryPreflight",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged ExecuteEntry",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) ExecuteEntry",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged FreshQuote",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) FreshQuote",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged GetADXValues",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) GetADXValues",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged GetATR",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) GetATR",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged GetAsk",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) GetAsk",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged GetBid",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) GetBid",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged GetDigitsValue",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) GetDigitsValue",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged GetEMA",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) GetEMA",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged GetLatestSwingHigh",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) GetLatestSwingHigh",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged GetLatestSwingLow",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) GetLatestSwingLow",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged GetMACDValues",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) GetMACDValues",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged GetNearestResistanceDistance",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) GetNearestResistanceDistance",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged GetNearestSupportDistance",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) GetNearestSupportDistance",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged GetPatternScore",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) GetPatternScore",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged GetPointValue",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) GetPointValue",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged GetRecentSwingHighs",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) GetRecentSwingHighs",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged GetRecentSwingLows",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) GetRecentSwingLows",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged GetSecondSwingHigh",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) GetSecondSwingHigh",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged GetSecondSwingLow",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) GetSecondSwingLow",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged GetSpreadPoints",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) GetSpreadPoints",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged HandleManualEntry",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) HandleManualEntry",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged HasOurPosition",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) HasOurPosition",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged HasUnresolvedOrder",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) HasUnresolvedOrder",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged HigherTimeframeBuyOK",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) HigherTimeframeBuyOK",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged HigherTimeframeSellOK",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) HigherTimeframeSellOK",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged InUniverseNow",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) InUniverseNow",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged InitializeManualPanel",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) InitializeManualPanel",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged IsBuyAllowed",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) IsBuyAllowed",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged IsDuplicateHorizontalLevel",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) IsDuplicateHorizontalLevel",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged IsNewBar",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) IsNewBar",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged IsPriceNear",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) IsPriceNear",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged IsSellAllowed",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) IsSellAllowed",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged IsSwingHigh",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) IsSwingHigh",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged IsSwingLow",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) IsSwingLow",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged LegacyPatternAlreadyUsed",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) LegacyPatternAlreadyUsed",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged LimitRisk",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) LimitRisk",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged LogMessage",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) LogMessage",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged MTFSnapshotCurrent",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) MTFSnapshotCurrent",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged ManualButton",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) ManualButton",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged ManualFixedRisk",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) ManualFixedRisk",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged ManualLabel",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) ManualLabel",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged ManualName",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) ManualName",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged MarkAIBarUsed",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) MarkAIBarUsed",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged MarkPatternUsed",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) MarkPatternUsed",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged MigrateLegacy",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) MigrateLegacy",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged NearTrend",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) NearTrend",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged NearestLevel",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) NearestLevel",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged NextMCRandom",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) NextMCRandom",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged NormalizePrice",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) NormalizePrice",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged NormalizeVolume",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) NormalizeVolume",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged OpenRiskReserve",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) OpenRiskReserve",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged OverallFloor",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) OverallFloor",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged OverallLimit",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) OverallLimit",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged PatternName",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) PatternName",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged PendingHistoryOrderFinal",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) PendingHistoryOrderFinal",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged PendingOrderComment",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) PendingOrderComment",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged PendingOrderToken",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) PendingOrderToken",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged PositionIdOpen",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) PositionIdOpen",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged PositionKey",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) PositionKey",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged PositionResult",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) PositionResult",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged PriceCeil",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) PriceCeil",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged PriceDifferencePercent",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) PriceDifferencePercent",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged PriceFloor",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) PriceFloor",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged PrintMTFResults",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) PrintMTFResults",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged PrintPatternSignal",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) PrintPatternSignal",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged PropRiskCap",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) PropRiskCap",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged ReadIndicator",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) ReadIndicator",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged ReconcilePendingOrder",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) ReconcilePendingOrder",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged RecordEntryAttempt",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) RecordEntryAttempt",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged RefreshEntryState",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) RefreshEntryState",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged RefreshHistory",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) RefreshHistory",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged RefreshManualPanel",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) RefreshManualPanel",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged ReleaseIndicators",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) ReleaseIndicators",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged RestoreChartTheme",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) RestoreChartTheme",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged SavePropDay",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) SavePropDay",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged Scan",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) Scan",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged SelfTests",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) SelfTests",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged SellResistanceConfirmation",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) SellResistanceConfirmation",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged SellSignalOK",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) SellSignalOK",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged SellTrendLineConfirmation",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) SellTrendLineConfirmation",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged SetScanEnabled",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) SetScanEnabled",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged SetThemeProperty",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) SetThemeProperty",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged SmartLockR",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) SmartLockR",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged SolePositionOwner",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) SolePositionOwner",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged SpreadOK",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) SpreadOK",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged StateGet",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) StateGet",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged StopBuffer",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) StopBuffer",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged StopSlippage",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) StopSlippage",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged StoreLevel",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) StoreLevel",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged StoreTrend",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) StoreTrend",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged SymbolDirectionAllowed",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) SymbolDirectionAllowed",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged TFName",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) TFName",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged TickSize",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) TickSize",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged TimeframeToString",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) TimeframeToString",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged UTCDay",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) UTCDay",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged UTCNow",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) UTCNow",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged UpdateAllAutoLines",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) UpdateAllAutoLines",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged UpdateAutoHorizontalLines",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) UpdateAutoHorizontalLines",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged UpdateAutoTrendLines",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) UpdateAutoTrendLines",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged UpdateManualAnalysis",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) UpdateManualAnalysis",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged UpdateMonteCarloRisk",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) UpdateMonteCarloRisk",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged UpdatePanel",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) UpdatePanel",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged UpdatePropDay",
+      "case": "v243 engine function unchanged (reviewed local initializers projected) UpdatePropDay",
       "passed": true
     },
     {
@@ -1999,11 +1999,11 @@
     "MT3PortfolioRisk.mqh": "3904bd36f35cecd6c14c5ea0874ee7a9daf76a00eaa2ebe5ba9fe22d21de0787",
     "MT3ReversalPatterns.mqh": "abb3c28a163e7530bd5db757bca4c74b519e866d00633823b72250d92e4d2289",
     "MT3Scoring.mqh": "f57d1e185752e0676a08682c70e76cfd8441fb29c35d9c1c05975cf3eea4aa4d",
-    "MT3SymbolState.mqh": "c6dbe42de52cf2e022abac1e2d811416e264d43042914c93d01ff9756cb516a4",
+    "MT3SymbolState.mqh": "8073870fa046c0b38ae8af63dc9d702556e91ab81bb4f6502f9102165754bdc6",
     "MT3TradeJournal.mqh": "8eb98a1c866eb56d4bf695689353b3ae4c64bfd466c00353df6981aa60909931",
     "MT3TradeLog.mqh": "f3b32e3cd6b746bb5c86a03fc687c4e17be4c6e8193de24a96b4dcf9e914234a",
     "MT3Types.mqh": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2",
-    "MTFAutoTrader_3Mode_AI_v2_44.mq5": "7f3a8d7c1eb8398abf2bcff98b8f9edfdba9ef0ccf8e41de0cfb2421f850ebc4",
-    "MTFAutoTrader_AI_Worker.mq5": "9f244a44609baad8a50044744577432db75c08761187b2642be8f36c5de7ab98"
+    "MTFAutoTrader_3Mode_AI_v2_44.mq5": "6ef8f35b6343173d5a91ac280cd13702f723ba4678d3bdec4b3274218333aee1",
+    "MTFAutoTrader_AI_Worker.mq5": "2d068d5046ec3d616568227d6e9f6be0d9166af814f48076ac8a000d4922e12c"
   }
 }

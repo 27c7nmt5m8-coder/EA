@@ -1,9 +1,9 @@
 {
   "version": "2.44",
-  "date": "2026-09-08",
-  "base_version": "2.43",
-  "base_zip_sha256": "86d92447782e8bc72ce28264b2c8040c41b46040248948b234912ca4ea97e00a",
-  "native_mql_compile": "NOT_PERFORMED",
+  "date": "2026-09-13",
+  "base_version": "2.44",
+  "base_zip_sha256": "eac671507e4ba8b36a96a61fcb7af6b346242b54cf48bd7c83bdb7036a36d4c6",
+  "native_mql_compile": "NOT_MEASURED",
   "market_backtest": "NOT_PERFORMED",
   "live_api": "NOT_PERFORMED",
   "ex5_included": false,
@@ -12,20 +12,36 @@
   "cpp_adapter_warnings": 31,
   "checks": {
     "integration_results.json": {
-      "passed": 500,
-      "failed": 0
-    },
-    "source_audit.json": {
-      "passed": 495,
+      "passed": 543,
       "failed": 0
     },
     "json_results.json": {
       "passed": 55,
       "failed": 0
     },
+    "source_audit.json": {
+      "passed": 495,
+      "failed": 0
+    },
     "stats_results.json": {
       "passed": 20,
       "failed": 0
+    },
+    "lock_fix_scope.json": {
+      "passed": 13,
+      "failed": 0
     }
+  },
+  "revision": "v2.44 lock reinitialization fix; version unchanged",
+  "initial_v244_base_version": "2.43",
+  "initial_v244_base_zip_sha256": "86d92447782e8bc72ce28264b2c8040c41b46040248948b234912ca4ea97e00a",
+  "native_zero_errors_zero_warnings": "USER_METAEDITOR_CONFIRMATION_REQUIRED",
+  "mt5_chart_change_and_concurrent_instances": "NOT_MEASURED",
+  "lock_regressions": {
+    "passed": 43,
+    "failed": 0,
+    "included_in_integration_total": true,
+    "before": "lock_regression_before.json",
+    "after": "lock_regression_after.json"
   }
 }

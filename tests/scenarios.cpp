@@ -25,6 +25,7 @@ void reset(){
  g_execOwned=g_propControllerOwned=false;g_accountHistoryOK=true;g_accountHistoryDirty=true;g_accountHistoryAt=0;g_accountLossStreak=0;
  g_queueSequence=0;g_scanCursor=g_mcCursor=0;g_universeAt=0;
  g_workerOwned=false;g_workerRegistry=u"";g_cleanupFiles.clear();g_cleanupTimes.clear();g_observedSlot=0;g_slotObservedAt=0;
+ ResetLastError();
 }
 void setup(SymbolState &s,string symbol=u"FX",bool chart=false){check(s.Init(symbol,chart,true),"symbol init");s.Maintain(true);}
 PatternSignal pattern(){PatternSignal p{};p.type=PATTERN_TRIPLE_BOTTOM;p.valid=true;p.buySignal=true;p.secondTime=server_time-600;p.patternStrength=70;return p;}
@@ -207,8 +208,9 @@ void risk_tests(){
  check(m.g_mcReady&&n.g_mcReady&&near(m.g_mcRisk,n.g_mcRisk)&&m.g_mcRisk>0,"MC jobs deterministic across symbols/interleaving");
  m.UpdateMonteCarloRisk(true);m.g_historyDirty=true;int run=m.m_mcRun;m.AdvanceMonteCarlo(mono+1);check(m.m_mcRun==run,"dirty history pauses old MC job");
 }
-void v243_tests();void v244_tests();
-int main(){
- scoring_tests();pattern_tests();adaptive_tests();order_tests();ai_tests();scanner_tests();risk_tests();v243_tests();v244_tests();
+void v243_tests();void v244_tests();void v244_lock_tests(const std::string &only="");
+int main(int argc,char **argv){
+ if(argc>1)v244_lock_tests(argv[1]);
+ else {scoring_tests();pattern_tests();adaptive_tests();order_tests();ai_tests();scanner_tests();risk_tests();v243_tests();v244_tests();v244_lock_tests();}
  std::cout<<"{\"passed\":"<<checks<<",\"failed\":0}\n";
 }

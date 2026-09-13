@@ -25,11 +25,13 @@ long ChartID(){return chart_id;}
 string TimeToString(datetime n,int){return IntegerToString(n);}
 string _Symbol=u"FX";
 std::map<string,double> globals;
+const int ERR_GLOBALVARIABLE_EXISTS=4502;
+int mock_last_error=0;
 bool GlobalVariableCheck(string k){return globals.count(k);}
 double GlobalVariableGet(string k){return globals.count(k)?globals[k]:0;}
 datetime GlobalVariableSet(string k,double v){if(k==fail_global)return 0;globals[k]=v;return server_time;}
 bool GlobalVariableSetOnCondition(string k,double v,double expected){if(k==fail_global || !globals.count(k) || globals[k]!=expected)return false;globals[k]=v;return true;}
-bool GlobalVariableTemp(string k){if(k==fail_global)return false;if(!globals.count(k))globals[k]=0;return true;}
+bool GlobalVariableTemp(string k){if(globals.count(k)){mock_last_error=ERR_GLOBALVARIABLE_EXISTS;return false;}if(k==fail_global)return false;globals[k]=0;return true;}
 bool GlobalVariableDel(string k){return globals.erase(k);}
 int GlobalVariablesTotal(){return globals.size();}
 string GlobalVariableName(int i){auto p=globals.begin();std::advance(p,i);return p->first;}
@@ -159,7 +161,7 @@ template<class T>string CharArrayToString(const std::vector<T>&v,int start,int c
 struct Event{long dest;int event;long sender;double token;string id;};std::vector<Event> events;
 bool EventChartCustom(long dest,int event,long sender,double token,string id){if(!queue_ok)return false;events.push_back({dest,event,sender,token,id});return true;}
 bool EventSetTimer(int){return true;}bool EventSetMillisecondTimer(int){return true;}void EventKillTimer(){}
-void ResetLastError(){}std::function<void()> during_http;
+void ResetLastError(){mock_last_error=0;}int GetLastError(){return mock_last_error;}std::function<void()> during_http;
 int WebRequest(string,string,string,int,const std::vector<char>&data,std::vector<char>&result,string&){http_calls++;last_http_body=wide(std::string(data.begin(),data.end()));if(during_http)during_http();auto b=utf8(http_fixture);result.assign(b.begin(),b.end());return http_code;}
 template<class...T>void Comment(T...){}
 std::map<string,double> objects;

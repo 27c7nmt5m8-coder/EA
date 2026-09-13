@@ -1,0 +1,71 @@
+--- attached/src/MT3SymbolState.mqh
++++ fixed/src/MT3SymbolState.mqh
+@@ -1767,17 +1767,17 @@
+ 
+    ENUM_TIMEFRAMES tf=LineTimeframe;
+ 
+-   int highShift1;
+-   int highShift2;
+-
+-   int lowShift1;
+-   int lowShift2;
+-
+-   double highPrice1;
+-   double highPrice2;
+-
+-   double lowPrice1;
+-   double lowPrice2;
++   int highShift1=-1;
++   int highShift2=-1;
++
++   int lowShift1=-1;
++   int lowShift2=-1;
++
++   double highPrice1=0.0;
++   double highPrice2=0.0;
++
++   double lowPrice1=0.0;
++   double lowPrice2=0.0;
+ 
+    // -------------------------------------------------------------
+    // 高値側トレンドライン
+@@ -3457,7 +3457,7 @@
+  g_propPrefix="MT3P."+IntegerToString((long)TextHash(g_account+"/"+EnumToString(FintokeiPlan)+"/"+DoubleToString(FintokeiInitialBalance,2)))+".";
+  // Keep v2.41's symbol lock name so an older instance cannot co-own this symbol.
+  g_lockKey="MT3L."+IntegerToString((long)TextHash(g_account+"/"+symbol));
+- if(!GlobalVariableTemp(g_lockKey) || !GlobalVariableSetOnCondition(g_lockKey,1,0)) return false;
++ if((!GlobalVariableCheck(g_lockKey) && !GlobalVariableTemp(g_lockKey)) || !GlobalVariableSetOnCondition(g_lockKey,1,0)) return false;
+  g_lockOwned=true;
+  if(MQLInfoInteger(MQL_TESTER)) {GlobalVariablesDeleteAll(g_statePrefix);GlobalVariableDel(AccountIntent(symbol));}
+  if(!MigrateLegacy()) return false;
+--- attached/src/MTFAutoTrader_3Mode_AI_v2_44.mq5
++++ fixed/src/MTFAutoTrader_3Mode_AI_v2_44.mq5
+@@ -20,7 +20,7 @@
+ string AccountIntent(string symbol) {return g_accountPrefix+"I."+ScopeDigest(SymbolScope(symbol));}
+ bool AcquireExecution()
+ {
+- if(g_execOwned || !GlobalVariableTemp(g_execKey) || !GlobalVariableSetOnCondition(g_execKey,1,0)) return false;
++ if(g_execOwned || (!GlobalVariableCheck(g_execKey) && !GlobalVariableTemp(g_execKey)) || !GlobalVariableSetOnCondition(g_execKey,1,0)) return false;
+  g_execOwned=true;return true;
+ }
+ void ReleaseExecution()
+@@ -290,7 +290,7 @@
+  if(AccountMode==FINTOKEI)
+  {
+   g_propControllerKey="MT3L."+IntegerToString((long)TextHash(g_account+"/PROP"));
+-  if(!GlobalVariableTemp(g_propControllerKey) || !GlobalVariableSetOnCondition(g_propControllerKey,1,0))
++  if((!GlobalVariableCheck(g_propControllerKey) && !GlobalVariableTemp(g_propControllerKey)) || !GlobalVariableSetOnCondition(g_propControllerKey,1,0))
+   {Print("Another prop controller owns this account.");return INIT_FAILED;}
+   g_propControllerOwned=true;
+  }
+--- attached/src/MTFAutoTrader_AI_Worker.mq5
++++ fixed/src/MTFAutoTrader_AI_Worker.mq5
+@@ -38,7 +38,7 @@
+  if(StringLen(OpenAIAPIKey)<10 || StringFind(OpenAIAPIKey,"\r")>=0 || StringFind(OpenAIAPIKey,"\n")>=0 || OpenAITimeoutMs<1000 || OpenAITimeoutMs>60000)
+  {Print("Set the API key and a timeout between 1000 and 60000 ms on the worker.");return INIT_PARAMETERS_INCORRECT;}
+  g_workerRegistry=AIRegistry();
+- if(!GlobalVariableTemp(g_workerRegistry+"owner") || !GlobalVariableSetOnCondition(g_workerRegistry+"owner",1,0))
++ if((!GlobalVariableCheck(g_workerRegistry+"owner") && !GlobalVariableTemp(g_workerRegistry+"owner")) || !GlobalVariableSetOnCondition(g_workerRegistry+"owner",1,0))
+  {Print("Keep one AI worker in this terminal/account. Remove the previous worker before starting another.");return INIT_FAILED;}
+  g_workerOwned=true;
+  if(!SaveU64(g_workerRegistry+"chart",(ulong)ChartID()) || GlobalVariableSet(g_workerRegistry+"slot",0)==0 || GlobalVariableSet(g_workerRegistry+"busy",0)==0 ||

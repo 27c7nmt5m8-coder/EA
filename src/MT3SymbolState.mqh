@@ -1767,17 +1767,17 @@ void UpdateAutoTrendLines()
 
    ENUM_TIMEFRAMES tf=LineTimeframe;
 
-   int highShift1;
-   int highShift2;
+   int highShift1=-1;
+   int highShift2=-1;
 
-   int lowShift1;
-   int lowShift2;
+   int lowShift1=-1;
+   int lowShift2=-1;
 
-   double highPrice1;
-   double highPrice2;
+   double highPrice1=0.0;
+   double highPrice2=0.0;
 
-   double lowPrice1;
-   double lowPrice2;
+   double lowPrice1=0.0;
+   double lowPrice2=0.0;
 
    // -------------------------------------------------------------
    // 高値側トレンドライン
@@ -3457,7 +3457,7 @@ bool Init(string symbol,bool chart,bool scan)
  g_propPrefix="MT3P."+IntegerToString((long)TextHash(g_account+"/"+EnumToString(FintokeiPlan)+"/"+DoubleToString(FintokeiInitialBalance,2)))+".";
  // Keep v2.41's symbol lock name so an older instance cannot co-own this symbol.
  g_lockKey="MT3L."+IntegerToString((long)TextHash(g_account+"/"+symbol));
- if(!GlobalVariableTemp(g_lockKey) || !GlobalVariableSetOnCondition(g_lockKey,1,0)) return false;
+ if((!GlobalVariableCheck(g_lockKey) && !GlobalVariableTemp(g_lockKey)) || !GlobalVariableSetOnCondition(g_lockKey,1,0)) return false;
  g_lockOwned=true;
  if(MQLInfoInteger(MQL_TESTER)) {GlobalVariablesDeleteAll(g_statePrefix);GlobalVariableDel(AccountIntent(symbol));}
  if(!MigrateLegacy()) return false;

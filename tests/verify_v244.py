@@ -1,6 +1,6 @@
 """Compile actual EA/worker code as C++17 with MT5 mocks; NOT a native MQL compile."""
 from pathlib import Path
-import re,json,subprocess,hashlib
+import re,json,subprocess,hashlib,sys
 from json_support import HEADER
 ROOT=Path(__file__).resolve().parents[1];SRC=ROOT/'src';TEST=ROOT/'verification'
 TEST.mkdir(exist_ok=True)
@@ -37,7 +37,7 @@ def constants(source):
     names=set(re.findall(r'\b'+prefixes+r'\b',source))-declared-aliases
     values={'INVALID_HANDLE':-1,'WHOLE_ARRAY':-1,'EMPTY_VALUE':1e100,'DBL_MAX':1e100}
     for i,n in enumerate(sorted(names),100):values[n]=i
-    values.update({'SYMBOL_ORDER_MARKET':1,'SYMBOL_ORDER_SL':16,'SYMBOL_ORDER_TP':32,'SYMBOL_FILLING_FOK':1,'SYMBOL_FILLING_IOC':2,
+    values.update({'REASON_CHARTCHANGE':3,'REASON_INITFAILED':8,'SYMBOL_ORDER_MARKET':1,'SYMBOL_ORDER_SL':16,'SYMBOL_ORDER_TP':32,'SYMBOL_FILLING_FOK':1,'SYMBOL_FILLING_IOC':2,
                    'CHARTEVENT_CUSTOM':1000,'INIT_SUCCEEDED':0,'FILE_READ':1,'FILE_WRITE':2,'FILE_BIN':4,'FILE_COMMON':8,'FILE_SHARE_READ':16,'FILE_REWRITE':32})
     names.update(values)
     out='\n'.join('using '+n+'=int;' for n in sorted(aliases))+'\nusing color=int;\n'
@@ -57,16 +57,18 @@ def run():
     header=header.replace('template<class... A>void Print(A...){ }',
         'int log_warning_count=0;template<class... A>void Print(const char16_t* first,A...){if(string(first).find(u"TradeLog warning:")==0)log_warning_count++;}\n'
         'template<class... A>void Print(A...){ }')
-    header+='\n#include <set>\n#include <limits>\n#include <functional>\n#include <cstring>\n'+constants(source+(ROOT/'tests/mock_mt5.hpp').read_text()+(ROOT/'tests/scenarios.cpp').read_text()+((ROOT/'tests/new_scenarios.cpp').read_text()+'\n'+(ROOT/'tests/v244_scenarios.cpp').read_text()))+'\n'
-    code=header+(ROOT/'tests/mock_mt5.hpp').read_text()+adapt(source)+'\n'+(ROOT/'tests/scenarios.cpp').read_text()+'\n'+((ROOT/'tests/new_scenarios.cpp').read_text()+'\n'+(ROOT/'tests/v244_scenarios.cpp').read_text())
+    scenarios='\n'.join((ROOT/'tests'/name).read_text() for name in ['scenarios.cpp','new_scenarios.cpp','v244_scenarios.cpp','v244_lock_scenarios.cpp'])
+    header+='\n#include <set>\n#include <limits>\n#include <functional>\n#include <cstring>\n'+constants(source+(ROOT/'tests/mock_mt5.hpp').read_text()+scenarios)+'\n'
+    code=header+(ROOT/'tests/mock_mt5.hpp').read_text()+adapt(source)+'\n'+scenarios
     (TEST/'integration.cpp').write_text(code)
     result=subprocess.run(['g++','-std=c++17','-O1','-Wall','-Wextra',str(TEST/'integration.cpp'),'-o',str(TEST/'integration')],capture_output=True,text=True)
     (TEST/'cpp_diagnostics.txt').write_text(result.stderr)
     if result.returncode:
         print(result.stderr[:14000]);raise SystemExit(result.returncode)
-    run=subprocess.run([str(TEST/'integration')],capture_output=True,text=True)
+    run=subprocess.run([str(TEST/'integration'),*sys.argv[1:]],capture_output=True,text=True)
     print(run.stdout);print(run.stderr)
     if run.returncode:raise SystemExit(run.returncode)
+    if len(sys.argv)>1:return  # A focused run must not overwrite the full-suite report.
     data=json.loads(run.stdout)
     data['scope']='Actual main EA, headers and worker adapted to UTF-16 C++17 using simulated MT5 services. No MetaEditor compilation, real trading, market backtest, or API call.'
     data['source_sha256']={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(SRC.iterdir()) if p.is_file()}

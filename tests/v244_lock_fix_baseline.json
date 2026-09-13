@@ -1,7 +1,5 @@
 {
-  "passed": 543,
-  "failed": 0,
-  "scope": "Actual main EA, headers and worker adapted to UTF-16 C++17 using simulated MT5 services. No MetaEditor compilation, real trading, market backtest, or API call.",
+  "input_zip_sha256": "eac671507e4ba8b36a96a61fcb7af6b346242b54cf48bd7c83bdb7036a36d4c6",
   "source_sha256": {
     "MT3AIProtocol.mqh": "25340f89525ddaa7ffd425fddad0b22919864e0f8ce3db9961775eb299db24de",
     "MT3Config.mqh": "f75363429a3b1abc1759140910773c2e1a0f58278e83ca757d6a09d1ad117fd7",
@@ -10,11 +8,11 @@
     "MT3PortfolioRisk.mqh": "3904bd36f35cecd6c14c5ea0874ee7a9daf76a00eaa2ebe5ba9fe22d21de0787",
     "MT3ReversalPatterns.mqh": "abb3c28a163e7530bd5db757bca4c74b519e866d00633823b72250d92e4d2289",
     "MT3Scoring.mqh": "f57d1e185752e0676a08682c70e76cfd8441fb29c35d9c1c05975cf3eea4aa4d",
-    "MT3SymbolState.mqh": "8073870fa046c0b38ae8af63dc9d702556e91ab81bb4f6502f9102165754bdc6",
+    "MT3SymbolState.mqh": "c6dbe42de52cf2e022abac1e2d811416e264d43042914c93d01ff9756cb516a4",
     "MT3TradeJournal.mqh": "8eb98a1c866eb56d4bf695689353b3ae4c64bfd466c00353df6981aa60909931",
     "MT3TradeLog.mqh": "f3b32e3cd6b746bb5c86a03fc687c4e17be4c6e8193de24a96b4dcf9e914234a",
     "MT3Types.mqh": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2",
-    "MTFAutoTrader_3Mode_AI_v2_44.mq5": "6ef8f35b6343173d5a91ac280cd13702f723ba4678d3bdec4b3274218333aee1",
-    "MTFAutoTrader_AI_Worker.mq5": "2d068d5046ec3d616568227d6e9f6be0d9166af814f48076ac8a000d4922e12c"
+    "MTFAutoTrader_3Mode_AI_v2_44.mq5": "7f3a8d7c1eb8398abf2bcff98b8f9edfdba9ef0ccf8e41de0cfb2421f850ebc4",
+    "MTFAutoTrader_AI_Worker.mq5": "9f244a44609baad8a50044744577432db75c08761187b2642be8f36c5de7ab98"
   }
 }

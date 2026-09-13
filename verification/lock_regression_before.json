@@ -1,0 +1,74 @@
+{
+  "scope": "Unmodified attached production sources with corrected strict GlobalVariableTemp mock; expected failures before fix. Offline C++ adapter only.",
+  "source_sha256": {
+    "MT3AIProtocol.mqh": "25340f89525ddaa7ffd425fddad0b22919864e0f8ce3db9961775eb299db24de",
+    "MT3Config.mqh": "f75363429a3b1abc1759140910773c2e1a0f58278e83ca757d6a09d1ad117fd7",
+    "MT3Json.mqh": "b392a69a399f8759d725e2ab7c6b30abd4c20656e227a90373ef1304b8b7c429",
+    "MT3PatternStops.mqh": "c336b7e5d113dd11aa8c5792aff49e941c373f971a701ddeb6a9dd637ee63a07",
+    "MT3PortfolioRisk.mqh": "3904bd36f35cecd6c14c5ea0874ee7a9daf76a00eaa2ebe5ba9fe22d21de0787",
+    "MT3ReversalPatterns.mqh": "abb3c28a163e7530bd5db757bca4c74b519e866d00633823b72250d92e4d2289",
+    "MT3Scoring.mqh": "f57d1e185752e0676a08682c70e76cfd8441fb29c35d9c1c05975cf3eea4aa4d",
+    "MT3SymbolState.mqh": "c6dbe42de52cf2e022abac1e2d811416e264d43042914c93d01ff9756cb516a4",
+    "MT3TradeJournal.mqh": "8eb98a1c866eb56d4bf695689353b3ae4c64bfd466c00353df6981aa60909931",
+    "MT3TradeLog.mqh": "f3b32e3cd6b746bb5c86a03fc687c4e17be4c6e8193de24a96b4dcf9e914234a",
+    "MT3Types.mqh": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2",
+    "MTFAutoTrader_3Mode_AI_v2_44.mq5": "7f3a8d7c1eb8398abf2bcff98b8f9edfdba9ef0ccf8e41de0cfb2421f850ebc4",
+    "MTFAutoTrader_AI_Worker.mq5": "9f244a44609baad8a50044744577432db75c08761187b2642be8f36c5de7ab98"
+  },
+  "groups": [
+    {
+      "group": "mock",
+      "exit_code": 0,
+      "stdout": "{\"passed\":3,\"failed\":0}",
+      "stderr": ""
+    },
+    {
+      "group": "symbol",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "FAIL: same SymbolState Init after Shutdown succeeds"
+    },
+    {
+      "group": "chartchange",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "FAIL: OnInit after OnDeinit REASON_CHARTCHANGE succeeds"
+    },
+    {
+      "group": "execution",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "FAIL: execution mutex Acquire Release reAcquire succeeds"
+    },
+    {
+      "group": "worker",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "FAIL: worker Init Deinit reInit succeeds"
+    },
+    {
+      "group": "fintokei",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "FAIL: Fintokei controller reinitialization succeeds"
+    },
+    {
+      "group": "contention",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "FAIL: second SymbolState can acquire after first owner releases"
+    },
+    {
+      "group": "failure",
+      "exit_code": 0,
+      "stdout": "{\"passed\":5,\"failed\":0}",
+      "stderr": ""
+    },
+    {
+      "group": "all_existing_and_new",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "FAIL: symbol init"
+    }
+  ]
+}

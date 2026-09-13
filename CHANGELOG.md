@@ -1,5 +1,19 @@
 # CHANGELOG — v2.43 → v2.44
 
+## 2026-09-13：v2.44 再初期化ロック修正（バージョン据え置き）
+
+- `MT3SymbolState.mqh` の `g_lockKey`、本体 `AcquireExecution()` の `g_execKey`、Fintokei `g_propControllerKey`、Worker owner lockの4か所を修正。Global Variableが存在しない場合だけ `GlobalVariableTemp()` を呼び、その後の `GlobalVariableSetOnCondition(key,1,0)` で排他的に取得する。
+- `OnDeinit(REASON_CHARTCHANGE)` 等で値0のまま残ったロックを再利用可能にした。既存値1は取得を拒否し、ロック取得のためのDelete・強制0リセット・タイムアウト奪取は追加していない。ロック解放処理と所有フラグは変更なし。
+- `UpdateAutoTrendLines()` の `highShift1/2`、`lowShift1/2` を `-1`、`highPrice1/2`、`lowPrice1/2` を `0.0` で明示初期化する前回修正を維持。添付ZIPでは未適用だったため再反映した。
+- `mock_mt5.hpp` の `GlobalVariableTemp()` は既存変数ならfalseを返し、エラー4502（`ERR_GLOBALVARIABLE_EXISTS`）を保持するよう修正。既存値0と1のどちらも上書きしない。
+- SymbolStateの同一オブジェクト／同一銘柄の再Init、複数銘柄の時間足変更、注文mutexの再Acquire、Worker再Init、Fintokei再Init、別インスタンス相当の競合拒否、取得失敗側の終了処理、作成／CAS失敗の回帰を追加。
+- 修正前の再現と修正後の結果を `verification/lock_regression_before.json` / `lock_regression_after.json` に保存。
+- 模擬543（既存500＋追加43）、JSON55、既存静的監査495、CSV集計20が通過。13ソースを添付ZIPのSHA-256へ照合し、差分は4ロック条件＋8初期化のみ。履歴監査の基準ハッシュは変更せず、承認された差分だけを厳密に戻して照合する。
+- 本体とWorkerのバージョンは2.44。売買・エントリー・スコア・SL・リスク計算、input、保存キー、Workerプロトコルは変更していない。
+- **ネイティブコンパイル未実測。MetaEditorの最終 `0 errors / 0 warnings` はユーザー実機で確認する。** MT5の時間足切替、バックテスト、実ブローカー約定、外部AI通信も本環境では未実測。
+
+以下はv2.44初回機能追加時の変更履歴。
+
 日付: 2026-09-08
 
 基点: 添付 `MTFAutoTrader_3Mode_AI_v2_43_Package(1).zip`。
