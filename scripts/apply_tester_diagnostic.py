@@ -41,8 +41,14 @@ test_block = ''' reset();tester=true;permissions=false;SymbolState diag;setup(di
  check(liveDiag.m_lastTesterDiagnosticStatus==u""&&liveDiag.m_testerDiagnosticCount==0,"live mode emits no tester diagnostics");liveDiag.Shutdown();
 
 '''
-marker = ' reset();tester=true;connected=false;ScanMode=CURRENT_SYMBOL;fixture_pattern(u"FX");'
-replace_once("tests/scenarios.cpp", marker, test_block + marker)
+anchor = ''' for(bool testing:{false,true}){
+  reset();tester=testing;connected=!testing;permissions=false;SymbolState s;setup(s);
+  check(!s.EntryPreflight(false),testing?"tester still requires trading permissions":"live still requires trading permissions");s.Shutdown();
+ }
+
+ reset();tester=true;connected=false;ScanMode=CURRENT_SYMBOL;fixture_pattern(u"FX");'''
+replacement = anchor.rsplit(' reset();tester=true;connected=false;ScanMode=CURRENT_SYMBOL;fixture_pattern(u"FX");',1)[0] + test_block + ' reset();tester=true;connected=false;ScanMode=CURRENT_SYMBOL;fixture_pattern(u"FX");'
+replace_once("tests/scenarios.cpp", anchor, replacement)
 
 replace_once("tests/verify_lock_scope.py", "    if name == 'MT3SymbolState.mqh':\n        projected = replace_once(projected,\n            '(!MQLInfoInteger(MQL_TESTER) && !TerminalInfoInteger(TERMINAL_CONNECTED))',", "    if name == 'MT3SymbolState.mqh':\n        projected = replace_once(projected,\n            'string m_lastTesterDiagnosticStatus;\\nint m_testerDiagnosticCount;\\n', '')\n        projected = replace_once(projected,\n            'm_lastTesterDiagnosticStatus=\"\";\\nm_testerDiagnosticCount=0;\\n', '')\n        projected = replace_once(projected,\n            '(!MQLInfoInteger(MQL_TESTER) && !TerminalInfoInteger(TERMINAL_CONNECTED))',")
 scope_insert = "    if name == 'MT3TradeJournal.mqh':\n        helper = " + repr(helper) + "\n        projected = replace_once(projected, helper, '')\n        projected = replace_once(projected, ' TesterStatusDiagnostic();\\n', '')\n"
