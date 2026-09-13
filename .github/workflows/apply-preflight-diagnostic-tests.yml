@@ -21,6 +21,8 @@ jobs:
           python3 tests/run_all.py
           python scripts/finalize_tester_diagnostic.py
           rm -f .github/workflows/apply-preflight-diagnostic-tests.yml scripts/apply_tester_diagnostic.py scripts/finalize_tester_diagnostic.py
+          rm -f verification/integration verification/integration.cpp verification/json_test verification/json_test.cpp verification/case.json verification/initial.json
+          rm -rf tests/__pycache__ tools/__pycache__
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
