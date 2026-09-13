@@ -35,19 +35,27 @@ for name, expected in baseline['source_sha256'].items():
             '!GlobalVariableTemp(' + key + ')')
     if name == 'MT3SymbolState.mqh':
         projected = replace_once(projected,
+            'string m_lastTesterDiagnosticStatus;\nint m_testerDiagnosticCount;\n', '')
+        projected = replace_once(projected,
+            'm_lastTesterDiagnosticStatus="";\nm_testerDiagnosticCount=0;\n', '')
+        projected = replace_once(projected,
             '(!MQLInfoInteger(MQL_TESTER) && !TerminalInfoInteger(TERMINAL_CONNECTED))',
             '!TerminalInfoInteger(TERMINAL_CONNECTED)')
         for var in ['highShift1', 'highShift2', 'lowShift1', 'lowShift2']:
             projected = replace_once(projected, 'int ' + var + '=-1;', 'int ' + var + ';')
         for var in ['highPrice1', 'highPrice2', 'lowPrice1', 'lowPrice2']:
             projected = replace_once(projected, 'double ' + var + '=0.0;', 'double ' + var + ';')
+    if name == 'MT3TradeJournal.mqh':
+        helper = 'void TesterStatusDiagnostic()\n{\n if(!MQLInfoInteger(MQL_TESTER)) return;\n if(g_status==m_lastTesterDiagnosticStatus) return;\n m_lastTesterDiagnosticStatus=g_status;m_testerDiagnosticCount++;\n PrintFormat("[MT3 TESTER DIAG] symbol=%s status=%s scan=%d universe=%d connected=%d terminal_trade=%d mql_trade=%d account_trade=%d account_expert=%d history=%d mc_ready=%d mc_allowed=%d risk_mode=%s samples=%d mc_risk=%.4f account_unresolved=%d symbol_unresolved=%d exposure=%d",\n  m_symbol,g_status,(int)m_scanEnabled,(int)InUniverseNow(),(int)TerminalInfoInteger(TERMINAL_CONNECTED),\n  (int)TerminalInfoInteger(TERMINAL_TRADE_ALLOWED),(int)MQLInfoInteger(MQL_TRADE_ALLOWED),\n  (int)AccountInfoInteger(ACCOUNT_TRADE_ALLOWED),(int)AccountInfoInteger(ACCOUNT_TRADE_EXPERT),\n  (int)g_historyOK,(int)g_mcReady,(int)g_mcAllowed,EnumToString(RiskMode),g_sampleCount,g_mcRisk,\n  (int)AnyAccountUnresolved(),(int)HasUnresolvedOrder(),(int)EntryExposureBlocked());\n}\n'
+        projected = replace_once(projected, helper, '')
+        projected = replace_once(projected, ' TesterStatusDiagnostic();\n', '')
     assert hashlib.sha256(projected).hexdigest() == expected, 'Unreviewed production change in ' + name
     results.append({'file': name, 'passed': True,
                     'byte_identical_to_input': original_bytes == projected,
                     'sha256': hashlib.sha256(original_bytes).hexdigest()})
 
-result = {'scope': 'Exact production bytes after reversing only 4 lock guards, 8 safe local initializers, and 1 tester connection exception.',
+result = {'scope': 'Exact production bytes after reversing lock/initializer/tester exception and tester-only diagnostics.',
           'input_zip_sha256': baseline['input_zip_sha256'], 'passed': len(results), 'failed': 0,
-          'lock_sites': 4, 'explicit_initializers': 8, 'tester_connection_exceptions': 1, 'files': results}
+          'lock_sites': 4, 'explicit_initializers': 8, 'tester_connection_exceptions': 1, 'tester_diagnostics': 1, 'files': results}
 (ROOT / 'verification/lock_fix_scope.json').write_text(json.dumps(result, indent=2) + '\n')
-print('PASS', len(results), 'production files: only 4 lock guards + 8 local initializers + 1 tester connection exception differ')
+print('PASS', len(results), 'production files: lock/initializer/tester exception + tester-only diagnostics only')
