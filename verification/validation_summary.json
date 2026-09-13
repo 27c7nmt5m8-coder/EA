@@ -12,7 +12,7 @@
   "cpp_adapter_warnings": 31,
   "checks": {
     "integration_results.json": {
-      "passed": 543,
+      "passed": 565,
       "failed": 0
     },
     "json_results.json": {
@@ -32,7 +32,7 @@
       "failed": 0
     }
   },
-  "revision": "v2.44 lock reinitialization fix; version unchanged",
+  "revision": "v2.44 lock reinitialization + Strategy Tester connection fix; version unchanged",
   "initial_v244_base_version": "2.43",
   "initial_v244_base_zip_sha256": "86d92447782e8bc72ce28264b2c8040c41b46040248948b234912ca4ea97e00a",
   "native_zero_errors_zero_warnings": "USER_METAEDITOR_CONFIRMATION_REQUIRED",
@@ -43,5 +43,11 @@
     "included_in_integration_total": true,
     "before": "lock_regression_before.json",
     "after": "lock_regression_after.json"
+  },
+  "strategy_tester_connection_fix": {
+    "passed": 22,
+    "failed": 0,
+    "included_in_integration_total": true,
+    "native_mt5_backtest": "NOT_MEASURED"
   }
 }

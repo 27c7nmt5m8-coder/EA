@@ -208,9 +208,47 @@ void risk_tests(){
  check(m.g_mcReady&&n.g_mcReady&&near(m.g_mcRisk,n.g_mcRisk)&&m.g_mcRisk>0,"MC jobs deterministic across symbols/interleaving");
  m.UpdateMonteCarloRisk(true);m.g_historyDirty=true;int run=m.m_mcRun;m.AdvanceMonteCarlo(mono+1);check(m.m_mcRun==run,"dirty history pauses old MC job");
 }
+void tester_connection_tests(){
+ // A tester has no live broker connection requirement. Keep the two mocked
+ // terminal properties independent so both tester and live paths are exercised.
+ struct ConnectionCase {bool testing;bool online;bool allowed;const char *name;};
+ ConnectionCase cases[]={
+  {false,true,true,"live connected preflight permits eligible entry"},
+  {false,false,false,"live disconnected preflight refuses entry"},
+  {true,false,true,"tester disconnected preflight permits eligible entry"},
+  {true,true,true,"tester connected preflight still permits eligible entry"}
+ };
+ for(auto c:cases){
+  reset();tester=c.testing;connected=c.online;SymbolState s;setup(s);
+  check(s.EntryPreflight(false)==c.allowed,c.name);s.Shutdown();
+ }
+ for(bool testing:{false,true}){
+  reset();tester=testing;connected=!testing;permissions=false;SymbolState s;setup(s);
+  check(!s.EntryPreflight(false),testing?"tester still requires trading permissions":"live still requires trading permissions");s.Shutdown();
+ }
+
+ reset();tester=true;connected=false;ScanMode=CURRENT_SYMBOL;fixture_pattern(u"FX");
+ check(OnInit()==INIT_SUCCEEDED,"disconnected tester AUTO initializes");
+ OnTimer();
+ check(order_calls==1&&positions.size()==1&&positions.begin()->second.symbol==u"FX","disconnected tester eligible timer candidate produces a simulated trade");
+ OnTimer();check(order_calls==1,"disconnected tester does not duplicate the same M1 entry");OnDeinit(0);
+
+ reset();connected=false;ScanMode=CURRENT_SYMBOL;fixture_pattern(u"FX");
+ check(OnInit()==INIT_SUCCEEDED,"disconnected live AUTO initializes for later reconnection");
+ OnTimer();check(order_calls==0&&positions.empty(),"disconnected live timer never submits an order");
+ connected=true;OnTimer();check(order_calls==1,"live eligible candidate can trade after reconnection");OnDeinit(0);
+
+ reset();tester=true;connected=false;ScanMode=CURRENT_SYMBOL;fixture_pattern(u"FX");MaxPortfolioRiskPercent=.1;
+ check(OnInit()==INIT_SUCCEEDED,"disconnected tester initializes with tight portfolio limit");
+ OnTimer();check(order_calls==0&&g_symbols[0]->m_portfolioRejects==1,"disconnected tester still enforces portfolio risk before sending");OnDeinit(0);
+
+ reset();tester=true;connected=false;SymbolState unresolved;setup(unresolved);
+ GlobalVariableSet(AccountIntent(u"GOLD"),1);
+ check(!unresolved.EntryPreflight(false)&&order_calls==0,"disconnected tester still blocks an unresolved account order");unresolved.Shutdown();
+}
 void v243_tests();void v244_tests();void v244_lock_tests(const std::string &only="");
 int main(int argc,char **argv){
  if(argc>1)v244_lock_tests(argv[1]);
- else {scoring_tests();pattern_tests();adaptive_tests();order_tests();ai_tests();scanner_tests();risk_tests();v243_tests();v244_tests();v244_lock_tests();}
+ else {scoring_tests();pattern_tests();adaptive_tests();order_tests();ai_tests();scanner_tests();risk_tests();v243_tests();v244_tests();v244_lock_tests();tester_connection_tests();}
  std::cout<<"{\"passed\":"<<checks<<",\"failed\":0}\n";
 }

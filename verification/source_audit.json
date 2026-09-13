@@ -1160,643 +1160,643 @@
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) AIContextFresh",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) AIContextFresh",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) AIExecutionFresh",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) AIExecutionFresh",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) AIPriceFresh",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) AIPriceFresh",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) AdvanceMonteCarlo",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) AdvanceMonteCarlo",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) AnalyzeAllTimeframes",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) AnalyzeAllTimeframes",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) AnalyzeTimeframe",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) AnalyzeTimeframe",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) ApplyChartTheme",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) ApplyChartTheme",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) AvailableDirectionalVolume",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) AvailableDirectionalVolume",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) BeginPendingOrder",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) BeginPendingOrder",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) BuildAISnapshot",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) BuildAISnapshot",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) BuildManualStops",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) BuildManualStops",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) BuildStops",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) BuildStops",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) BuySignalOK",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) BuySignalOK",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) BuySupportConfirmation",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) BuySupportConfirmation",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) BuyTrendLineConfirmation",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) BuyTrendLineConfirmation",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CachedIndicator",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CachedIndicator",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateBuyMTFScore",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CalculateBuyMTFScore",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateFinalBuyScore",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CalculateFinalBuyScore",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateFinalRisk",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CalculateFinalRisk",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateFinalSellScore",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CalculateFinalSellScore",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateFixedAdjustedRisk",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CalculateFixedAdjustedRisk",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateLineScore",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CalculateLineScore",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateLotByRisk",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CalculateLotByRisk",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateManualRisk",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CalculateManualRisk",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateMonteCarlo95DD",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CalculateMonteCarlo95DD",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CalculateSellMTFScore",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CalculateSellMTFScore",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CancelAIRequest",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CancelAIRequest",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CaptureInitialRisks",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CaptureInitialRisks",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) ChartEvent",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) ChartEvent",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) ClampRisk",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) ClampRisk",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) ClearPendingOrder",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) ClearPendingOrder",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CountBearishMACD",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CountBearishMACD",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CountBearishTimeframes",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CountBearishTimeframes",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CountBullishMACD",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CountBullishMACD",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CountBullishTimeframes",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CountBullishTimeframes",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CountOurPositions",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CountOurPositions",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CreateOrUpdateHLine",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CreateOrUpdateHLine",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) CreateOrUpdateTrendLine",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) CreateOrUpdateTrendLine",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) DailyFloor",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) DailyFloor",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) DailyLimit",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) DailyLimit",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) DefinitiveEntryRejection",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) DefinitiveEntryRejection",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) DeleteAutoHorizontalLines",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) DeleteAutoHorizontalLines",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) DeleteAutoTrendLines",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) DeleteAutoTrendLines",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) DeleteManualPanel",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) DeleteManualPanel",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) DetectDoubleBottom",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) DetectDoubleBottom",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) DetectDoubleTop",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) DetectDoubleTop",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) DetectHeadShoulders",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) DetectHeadShoulders",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) DetectInverseHeadShoulders",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) DetectInverseHeadShoulders",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) DetectLegacyReversalPattern",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) DetectLegacyReversalPattern",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) DetectTripleBottom",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) DetectTripleBottom",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) DetectTriplePattern",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) DetectTriplePattern",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) DetectTripleTop",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) DetectTripleTop",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) DeviationPoints",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) DeviationPoints",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) DispatchCandidate",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) DispatchCandidate",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) EntryExposureBlocked",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) EntryExposureBlocked",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) EntryModeAllowed",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) EntryModeAllowed",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) EntryPreflight",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) EntryPreflight",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) ExecuteEntry",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) ExecuteEntry",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) FreshQuote",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) FreshQuote",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) GetADXValues",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) GetADXValues",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) GetATR",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) GetATR",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) GetAsk",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) GetAsk",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) GetBid",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) GetBid",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) GetDigitsValue",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) GetDigitsValue",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) GetEMA",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) GetEMA",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) GetLatestSwingHigh",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) GetLatestSwingHigh",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) GetLatestSwingLow",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) GetLatestSwingLow",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) GetMACDValues",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) GetMACDValues",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) GetNearestResistanceDistance",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) GetNearestResistanceDistance",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) GetNearestSupportDistance",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) GetNearestSupportDistance",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) GetPatternScore",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) GetPatternScore",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) GetPointValue",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) GetPointValue",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) GetRecentSwingHighs",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) GetRecentSwingHighs",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) GetRecentSwingLows",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) GetRecentSwingLows",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) GetSecondSwingHigh",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) GetSecondSwingHigh",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) GetSecondSwingLow",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) GetSecondSwingLow",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) GetSpreadPoints",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) GetSpreadPoints",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) HandleManualEntry",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) HandleManualEntry",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) HasOurPosition",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) HasOurPosition",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) HasUnresolvedOrder",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) HasUnresolvedOrder",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) HigherTimeframeBuyOK",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) HigherTimeframeBuyOK",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) HigherTimeframeSellOK",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) HigherTimeframeSellOK",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) InUniverseNow",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) InUniverseNow",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) InitializeManualPanel",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) InitializeManualPanel",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) IsBuyAllowed",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) IsBuyAllowed",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) IsDuplicateHorizontalLevel",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) IsDuplicateHorizontalLevel",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) IsNewBar",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) IsNewBar",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) IsPriceNear",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) IsPriceNear",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) IsSellAllowed",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) IsSellAllowed",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) IsSwingHigh",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) IsSwingHigh",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) IsSwingLow",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) IsSwingLow",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) LegacyPatternAlreadyUsed",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) LegacyPatternAlreadyUsed",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) LimitRisk",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) LimitRisk",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) LogMessage",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) LogMessage",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) MTFSnapshotCurrent",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) MTFSnapshotCurrent",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) ManualButton",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) ManualButton",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) ManualFixedRisk",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) ManualFixedRisk",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) ManualLabel",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) ManualLabel",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) ManualName",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) ManualName",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) MarkAIBarUsed",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) MarkAIBarUsed",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) MarkPatternUsed",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) MarkPatternUsed",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) MigrateLegacy",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) MigrateLegacy",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) NearTrend",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) NearTrend",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) NearestLevel",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) NearestLevel",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) NextMCRandom",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) NextMCRandom",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) NormalizePrice",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) NormalizePrice",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) NormalizeVolume",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) NormalizeVolume",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) OpenRiskReserve",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) OpenRiskReserve",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) OverallFloor",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) OverallFloor",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) OverallLimit",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) OverallLimit",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) PatternName",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) PatternName",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) PendingHistoryOrderFinal",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) PendingHistoryOrderFinal",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) PendingOrderComment",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) PendingOrderComment",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) PendingOrderToken",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) PendingOrderToken",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) PositionIdOpen",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) PositionIdOpen",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) PositionKey",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) PositionKey",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) PositionResult",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) PositionResult",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) PriceCeil",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) PriceCeil",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) PriceDifferencePercent",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) PriceDifferencePercent",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) PriceFloor",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) PriceFloor",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) PrintMTFResults",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) PrintMTFResults",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) PrintPatternSignal",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) PrintPatternSignal",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) PropRiskCap",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) PropRiskCap",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) ReadIndicator",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) ReadIndicator",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) ReconcilePendingOrder",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) ReconcilePendingOrder",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) RecordEntryAttempt",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) RecordEntryAttempt",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) RefreshEntryState",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) RefreshEntryState",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) RefreshHistory",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) RefreshHistory",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) RefreshManualPanel",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) RefreshManualPanel",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) ReleaseIndicators",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) ReleaseIndicators",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) RestoreChartTheme",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) RestoreChartTheme",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) SavePropDay",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) SavePropDay",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) Scan",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) Scan",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) SelfTests",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) SelfTests",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) SellResistanceConfirmation",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) SellResistanceConfirmation",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) SellSignalOK",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) SellSignalOK",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) SellTrendLineConfirmation",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) SellTrendLineConfirmation",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) SetScanEnabled",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) SetScanEnabled",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) SetThemeProperty",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) SetThemeProperty",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) SmartLockR",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) SmartLockR",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) SolePositionOwner",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) SolePositionOwner",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) SpreadOK",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) SpreadOK",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) StateGet",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) StateGet",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) StopBuffer",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) StopBuffer",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) StopSlippage",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) StopSlippage",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) StoreLevel",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) StoreLevel",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) StoreTrend",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) StoreTrend",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) SymbolDirectionAllowed",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) SymbolDirectionAllowed",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) TFName",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) TFName",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) TickSize",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) TickSize",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) TimeframeToString",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) TimeframeToString",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) UTCDay",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) UTCDay",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) UTCNow",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) UTCNow",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) UpdateAllAutoLines",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) UpdateAllAutoLines",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) UpdateAutoHorizontalLines",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) UpdateAutoHorizontalLines",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) UpdateAutoTrendLines",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) UpdateAutoTrendLines",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) UpdateManualAnalysis",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) UpdateManualAnalysis",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) UpdateMonteCarloRisk",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) UpdateMonteCarloRisk",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) UpdatePanel",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) UpdatePanel",
       "passed": true
     },
     {
-      "case": "v243 engine function unchanged (reviewed local initializers projected) UpdatePropDay",
+      "case": "v243 engine function unchanged (reviewed local initializers/tester exception projected) UpdatePropDay",
       "passed": true
     },
     {
@@ -1999,7 +1999,7 @@
     "MT3PortfolioRisk.mqh": "3904bd36f35cecd6c14c5ea0874ee7a9daf76a00eaa2ebe5ba9fe22d21de0787",
     "MT3ReversalPatterns.mqh": "abb3c28a163e7530bd5db757bca4c74b519e866d00633823b72250d92e4d2289",
     "MT3Scoring.mqh": "f57d1e185752e0676a08682c70e76cfd8441fb29c35d9c1c05975cf3eea4aa4d",
-    "MT3SymbolState.mqh": "8073870fa046c0b38ae8af63dc9d702556e91ab81bb4f6502f9102165754bdc6",
+    "MT3SymbolState.mqh": "20f1eaab3d161466460e0e7037afa4802bff634014f4d89d9a08ed3edf30260f",
     "MT3TradeJournal.mqh": "8eb98a1c866eb56d4bf695689353b3ae4c64bfd466c00353df6981aa60909931",
     "MT3TradeLog.mqh": "f3b32e3cd6b746bb5c86a03fc687c4e17be4c6e8193de24a96b4dcf9e914234a",
     "MT3Types.mqh": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2",

@@ -1,10 +1,11 @@
 {
-  "scope": "Exact production bytes after reversing only 4 lock creation guards and 8 safe local initializers.",
+  "scope": "Exact production bytes after reversing only 4 lock guards, 8 safe local initializers, and 1 tester connection exception.",
   "input_zip_sha256": "eac671507e4ba8b36a96a61fcb7af6b346242b54cf48bd7c83bdb7036a36d4c6",
   "passed": 13,
   "failed": 0,
   "lock_sites": 4,
   "explicit_initializers": 8,
+  "tester_connection_exceptions": 1,
   "files": [
     {
       "file": "MT3AIProtocol.mqh",
@@ -52,7 +53,7 @@
       "file": "MT3SymbolState.mqh",
       "passed": true,
       "byte_identical_to_input": false,
-      "sha256": "8073870fa046c0b38ae8af63dc9d702556e91ab81bb4f6502f9102165754bdc6"
+      "sha256": "20f1eaab3d161466460e0e7037afa4802bff634014f4d89d9a08ed3edf30260f"
     },
     {
       "file": "MT3TradeJournal.mqh",

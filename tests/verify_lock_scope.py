@@ -1,7 +1,8 @@
 """Byte-level scope audit against the uploaded v2.44 ZIP; not native compilation.
 
-Only the four reviewed existence guards and eight explicit local initializers
-may differ. Historical hashes and all other production bytes remain fixed.
+Only the four reviewed existence guards, eight explicit local initializers, and
+the tester-only live connection exception may differ. Historical hashes and all
+other production bytes remain fixed.
 """
 from pathlib import Path
 import hashlib
@@ -33,6 +34,9 @@ for name, expected in baseline['source_sha256'].items():
             '(!GlobalVariableCheck(' + key + ') && !GlobalVariableTemp(' + key + '))',
             '!GlobalVariableTemp(' + key + ')')
     if name == 'MT3SymbolState.mqh':
+        projected = replace_once(projected,
+            '(!MQLInfoInteger(MQL_TESTER) && !TerminalInfoInteger(TERMINAL_CONNECTED))',
+            '!TerminalInfoInteger(TERMINAL_CONNECTED)')
         for var in ['highShift1', 'highShift2', 'lowShift1', 'lowShift2']:
             projected = replace_once(projected, 'int ' + var + '=-1;', 'int ' + var + ';')
         for var in ['highPrice1', 'highPrice2', 'lowPrice1', 'lowPrice2']:
@@ -42,8 +46,8 @@ for name, expected in baseline['source_sha256'].items():
                     'byte_identical_to_input': original_bytes == projected,
                     'sha256': hashlib.sha256(original_bytes).hexdigest()})
 
-result = {'scope': 'Exact production bytes after reversing only 4 lock creation guards and 8 safe local initializers.',
+result = {'scope': 'Exact production bytes after reversing only 4 lock guards, 8 safe local initializers, and 1 tester connection exception.',
           'input_zip_sha256': baseline['input_zip_sha256'], 'passed': len(results), 'failed': 0,
-          'lock_sites': 4, 'explicit_initializers': 8, 'files': results}
+          'lock_sites': 4, 'explicit_initializers': 8, 'tester_connection_exceptions': 1, 'files': results}
 (ROOT / 'verification/lock_fix_scope.json').write_text(json.dumps(result, indent=2) + '\n')
-print('PASS', len(results), 'production files: only 4 lock guards + 8 retained local initializers differ')
+print('PASS', len(results), 'production files: only 4 lock guards + 8 local initializers + 1 tester connection exception differ')
