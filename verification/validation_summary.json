@@ -1,10 +1,8 @@
 {
   "version": "2.44",
-  "date": "2026-09-08",
-  "base_version": "2.43",
-  "base_zip_sha256": "86d92447782e8bc72ce28264b2c8040c41b46040248948b234912ca4ea97e00a",
-  "native_mql_compile": "NOT_PERFORMED",
-  "market_backtest": "NOT_PERFORMED",
+  "date": "2026-09-13",
+  "native_mql_compile": "NOT_MEASURED",
+  "market_backtest": "NOT_MEASURED",
   "live_api": "NOT_PERFORMED",
   "ex5_included": false,
   "runtime_source_files": 13,
@@ -12,7 +10,7 @@
   "cpp_adapter_warnings": 31,
   "checks": {
     "integration_results.json": {
-      "passed": 500,
+      "passed": 522,
       "failed": 0
     },
     "source_audit.json": {
@@ -27,5 +25,19 @@
       "passed": 20,
       "failed": 0
     }
+  },
+  "revision": "v2.44 Strategy Tester live-connection exception",
+  "base_repository": "27c7nmt5m8-coder/EA",
+  "base_commit": "701e2eedc54a791d9643dc928065875b0929a2ee",
+  "mt5_strategy_tester": "NOT_MEASURED",
+  "initial_v244_base_version": "2.43",
+  "initial_v244_base_zip_sha256": "86d92447782e8bc72ce28264b2c8040c41b46040248948b234912ca4ea97e00a",
+  "base_version": "2.44",
+  "tester_connection_regression": {
+    "additional_checks": 22,
+    "included_in_integration_total": true,
+    "before_fix": "FAIL: tester disconnected preflight permits eligible entry",
+    "after_fix": "PASS",
+    "mock_implementation_changed": false
   }
 }

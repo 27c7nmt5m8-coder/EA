@@ -1,183 +1,183 @@
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp: In function ‘double SymbolInfoDouble(string, int)’:
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:344:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp: In function ‘double SymbolInfoDouble(string, int)’:
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:344:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
   344 |  if(k==SYMBOL_POINT)return v.point;if(k==SYMBOL_TRADE_TICK_SIZE)return v.tick;
       |  ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:344:36: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:344:36: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
   344 |  if(k==SYMBOL_POINT)return v.point;if(k==SYMBOL_TRADE_TICK_SIZE)return v.tick;
       |                                    ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:345:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:345:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
   345 |  if(k==SYMBOL_VOLUME_MIN)return v.minLot;if(k==SYMBOL_VOLUME_MAX)return v.maxLot;if(k==SYMBOL_VOLUME_STEP)return v.step;
       |  ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:345:42: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:345:42: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
   345 |  if(k==SYMBOL_VOLUME_MIN)return v.minLot;if(k==SYMBOL_VOLUME_MAX)return v.maxLot;if(k==SYMBOL_VOLUME_STEP)return v.step;
       |                                          ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:346:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:346:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
   346 |  if(k==SYMBOL_VOLUME_LIMIT)return v.volumeLimit;if(k==SYMBOL_BID)return v.bid;if(k==SYMBOL_ASK)return v.ask;return 0;}
       |  ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:346:49: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:346:49: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
   346 |  if(k==SYMBOL_VOLUME_LIMIT)return v.volumeLimit;if(k==SYMBOL_BID)return v.bid;if(k==SYMBOL_ASK)return v.ask;return 0;}
       |                                                 ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp: In function ‘long int SymbolInfoInteger(string, int)’:
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:349:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp: In function ‘long int SymbolInfoInteger(string, int)’:
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:349:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
   349 |  if(k==SYMBOL_DIGITS)return v.digits;if(k==SYMBOL_TRADE_STOPS_LEVEL)return v.stops;if(k==SYMBOL_TRADE_FREEZE_LEVEL)return v.freeze;
       |  ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:349:38: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:349:38: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
   349 |  if(k==SYMBOL_DIGITS)return v.digits;if(k==SYMBOL_TRADE_STOPS_LEVEL)return v.stops;if(k==SYMBOL_TRADE_FREEZE_LEVEL)return v.freeze;
       |                                      ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:350:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:350:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
   350 |  if(k==SYMBOL_TRADE_MODE)return v.mode;if(k==SYMBOL_ORDER_MODE)return v.orderMode;if(k==SYMBOL_CUSTOM)return v.custom;
       |  ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:350:40: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:350:40: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
   350 |  if(k==SYMBOL_TRADE_MODE)return v.mode;if(k==SYMBOL_ORDER_MODE)return v.orderMode;if(k==SYMBOL_CUSTOM)return v.custom;
       |                                        ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:351:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:351:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
   351 |  if(k==SYMBOL_VISIBLE)return v.visible;if(k==SYMBOL_SELECT)return v.selected;if(k==SYMBOL_FILLING_MODE)return SYMBOL_FILLING_FOK;
       |  ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:351:40: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:351:40: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
   351 |  if(k==SYMBOL_VISIBLE)return v.visible;if(k==SYMBOL_SELECT)return v.selected;if(k==SYMBOL_FILLING_MODE)return SYMBOL_FILLING_FOK;
       |                                        ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp: In function ‘long int FileFindFirst(string, string&, int)’:
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:470:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp: In function ‘long int FileFindFirst(string, string&, int)’:
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:470:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
   470 |  if(found.empty())return INVALID_HANDLE;long h=next_search++;file_searches[h]=found;file_search_at[h]=0;name=found[0];return h;
       |  ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:470:41: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:470:41: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
   470 |  if(found.empty())return INVALID_HANDLE;long h=next_search++;file_searches[h]=found;file_search_at[h]=0;name=found[0];return h;
       |                                         ^~~~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp: In member function ‘bool CMT3Json::Hex4(ushort&)’:
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:501:3: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp: In member function ‘bool CMT3Json::Hex4(ushort&)’:
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:501:3: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
   501 |   if(m_pos+4>m_length) return false;int n=0;
       |   ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:501:37: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:501:37: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
   501 |   if(m_pos+4>m_length) return false;int n=0;
       |                                     ^~~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp: In member function ‘bool CMT3Json::ReadStringValue(string&)’:
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:515:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp: In member function ‘bool CMT3Json::ReadStringValue(string&)’:
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:515:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
   515 |     if(m_pos>=m_length) return false;c=At();m_pos++;
       |     ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:515:38: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:515:38: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
   515 |     if(m_pos>=m_length) return false;c=At();m_pos++;
       |                                      ^
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp: In member function ‘int CMT3Json::Value(string, int)’:
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:559:3: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp: In member function ‘int CMT3Json::Value(string, int)’:
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:559:3: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
   559 |   if(depth>32) return -1;Space();ushort c=At();int n=-1;
       |   ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:559:26: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:559:26: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
   559 |   if(depth>32) return -1;Space();ushort c=At();int n=-1;
       |                          ^~~~~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:569:6: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:569:6: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
   569 |      if(!ReadStringValue(childKey)) return -1;Space();if(!Take(':')) return -1;
       |      ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:569:47: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:569:47: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
   569 |      if(!ReadStringValue(childKey)) return -1;Space();if(!Take(':')) return -1;
       |                                               ^~~~~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp: In function ‘bool ParseTradeRecord(string, TradeLogRecord&)’:
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:1367:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp: In function ‘bool ParseTradeRecord(string, TradeLogRecord&)’:
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:1367:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
  1367 |  if(!j.GetNumber(0,u"entryTime",n) || n<0 || n>1e12) return false;r.entryTime=(datetime)n;
       |  ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:1367:67: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:1367:67: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
  1367 |  if(!j.GetNumber(0,u"entryTime",n) || n<0 || n>1e12) return false;r.entryTime=(datetime)n;
       |                                                                   ^
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:1368:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:1368:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
  1368 |  if(!j.GetNumber(0,u"exitTime",n) || n<0 || n>1e12) return false;r.exitTime=(datetime)n;
       |  ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:1368:66: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:1368:66: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
  1368 |  if(!j.GetNumber(0,u"exitTime",n) || n<0 || n>1e12) return false;r.exitTime=(datetime)n;
       |                                                                  ^
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:1369:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:1369:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
  1369 |  if(!j.GetNumber(0,u"lastSaved",n) || n<0 || n>1e12) return false;r.lastSaved=(datetime)n;
       |  ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:1369:67: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:1369:67: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
  1369 |  if(!j.GetNumber(0,u"lastSaved",n) || n<0 || n>1e12) return false;r.lastSaved=(datetime)n;
       |                                                                   ^
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:1370:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:1370:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
  1370 |  if(!j.GetNumber(0,u"buy",n) || (n!=0 && n!=1)) return false;r.buy=n==1;
       |  ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:1370:62: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:1370:62: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
  1370 |  if(!j.GetNumber(0,u"buy",n) || (n!=0 && n!=1)) return false;r.buy=n==1;
       |                                                              ^
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:1371:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:1371:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
  1371 |  if(!j.GetNumber(0,u"closed",n) || (n!=0 && n!=1)) return false;r.closed=n==1;
       |  ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:1371:65: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:1371:65: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
  1371 |  if(!j.GetNumber(0,u"closed",n) || (n!=0 && n!=1)) return false;r.closed=n==1;
       |                                                                 ^
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:1372:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:1372:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
  1372 |  if(!j.GetNumber(0,u"aiUsed",n) || (n!=0 && n!=1)) return false;r.aiUsed=n==1;
       |  ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:1372:65: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:1372:65: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
  1372 |  if(!j.GetNumber(0,u"aiUsed",n) || (n!=0 && n!=1)) return false;r.aiUsed=n==1;
       |                                                                 ^
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:1373:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:1373:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
  1373 |  if(!j.GetNumber(0,u"hasContext",n) || (n!=0 && n!=1)) return false;r.hasContext=n==1;
       |  ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:1373:69: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:1373:69: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
  1373 |  if(!j.GetNumber(0,u"hasContext",n) || (n!=0 && n!=1)) return false;r.hasContext=n==1;
       |                                                                     ^
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:1374:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:1374:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
  1374 |  if(!j.GetNumber(0,u"dirty",n) || (n!=0 && n!=1)) return false;r.dirty=n==1;
       |  ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:1374:64: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:1374:64: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
  1374 |  if(!j.GetNumber(0,u"dirty",n) || (n!=0 && n!=1)) return false;r.dirty=n==1;
       |                                                                ^
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:1375:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:1375:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
  1375 |  if(!j.GetNumber(0,u"restored",n) || (n!=0 && n!=1)) return false;r.restored=n==1;
       |  ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:1375:67: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:1375:67: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
  1375 |  if(!j.GetNumber(0,u"restored",n) || (n!=0 && n!=1)) return false;r.restored=n==1;
       |                                                                   ^
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp: In member function ‘void SymbolState::DeleteAutoTrendLines()’:
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:3102:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp: In member function ‘void SymbolState::DeleteAutoTrendLines()’:
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:3102:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
  3102 |  for(int i=0;i<2;i++) ZeroMemory(m_trends[i]);if(!m_isChart) return;
       |  ^~~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:3102:47: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:3102:47: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
  3102 |  for(int i=0;i<2;i++) ZeroMemory(m_trends[i]);if(!m_isChart) return;
       |                                               ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp: In member function ‘bool SymbolState::BuildAISnapshot(std::vector<MTFResult>&, bool, bool, double, string, MqlTick&, string&)’:
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:4028:59: warning: unused parameter ‘hybrid’ [-Wunused-parameter]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp: In member function ‘bool SymbolState::BuildAISnapshot(std::vector<MTFResult>&, bool, bool, double, string, MqlTick&, string&)’:
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:4028:59: warning: unused parameter ‘hybrid’ [-Wunused-parameter]
  4028 | bool BuildAISnapshot(std::vector<MTFResult> &results,bool hybrid,bool proposedBuy,double localScore,string patternName,MqlTick &tick,string &snapshot)
       |                                                      ~~~~~^~~~~~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp: In member function ‘void SymbolState::CaptureInitialRisks()’:
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:4195:54: warning: unused variable ‘sl’ [-Wunused-variable]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp: In member function ‘void SymbolState::CaptureInitialRisks()’:
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:4195:54: warning: unused variable ‘sl’ [-Wunused-variable]
  4195 |   double open=PositionGetDouble(POSITION_PRICE_OPEN),sl=PositionGetDouble(POSITION_SL),v=PositionGetDouble(POSITION_VOLUME);
       |                                                      ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp: In member function ‘void SymbolState::ChartEvent(int, const long int&, const double&, const string&)’:
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:4589:63: warning: unused parameter ‘dparam’ [-Wunused-parameter]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp: In member function ‘void SymbolState::ChartEvent(int, const long int&, const double&, const string&)’:
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:4589:63: warning: unused parameter ‘dparam’ [-Wunused-parameter]
  4589 | void ChartEvent(const int id,const long &lparam,const double &dparam,const string &sparam)
       |                                                 ~~~~~~~~~~~~~~^~~~~~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp: In member function ‘void SymbolState::JournalIdText(string&, ulong)’:
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:5375:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp: In member function ‘void SymbolState::JournalIdText(string&, ulong)’:
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:5375:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
  5375 |  if(list!=u"") list+=u";";list+=value;
       |  ^~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:5375:27: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:5375:27: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
  5375 |  if(list!=u"") list+=u";";list+=value;
       |                           ^~~~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp: In function ‘void OnDeinit(int)’:
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:5786:25: warning: unused parameter ‘reason’ [-Wunused-parameter]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp: In function ‘void OnDeinit(int)’:
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:5786:25: warning: unused parameter ‘reason’ [-Wunused-parameter]
  5786 | void OnDeinit(const int reason)
       |               ~~~~~~~~~~^~~~~~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp: In function ‘void WorkerDeinit(int)’:
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:5842:29: warning: unused parameter ‘reason’ [-Wunused-parameter]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp: In function ‘void WorkerDeinit(int)’:
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:5842:29: warning: unused parameter ‘reason’ [-Wunused-parameter]
  5842 | void WorkerDeinit(const int reason)
       |                   ~~~~~~~~~~^~~~~~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp: In function ‘void scoring_tests()’:
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:5964:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp: In function ‘void scoring_tests()’:
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:5964:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
  5964 |  for(auto p:vals)*p*=10000;ScoreEvidence(scaled);check(near(scaled.trendScore,r[0].trendScore,1e-7)&&near(scaled.macdScore,r[0].macdScore,1e-7),"ATR scale invariance");
       |  ^~~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:5964:28: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:5964:28: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
  5964 |  for(auto p:vals)*p*=10000;ScoreEvidence(scaled);check(near(scaled.trendScore,r[0].trendScore,1e-7)&&near(scaled.macdScore,r[0].macdScore,1e-7),"ATR scale invariance");
       |                            ^~~~~~~~~~~~~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp: In function ‘void scanner_tests()’:
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:6081:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp: In function ‘void scanner_tests()’:
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:6081:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
  6081 |  for(auto s:g_symbols)s->RefreshCandidate();g_symbols[0]->m_candidateScore=75;g_symbols[1]->m_candidateScore=90;DispatchQueue();
       |  ^~~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:6081:45: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:6081:45: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
  6081 |  for(auto s:g_symbols)s->RefreshCandidate();g_symbols[0]->m_candidateScore=75;g_symbols[1]->m_candidateScore=90;DispatchQueue();
       |                                             ^~~~~~~~~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp: In instantiation of ‘uint FileReadArray(int, std::vector<T>&, int, int) [with T = unsigned char; uint = unsigned int]’:
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:694:51:   required from here
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:440:64: warning: unused parameter ‘start’ [-Wunused-parameter]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp: In instantiation of ‘uint FileReadArray(int, std::vector<T>&, int, int) [with T = unsigned char; uint = unsigned int]’:
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:694:51:   required from here
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:440:64: warning: unused parameter ‘start’ [-Wunused-parameter]
   440 | template<class T>uint FileReadArray(int h,std::vector<T>&a,int start,int count){if(!open_files.count(h))return 0;auto&v=files[open_files[h].name];a.assign(v.begin(),v.end());return a.size();}
       |                                                            ~~~~^~~~~
-/workspace/scratch/990e5a4cb0db/v244/verification/integration.cpp:440:74: warning: unused parameter ‘count’ [-Wunused-parameter]
+/workspace/scratch/990e5a4cb0db/github_ea_tester_fix/verification/integration.cpp:440:74: warning: unused parameter ‘count’ [-Wunused-parameter]
   440 | template<class T>uint FileReadArray(int h,std::vector<T>&a,int start,int count){if(!open_files.count(h))return 0;auto&v=files[open_files[h].name];a.assign(v.begin(),v.end());return a.size();}
       |                                                                      ~~~~^~~~~

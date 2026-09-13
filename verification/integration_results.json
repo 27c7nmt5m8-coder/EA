@@ -1,5 +1,5 @@
 {
-  "passed": 500,
+  "passed": 522,
   "failed": 0,
   "scope": "Actual main EA, headers and worker adapted to UTF-16 C++17 using simulated MT5 services. No MetaEditor compilation, real trading, market backtest, or API call.",
   "source_sha256": {
@@ -10,7 +10,7 @@
     "MT3PortfolioRisk.mqh": "3904bd36f35cecd6c14c5ea0874ee7a9daf76a00eaa2ebe5ba9fe22d21de0787",
     "MT3ReversalPatterns.mqh": "abb3c28a163e7530bd5db757bca4c74b519e866d00633823b72250d92e4d2289",
     "MT3Scoring.mqh": "f57d1e185752e0676a08682c70e76cfd8441fb29c35d9c1c05975cf3eea4aa4d",
-    "MT3SymbolState.mqh": "c6dbe42de52cf2e022abac1e2d811416e264d43042914c93d01ff9756cb516a4",
+    "MT3SymbolState.mqh": "4276b8c1fcd76e516e910e2f856ee7f3b0a433e240f539c2578f4a257b6407ce",
     "MT3TradeJournal.mqh": "8eb98a1c866eb56d4bf695689353b3ae4c64bfd466c00353df6981aa60909931",
     "MT3TradeLog.mqh": "f3b32e3cd6b746bb5c86a03fc687c4e17be4c6e8193de24a96b4dcf9e914234a",
     "MT3Types.mqh": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2",

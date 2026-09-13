@@ -89,7 +89,8 @@ baseline=json.loads((ROOT/'tests/v242_safety_baseline.json').read_text())
 for old,record in baseline['functions'].items():
     after=legacy_engine_function(record['v243_name'],engine)
     after=after.replace(record['v243_name']+'(',old+'(',1)
-    check('v242 safety fingerprint (reviewed analytics hooks removed) '+old,digest(after)==record['sha256'])
+    label='v242 safety fingerprint (reviewed tester connection exception projected) ' if old=='EntryPreflight' else 'v242 safety fingerprint (reviewed analytics hooks removed) '
+    check(label+old,digest(after)==record['sha256'])
 for old in ['MT3AIProtocol.mqh','MT3Json.mqh','MTFAutoTrader_3Mode_AI_v2_42.mq5','MTFAutoTrader_AI_Worker.mq5']:
     now='MTFAutoTrader_3Mode_AI_v2_44.mq5' if old.endswith('v2_42.mq5') else old
     after=legacy_main(code[now]) if old.endswith('v2_42.mq5') else code[now].replace('2.44','2.42') if now.endswith('.mq5') else code[now]
@@ -151,7 +152,10 @@ v243=json.loads((ROOT/'tests/v243_safety_baseline.json').read_text())
 expected_changed=['UpdatePropProtection','ValidateInputs','StartAIRequest','ProcessAIReply','ManagePositions','Init','Shutdown','Maintain','TradeEvent','ExecuteEntryLocked','RefreshCandidate']
 check('v244 changed engine functions are explicitly bounded',set(v243['reviewed_changed_functions'])==set(expected_changed))
 for name,h in v243['functions'].items():
-    if name not in expected_changed:check('v243 engine function unchanged '+name,digest(extract(name,engine))==h)
+    if name not in expected_changed:
+        after=legacy_engine_function(name,engine) if name=='EntryPreflight' else extract(name,engine)
+        label='v243 engine function unchanged after reviewed tester connection exception ' if name=='EntryPreflight' else 'v243 engine function unchanged '
+        check(label+name,digest(after)==h)
 for name,h in v243['whole_files'].items():check('v243 entire module unchanged '+name,digest(code[name])==h)
 check('all v243 input declarations and defaults unchanged',inputs[:len(v243['input_declarations'])]==v243['input_declarations'])
 check('three v244 new inputs only',inputs[len(v243['input_declarations']):]==['input bool EnablePortfolioRiskLimit = true;','input double MaxPortfolioRiskPercent = 3.0;','input bool EnableTradeLog = true;'])

@@ -1,0 +1,73 @@
+{
+  "scope": "All 13 production files match GitHub main byte-for-byte after reversing the single tester-only connection condition.",
+  "base_commit": "701e2eedc54a791d9643dc928065875b0929a2ee",
+  "passed": 13,
+  "failed": 0,
+  "files": [
+    {
+      "path": "src/MT3AIProtocol.mqh",
+      "unchanged": true,
+      "sha256": "25340f89525ddaa7ffd425fddad0b22919864e0f8ce3db9961775eb299db24de"
+    },
+    {
+      "path": "src/MT3Config.mqh",
+      "unchanged": true,
+      "sha256": "f75363429a3b1abc1759140910773c2e1a0f58278e83ca757d6a09d1ad117fd7"
+    },
+    {
+      "path": "src/MT3Json.mqh",
+      "unchanged": true,
+      "sha256": "b392a69a399f8759d725e2ab7c6b30abd4c20656e227a90373ef1304b8b7c429"
+    },
+    {
+      "path": "src/MT3PatternStops.mqh",
+      "unchanged": true,
+      "sha256": "c336b7e5d113dd11aa8c5792aff49e941c373f971a701ddeb6a9dd637ee63a07"
+    },
+    {
+      "path": "src/MT3PortfolioRisk.mqh",
+      "unchanged": true,
+      "sha256": "3904bd36f35cecd6c14c5ea0874ee7a9daf76a00eaa2ebe5ba9fe22d21de0787"
+    },
+    {
+      "path": "src/MT3ReversalPatterns.mqh",
+      "unchanged": true,
+      "sha256": "abb3c28a163e7530bd5db757bca4c74b519e866d00633823b72250d92e4d2289"
+    },
+    {
+      "path": "src/MT3Scoring.mqh",
+      "unchanged": true,
+      "sha256": "f57d1e185752e0676a08682c70e76cfd8441fb29c35d9c1c05975cf3eea4aa4d"
+    },
+    {
+      "path": "src/MT3SymbolState.mqh",
+      "unchanged": false,
+      "sha256": "4276b8c1fcd76e516e910e2f856ee7f3b0a433e240f539c2578f4a257b6407ce"
+    },
+    {
+      "path": "src/MT3TradeJournal.mqh",
+      "unchanged": true,
+      "sha256": "8eb98a1c866eb56d4bf695689353b3ae4c64bfd466c00353df6981aa60909931"
+    },
+    {
+      "path": "src/MT3TradeLog.mqh",
+      "unchanged": true,
+      "sha256": "f3b32e3cd6b746bb5c86a03fc687c4e17be4c6e8193de24a96b4dcf9e914234a"
+    },
+    {
+      "path": "src/MT3Types.mqh",
+      "unchanged": true,
+      "sha256": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2"
+    },
+    {
+      "path": "src/MTFAutoTrader_3Mode_AI_v2_44.mq5",
+      "unchanged": true,
+      "sha256": "7f3a8d7c1eb8398abf2bcff98b8f9edfdba9ef0ccf8e41de0cfb2421f850ebc4"
+    },
+    {
+      "path": "src/MTFAutoTrader_AI_Worker.mq5",
+      "unchanged": true,
+      "sha256": "9f244a44609baad8a50044744577432db75c08761187b2642be8f36c5de7ab98"
+    }
+  ]
+}

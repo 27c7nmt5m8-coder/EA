@@ -1,4 +1,4 @@
-"""Remove only reviewed analytics hooks when comparing legacy safety fingerprints.
+"""Project reviewed analytics hooks and the tester-only live connection exception.
 
 The exact text must be present once. Trading conditions and order arguments are
 never masked; the projected functions still have to match the old SHA-256 values.
@@ -14,7 +14,13 @@ def replace_once(code, old, new=''):
 
 def legacy_engine_function(name, code):
     code = extract(name, code)
-    if name == 'UpdatePropProtection':
+    if name == 'EntryPreflight':
+        # Require the exact tester-only exception. Keep every permission/risk
+        # guard and all historical hashes intact when comparing older versions.
+        code = replace_once(code,
+            '(!MQLInfoInteger(MQL_TESTER) && !TerminalInfoInteger(TERMINAL_CONNECTED))',
+            '!TerminalInfoInteger(TERMINAL_CONNECTED)')
+    elif name == 'UpdatePropProtection':
         code = replace_once(code, 'ulong logId=(ulong)PositionGetInteger(POSITION_IDENTIFIER);')
         code = replace_once(code, 'else JournalMarkDD(logId);')
     elif name == 'ManagePositions':
