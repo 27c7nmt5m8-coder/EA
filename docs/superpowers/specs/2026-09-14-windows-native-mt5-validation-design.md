@@ -1,7 +1,7 @@
 # Windows Native MT5 Validation Design
 
 Date: 2026-09-14
-Status: Draft for user review
+Status: Awaiting user approval
 Repository: `27c7nmt5m8-coder/EA`
 Target version: v2.44 validation infrastructure only; no trading-logic change
 
@@ -48,22 +48,33 @@ Two paths are supported.
 
 ### 4.1 Automatic PR validation
 
-On pull-request creation/update, native validation runs only when the PR head belongs to the same repository and is created by the repository owner/approved trusted actor. Fork PRs must never execute arbitrary code on the user's self-hosted PC.
+The self-hosted Windows PC must not be attached directly to arbitrary `pull_request` jobs in this public repository. Instead, the native workflow is defined on the default branch and is triggered after the existing Ubuntu `CI` workflow completes.
+
+The native workflow first runs a lightweight trust/metadata guard on a GitHub-hosted runner. Only if all trust checks pass is the self-hosted `mt5-native` job scheduled.
+
+Required automatic checks:
+
+- upstream Ubuntu `CI` conclusion is `success`;
+- the run is associated with a pull request;
+- PR head repository is exactly `27c7nmt5m8-coder/EA`;
+- PR author/actor is the repository owner or an explicit allowlisted trusted actor;
+- the exact trusted PR head SHA is captured and used for checkout;
+- fork pull requests never schedule a self-hosted job.
 
 Automatic PR scope:
 
-1. checkout the PR revision;
+1. trusted head SHA checkout;
 2. synchronize the 13 runtime source files into an isolated MT5 validation workspace;
 3. native compile with MetaEditor;
 4. require 0 compile errors and 0 compile warnings;
 5. run USDJPY / M1 / one-month Strategy Tester sanity test;
 6. collect report, tester journal/log, compile log, and summary artifact.
 
-The one-month range is rolling and resolved at run time from a deterministic end date. For reproducibility, the workflow records the exact `FromDate` and `ToDate` in the artifact summary.
+The one-month range is rolling and resolved at run time. For reproducibility, the workflow records the exact `FromDate` and `ToDate` in the artifact summary.
 
 ### 4.2 Manual long-run validation
 
-A `workflow_dispatch` path allows the user to choose a profile such as:
+A `workflow_dispatch` path allows the repository owner to choose a profile such as:
 
 - 1 month
 - 3 months
@@ -104,11 +115,14 @@ The initial automatic profile is:
 - ScanMode: CURRENT_SYMBOL
 - Optimization: disabled
 - Test duration: 1 month
-- `ShutdownTerminal=1` or equivalent controlled termination behavior
+- `ReplaceReport=1`
+- `ShutdownTerminal=1`
 
-Other EA inputs use a committed baseline `.set` file or generated tester parameters whose source is version-controlled. The implementation must not silently change strategy parameters to force trades.
+The test report uses the normal Strategy Tester HTML report path (`.htm`) for the initial implementation. The parser is tested against committed synthetic fixtures and must tolerate localized labels where practical.
 
-The automation waits for terminal completion with a hard timeout. A hung terminal/tester is terminated only after logs are copied to a failure artifact.
+Other EA inputs use a committed baseline `.set` file or generated tester parameters whose source is version-controlled. The implementation must not silently change strategy parameters to force trades. The runtime copy of the `.set` file is placed in the MT5 tester profile location expected by the terminal before launch.
+
+The automation waits for terminal completion with a hard timeout. A hung terminal/tester is terminated only after relevant logs are copied to a failure artifact.
 
 ## 7. Backtest Result Policy
 
@@ -135,7 +149,7 @@ The summary records at least:
 - average loss
 - maximum consecutive losses, if exposed by the report
 
-A trade count of zero is reported explicitly and may be configured as a failure for the sanity profile once the current zero-trade bug is resolved. During the diagnostic phase it should remain distinguishable from infrastructure failure.
+A trade count of zero is reported explicitly and may be configured as a failure for the sanity profile once the current zero-trade bug is resolved. During the diagnostic phase it remains a distinct result category rather than being conflated with infrastructure failure.
 
 Profitability thresholds such as `PF >= 1.3` are deliberately not used as merge gates in v1 because that would turn infrastructure validation into strategy optimization and could encourage overfitting.
 
@@ -146,7 +160,7 @@ Each Windows run uploads a uniquely named artifact containing:
 - native compile log for main EA;
 - native compile log for AI Worker;
 - tester configuration used;
-- `.set` file or exact parameter snapshot;
+- `.set` file or exact non-secret parameter snapshot;
 - Strategy Tester report;
 - tester/terminal journal excerpts relevant to the run;
 - machine-readable JSON summary;
@@ -162,14 +176,17 @@ No API key, broker password, account secret, GitHub runner registration token, o
 
 This repository is public, so the self-hosted runner must be treated as a sensitive local machine.
 
-The Windows workflow must not execute for arbitrary fork pull requests. Initial implementation should require all of the following for automatic PR native validation:
+The Windows workflow must not execute for arbitrary fork pull requests. Initial implementation requires all of the following:
 
-- PR head repository equals `27c7nmt5m8-coder/EA`;
-- actor is the repository owner or an explicit allowlisted trusted actor;
-- job targets a dedicated self-hosted label such as `mt5-native`;
-- workflow has minimum GitHub permissions (`contents: read`; artifact permissions only as needed).
+- a default-branch-controlled guard job runs on `ubuntu-latest` first;
+- the guard proves PR head repository equals `27c7nmt5m8-coder/EA`;
+- the guard proves the actor is the repository owner or explicit allowlisted trusted actor;
+- only the guard-approved exact SHA is passed to the self-hosted job;
+- the native job targets a dedicated runner label such as `mt5-native`;
+- workflow permissions are minimal (`contents: read` plus only permissions required for artifacts/metadata);
+- no repository secret is exposed to untrusted PR code.
 
-The runner should have no broker withdrawal capability and no API keys in the repository. The test terminal should preferably use a demo account dedicated to CI. Live trading should be disabled in the validation terminal profile.
+The runner should have no broker withdrawal capability and no API keys in the repository. The test terminal should use a demo account dedicated to CI. Live trading is disabled in the validation terminal profile.
 
 GitHub runner registration tokens are entered locally during setup and never committed.
 
@@ -222,7 +239,7 @@ New infrastructure tests should include at minimum:
 - compile-log parser fixtures: 0/0, errors, warnings;
 - tester report parser fixtures including zero trades and nonzero trades;
 - secret-redaction/artifact allowlist checks;
-- trigger/security condition review so fork PRs cannot reach the self-hosted runner;
+- workflow/security assertions that fork PRs cannot schedule the self-hosted job;
 - dry-run mode that validates configuration without launching MetaEditor/MT5.
 
 Native behavior remains `未実測` until the Windows PC is actually registered and a real native run completes.
