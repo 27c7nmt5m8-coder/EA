@@ -1,20 +1,52 @@
 # v2.44 検証報告
 
-実施日: 2026-09-08
+実施日: 2026-09-13（v2.44再初期化ロック修正）
 
-**配布する実ソースの模擬実行500チェック、JSON回帰55チェック、静的監査495チェック、CSV集計20チェックが通過しました。ネイティブMQL5コンパイル・市場バックテスト・実際のAI API通信は未実施です。EX5は同梱していません。**
+**配布する実ソースの模擬実行543チェック（既存500＋今回43）、JSON回帰55チェック、既存静的監査495チェック、CSV集計20チェック、13ソースの差分照合が通過しました。ネイティブコンパイル未実測です。市場バックテスト・実際のAI API通信も未実測で、EX5は同梱していません。**
 
-件数には初期化、方向違い、倍率違い、同一試験内の複数確認を含みます。500件の独立した相場シナリオや、収益性の検証という意味ではありません。
+件数には初期化、方向違い、倍率違い、同一試験内の複数確認を含みます。543件の独立した相場シナリオや、収益性の検証という意味ではありません。
 
-## 基点・環境
+## 今回の基点・不具合再現・修正範囲
 
-基点は今回添付された `MTFAutoTrader_3Mode_AI_v2_43_Package(1).zip` です。
+今回の基点は添付 `MTFAutoTrader_3Mode_AI_v2_44_Package.zip` です。
+
+```text
+SHA-256: eac671507e4ba8b36a96a61fcb7af6b346242b54cf48bd7c83bdb7036a36d4c6
+```
+
+このZIPの `GlobalVariableTemp()` mockは既存変数でもtrueを返し、実機で発生した再初期化障害を隠していました。既存変数ならfalse／エラー4502を返すmockへ先に修正し、製品ソースを変更する前にSymbolState、チャート変更後の本体、注文mutex、Worker、Fintokeiの再取得失敗を個別に再現しました。厳密化したmockでは既存テスト一式も `symbol init` で失敗しました。修正前結果は `lock_regression_before.json` に保存しています。
+
+4か所に存在確認ガードを加え、値0の既存ロックはCAS（`GlobalVariableSetOnCondition(key,1,0)`）で再取得、値1は拒否するようにしました。Checkと作成の間に他インスタンスが作成して作成処理が失敗する場合も、安全側に取得を拒否します。取得のためのDeleteや強制0書込みは追加していません。既存の解放処理も変更していません。
+
+添付ZIPには前回の警告対策が未適用だったため、`UpdateAutoTrendLines()` の8変数の宣言時初期化を再反映しました。`verify_lock_scope.py` は、今回の4条件とこの8宣言だけを逆変換した全13ソースを、添付ZIPのSHA-256とバイト単位で照合します。変更ファイルはSymbolState・本体・Workerの3ファイル、残り10ソースはそのままです。売買ロジック・注文引数・スコア・SL・リスク計算・入力・バージョンは変更していません。過去の監査用ハッシュも更新せず、厳密に一致した今回の差分だけを監査時に戻しています。
+
+## 今回追加したロック回帰
+
+| 試験グループ | チェック数 | 確認内容 |
+| --- | ---: | --- |
+| mock仕様 | 3 | 新規0作成、既存0／1のfalse・4502、既存値維持 |
+| SymbolState | 5 | Init→Shutdown→同一オブジェクト再Init、別オブジェクトで同一銘柄再Init |
+| 本体の時間足変更 | 5 | 2銘柄のOnInit→OnDeinit(REASON_CHARTCHANGE)→OnInit、連続切替 |
+| 注文実行mutex | 4 | Acquire→Release→再Acquire、再入拒否、値0の変数を保持 |
+| Worker | 4 | Init→Deinit→再Init、owner・プロトコル・登録の復帰 |
+| Fintokei | 4 | controllerと2銘柄の再初期化、終了後の値0保持 |
+| 競合・非所有者の終了 | 13 | 4ロックの値1を保持する先行所有者に対する拒否、失敗側の終了で先行所有権・Worker稼働状態を壊さない |
+| 取得失敗 | 5 | 各ロックの作成失敗、注文mutexのCAS失敗で所有フラグを立てない |
+| 合計 | 43 | 既存500と合わせて543チェック |
+
+`v244_lock_scenarios.cpp` は実際の製品関数をC++アダプター経由で呼びます。SymbolStateは独立した2オブジェクトを使用し、本体／Worker／実行mutexはインスタンスごとの所有フラグや状態配列を切り替え、端末Global Variableを共有する2インスタンス相当の条件で検証しています。実MT5の複数EAスレッドを並行実行した試験ではありません。修正後のグループ別結果は `lock_regression_after.json` に保存しています。
+
+MetaEditor／MT5／Wineが利用できないため、**本体・Workerのネイティブ `0 errors / 0 warnings`、実際のチャート時間足切替、複数EAの実機競合は未実測**です。これらの最終確認はユーザー実機で行ってください。
+
+## v2.44初回機能追加の基点・今回の検証環境
+
+v2.44初回機能追加時の基点は `MTFAutoTrader_3Mode_AI_v2_43_Package(1).zip` です。
 
 ```text
 SHA-256: 86d92447782e8bc72ce28264b2c8040c41b46040248948b234912ca4ea97e00a
 ```
 
-元のv2.43を別ディレクトリに展開し、未変更ソースでも326チェックの通過を確認しました。v2.44では既存326（v2.42由来207＋v2.43追加119）を維持し、174チェックを追加しています。旧版の試験ケースの削除はありません。共通reset処理に新入力・ログ・故障注入用の初期化を追加しました。
+初回開発時は元のv2.43で326チェックの通過を確認し、v2.44で174チェックを追加しました。今回は、その既存500（v2.42由来207＋v2.43追加119＋v2.44追加174）を削除せず、修正版に対してすべて再実行しました。共通resetにはmockエラー状態の初期化を追加しています。
 
 Linux、Python 3、g++ C++17を使用しました。MT5/MetaEditor/Wineが利用できないため、本体・全include・Workerを展開してMQLの配列・UTF-16文字列・クラス参照等をC++へ適応し、MT5サービスを模擬して実ソースを実行しました。判定関数を別言語に複製したものだけを試験したわけではありません。
 
@@ -24,10 +56,11 @@ Linux、Python 3、g++ C++17を使用しました。MT5/MetaEditor/Wineが利用
 
 | 区分 | 結果 | 内容 |
 | --- | --- | --- |
-| 本体・Worker模擬実行 | 500 / 500 | 既存326＋v2.44追加174 |
+| 本体・Worker模擬実行 | 543 / 543 | 既存500＋今回43 |
 | JSON回帰 | 55 / 55 | 厳格JSON、UTF-16、Responses回答状態・schema |
 | ソース監査 | 495 / 495 | 既存監査の継承、変更関数の限定、総リスク・SL・ログ監査 |
 | オフラインCSV集計 | 20 / 20 | 独立した数値例、重複・不正・不明値・データセット分離 |
+| 今回のソース差分照合 | 13 / 13 | 4ロック条件＋8宣言以外は添付ZIPと同一 |
 | `_Symbol` 全検索 | 1か所 | 本体OnInitの設置先取得のみ |
 | `_Point` / `_Digits` / `_Period` / `PERIOD_CURRENT` | 実行ソースに残存なし | 新モジュールも銘柄別参照 |
 | ネイティブMQL5コンパイル | 未実施 | EX5なし |
@@ -112,10 +145,10 @@ AIの高スコア順キュー、HTTP中の枠保持、全銘柄送信の禁止�
 
 - 全13ソースの括弧・コメント・文字列構造、ローカルinclude解決、宣言順、クラス内メソッド、参照渡し配列、文字列を含む構造体初期化・コピーを確認。
 - `_Symbol` は本体の設置先取得1か所のみ。新しい総リスクは全保有ポジションから銘柄名を取得し、SL・ログはSymbolStateのm_symbolを使用。
-- v2.43エンジン171関数のうち160関数は、コメントと書式を除き文字列を残すSHA-256で一致。変更した11関数は初期入力、初期化/終了、候補・AI・実行へのSL/総リスク追加、分析フックに限定。
+- v2.43エンジン171関数のうち、初回v2.44で変更した11関数を除く160関数を照合。今回の `UpdateAutoTrendLines()` の8初期化だけを厳密に元へ戻すと、160関数のSHA-256が旧基準と一致する。今回のInitの存在確認ガードも旧版監査時だけ厳密に戻して照合する。
 - v2.42由来162関数の比較も保持。そのうち6関数は追加された分析フックだけを厳密なテキスト一致で除去してから旧ハッシュへ照合し、元の保護計算・条件・注文引数の一致を確認。
 - `MT3Types`、`MT3Scoring`、`MT3ReversalPatterns`、`MT3AIProtocol`、`MT3Json` はv2.43のモジュール全体と一致。既存inputの宣言・初期値をすべて保持し、新しいinputは総リスク2個＋EnableTradeLogの3個のみ。
-- コントローラは分析サービス・復元・初期化フィールドだけを厳密に除いて旧版と比較。Workerは表示バージョン以外が一致。プロトコル242、request/response schema、状態キーsalt、Magic/銘柄・口座予約スコープは変更なし。
+- コントローラは既存の分析フックと今回の2ロック存在確認ガードを厳密に除いて旧版と比較。Workerは今回のowner存在確認ガードと表示バージョンを戻すと旧版と一致する。プロトコル242、request/response schema、状態キーsalt、Magic/銘柄・口座予約スコープは変更なし。
 - 注文直前の総リスク再計算と鮮度再確認の順序、SLの外向き丸め、分析I/Oから注文承認へ戻り値を接続しないこと、重要保存失敗の発注停止を監査。
 - 公式のOrderCalcProfit、Position/Deal properties、FileFindFirst/FileMove仕様を参照し、口座通貨計算・64bit識別子・FILE_COMMONの使用を確認。
 
@@ -123,7 +156,7 @@ AIの高スコア順キュー、HTTP中の枠保持、全銘柄送信の禁止�
 
 ## 実機で残る確認とv2.43比較
 
-1. MetaEditorで本体とWorkerをコンパイルしてEX5を生成し、警告・エラーを確認する。
+1. MetaEditorで本体とWorkerをコンパイルして `0 errors / 0 warnings` を確認する。複数銘柄でM1→M5→M15→M1等の時間足変更と再設置を行い、EAが残ることを確認する。FintokeiとWorkerも再初期化し、先行インスタンス稼働中の2つ目が拒否されることを確認する。
 2. 同じブローカー・期間・銘柄・初期資金・費用・80/15/5等の入力で、v2.43とv2.44のAUTOをMT5テスター実行する。
 3. Total Trades、Win Rate、Profit Factor、Expectancy、Max Drawdown、Average R、パターン別Win Rate/PF、Portfolio Risk拒否数、SLSource別成績を比較する。旧版にないパターンログは履歴だけから推定しない。
 4. デモのNetting/Hedgingで実約定・部分約定・遅延履歴、複数銘柄同時候補、AI待ち中の保有増加、FILE_COMMONのロック・保存失敗と復帰、再接続・再起動を確認する。
@@ -138,8 +171,8 @@ AIの高スコア順キュー、HTTP中の枠保持、全銘柄送信の禁止�
 python3 tests/run_all.py
 ```
 
-個別には `verify_v244.py`、`verify_json_regression.py`、`verify_stats.py`、`audit_source.py` を実行できます。旧 `verify_v242.py` / `verify_v243.py` は互換エントリーとして全500模擬チェックを実行します。
+個別には `verify_v244.py`、`verify_json_regression.py`、`verify_stats.py`、`audit_source.py`、`verify_lock_scope.py` を実行できます。旧 `verify_v242.py` / `verify_v243.py` は互換エントリーとして全543模擬チェックを実行します。ロックのみの確認は `python3 tests/verify_v244.py symbol` のようにグループ名（mock / symbol / chartchange / execution / worker / fintokei / contention / failure）を指定できます。個別実行は全件結果のJSONを上書きしません。
 
-旧ケースは `scenarios.cpp` / `new_scenarios.cpp`、追加ケースは `v244_scenarios.cpp`、CSV集計は `verify_stats.py`。監査の基準は `baseline_functions.json`、`v242_safety_baseline.json`、`v243_safety_baseline.json` と厳密なフック除去を行う `v244_audit_helpers.py` です。
+旧ケースは `scenarios.cpp` / `new_scenarios.cpp` / `v244_scenarios.cpp`、今回の追加ケースは `v244_lock_scenarios.cpp`、CSV集計は `verify_stats.py`。監査の基準は `baseline_functions.json`、`v242_safety_baseline.json`、`v243_safety_baseline.json` と厳密な差分投影を行う `v244_audit_helpers.py` です。添付ZIPの全13ソースの基準は `v244_lock_fix_baseline.json` に保持しています。
 
 `verification/integration_results.json` / `source_audit.json` に13ソースのSHA-256、`json_results.json` にJSON55ケース、`stats_results.json` に集計20ケースと集計ツールのSHA-256を保存しています。`SHA256SUMS.txt` は配布全体の検査用です。検証で生成したC++/Linuxバイナリ、開発用途中ZIPは配布ZIPに含めません。

@@ -2,7 +2,7 @@
 from pathlib import Path
 import re,json,hashlib
 from json_support import extract
-from v244_audit_helpers import legacy_engine_function,legacy_main
+from v244_audit_helpers import legacy_engine_function,legacy_main,legacy_worker
 ROOT=Path(__file__).resolve().parents[1];SRC=ROOT/'src'
 code={p.name:p.read_text(encoding='utf-8-sig') for p in sorted(SRC.iterdir()) if p.is_file()}
 main=code['MTFAutoTrader_3Mode_AI_v2_44.mq5'];engine=code['MT3SymbolState.mqh']
@@ -89,10 +89,10 @@ baseline=json.loads((ROOT/'tests/v242_safety_baseline.json').read_text())
 for old,record in baseline['functions'].items():
     after=legacy_engine_function(record['v243_name'],engine)
     after=after.replace(record['v243_name']+'(',old+'(',1)
-    check('v242 safety fingerprint (reviewed analytics hooks removed) '+old,digest(after)==record['sha256'])
+    check('v242 safety fingerprint (reviewed analytics/initialization/lock changes projected) '+old,digest(after)==record['sha256'])
 for old in ['MT3AIProtocol.mqh','MT3Json.mqh','MTFAutoTrader_3Mode_AI_v2_42.mq5','MTFAutoTrader_AI_Worker.mq5']:
     now='MTFAutoTrader_3Mode_AI_v2_44.mq5' if old.endswith('v2_42.mq5') else old
-    after=legacy_main(code[now]) if old.endswith('v2_42.mq5') else code[now].replace('2.44','2.42') if now.endswith('.mq5') else code[now]
+    after=legacy_main(code[now]) if old.endswith('v2_42.mq5') else legacy_worker(code[now]) if now.endswith('.mq5') else code[now]
     check('v242 protocol/controller preserved after reviewed hooks '+old,digest(after)==baseline['whole_files'][old])
 old_scoring=scoring[:scoring.index('\ndouble Score100(')]+'\n#endif\n'
 check('all old weighted scoring math unchanged',digest(old_scoring)==baseline['whole_files']['MT3Scoring.mqh'])
@@ -151,7 +151,9 @@ v243=json.loads((ROOT/'tests/v243_safety_baseline.json').read_text())
 expected_changed=['UpdatePropProtection','ValidateInputs','StartAIRequest','ProcessAIReply','ManagePositions','Init','Shutdown','Maintain','TradeEvent','ExecuteEntryLocked','RefreshCandidate']
 check('v244 changed engine functions are explicitly bounded',set(v243['reviewed_changed_functions'])==set(expected_changed))
 for name,h in v243['functions'].items():
-    if name not in expected_changed:check('v243 engine function unchanged '+name,digest(extract(name,engine))==h)
+    if name not in expected_changed:
+        after=legacy_engine_function(name,engine) if name=='UpdateAutoTrendLines' else extract(name,engine)
+        check('v243 engine function unchanged (reviewed local initializers projected) '+name,digest(after)==h)
 for name,h in v243['whole_files'].items():check('v243 entire module unchanged '+name,digest(code[name])==h)
 check('all v243 input declarations and defaults unchanged',inputs[:len(v243['input_declarations'])]==v243['input_declarations'])
 check('three v244 new inputs only',inputs[len(v243['input_declarations']):]==['input bool EnablePortfolioRiskLimit = true;','input double MaxPortfolioRiskPercent = 3.0;','input bool EnableTradeLog = true;'])

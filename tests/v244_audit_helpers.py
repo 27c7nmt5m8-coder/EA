@@ -1,4 +1,4 @@
-"""Remove only reviewed analytics hooks when comparing legacy safety fingerprints.
+"""Project reviewed analytics hooks, local initializers and lock creation guards.
 
 The exact text must be present once. Trading conditions and order arguments are
 never masked; the projected functions still have to match the old SHA-256 values.
@@ -12,9 +12,25 @@ def replace_once(code, old, new=''):
     return code.replace(old, new, 1)
 
 
+def legacy_lock_guards(code, keys):
+    # Require the exact existence guard without masking compare-and-set, release,
+    # ownership flags or any other production statement.
+    for key in keys:
+        code = replace_once(code,
+            '(!GlobalVariableCheck(' + key + ') && !GlobalVariableTemp(' + key + '))',
+            '!GlobalVariableTemp(' + key + ')')
+    return code
+
+
 def legacy_engine_function(name, code):
     code = extract(name, code)
-    if name == 'UpdatePropProtection':
+    if name == 'UpdateAutoTrendLines':
+        # Preserve the previous warning fix and the historical fingerprints.
+        for variable in ['highShift1', 'highShift2', 'lowShift1', 'lowShift2']:
+            code = replace_once(code, 'int ' + variable + '=-1;', 'int ' + variable + ';')
+        for variable in ['highPrice1', 'highPrice2', 'lowPrice1', 'lowPrice2']:
+            code = replace_once(code, 'double ' + variable + '=0.0;', 'double ' + variable + ';')
+    elif name == 'UpdatePropProtection':
         code = replace_once(code, 'ulong logId=(ulong)PositionGetInteger(POSITION_IDENTIFIER);')
         code = replace_once(code, 'else JournalMarkDD(logId);')
     elif name == 'ManagePositions':
@@ -28,6 +44,7 @@ def legacy_engine_function(name, code):
     elif name == 'TradeEvent':
         code = replace_once(code, 'm_journalDirty=true;')
     elif name == 'Init':
+        code = legacy_lock_guards(code, ['g_lockKey'])
         code = replace_once(code, '''m_journalFrom=(datetime)StateGet(g_statePrefix+"log.from",(double)TimeCurrent());
  if(m_journalFrom<=0 || m_journalFrom>TimeCurrent()) m_journalFrom=TimeCurrent();
  m_portfolioRejects=StateGet(g_statePrefix+"log.portfolio.rejects");
@@ -39,6 +56,7 @@ def legacy_engine_function(name, code):
 
 
 def legacy_main(code):
+    code = legacy_lock_guards(code, ['g_execKey', 'g_propControllerKey'])
     for name in ['RestoreJournalSymbols', 'ServiceTradeJournals']:
         code = replace_once(code, extract(name, code))
     for old, new in [
@@ -50,3 +68,7 @@ def legacy_main(code):
     ]:
         code = replace_once(code, old, new)
     return code.replace('2.44', '2.42')
+
+
+def legacy_worker(code):
+    return legacy_lock_guards(code, ['g_workerRegistry+"owner"']).replace('2.44', '2.42')

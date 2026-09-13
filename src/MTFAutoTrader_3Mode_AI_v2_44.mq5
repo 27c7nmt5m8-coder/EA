@@ -20,7 +20,7 @@ string SymbolPrefix(string symbol) {return "MT3S."+ScopeDigest(SymbolScope(symbo
 string AccountIntent(string symbol) {return g_accountPrefix+"I."+ScopeDigest(SymbolScope(symbol));}
 bool AcquireExecution()
 {
- if(g_execOwned || !GlobalVariableTemp(g_execKey) || !GlobalVariableSetOnCondition(g_execKey,1,0)) return false;
+ if(g_execOwned || (!GlobalVariableCheck(g_execKey) && !GlobalVariableTemp(g_execKey)) || !GlobalVariableSetOnCondition(g_execKey,1,0)) return false;
  g_execOwned=true;return true;
 }
 void ReleaseExecution()
@@ -290,7 +290,7 @@ int OnInit()
  if(AccountMode==FINTOKEI)
  {
   g_propControllerKey="MT3L."+IntegerToString((long)TextHash(g_account+"/PROP"));
-  if(!GlobalVariableTemp(g_propControllerKey) || !GlobalVariableSetOnCondition(g_propControllerKey,1,0))
+  if((!GlobalVariableCheck(g_propControllerKey) && !GlobalVariableTemp(g_propControllerKey)) || !GlobalVariableSetOnCondition(g_propControllerKey,1,0))
   {Print("Another prop controller owns this account.");return INIT_FAILED;}
   g_propControllerOwned=true;
  }

@@ -38,7 +38,7 @@ int OnInit()
  if(StringLen(OpenAIAPIKey)<10 || StringFind(OpenAIAPIKey,"\r")>=0 || StringFind(OpenAIAPIKey,"\n")>=0 || OpenAITimeoutMs<1000 || OpenAITimeoutMs>60000)
  {Print("Set the API key and a timeout between 1000 and 60000 ms on the worker.");return INIT_PARAMETERS_INCORRECT;}
  g_workerRegistry=AIRegistry();
- if(!GlobalVariableTemp(g_workerRegistry+"owner") || !GlobalVariableSetOnCondition(g_workerRegistry+"owner",1,0))
+ if((!GlobalVariableCheck(g_workerRegistry+"owner") && !GlobalVariableTemp(g_workerRegistry+"owner")) || !GlobalVariableSetOnCondition(g_workerRegistry+"owner",1,0))
  {Print("Keep one AI worker in this terminal/account. Remove the previous worker before starting another.");return INIT_FAILED;}
  g_workerOwned=true;
  if(!SaveU64(g_workerRegistry+"chart",(ulong)ChartID()) || GlobalVariableSet(g_workerRegistry+"slot",0)==0 || GlobalVariableSet(g_workerRegistry+"busy",0)==0 ||

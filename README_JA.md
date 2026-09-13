@@ -1,8 +1,22 @@
 # MTFAutoTrader v2.44 — 日本語説明書
 
-更新日: 2026-09-08
+更新日: 2026-09-13（v2.44のまま再初期化ロック修正）
 
-添付v2.43を基点に、総ポートフォリオリスク上限、全10パターンの構造SL、パターン別の成績ログ・集計ツールを追加しました。既存のM1エントリー、7時間足の重み付きスコア、複数銘柄監視、AI Worker、3つのリスク管理モード、裁量、注文照合、建値移動・トレーリング、Fintokei保護、チャート表示を引き継ぎます。
+## v2.44 再初期化ロック修正版
+
+チャート時間足の変更後に `Cannot initialize symbol:` が連続し、`initialization failed` でEAが終了する不具合を修正しました。実機では `GlobalVariableTemp()` が既存変数に対して失敗するため、終了処理で値を0へ戻したロックを次の初期化で再利用できなかったことが原因です。
+
+修正対象は `SymbolState` の `g_lockKey`、本体の注文実行 `g_execKey`、Fintokeiの `g_propControllerKey`、AI Workerのowner lockの4か所です。存在しない変数だけを作成し、続けて `GlobalVariableSetOnCondition(key,1,0)` で排他的に取得します。既存値が1なら拒否し、取得のための無条件削除や0への上書きは行いません。作成や排他取得に失敗した場合も取得を拒否します。
+
+売買ロジック、エントリー条件、スコア、SL、リスク計算、入力値、保存キー、AIプロトコル242、バージョン2.44を維持しています。`UpdateAutoTrendLines()` の8変数も、shiftは `-1`、priceは `0.0` の宣言時初期化を維持しました。今回の添付ZIPにはこの初期化が未適用だったため、修正版に反映しています。
+
+既存500＋追加43の模擬チェック、JSON55、既存静的監査495、CSV集計20、13ソースの厳密な差分照合が通過しました。**ネイティブコンパイル未実測です。本体・Workerの最終的な `0 errors / 0 warnings` と時間足変更後の動作は、ユーザー実機で確認してください。**
+
+同じv2.44表記の旧ファイルと混ざらないよう、旧EA・Workerを外してから下記13ファイルをまとめて入れ替え、本体とWorkerを再コンパイルします。動作確認のためにロック用Global Variableを削除する必要はありません。今回の修正は、正常終了で値0になったロックの再利用を可能にするものです。
+
+以下はv2.44の機能説明です。
+
+v2.43を基点に、総ポートフォリオリスク上限、全10パターンの構造SL、パターン別の成績ログ・集計ツールを追加しました。既存のM1エントリー、7時間足の重み付きスコア、複数銘柄監視、AI Worker、3つのリスク管理モード、裁量、注文照合、建値移動・トレーリング、Fintokei保護、チャート表示を引き継ぎます。
 
 初期値は総リスク上限3%、分析ログ有効です。`MinimumSignalScore=70`、方向一致の初期下限55%、内部Trend/MACD 70/30、最終スコア比率80/15/5とその入力検証は変更していません。エントリー条件を追加で厳しくするのではなく、保有リスクと損切り位置を改善し、その結果を評価できるようにした版です。
 
@@ -444,8 +458,8 @@ python3 tests/run_all.py
 
 GitHub Actions の CI も Ubuntu、Python 3.11、g++ で同じオフライン検証を実行し、失敗時を含めて `verification/` の診断JSON/TXTをartifactとして保存します。CIのC++検証はMT5モックであり、MetaEditorによるネイティブMQL5コンパイル、MT5実機・市場バックテスト、実AI/API通信、収益性の検証ではありません。
 
-`verification/` のJSON結果は配布ソースのSHA-256と対応しています。ZIP内の `SHA256SUMS.txt` で配布ファイルの整合性を確認できます。生成される検証用C++・バイナリはMT5用のEX5ではありません。
+`verification/` の最終JSON結果は配布ソースのSHA-256と対応しています。`lock_regression_before.json` だけは修正前の失敗再現記録です。ZIP内の `SHA256SUMS.txt` で配布ファイルの整合性を確認できます。生成される検証用C++・バイナリはMT5用のEX5ではありません。
 
 技術仕様の確認先: [MQL5 OnTimer](https://www.mql5.com/en/docs/event_handlers/ontimer)、[銘柄プロパティ](https://www.mql5.com/en/docs/constants/environment_state/marketinfoconstants)、[GlobalVariableSetOnCondition](https://www.mql5.com/en/docs/globals/globalvariablesetoncondition)、[ストラテジーテスター](https://www.mql5.com/en/docs/runtime/testing)。
 
-今回確認したMQL5公式仕様: [OrderCalcProfit](https://www.mql5.com/en/docs/trading/ordercalcprofit)、[Position properties](https://www.mql5.com/en/docs/constants/tradingconstants/positionproperties)、[Deal properties](https://www.mql5.com/en/docs/constants/tradingconstants/dealproperties)、[FileFindFirst](https://www.mql5.com/en/docs/files/filefindfirst)、[FileMove](https://www.mql5.com/en/docs/files/filemove)。
+v2.44初回開発時の参照仕様: [OrderCalcProfit](https://www.mql5.com/en/docs/trading/ordercalcprofit)、[Position properties](https://www.mql5.com/en/docs/constants/tradingconstants/positionproperties)、[Deal properties](https://www.mql5.com/en/docs/constants/tradingconstants/dealproperties)、[FileFindFirst](https://www.mql5.com/en/docs/files/filefindfirst)、[FileMove](https://www.mql5.com/en/docs/files/filemove)。
