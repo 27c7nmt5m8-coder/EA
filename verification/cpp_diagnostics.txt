@@ -126,52 +126,52 @@
  1379 |  if(!j.GetNumber(0,u"restored",n) || (n!=0 && n!=1)) return false;r.restored=n==1;
       |                                                                   ^
 /home/runner/work/EA/EA/verification/integration.cpp: In member function ‘void SymbolState::DeleteAutoTrendLines()’:
-/home/runner/work/EA/EA/verification/integration.cpp:3106:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
- 3106 |  for(int i=0;i<2;i++) ZeroMemory(m_trends[i]);if(!m_isChart) return;
+/home/runner/work/EA/EA/verification/integration.cpp:3110:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+ 3110 |  for(int i=0;i<2;i++) ZeroMemory(m_trends[i]);if(!m_isChart) return;
       |  ^~~
-/home/runner/work/EA/EA/verification/integration.cpp:3106:47: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
- 3106 |  for(int i=0;i<2;i++) ZeroMemory(m_trends[i]);if(!m_isChart) return;
+/home/runner/work/EA/EA/verification/integration.cpp:3110:47: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+ 3110 |  for(int i=0;i<2;i++) ZeroMemory(m_trends[i]);if(!m_isChart) return;
       |                                               ^~
 /home/runner/work/EA/EA/verification/integration.cpp: In member function ‘bool SymbolState::BuildAISnapshot(std::vector<MTFResult>&, bool, bool, double, string, MqlTick&, string&)’:
-/home/runner/work/EA/EA/verification/integration.cpp:4032:59: warning: unused parameter ‘hybrid’ [-Wunused-parameter]
- 4032 | bool BuildAISnapshot(std::vector<MTFResult> &results,bool hybrid,bool proposedBuy,double localScore,string patternName,MqlTick &tick,string &snapshot)
+/home/runner/work/EA/EA/verification/integration.cpp:4036:59: warning: unused parameter ‘hybrid’ [-Wunused-parameter]
+ 4036 | bool BuildAISnapshot(std::vector<MTFResult> &results,bool hybrid,bool proposedBuy,double localScore,string patternName,MqlTick &tick,string &snapshot)
       |                                                      ~~~~~^~~~~~
 /home/runner/work/EA/EA/verification/integration.cpp: In member function ‘void SymbolState::CaptureInitialRisks()’:
-/home/runner/work/EA/EA/verification/integration.cpp:4199:54: warning: unused variable ‘sl’ [-Wunused-variable]
- 4199 |   double open=PositionGetDouble(POSITION_PRICE_OPEN),sl=PositionGetDouble(POSITION_SL),v=PositionGetDouble(POSITION_VOLUME);
+/home/runner/work/EA/EA/verification/integration.cpp:4203:54: warning: unused variable ‘sl’ [-Wunused-variable]
+ 4203 |   double open=PositionGetDouble(POSITION_PRICE_OPEN),sl=PositionGetDouble(POSITION_SL),v=PositionGetDouble(POSITION_VOLUME);
       |                                                      ^~
 /home/runner/work/EA/EA/verification/integration.cpp: In member function ‘void SymbolState::ChartEvent(int, const long int&, const double&, const string&)’:
-/home/runner/work/EA/EA/verification/integration.cpp:4593:63: warning: unused parameter ‘dparam’ [-Wunused-parameter]
- 4593 | void ChartEvent(const int id,const long &lparam,const double &dparam,const string &sparam)
+/home/runner/work/EA/EA/verification/integration.cpp:4597:63: warning: unused parameter ‘dparam’ [-Wunused-parameter]
+ 4597 | void ChartEvent(const int id,const long &lparam,const double &dparam,const string &sparam)
       |                                                 ~~~~~~~~~~~~~~^~~~~~
 /home/runner/work/EA/EA/verification/integration.cpp: In member function ‘void SymbolState::JournalIdText(string&, ulong)’:
-/home/runner/work/EA/EA/verification/integration.cpp:5379:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
- 5379 |  if(list!=u"") list+=u";";list+=value;
+/home/runner/work/EA/EA/verification/integration.cpp:5383:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+ 5383 |  if(list!=u"") list+=u";";list+=value;
       |  ^~
-/home/runner/work/EA/EA/verification/integration.cpp:5379:27: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
- 5379 |  if(list!=u"") list+=u";";list+=value;
+/home/runner/work/EA/EA/verification/integration.cpp:5383:27: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+ 5383 |  if(list!=u"") list+=u";";list+=value;
       |                           ^~~~
 /home/runner/work/EA/EA/verification/integration.cpp: In function ‘void OnDeinit(int)’:
-/home/runner/work/EA/EA/verification/integration.cpp:5790:25: warning: unused parameter ‘reason’ [-Wunused-parameter]
- 5790 | void OnDeinit(const int reason)
+/home/runner/work/EA/EA/verification/integration.cpp:5807:25: warning: unused parameter ‘reason’ [-Wunused-parameter]
+ 5807 | void OnDeinit(const int reason)
       |               ~~~~~~~~~~^~~~~~
 /home/runner/work/EA/EA/verification/integration.cpp: In function ‘void WorkerDeinit(int)’:
-/home/runner/work/EA/EA/verification/integration.cpp:5846:29: warning: unused parameter ‘reason’ [-Wunused-parameter]
- 5846 | void WorkerDeinit(const int reason)
+/home/runner/work/EA/EA/verification/integration.cpp:5863:29: warning: unused parameter ‘reason’ [-Wunused-parameter]
+ 5863 | void WorkerDeinit(const int reason)
       |                   ~~~~~~~~~~^~~~~~
 /home/runner/work/EA/EA/verification/integration.cpp: In function ‘void scoring_tests()’:
-/home/runner/work/EA/EA/verification/integration.cpp:5969:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
- 5969 |  for(auto p:vals)*p*=10000;ScoreEvidence(scaled);check(near(scaled.trendScore,r[0].trendScore,1e-7)&&near(scaled.macdScore,r[0].macdScore,1e-7),"ATR scale invariance");
+/home/runner/work/EA/EA/verification/integration.cpp:5986:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+ 5986 |  for(auto p:vals)*p*=10000;ScoreEvidence(scaled);check(near(scaled.trendScore,r[0].trendScore,1e-7)&&near(scaled.macdScore,r[0].macdScore,1e-7),"ATR scale invariance");
       |  ^~~
-/home/runner/work/EA/EA/verification/integration.cpp:5969:28: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
- 5969 |  for(auto p:vals)*p*=10000;ScoreEvidence(scaled);check(near(scaled.trendScore,r[0].trendScore,1e-7)&&near(scaled.macdScore,r[0].macdScore,1e-7),"ATR scale invariance");
+/home/runner/work/EA/EA/verification/integration.cpp:5986:28: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+ 5986 |  for(auto p:vals)*p*=10000;ScoreEvidence(scaled);check(near(scaled.trendScore,r[0].trendScore,1e-7)&&near(scaled.macdScore,r[0].macdScore,1e-7),"ATR scale invariance");
       |                            ^~~~~~~~~~~~~
 /home/runner/work/EA/EA/verification/integration.cpp: In function ‘void scanner_tests()’:
-/home/runner/work/EA/EA/verification/integration.cpp:6086:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
- 6086 |  for(auto s:g_symbols)s->RefreshCandidate();g_symbols[0]->m_candidateScore=75;g_symbols[1]->m_candidateScore=90;DispatchQueue();
+/home/runner/work/EA/EA/verification/integration.cpp:6103:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+ 6103 |  for(auto s:g_symbols)s->RefreshCandidate();g_symbols[0]->m_candidateScore=75;g_symbols[1]->m_candidateScore=90;DispatchQueue();
       |  ^~~
-/home/runner/work/EA/EA/verification/integration.cpp:6086:45: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
- 6086 |  for(auto s:g_symbols)s->RefreshCandidate();g_symbols[0]->m_candidateScore=75;g_symbols[1]->m_candidateScore=90;DispatchQueue();
+/home/runner/work/EA/EA/verification/integration.cpp:6103:45: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+ 6103 |  for(auto s:g_symbols)s->RefreshCandidate();g_symbols[0]->m_candidateScore=75;g_symbols[1]->m_candidateScore=90;DispatchQueue();
       |                                             ^~~~~~~~~
 /home/runner/work/EA/EA/verification/integration.cpp: In instantiation of ‘uint FileReadArray(int, std::vector<T>&, int, int) [with T = unsigned char; uint = unsigned int]’:
 /home/runner/work/EA/EA/verification/integration.cpp:698:51:   required from here

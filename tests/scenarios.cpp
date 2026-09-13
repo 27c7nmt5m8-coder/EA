@@ -227,6 +227,18 @@ void tester_connection_tests(){
   check(!s.EntryPreflight(false),testing?"tester still requires trading permissions":"live still requires trading permissions");s.Shutdown();
  }
 
+ reset();tester=true;permissions=false;SymbolState diag;setup(diag);int diagBefore=diag.m_testerDiagnosticCount;
+ check(!diag.EntryPreflight(false),"tester diagnostic fixture reaches permission rejection");
+ diag.JournalSample();
+ check(diag.m_lastTesterDiagnosticStatus==u"Trading permission or broker connection is OFF"&&diag.m_testerDiagnosticCount==diagBefore+1,"tester diagnostic records preflight rejection status");
+ diag.JournalSample();check(diag.m_testerDiagnosticCount==diagBefore+1,"tester diagnostic deduplicates unchanged status");
+ diag.g_status=u"Waiting for all 7 timeframe indicators";diag.JournalSample();
+ check(diag.m_lastTesterDiagnosticStatus==u"Waiting for all 7 timeframe indicators"&&diag.m_testerDiagnosticCount==diagBefore+2,"tester diagnostic records next pipeline status");diag.Shutdown();
+
+ reset();permissions=false;SymbolState liveDiag;setup(liveDiag);
+ check(!liveDiag.EntryPreflight(false),"live diagnostic fixture reaches permission rejection");liveDiag.JournalSample();
+ check(liveDiag.m_lastTesterDiagnosticStatus==u""&&liveDiag.m_testerDiagnosticCount==0,"live mode emits no tester diagnostics");liveDiag.Shutdown();
+
  reset();tester=true;connected=false;ScanMode=CURRENT_SYMBOL;fixture_pattern(u"FX");
  check(OnInit()==INIT_SUCCEEDED,"disconnected tester AUTO initializes");
  OnTimer();
