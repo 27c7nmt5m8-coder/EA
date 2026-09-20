@@ -196,10 +196,10 @@ bool SelectReversalPattern(MTFResult &r[],PatternSignal &signal)
 bool PatternEntryLocationOK(PatternSignal &p,MqlTick &tick,bool buy)
 {
  if(!IsNewReversal(p.type)) return true;
- if(!p.valid || p.triggerTime!=iTime(m_symbol,PERIOD_M1,1) || buy!=p.buySignal) return false;
+ if(DiagReject(!p.valid,"pattern_invalid") || DiagReject(p.triggerTime!=iTime(m_symbol,PERIOD_M1,1),"pattern_bar_stale") || DiagReject(buy!=p.buySignal,"pattern_direction_mismatch")) return false;
  double entry=buy?tick.ask:tick.bid,side=buy?1.0:-1.0;
- double atr=GetATR(PERIOD_M1,14,1);if(atr<=0 || p.referencePrice<=0) return false;
- if(side*(entry-p.referencePrice)<=0) return false;
- if(IsFailedBreakout(p.type) && MathAbs(entry-p.referencePrice)>0.35*atr+TickSize()*1e-8) return false;
+ double atr=GetATR(PERIOD_M1,14,1);if(DiagReject(atr<=0,"pattern_atr_unavailable") || DiagReject(p.referencePrice<=0,"pattern_reference_invalid")) return false;
+ if(DiagReject(side*(entry-p.referencePrice)<=0,"pattern_entry_wrong_side")) return false;
+ if(DiagReject(IsFailedBreakout(p.type) && MathAbs(entry-p.referencePrice)>0.35*atr+TickSize()*1e-8,"failed_breakout_price_drift")) return false;
  return true;
 }

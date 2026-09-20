@@ -8,6 +8,7 @@ Historical hashes and all other production bytes remain fixed.
 from pathlib import Path
 import hashlib
 import json
+from entry_diagnostic_audit import project
 
 ROOT = Path(__file__).resolve().parents[1]
 baseline = json.loads((ROOT / 'tests/v244_lock_fix_baseline.json').read_text())
@@ -29,7 +30,7 @@ assert actual == set(baseline['source_sha256']), 'Unexpected production file add
 results = []
 for name, expected in baseline['source_sha256'].items():
     original_bytes = (ROOT / 'src' / name).read_bytes()
-    projected = original_bytes
+    projected = project(name, original_bytes.decode()).encode()
     for key in keys.get(name, []):
         projected = replace_once(projected,
             '(!GlobalVariableCheck(' + key + ') && !GlobalVariableTemp(' + key + '))',
