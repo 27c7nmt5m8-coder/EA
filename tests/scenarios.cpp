@@ -63,6 +63,9 @@ void scoring_tests(){
  check(!lazy.ReadIndicator(fresh,0,1,value)&&value==0,"unavailable history still rejects and clears output");
  symbols[u"FX"].ready=true;value=123;
  check(!lazy.ReadIndicator(INVALID_HANDLE,0,1,value)&&value==0,"invalid indicator still rejects and clears output");
+ value=123;check(!lazy.ReadIndicator(fresh,0,1000,value)&&value==0,"insufficient calculated bars still reject after buffer request");
+ double savedATR=symbols[u"FX"].atr;symbols[u"FX"].atr=EMPTY_VALUE;value=123;
+ check(!lazy.ReadIndicator(fresh,0,1,value)&&value==0,"empty indicator value remains invalid");symbols[u"FX"].atr=savedATR;
  lazy.ReleaseIndicators();std::vector<MTFResult> lazyFrames;
  check(lazy.AnalyzeAllTimeframes(lazyFrames)&&CompleteMTF(lazyFrames),"tester initializes all seven frames on demand");lazy.Shutdown();
  reset();SymbolState a,b;setup(a);setup(b,u"GOLD");

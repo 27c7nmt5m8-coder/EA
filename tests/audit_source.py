@@ -152,7 +152,7 @@ expected_changed=['UpdatePropProtection','ValidateInputs','StartAIRequest','Proc
 check('v244 changed engine functions are explicitly bounded',set(v243['reviewed_changed_functions'])==set(expected_changed))
 for name,h in v243['functions'].items():
     if name not in expected_changed:
-        after=legacy_engine_function(name,engine) if name in ['UpdateAutoTrendLines','EntryPreflight'] else extract(name,engine)
+        after=legacy_engine_function(name,engine) if name in ['UpdateAutoTrendLines','EntryPreflight','ReadIndicator'] else extract(name,engine)
         check('v243 engine function unchanged (reviewed local initializers/tester exception projected) '+name,digest(after)==h)
 for name,h in v243['whole_files'].items():check('v243 entire module unchanged '+name,digest(code[name])==h)
 check('all v243 input declarations and defaults unchanged',inputs[:len(v243['input_declarations'])]==v243['input_declarations'])

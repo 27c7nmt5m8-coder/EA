@@ -3,19 +3,19 @@
   "compiler": "MetaEditor 5.0.0.6182",
   "platform": "Windows x64",
   "method": "/compile:<source> /include:<installed MQL5> /log",
-  "result": "native compilation only; no terminal deployment or execution",
+  "result": "native compilation after ReadIndicator demand-order fix; no live deployment",
   "builds": [
     {
       "source": "MTFAutoTrader_3Mode_AI_v2_44.mq5",
       "errors": 0,
       "warnings": 0,
-      "ex5_sha256": "83f0648fcc6ee38ae824ac14296a89d8dc701574283b2bf4de25ed91dbea853b"
+      "ex5_sha256": "014b24be34ae38deae80aa4f2c5c6a2515fb802318d09666acd21d9012accea4"
     },
     {
       "source": "MTFAutoTrader_AI_Worker.mq5",
       "errors": 0,
       "warnings": 0,
-      "ex5_sha256": "c30e827b9afe8da22441341b0b5f5dce94fec76ad05bdc6ff90ab8e09d432fcb"
+      "ex5_sha256": "6bc9fbc8a945fa9b533ab1aead09160a57fe6f5face3a9cae6b464afeb462b75"
     }
   ],
   "source_sha256": {
@@ -26,7 +26,7 @@
     "MT3PortfolioRisk.mqh": "3904bd36f35cecd6c14c5ea0874ee7a9daf76a00eaa2ebe5ba9fe22d21de0787",
     "MT3ReversalPatterns.mqh": "abb3c28a163e7530bd5db757bca4c74b519e866d00633823b72250d92e4d2289",
     "MT3Scoring.mqh": "f57d1e185752e0676a08682c70e76cfd8441fb29c35d9c1c05975cf3eea4aa4d",
-    "MT3SymbolState.mqh": "8205a87eeb5e089e8b797f99099a5c14f3f8306b125079ed35d94a541a33ffb9",
+    "MT3SymbolState.mqh": "63884c4949b5b134adcd631f8134db3da4ed2ddabd43cd5e6cf5e8d8af622ca4",
     "MT3TradeJournal.mqh": "df5e19223effd33b1a609bae1927dddae344f598f912912f96d02292ab186f2c",
     "MT3TradeLog.mqh": "f3b32e3cd6b746bb5c86a03fc687c4e17be4c6e8193de24a96b4dcf9e914234a",
     "MT3Types.mqh": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2",
