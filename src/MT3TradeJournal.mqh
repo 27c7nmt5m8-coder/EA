@@ -195,8 +195,21 @@ bool JournalQueue(ulong id)
  int n=ArraySize(m_journal);if(ArrayResize(m_journal,n+1)!=n+1) {JournalWarn("record allocation failed");return false;}
  m_journal[n]=r;return true;
 }
+void TesterStatusDiagnostic()
+{
+ if(!MQLInfoInteger(MQL_TESTER)) return;
+ if(g_status==m_lastTesterDiagnosticStatus) return;
+ m_lastTesterDiagnosticStatus=g_status;m_testerDiagnosticCount++;
+ PrintFormat("[MT3 TESTER DIAG] symbol=%s status=%s scan=%d universe=%d connected=%d terminal_trade=%d mql_trade=%d account_trade=%d account_expert=%d history=%d mc_ready=%d mc_allowed=%d risk_mode=%s samples=%d mc_risk=%.4f account_unresolved=%d symbol_unresolved=%d exposure=%d",
+  m_symbol,g_status,(int)m_scanEnabled,(int)InUniverseNow(),(int)TerminalInfoInteger(TERMINAL_CONNECTED),
+  (int)TerminalInfoInteger(TERMINAL_TRADE_ALLOWED),(int)MQLInfoInteger(MQL_TRADE_ALLOWED),
+  (int)AccountInfoInteger(ACCOUNT_TRADE_ALLOWED),(int)AccountInfoInteger(ACCOUNT_TRADE_EXPERT),
+  (int)g_historyOK,(int)g_mcReady,(int)g_mcAllowed,EnumToString(RiskMode),g_sampleCount,g_mcRisk,
+  (int)AnyAccountUnresolved(),(int)HasUnresolvedOrder(),(int)EntryExposureBlocked());
+}
 void JournalSample()
 {
+ TesterStatusDiagnostic();
  if(!EnableTradeLog) return;
  MqlTick tick;if(!FreshQuote(tick)) return;
  for(int i=0;i<ArraySize(m_journal);i++)

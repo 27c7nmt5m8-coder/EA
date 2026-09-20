@@ -1,7 +1,23 @@
 {
-  "passed": 573,
-  "failed": 0,
-  "scope": "Actual main EA, headers and worker adapted to UTF-16 C++17 using simulated MT5 services. No MetaEditor compilation, real trading, market backtest, or API call.",
+  "date": "2026-09-20",
+  "compiler": "MetaEditor 5.0.0.6182",
+  "platform": "Windows x64",
+  "method": "/compile:<source> /include:<installed MQL5> /log",
+  "result": "native compilation only; no terminal deployment or execution",
+  "builds": [
+    {
+      "source": "MTFAutoTrader_3Mode_AI_v2_44.mq5",
+      "errors": 0,
+      "warnings": 0,
+      "ex5_sha256": "83f0648fcc6ee38ae824ac14296a89d8dc701574283b2bf4de25ed91dbea853b"
+    },
+    {
+      "source": "MTFAutoTrader_AI_Worker.mq5",
+      "errors": 0,
+      "warnings": 0,
+      "ex5_sha256": "c30e827b9afe8da22441341b0b5f5dce94fec76ad05bdc6ff90ab8e09d432fcb"
+    }
+  ],
   "source_sha256": {
     "MT3AIProtocol.mqh": "25340f89525ddaa7ffd425fddad0b22919864e0f8ce3db9961775eb299db24de",
     "MT3Config.mqh": "f75363429a3b1abc1759140910773c2e1a0f58278e83ca757d6a09d1ad117fd7",
@@ -16,5 +32,8 @@
     "MT3Types.mqh": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2",
     "MTFAutoTrader_3Mode_AI_v2_44.mq5": "6ef8f35b6343173d5a91ac280cd13702f723ba4678d3bdec4b3274218333aee1",
     "MTFAutoTrader_AI_Worker.mq5": "2d068d5046ec3d616568227d6e9f6be0d9166af814f48076ac8a000d4922e12c"
-  }
+  },
+  "strategy_tester": "NOT_MEASURED",
+  "real_broker": "NOT_MEASURED",
+  "real_ai_api": "NOT_MEASURED"
 }

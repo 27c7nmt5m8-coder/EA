@@ -1,5 +1,18 @@
 # CHANGELOG — v2.43 → v2.44
 
+## 2026-09-20：診断PRを最新mainへ統合・ネイティブ検証
+
+- main `98323ea` の開発・検証文書を保持して既存の診断PRを更新。診断コード、売買仕様、既存回帰テストの内容は変更しない。
+- MetaEditor 5.0.0.6182で本体・Workerとも0 errors / 0 warnings。対象ソースのSHA-256と結果は `verification/native_compile.json` に記録。Strategy Testerによる取引数0の原因特定は未実測。
+
+## 2026-09-13：Strategy Tester診断ログを追加（売買挙動は変更しない）
+
+- Strategy Tester時だけ、`g_status` が変化したときに `[MT3 TESTER DIAG]` を1行出力する診断を追加。実運用では出力しない。
+- 診断行には銘柄、現在status、scan/universe、接続・売買許可、履歴、Monte Carlo ready/allowed、RiskMode、サンプル数、MC上限、口座/銘柄の未解決注文、既存エクスポージャ状態を含める。
+- 同じstatusの連続出力は抑制し、`EnableTradeLog=false` でもテスター診断は有効。注文可否、スコア、SL/TP、ロット、リスク計算、保存キー、AI protocolは変更しない。
+- 診断回帰8チェックを追加し、統合模擬実行は573 / 573。既存JSON 55、静的監査495、CSV20、13ソース差分監査も通過。
+- **MetaEditorネイティブコンパイルと、この診断版を使った実機Strategy Tester再実行は未実測。**
+
 ## 2026-09-13：Strategy Testerのライブ接続必須条件を修正
 
 - `EntryPreflight()` のライブ接続拒否を `!MQL_TESTER && !TERMINAL_CONNECTED` に限定し、Strategy Tester時だけライブサーバー接続を不要にした。
