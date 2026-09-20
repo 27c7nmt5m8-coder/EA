@@ -1,5 +1,15 @@
 # v2.44 検証報告
 
+## 2026-09-20：指標要求順序の修正
+
+非ビジュアルの実機テスターで取引数0を再現し、診断statusが指標待機から進まないことを確認しました。権限・履歴・MC・未解決注文のgateではありません。`ReadIndicator` が `BarsCalculated` の未計算判定で戻るため、要求時に計算を開始する `CopyBuffer` へ到達しませんでした。MQL5公式仕様に合わせて呼び出し順序の1行だけを変更し、取得値の検証・7時間足すべての準備条件・売買仕様は維持しています。
+
+mockの要求時計算で修正前に回帰テストが失敗し、修正後は全体ゲート582/55/20/495/13が成功しました。追加は初回読み取り・7時間足の準備・履歴不足・不正ハンドル・バー不足・EMPTY_VALUEの回帰確認です。MetaEditor 6182で本体・Workerとも0 errors / 0 warnings。最新ソースに対する結果は [native_compile.json](verification/native_compile.json) を参照してください。
+
+実機比較も2026-06-01〜2026-09-01、USDJPY/M1・AUTO・OpenAI無効・実ティック・同一入力で完了しました。前後とも5,273,008ティック・94,267バーを処理し、指標待機は修正版で解消しました。ただし取引数は前後とも0です。修正版はパターン、スコア、価格・コスト・SL形状等の後段gateまで進んでおり、取引数0の全要因が解消したとは扱いません。個人ログを含まない集計と対象ソースSHAは [indicator_demand.json](verification/indicator_demand.json) に記録しています。診断件数はstatus遷移数で、独立した候補・拒否・取引数ではありません。次の調査は後段の複合gateの内訳確認であり、条件緩和は行いません。
+
+以下は診断追加時点の記録です。既存の `integration_results.json`、`source_audit.json`、`validation_summary.json` 等は当時のソースSHAに対応する履歴として保持します。
+
 実施日: 2026-09-13（オフライン診断検証）、2026-09-20（最新mainへの統合・ネイティブコンパイル）
 
 **配布する実ソースの模擬実行573チェック（既存565＋Strategy Tester診断8）、JSON回帰55チェック、既存静的監査495チェック、CSV集計20チェック、13ソースの差分照合が通過しました。MetaEditor 5.0.0.6182で本体・Workerとも0 errors / 0 warningsを確認しました。診断版の実機Strategy Tester・実際のAI API通信は未実測で、EX5は同梱していません。**
@@ -208,7 +218,7 @@ python3 tests/run_all.py
 
 旧 `verify_v242.py` / `verify_v243.py` は `verify_v244.py` への互換エントリーです。同じ試験を重複実行する必要はありません。ロックのグループ指定は mock / symbol / chartchange / execution / worker / fintokei / contention / failure のみ対応し、指定時は全件結果のJSONを上書きしません。Strategy Tester接続判定はグループ指定では実行されないため、引数なしの全mock試験で確認します。
 
-`verify_lock_scope.py` は4ロック条件・8宣言初期化・テスター接続式1か所・診断用フィールド/初期化/関数/呼び出しだけを厳密に逆変換し、元ZIPの全ソースと比較します。意図した製品変更でもこの固定基準は失敗し得ます。失敗を隠すために基準ハッシュや除外範囲を広げず、明示的に承認された仕様変更に必要な基準更新だけを理由・回帰テストとともにレビューします。
+`verify_lock_scope.py` は4ロック条件・8宣言初期化・テスター接続式1か所・診断用フィールド/初期化/関数/呼び出し・指標要求順序1か所だけを厳密に逆変換し、元ZIPの全ソースと比較します。意図した製品変更でもこの固定基準は失敗し得ます。失敗を隠すために基準ハッシュや除外範囲を広げず、明示的に承認された仕様変更に必要な基準更新だけを理由・回帰テストとともにレビューします。
 
 旧ケースは `scenarios.cpp` / `new_scenarios.cpp` / `v244_scenarios.cpp`、今回の追加ケースは `v244_lock_scenarios.cpp`、CSV集計は `verify_stats.py`。監査の基準は `baseline_functions.json`、`v242_safety_baseline.json`、`v243_safety_baseline.json` と厳密な差分投影を行う `v244_audit_helpers.py` です。添付ZIPの全13ソースの基準は `v244_lock_fix_baseline.json` に保持しています。
 

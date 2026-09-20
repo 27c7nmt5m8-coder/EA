@@ -54,6 +54,20 @@ void fixture_pattern(string symbol,bool bottom=true,bool head=false){
  series[symbol]=r;
 }
 void scoring_tests(){
+ reset();tester=true;SymbolState lazy;setup(lazy);lazy.ReleaseIndicators();
+ int fresh=lazy.CachedIndicator(0,PERIOD_M1,14);double value=123;
+ check(BarsCalculated(fresh)<=1,"tester indicator starts uncalculated until data request");
+ check(lazy.ReadIndicator(fresh,0,1,value)&&value>0,"first tester read requests calculation before readiness guard");
+ check(BarsCalculated(fresh)>1,"buffer demand makes tester indicator ready");
+ symbols[u"FX"].ready=false;value=123;
+ check(!lazy.ReadIndicator(fresh,0,1,value)&&value==0,"unavailable history still rejects and clears output");
+ symbols[u"FX"].ready=true;value=123;
+ check(!lazy.ReadIndicator(INVALID_HANDLE,0,1,value)&&value==0,"invalid indicator still rejects and clears output");
+ value=123;check(!lazy.ReadIndicator(fresh,0,1000,value)&&value==0,"insufficient calculated bars still reject after buffer request");
+ double savedATR=symbols[u"FX"].atr;symbols[u"FX"].atr=EMPTY_VALUE;value=123;
+ check(!lazy.ReadIndicator(fresh,0,1,value)&&value==0,"empty indicator value remains invalid");symbols[u"FX"].atr=savedATR;
+ lazy.ReleaseIndicators();std::vector<MTFResult> lazyFrames;
+ check(lazy.AnalyzeAllTimeframes(lazyFrames)&&CompleteMTF(lazyFrames),"tester initializes all seven frames on demand");lazy.Shutdown();
  reset();SymbolState a,b;setup(a);setup(b,u"GOLD");
  std::vector<MTFResult> r;check(a.AnalyzeAllTimeframes(r),"seven indicators complete");
  double w=0;int weights[]={20,25,22,15,10,5,3};for(int i=0;i<7;i++){check(MT3Weight(MT3Timeframe(i))==weights[i],"specified frame weight");w+=weights[i];}

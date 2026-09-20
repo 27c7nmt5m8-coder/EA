@@ -391,7 +391,7 @@ int CachedIndicator(int kind,ENUM_TIMEFRAMES tf,int period)
 bool ReadIndicator(int handle,int buffer,int shift,double &v)
 {
  v=0; double a[1];
- if(handle==INVALID_HANDLE || BarsCalculated(handle)<=shift || CopyBuffer(handle,buffer,shift,1,a)!=1) return false;
+ if(handle==INVALID_HANDLE || CopyBuffer(handle,buffer,shift,1,a)!=1 || BarsCalculated(handle)<=shift) return false;
  if(!MathIsValidNumber(a[0]) || a[0]==EMPTY_VALUE) return false;
  v=a[0]; return true;
 }

@@ -1,4 +1,4 @@
-"""Project reviewed analytics hooks, local initializers, lock guards and tester exception.
+"""Project reviewed hooks, initializers, locks, tester exception and indicator ordering.
 
 The exact text must be present once. Trading conditions and order arguments are
 never masked; the projected functions still have to match the old SHA-256 values.
@@ -24,7 +24,11 @@ def legacy_lock_guards(code, keys):
 
 def legacy_engine_function(name, code):
     code = extract(name, code)
-    if name == 'EntryPreflight':
+    if name == 'ReadIndicator':
+        code = replace_once(code,
+            'CopyBuffer(handle,buffer,shift,1,a)!=1 || BarsCalculated(handle)<=shift',
+            'BarsCalculated(handle)<=shift || CopyBuffer(handle,buffer,shift,1,a)!=1')
+    elif name == 'EntryPreflight':
         code = replace_once(code,
             '(!MQLInfoInteger(MQL_TESTER) && !TerminalInfoInteger(TERMINAL_CONNECTED))',
             '!TerminalInfoInteger(TERMINAL_CONNECTED)')

@@ -1,7 +1,8 @@
 """Byte-level scope audit against the uploaded v2.44 ZIP; not native compilation.
 
 Only the four reviewed existence guards, eight explicit local initializers, and
-the tester-only live connection exception and status diagnostics may differ.
+the tester-only live connection exception, status diagnostics and exact indicator
+data-request ordering may differ.
 Historical hashes and all other production bytes remain fixed.
 """
 from pathlib import Path
@@ -35,6 +36,9 @@ for name, expected in baseline['source_sha256'].items():
             '!GlobalVariableTemp(' + key + ')')
     if name == 'MT3SymbolState.mqh':
         projected = replace_once(projected,
+            'CopyBuffer(handle,buffer,shift,1,a)!=1 || BarsCalculated(handle)<=shift',
+            'BarsCalculated(handle)<=shift || CopyBuffer(handle,buffer,shift,1,a)!=1')
+        projected = replace_once(projected,
             'string m_lastTesterDiagnosticStatus;\nint m_testerDiagnosticCount;\n', '')
         projected = replace_once(projected,
             'm_lastTesterDiagnosticStatus="";\nm_testerDiagnosticCount=0;\n', '')
@@ -54,8 +58,8 @@ for name, expected in baseline['source_sha256'].items():
                     'byte_identical_to_input': original_bytes == projected,
                     'sha256': hashlib.sha256(original_bytes).hexdigest()})
 
-result = {'scope': 'Exact production bytes after reversing lock/initializer/tester exception and tester-only diagnostics.',
+result = {'scope': 'Exact production bytes after reversing lock/initializer/tester exception, tester-only diagnostics and indicator demand ordering.',
           'input_zip_sha256': baseline['input_zip_sha256'], 'passed': len(results), 'failed': 0,
-          'lock_sites': 4, 'explicit_initializers': 8, 'tester_connection_exceptions': 1, 'tester_diagnostics': 1, 'files': results}
+          'lock_sites': 4, 'explicit_initializers': 8, 'tester_connection_exceptions': 1, 'tester_diagnostics': 1, 'indicator_demand_ordering': 1, 'files': results}
 (ROOT / 'verification/lock_fix_scope.json').write_text(json.dumps(result, indent=2) + '\n')
-print('PASS', len(results), 'production files: lock/initializer/tester exception + tester-only diagnostics only')
+print('PASS', len(results), 'production files: lock/initializer/tester exception + tester diagnostics + indicator demand ordering only')
