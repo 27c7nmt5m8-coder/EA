@@ -80,12 +80,13 @@ int iLowest(string,int,int,int,int start){return start;}int iHighest(string,int,
 int CopyRates(string s,int tf,int shift,int count,std::vector<MqlRates>&r){if(!symbols.count(s)||!symbols[s].ready)return -1;r.resize(count);for(int i=0;i<count;i++){r[i]={iTime(s,tf,i+shift),iClose(s,tf,i+shift),iHigh(s,tf,i+shift),iLow(s,tf,i+shift),iClose(s,tf,i+shift),100,2,100};}return count;}
 struct Indicator{string symbol;int kind,tf,period,fast=0,slow=0,signal=0;bool requested=false;};std::map<int,Indicator> indicators;int next_handle=1;
 int AddIndicator(string s,int kind,int tf,int period,int f=0,int slow=0,int sig=0){int h=next_handle++;indicators[h]={s,kind,tf,period,f,slow,sig};return h;}
-int iATR(string s,int tf,int p){return AddIndicator(s,0,tf,p);}int iMA(string s,int tf,int p,int,int,int){return AddIndicator(s,1,tf,p);}
+bool fail_atr_handle=false,fail_copy_buffer=false;
+int iATR(string s,int tf,int p){return fail_atr_handle?INVALID_HANDLE:AddIndicator(s,0,tf,p);}int iMA(string s,int tf,int p,int,int,int){return AddIndicator(s,1,tf,p);}
 int iADX(string s,int tf,int p){return AddIndicator(s,2,tf,p);}int iMACD(string s,int tf,int f,int slow,int sig,int){return AddIndicator(s,3,tf,0,f,slow,sig);}
 // Non-visual MT5 tests calculate indicators on buffer demand, not handle creation.
 int BarsCalculated(int h){return indicators.count(h) && symbols[indicators[h].symbol].ready && (!tester || indicators[h].requested)?1000:0;}
 bool IndicatorRelease(int h){return indicators.erase(h);}
-template<class T>int CopyBuffer(int h,int buffer,int shift,int,T&a){if(!indicators.count(h) || !symbols[indicators[h].symbol].ready)return -1;
+template<class T>int CopyBuffer(int h,int buffer,int shift,int,T&a){if(fail_copy_buffer || !indicators.count(h) || !symbols[indicators[h].symbol].ready)return -1;
  auto &d=indicators.at(h);d.requested=true;auto &s=symbols.at(d.symbol);double v=0;
  if(d.kind==0)v=s.atr;
  if(d.kind==1)v=s.bid-s.atr*(d.period==20?.20:d.period==50?.5:1.8)-(shift-1)*s.atr*.10;
@@ -168,11 +169,13 @@ template<class...T>void Comment(T...){}
 std::map<string,double> objects;
 std::map<string,string> object_text;
 int ObjectFind(long,string s){return objects.count(s)?0:-1;}
-template<class...T>bool ObjectCreate(long,string s,T...){objects[s]=100;chart_operations++;return true;}
+template<class...T>bool ObjectCreate(long,string s,int,int,datetime,double price,T...){if(objects.count(s))return false;objects[s]=price;chart_operations++;return true;}
 bool ObjectDelete(long,string s){chart_operations++;return objects.erase(s);}
 int ObjectsTotal(long,int,int){return objects.size();}string ObjectName(long,int i,int,int){auto p=objects.begin();std::advance(p,i);return p->first;}
 bool ObjectSetDouble(long,string s,int,double v){objects[s]=v;chart_operations++;return true;}
-double ObjectGetDouble(long,string s,int){return objects[s];}long ObjectGetInteger(long,string,int){return OBJ_HLINE;}
+double ObjectGetDouble(long,string s,int){return objects.count(s)?objects.at(s):0;}
+bool ObjectGetDouble(long,string s,int,int,double &value){if(!objects.count(s))return false;value=objects.at(s);return true;}
+long ObjectGetInteger(long,string,int){return OBJ_HLINE;}
 template<class...T>bool ObjectSetInteger(T...){chart_operations++;return true;}bool ObjectSetString(long,string name,int,string text){chart_operations++;object_text[name]=text;return objects.count(name)>0;}
 template<class...T>bool ObjectMove(T...){chart_operations++;return true;}
 long ChartGetInteger(long,int){return 0;}bool ChartGetInteger(long,int,int,long&v){v=0;return true;}

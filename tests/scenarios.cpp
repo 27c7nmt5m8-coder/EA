@@ -20,7 +20,8 @@ void reset(){
  MaxSpreadATR=.1;MaxSpreadSL=.15;MaxSpreadPoints=SlippagePoints=StopSlippageBufferPoints=0;SLBufferPoints=0;
  MaxQuoteAgeMs=OpenAIMaxQuoteAgeMs=3000;OpenAIMaxDecisionAgeMs=10000;OpenAIMaxPriceDriftPoints=0;OpenAIMaxPriceDriftATR=.1;
  EntryDirection=ENTRY_BOTH;StopAfterConsecutiveLosses=6;LossStreakResetTime=0;EnableTripleBottom=EnableTripleTop=true;
- EnableAutoHorizontalLines=EnableAutoTrendLines=true;MinimumSLImprovementPoints=0;ManualInitialSL=0;
+ EnableAutoHorizontalLines=EnableAutoTrendLines=true;ShowAutoTrendLines=false;MinimumSLImprovementPoints=0;ManualInitialSL=0;
+ fail_atr_handle=fail_copy_buffer=false;
  g_account=u"MOCK_SERVER/123456";g_chartSymbol=u"FX";g_accountPrefix=u"MT3A."+ScopeDigest(g_account)+u".";g_execKey=u"MT3EXEC."+ScopeDigest(g_account);
  g_execOwned=g_propControllerOwned=false;g_accountHistoryOK=true;g_accountHistoryDirty=true;g_accountHistoryAt=0;g_accountLossStreak=0;
  g_queueSequence=0;g_scanCursor=g_mcCursor=0;g_universeAt=0;

@@ -80,6 +80,7 @@ input int MaxHorizontalLines = 10;
 input double HorizontalLineToleranceATR = 0.25;
 input group "=== Auto Trend Lines ==="
 input bool EnableAutoTrendLines = true;
+input bool ShowAutoTrendLines = false; // Drawing only; virtual trends and LineScore are unchanged.
 input int TrendLineSwingDepth = 5;
 input group "=== Execution / History ==="
 input ENUM_ACCOUNT_MODE AccountMode=NORMAL;
