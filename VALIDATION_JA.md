@@ -175,11 +175,28 @@ AIの高スコア順キュー、HTTP中の枠保持、全銘柄送信の禁止�
 
 ## 再現・配布結果
 
+以下は継続開発時のテスト手順です。上記の件数・環境・実機確認リストは各修正時点の記録であり、文書変更を含む毎作業の必須試験ではありません。実行範囲・確認・PRの判断基準は [AGENTS.md](AGENTS.md#テスト実機検証) を参照してください。
+
+リポジトリ直下で、変更箇所に直接関係する行から選び、影響範囲に応じて関連テストへ広げます。Python 3を使用し、`python3` がない環境ではPython 3の `python` または実行ファイルのパスに読み替えます。
+
+| 変更・確認対象 | コマンド | 依存環境・範囲 |
+| --- | --- | --- |
+| ロック・再初期化の特定箇所 | `python3 tests/verify_v244.py symbol` | Python 3＋g++（C++17）。グループ名は下記参照 |
+| EA本体・Worker・共有ヘッダー、テスター接続判定 | `python3 tests/verify_v244.py` | Python 3＋g++。実ソースをC++17に変換した全mock試験 |
+| JSON・Worker通信schema | `python3 tests/verify_json_regression.py` | Python 3＋g++。JSON回帰。通信経路への影響は全mock試験も確認 |
+| CSV集計ツール | `python3 tests/verify_stats.py` | Python 3のみ。独立した数値fixtureによる集計確認 |
+| ソース構造・既存安全仕様の保持 | `python3 tests/audit_source.py` | Python 3のみ。静的監査 |
+| 承認済み修正以外のソース差分 | `python3 tests/verify_lock_scope.py` | Python 3のみ。13ソースの厳密な差分照合 |
+
+全体検証は次を使います。GitHub ActionsもUbuntu、Python 3.11、g++で同じ5ゲートを実行します。ローカルにg++がなければPythonのみの3ゲートを実施し、C++依存の2ゲートはCI等で確認します。`run_all.py` は最初の失敗で終了するため、後続ゲートを合格と解釈しないでください。
+
 ```bash
 python3 tests/run_all.py
 ```
 
-個別には `verify_v244.py`、`verify_json_regression.py`、`verify_stats.py`、`audit_source.py`、`verify_lock_scope.py` を実行できます。旧 `verify_v242.py` / `verify_v243.py` は互換エントリーとして全543模擬チェックを実行します。ロックのみの確認は `python3 tests/verify_v244.py symbol` のようにグループ名（mock / symbol / chartchange / execution / worker / fintokei / contention / failure）を指定できます。個別実行は全件結果のJSONを上書きしません。
+旧 `verify_v242.py` / `verify_v243.py` は `verify_v244.py` への互換エントリーです。同じ試験を重複実行する必要はありません。ロックのグループ指定は mock / symbol / chartchange / execution / worker / fintokei / contention / failure のみ対応し、指定時は全件結果のJSONを上書きしません。Strategy Tester接続判定はグループ指定では実行されないため、引数なしの全mock試験で確認します。
+
+`verify_lock_scope.py` は4ロック条件・8宣言初期化・テスター接続式1か所だけを厳密に逆変換し、元ZIPの全ソースと比較します。意図した製品変更でもこの固定基準は失敗し得ます。失敗を隠すために基準ハッシュや除外範囲を広げず、明示的に承認された仕様変更に必要な基準更新だけを理由・回帰テストとともにレビューします。
 
 旧ケースは `scenarios.cpp` / `new_scenarios.cpp` / `v244_scenarios.cpp`、今回の追加ケースは `v244_lock_scenarios.cpp`、CSV集計は `verify_stats.py`。監査の基準は `baseline_functions.json`、`v242_safety_baseline.json`、`v243_safety_baseline.json` と厳密な差分投影を行う `v244_audit_helpers.py` です。添付ZIPの全13ソースの基準は `v244_lock_fix_baseline.json` に保持しています。
 

@@ -450,11 +450,7 @@ v2.43は今回のCSVを出力しないため、旧版のパターン別比較に
 
 ## 同梱ファイルと開発者向け検証
 
-`CHANGELOG.md` に変更点、`VALIDATION_JA.md` に実施範囲と未検証事項をまとめています。`tests/` は実際のソースを読み込み、C++17の模擬MT5環境で検証します。Python 3とg++が必要です。旧verify_v242.py/verify_v243.pyコマンドもv2.44の全模擬試験へ接続しています。集計だけならg++は不要です。
-
-```bash
-python3 tests/run_all.py
-```
+[AGENTS.md](AGENTS.md) にCodexを含む開発・確認・PRの共通ルール、[VALIDATION_JA.md](VALIDATION_JA.md#再現配布結果) に変更範囲別のテストコマンド・依存環境・未検証事項をまとめています。開発中は直接関連するテストから広げ、PR完成前・マージ前に全体の整合性を確認します。過去の変更点は [CHANGELOG.md](CHANGELOG.md) を参照してください。
 
 GitHub Actions の CI も Ubuntu、Python 3.11、g++ で同じオフライン検証を実行し、失敗時を含めて `verification/` の診断JSON/TXTをartifactとして保存します。CIのC++検証はMT5モックであり、MetaEditorによるネイティブMQL5コンパイル、MT5実機・市場バックテスト、実AI/API通信、収益性の検証ではありません。
 
