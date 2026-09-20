@@ -1,4 +1,4 @@
-"""Static checks of the distributed MQL sources; no native compiler is available."""
+"""Static checks of the distributed MQL sources; separate from native compilation."""
 from pathlib import Path
 import re,json,hashlib
 from json_support import extract

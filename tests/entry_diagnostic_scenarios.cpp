@@ -53,12 +53,17 @@ void entry_diagnostic_reason_tests(){
 }
 
 void entry_diagnostic_flow_tests(){
+ std::vector<double> baselineOrder;
  for(bool enabled:{false,true}){
   reset();tester=enabled;fixture_pattern(u"FX");SymbolState s;setup(s);diagnostic_output.clear();
   check(s.RefreshCandidate(),"parity candidate qualifies with diagnostic on and off");
   auto score=s.m_candidateScore;auto selected=s.m_candidatePattern.type;
   check(s.DispatchCandidate()&&order_calls==1&&positions.size()==1,"parity dispatch sends once with diagnostic on and off");
   check(s.m_candidateScore==score&&s.m_candidatePattern.type==selected,"diagnostic leaves selected pattern and score intact");
+  auto &position=positions.begin()->second;
+  std::vector<double> currentOrder={position.volume,position.open,position.sl,position.tp,score,(double)selected};
+  if(!enabled)baselineOrder=currentOrder;
+  else check(currentOrder==baselineOrder,"diagnostic ON and OFF produce identical lot price SL TP score and pattern");
   check(s.m_diagCandidates==(enabled?1:0)&&s.m_diagAttempts==(enabled?1:0)&&s.m_diagAccepted==(enabled?1:0)&&s.m_diagRejections==0,"queue revalidation reuses one candidate and records accepted order separately");
   auto status=s.g_status;s.JournalSample();auto transitions=s.m_testerDiagnosticCount;s.JournalSample();
   check(s.g_status==status&&s.m_testerDiagnosticCount==transitions,"status and unchanged transition dedup remain compatible");
@@ -71,11 +76,15 @@ void entry_diagnostic_flow_tests(){
  s.DiagEnd(false,u"duplicate");check(s.m_diagRejections==1,"caller cannot double count completed rejection");
  s.Shutdown();
  reset();tester=true;SymbolState fallback;setup(fallback);MqlTick t;fallback.FreshQuote(t);PatternSignal p=pattern();
- p.type=PATTERN_BULLISH_123;p.secondPoint=99.999;symbols[u"FX"].freeze=10;
+ p.type=PATTERN_BULLISH_123;p.secondPoint=99.95;symbols[u"FX"].freeze=50;
  double sl,tp;string source,why;fallback.DiagBegin();fallback.DiagCandidate();
  // An invalid structural anchor can recover; intermediate failure is not final.
- p.secondPoint=101;check(fallback.BuildEntryStops(true,t,p,sl,tp,source,why),"existing generic fallback still succeeds");
+ check(fallback.BuildEntryStops(true,t,p,sl,tp,source,why)&&source==u"GENERIC_SWING_FALLBACK","structural broker-gap failure recovers through existing generic fallback");
  check(fallback.m_diagReason==u""&&fallback.m_diagRejections==0,"successful fallback does not retain an intermediate rejection");
+ symbols[u"FX"].freeze=1000;
+ check(!fallback.BuildEntryStops(true,t,p,sl,tp,source,why)&&fallback.m_diagReason==u"sl_broker_gap","failed fallback records final broker gap");
+ fallback.DiagEnd(false,u"cost_or_stop_gate");
+ check(fallback.m_diagRejections==1,"structural and fallback failures count one final rejection");
  fallback.Shutdown();
  reset();tester=true;fixture_pattern(u"FX");SymbolState lock;setup(lock);check(lock.RefreshCandidate(),"lock fixture queues candidate");
  GlobalVariableTemp(g_execKey);GlobalVariableSet(g_execKey,1);

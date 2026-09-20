@@ -1,5 +1,30 @@
 # v2.44 検証報告
 
+## 2026-09-21：候補単位の最初の拒否理由を測定
+
+PR #10をmainへマージした `bcb41c8f9f775b170154ecddebeb0f6624d947ca` から別branchで作業。製品変更はTester AUTO専用の読み取り専用診断で、売買条件・SL/TP・lot・risk・注文引数・input/defaultは変更していません。経路一覧、戻り値、status、計数定義は [ENTRY_DIAGNOSTICS_JA.md](ENTRY_DIAGNOSTICS_JA.md)、匿名の実測集計は [entry_diagnostics.json](verification/entry_diagnostics.json) を参照してください。
+
+実機はPR #10と同じUSDJPY/M1、2026-06-01〜2026-09-01、real ticks、AUTO、OpenAI無効、COMBINED、MinimumSignalScore=70。inputファイルのバイト一致と実行EX5のhashを確認しました。前後とも **5,273,008 ticks / 94,267 bars / 100% real ticks / trades 0 / deals 0** です。
+
+評価開始7,948,798回のうち、候補生成前のpattern_waitは7,881,602回。パターン選択後の候補評価67,196件はすべて最初の拒否で終了し、queue_passes・order_attempts・order_accepted・order_rejectedはいずれも0、診断欠落droppedも0でした。
+
+| 最初の拒否理由 | 候補評価件数 | 全拒否67,196件に対する割合 | cost_or_stop_gate内の割合 |
+|---|---:|---:|---:|
+| ATR比spread上限 `spread_atr_limit` | 45,691 | 68.00% | 97.98% |
+| 最終score不足 `score_below_threshold` | 20,565 | 30.60% | 対象外 |
+| SLのStopsLevel/FreezeLevel距離 `sl_broker_gap` | 797 | 1.19% | 1.71% |
+| fallback swingがentryの逆側 `swing_wrong_side` | 143 | 0.21% | 0.31% |
+
+cost_or_stop_gate内は計46,631件。割合の丸めで合計に差が出る場合があります。固有パターン数や注文数ではなく、最終拒否後の再評価も別候補です。キュー内の再確認は重複候補にしません。
+
+従来status遷移は **2,384回**で、PR #10の実測と同じ内訳でした（indicator_wait 0 / pattern_wait 1,106 / cost_or_stop_gate 798 / score_below_threshold 479 / weighted_agreement_or_opposition 0）。798回と46,631件は異なる母数です。新診断の理由別集計からstatus遷移を推定していません。
+
+修正前の[Red CI](https://github.com/27c7nmt5m8-coder/EA/actions/runs/35536019568)では既存取引fixtureが通り、新規の集計出力欠落を検出。診断追加後の[CI](https://github.com/27c7nmt5m8-coder/EA/actions/runs/35536412172)はmock712 / JSON55 / CSV20 / 静的495 / 13ソース照合成功。その後、診断ON/OFFの注文引数一致と構造SL失敗後のfallback回復に関する追加検証を行っています。最終HEADの全体ゲート結果はPRの最新CIに対応付けます。既存baselineのhash・テストは維持しています。
+
+MetaEditor 5.0.0.6182で本体・Workerとも **0 errors / 0 warnings**。対象ソースとEX5のSHA-256は [native_compile.json](verification/native_compile.json) に記録しています。過去日付の同梱検証結果は歴史的記録です。
+
+0取引の直接経路は測定できましたが、閾値の適切さ、ブローカーのStopsLevel/FreezeLevelへの仕様上の対応、個々のfallback生成値が意図どおりかは未評価です。数値分布や構造SLからfallbackへ移る途中理由、pattern_waitの内部選択理由は今回の集計対象外です。売買結果に影響する修正や最適化は別途レビューが必要です。実ブローカー発注・実AI/API・実運用の再接続/再初期化/同時owner lockは **NOT_MEASURED**。今回の実機バックテストを実口座の安全性や収益性の保証とは扱いません。
+
 ## 2026-09-20：指標要求順序の修正
 
 非ビジュアルの実機テスターで取引数0を再現し、診断statusが指標待機から進まないことを確認しました。権限・履歴・MC・未解決注文のgateではありません。`ReadIndicator` が `BarsCalculated` の未計算判定で戻るため、要求時に計算を開始する `CopyBuffer` へ到達しませんでした。MQL5公式仕様に合わせて呼び出し順序の1行だけを変更し、取得値の検証・7時間足すべての準備条件・売買仕様は維持しています。
