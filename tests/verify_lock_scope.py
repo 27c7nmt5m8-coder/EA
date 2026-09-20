@@ -1,8 +1,8 @@
 """Byte-level scope audit against the uploaded v2.44 ZIP; not native compilation.
 
 Only the four reviewed existence guards, eight explicit local initializers, and
-the tester-only live connection exception may differ. Historical hashes and all
-other production bytes remain fixed.
+the tester-only live connection exception and status diagnostics may differ.
+Historical hashes and all other production bytes remain fixed.
 """
 from pathlib import Path
 import hashlib

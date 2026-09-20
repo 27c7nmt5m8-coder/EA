@@ -1,5 +1,10 @@
 # CHANGELOG — v2.43 → v2.44
 
+## 2026-09-20：診断PRを最新mainへ統合・ネイティブ検証
+
+- main `98323ea` の開発・検証文書を保持して既存の診断PRを更新。診断コード、売買仕様、既存回帰テストの内容は変更しない。
+- MetaEditor 5.0.0.6182で本体・Workerとも0 errors / 0 warnings。対象ソースのSHA-256と結果は `verification/native_compile.json` に記録。Strategy Testerによる取引数0の原因特定は未実測。
+
 ## 2026-09-13：Strategy Tester診断ログを追加（売買挙動は変更しない）
 
 - Strategy Tester時だけ、`g_status` が変化したときに `[MT3 TESTER DIAG]` を1行出力する診断を追加。実運用では出力しない。

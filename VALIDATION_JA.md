@@ -1,8 +1,8 @@
 # v2.44 検証報告
 
-実施日: 2026-09-13（v2.44再初期化ロック修正）
+実施日: 2026-09-13（オフライン診断検証）、2026-09-20（最新mainへの統合・ネイティブコンパイル）
 
-**配布する実ソースの模擬実行573チェック（既存565＋Strategy Tester診断8）、JSON回帰55チェック、既存静的監査495チェック、CSV集計20チェック、13ソースの差分照合が通過しました。ネイティブコンパイル未実測です。診断版の実機Strategy Tester・実際のAI API通信も未実測で、EX5は同梱していません。**
+**配布する実ソースの模擬実行573チェック（既存565＋Strategy Tester診断8）、JSON回帰55チェック、既存静的監査495チェック、CSV集計20チェック、13ソースの差分照合が通過しました。MetaEditor 5.0.0.6182で本体・Workerとも0 errors / 0 warningsを確認しました。診断版の実機Strategy Tester・実際のAI API通信は未実測で、EX5は同梱していません。**
 
 件数には初期化、方向違い、倍率違い、同一試験内の複数確認を含みます。573件の独立した相場シナリオや、収益性の検証という意味ではありません。
 
@@ -12,13 +12,17 @@ Strategy Testerで取引数0が継続する場合に、売買条件を変更せ�
 
 追加8チェックで、テスターの拒否status記録、同一statusの重複抑制、次段階statusへの更新、実運用で診断状態が変化しないことを確認します。13ソース差分監査では診断用フィールド・初期化・診断関数・呼び出しだけを厳密に投影して既存配布ソースと比較します。
 
+2026-09-20のネイティブ結果と対象13ソースのSHA-256は [native_compile.json](verification/native_compile.json) に記録しました。既存の `validation_summary.json` 等は2026-09-13時点の記録です。コンパイルは作業用コピーで行い、端末へ導入・実行していません。
+
+取引数0の再現では、元の銘柄・期間・M1・AUTO・入力設定・費用条件を維持し、`[MT3 TESTER DIAG]` のstatus遷移と最初の拒否理由を確認します。権限・履歴・MC等を通過した場合は、パターン・スコア・方向一致・同一M1バー等の既存gateへ追跡します。このログはJournalSample時点の状態であり、全gateの通過履歴やカウンターではありません。原因不明の段階で条件を緩和しません。個人ログ・口座情報はGitHubへ掲載しません。
+
 ## Strategy Tester接続判定の追加検証
 
 `EntryPreflight()` は実運用では引き続き `TERMINAL_CONNECTED` を要求しますが、`MQL_TESTER` のときだけライブ接続要件を除外します。端末・MQL・口座の売買許可、未解決注文、総ポートフォリオリスクなど他の安全判定は維持します。
 
 既存543チェックに22チェックを追加し、未接続テスターの適格候補が `OnInit → OnTimer` で模擬注文へ進むこと、未接続の実運用は注文しないこと、再接続後は進めること、テスターでも売買許可・総リスク・未解決注文の拒否が残ることを確認します。静的監査では接続式を厳密に旧式へ投影して既存ハッシュと比較し、他のEntryPreflight内容をマスクしません。
 
-**この統合状態のMetaEditorネイティブコンパイルと実機Strategy Testerバックテストは未実測です。**
+**この統合状態のMetaEditorネイティブコンパイルは2026-09-20に確認済みです。実機Strategy Testerバックテストは未実測です。**
 
 ## 今回の基点・不具合再現・修正範囲
 
@@ -74,10 +78,10 @@ Linux、Python 3、g++ C++17を使用しました。MT5/MetaEditor/Wineが利用
 | JSON回帰 | 55 / 55 | 厳格JSON、UTF-16、Responses回答状態・schema |
 | ソース監査 | 495 / 495 | 既存監査の継承、変更関数の限定、総リスク・SL・ログ監査 |
 | オフラインCSV集計 | 20 / 20 | 独立した数値例、重複・不正・不明値・データセット分離 |
-| 今回のソース差分照合 | 13 / 13 | 4ロック条件＋8宣言以外は添付ZIPと同一 |
+| 今回のソース差分照合 | 13 / 13 | 4ロック条件＋8宣言初期化＋テスター接続例外＋診断追加だけを厳密に逆変換して照合 |
 | `_Symbol` 全検索 | 1か所 | 本体OnInitの設置先取得のみ |
 | `_Point` / `_Digits` / `_Period` / `PERIOD_CURRENT` | 実行ソースに残存なし | 新モジュールも銘柄別参照 |
-| ネイティブMQL5コンパイル | 未実施 | EX5なし |
+| ネイティブMQL5コンパイル | 本体・Workerとも0 errors / 0 warnings | MetaEditor 5.0.0.6182、EX5は配布対象外 |
 | MT5テスター・デモ・実API | 未実施 | 約定、UI、実成績、通信遅延は未測定 |
 
 ## 総ポートフォリオリスク
@@ -181,11 +185,28 @@ AIの高スコア順キュー、HTTP中の枠保持、全銘柄送信の禁止�
 
 ## 再現・配布結果
 
+以下は継続開発時のテスト手順です。上記の件数・環境・実機確認リストは各修正時点の記録であり、文書変更を含む毎作業の必須試験ではありません。実行範囲・確認・PRの判断基準は [AGENTS.md](AGENTS.md#テスト実機検証) を参照してください。
+
+リポジトリ直下で、変更箇所に直接関係する行から選び、影響範囲に応じて関連テストへ広げます。Python 3を使用し、`python3` がない環境ではPython 3の `python` または実行ファイルのパスに読み替えます。
+
+| 変更・確認対象 | コマンド | 依存環境・範囲 |
+| --- | --- | --- |
+| ロック・再初期化の特定箇所 | `python3 tests/verify_v244.py symbol` | Python 3＋g++（C++17）。グループ名は下記参照 |
+| EA本体・Worker・共有ヘッダー、テスター接続判定 | `python3 tests/verify_v244.py` | Python 3＋g++。実ソースをC++17に変換した全mock試験 |
+| JSON・Worker通信schema | `python3 tests/verify_json_regression.py` | Python 3＋g++。JSON回帰。通信経路への影響は全mock試験も確認 |
+| CSV集計ツール | `python3 tests/verify_stats.py` | Python 3のみ。独立した数値fixtureによる集計確認 |
+| ソース構造・既存安全仕様の保持 | `python3 tests/audit_source.py` | Python 3のみ。静的監査 |
+| 承認済み修正以外のソース差分 | `python3 tests/verify_lock_scope.py` | Python 3のみ。13ソースの厳密な差分照合 |
+
+全体検証は次を使います。GitHub ActionsもUbuntu、Python 3.11、g++で同じ5ゲートを実行します。ローカルにg++がなければPythonのみの3ゲートを実施し、C++依存の2ゲートはCI等で確認します。`run_all.py` は最初の失敗で終了するため、後続ゲートを合格と解釈しないでください。
+
 ```bash
 python3 tests/run_all.py
 ```
 
-個別には `verify_v244.py`、`verify_json_regression.py`、`verify_stats.py`、`audit_source.py`、`verify_lock_scope.py` を実行できます。旧 `verify_v242.py` / `verify_v243.py` は互換エントリーとして全543模擬チェックを実行します。ロックのみの確認は `python3 tests/verify_v244.py symbol` のようにグループ名（mock / symbol / chartchange / execution / worker / fintokei / contention / failure）を指定できます。個別実行は全件結果のJSONを上書きしません。
+旧 `verify_v242.py` / `verify_v243.py` は `verify_v244.py` への互換エントリーです。同じ試験を重複実行する必要はありません。ロックのグループ指定は mock / symbol / chartchange / execution / worker / fintokei / contention / failure のみ対応し、指定時は全件結果のJSONを上書きしません。Strategy Tester接続判定はグループ指定では実行されないため、引数なしの全mock試験で確認します。
+
+`verify_lock_scope.py` は4ロック条件・8宣言初期化・テスター接続式1か所・診断用フィールド/初期化/関数/呼び出しだけを厳密に逆変換し、元ZIPの全ソースと比較します。意図した製品変更でもこの固定基準は失敗し得ます。失敗を隠すために基準ハッシュや除外範囲を広げず、明示的に承認された仕様変更に必要な基準更新だけを理由・回帰テストとともにレビューします。
 
 旧ケースは `scenarios.cpp` / `new_scenarios.cpp` / `v244_scenarios.cpp`、今回の追加ケースは `v244_lock_scenarios.cpp`、CSV集計は `verify_stats.py`。監査の基準は `baseline_functions.json`、`v242_safety_baseline.json`、`v243_safety_baseline.json` と厳密な差分投影を行う `v244_audit_helpers.py` です。添付ZIPの全13ソースの基準は `v244_lock_fix_baseline.json` に保持しています。
 
