@@ -1,4 +1,4 @@
-"""Project reviewed analytics hooks, local initializers, lock guards and tester exception.
+"""Project reviewed hooks, initializers, locks, tester exception and indicator ordering.
 
 The exact text must be present once. Trading conditions and order arguments are
 never masked; the projected functions still have to match the old SHA-256 values.

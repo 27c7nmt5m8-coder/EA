@@ -1,0 +1,70 @@
+{
+  "date": "2026-09-20",
+  "scope": "Sanitized aggregate evidence only; no account identity, credentials or personal logs.",
+  "environment": {
+    "terminal_build": 6182,
+    "symbol": "USDJPY",
+    "period": "M1",
+    "from": "2026-06-01",
+    "to": "2026-09-01",
+    "model": "real ticks",
+    "mode": "AUTO",
+    "openai": false,
+    "risk_mode": "COMBINED",
+    "minimum_signal_score": 70
+  },
+  "same_input_bytes": true,
+  "before": {
+    "quality": "100% real ticks",
+    "bars": "94267",
+    "ticks": "5273008",
+    "trades": "0",
+    "deals": "0"
+  },
+  "after": {
+    "quality": "100% real ticks",
+    "bars": "94267",
+    "ticks": "5273008",
+    "trades": "0",
+    "deals": "0"
+  },
+  "diagnostic_transitions_after": 2384,
+  "after_gate_transition_counts": {
+    "indicator_wait": 0,
+    "pattern_wait": 1106,
+    "cost_or_stop_gate": 798,
+    "score_below_threshold": 479,
+    "weighted_agreement_or_opposition": 0
+  },
+  "count_semantics": "Logged status transitions, not trades or independent entry attempts.",
+  "conclusion": "Indicator wait resolved; zero trades remain under unchanged subsequent entry gates.",
+  "source_sha256": {
+    "MT3AIProtocol.mqh": "25340f89525ddaa7ffd425fddad0b22919864e0f8ce3db9961775eb299db24de",
+    "MT3Config.mqh": "f75363429a3b1abc1759140910773c2e1a0f58278e83ca757d6a09d1ad117fd7",
+    "MT3Json.mqh": "b392a69a399f8759d725e2ab7c6b30abd4c20656e227a90373ef1304b8b7c429",
+    "MT3PatternStops.mqh": "c336b7e5d113dd11aa8c5792aff49e941c373f971a701ddeb6a9dd637ee63a07",
+    "MT3PortfolioRisk.mqh": "3904bd36f35cecd6c14c5ea0874ee7a9daf76a00eaa2ebe5ba9fe22d21de0787",
+    "MT3ReversalPatterns.mqh": "abb3c28a163e7530bd5db757bca4c74b519e866d00633823b72250d92e4d2289",
+    "MT3Scoring.mqh": "f57d1e185752e0676a08682c70e76cfd8441fb29c35d9c1c05975cf3eea4aa4d",
+    "MT3SymbolState.mqh": "63884c4949b5b134adcd631f8134db3da4ed2ddabd43cd5e6cf5e8d8af622ca4",
+    "MT3TradeJournal.mqh": "df5e19223effd33b1a609bae1927dddae344f598f912912f96d02292ab186f2c",
+    "MT3TradeLog.mqh": "f3b32e3cd6b746bb5c86a03fc687c4e17be4c6e8193de24a96b4dcf9e914234a",
+    "MT3Types.mqh": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2",
+    "MTFAutoTrader_3Mode_AI_v2_44.mq5": "6ef8f35b6343173d5a91ac280cd13702f723ba4678d3bdec4b3274218333aee1",
+    "MTFAutoTrader_AI_Worker.mq5": "2d068d5046ec3d616568227d6e9f6be0d9166af814f48076ac8a000d4922e12c"
+  },
+  "red_ci_run": 35504936025,
+  "green_ci_run": 35505110720,
+  "offline_gates": {
+    "mock": 582,
+    "json": 55,
+    "csv": 20,
+    "static": 495,
+    "source_scope": 13
+  },
+  "remaining_unmeasured": [
+    "live broker execution",
+    "real AI/API",
+    "live reconnect/reinitialization/concurrent owner locks"
+  ]
+}
