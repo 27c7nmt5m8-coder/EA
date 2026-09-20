@@ -166,13 +166,14 @@ void ResetLastError(){mock_last_error=0;}int GetLastError(){return mock_last_err
 int WebRequest(string,string,string,int,const std::vector<char>&data,std::vector<char>&result,string&){http_calls++;last_http_body=wide(std::string(data.begin(),data.end()));if(during_http)during_http();auto b=utf8(http_fixture);result.assign(b.begin(),b.end());return http_code;}
 template<class...T>void Comment(T...){}
 std::map<string,double> objects;
+std::map<string,string> object_text;
 int ObjectFind(long,string s){return objects.count(s)?0:-1;}
 template<class...T>bool ObjectCreate(long,string s,T...){objects[s]=100;chart_operations++;return true;}
 bool ObjectDelete(long,string s){chart_operations++;return objects.erase(s);}
 int ObjectsTotal(long,int,int){return objects.size();}string ObjectName(long,int i,int,int){auto p=objects.begin();std::advance(p,i);return p->first;}
 bool ObjectSetDouble(long,string s,int,double v){objects[s]=v;chart_operations++;return true;}
 double ObjectGetDouble(long,string s,int){return objects[s];}long ObjectGetInteger(long,string,int){return OBJ_HLINE;}
-template<class...T>bool ObjectSetInteger(T...){chart_operations++;return true;}template<class...T>bool ObjectSetString(T...){chart_operations++;return true;}
+template<class...T>bool ObjectSetInteger(T...){chart_operations++;return true;}bool ObjectSetString(long,string name,int,string text){chart_operations++;object_text[name]=text;return objects.count(name)>0;}
 template<class...T>bool ObjectMove(T...){chart_operations++;return true;}
 long ChartGetInteger(long,int){return 0;}bool ChartGetInteger(long,int,int,long&v){v=0;return true;}
 bool ChartGetDouble(long,int,int,double&v){v=0;return true;}

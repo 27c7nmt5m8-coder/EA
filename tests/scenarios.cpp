@@ -5,7 +5,7 @@ bool near(double a,double b,double e=1e-8){return std::abs(a-b)<=e;}
 void reset(){
  if(!g_symbols.empty())OnDeinit(0);
  globals.clear();symbols.clear();indicators.clear();series.clear();positions.clear();active_orders.clear();history_orders.clear();history_deals.clear();
- files.clear();open_files.clear();events.clear();objects.clear();hist_order_view.clear();hist_deal_view.clear();
+ files.clear();open_files.clear();events.clear();objects.clear();object_text.clear();hist_order_view.clear();hist_deal_view.clear();
  mono=100000;server_time=1700000041;chart_id=1;tester=false;permissions=connected=history_ok=queue_ok=file_ok=true;
  fail_global=u"";order_calls=http_calls=modify_calls=close_calls=chart_operations=0;ordercheck_advance=0;broker_retcode=TRADE_RETCODE_DONE;
  fill_visible=position_visible=true;deal_only=false;during_http={};during_ordercheck={};http_code=200;
@@ -273,8 +273,9 @@ void tester_connection_tests(){
  check(!unresolved.EntryPreflight(false)&&order_calls==0,"disconnected tester still blocks an unresolved account order");unresolved.Shutdown();
 }
 void v243_tests();void v244_tests();void v244_lock_tests(const std::string &only="");
+void v245_tests();
 int main(int argc,char **argv){
  if(argc>1)v244_lock_tests(argv[1]);
- else {scoring_tests();pattern_tests();adaptive_tests();order_tests();ai_tests();scanner_tests();risk_tests();v243_tests();v244_tests();v244_lock_tests();tester_connection_tests();}
+ else {scoring_tests();pattern_tests();adaptive_tests();order_tests();ai_tests();scanner_tests();risk_tests();v243_tests();v244_tests();v244_lock_tests();tester_connection_tests();v245_tests();}
  std::cout<<"{\"passed\":"<<checks<<",\"failed\":0}\n";
 }
