@@ -57,7 +57,9 @@ def run():
     header=header.replace('template<class... A>void Print(A...){ }',
         'int log_warning_count=0;template<class... A>void Print(const char16_t* first,A...){if(string(first).find(u"TradeLog warning:")==0)log_warning_count++;}\n'
         'template<class... A>void Print(A...){ }')
-    scenarios='\n'.join((ROOT/'tests'/name).read_text() for name in ['scenarios.cpp','new_scenarios.cpp','v244_scenarios.cpp','v244_lock_scenarios.cpp'])
+    header=header.replace('template<class... A>void PrintFormat(A...){ }',
+        'std::vector<string> diagnostic_output;template<class... A>void PrintFormat(const string& f,A... a){diagnostic_output.push_back(StringFormat(f,a...));}')
+    scenarios='\n'.join((ROOT/'tests'/name).read_text() for name in ['scenarios.cpp','new_scenarios.cpp','v244_scenarios.cpp','v244_lock_scenarios.cpp','entry_diagnostic_scenarios.cpp'])
     header+='\n#include <set>\n#include <limits>\n#include <functional>\n#include <cstring>\n'+constants(source+(ROOT/'tests/mock_mt5.hpp').read_text()+scenarios)+'\n'
     code=header+(ROOT/'tests/mock_mt5.hpp').read_text()+adapt(source)+'\n'+scenarios
     (TEST/'integration.cpp').write_text(code)
