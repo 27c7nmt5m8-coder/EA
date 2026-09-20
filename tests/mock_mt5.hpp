@@ -78,14 +78,15 @@ double iHigh(string s,int tf,int shift){if(tf==PERIOD_M1 && series.count(s) && s
 double iLow(string s,int tf,int shift){if(tf==PERIOD_M1 && series.count(s) && shift<(int)series[s].low.size())return series[s].low[shift];return iClose(s,tf,shift)-symbols[s].atr*.2;}
 int iLowest(string,int,int,int,int start){return start;}int iHighest(string,int,int,int,int start){return start;}
 int CopyRates(string s,int tf,int shift,int count,std::vector<MqlRates>&r){if(!symbols.count(s)||!symbols[s].ready)return -1;r.resize(count);for(int i=0;i<count;i++){r[i]={iTime(s,tf,i+shift),iClose(s,tf,i+shift),iHigh(s,tf,i+shift),iLow(s,tf,i+shift),iClose(s,tf,i+shift),100,2,100};}return count;}
-struct Indicator{string symbol;int kind,tf,period,fast=0,slow=0,signal=0;};std::map<int,Indicator> indicators;int next_handle=1;
+struct Indicator{string symbol;int kind,tf,period,fast=0,slow=0,signal=0;bool requested=false;};std::map<int,Indicator> indicators;int next_handle=1;
 int AddIndicator(string s,int kind,int tf,int period,int f=0,int slow=0,int sig=0){int h=next_handle++;indicators[h]={s,kind,tf,period,f,slow,sig};return h;}
 int iATR(string s,int tf,int p){return AddIndicator(s,0,tf,p);}int iMA(string s,int tf,int p,int,int,int){return AddIndicator(s,1,tf,p);}
 int iADX(string s,int tf,int p){return AddIndicator(s,2,tf,p);}int iMACD(string s,int tf,int f,int slow,int sig,int){return AddIndicator(s,3,tf,0,f,slow,sig);}
-int BarsCalculated(int h){return indicators.count(h) && symbols[indicators[h].symbol].ready?1000:0;}
+// Non-visual MT5 tests calculate indicators on buffer demand, not handle creation.
+int BarsCalculated(int h){return indicators.count(h) && symbols[indicators[h].symbol].ready && (!tester || indicators[h].requested)?1000:0;}
 bool IndicatorRelease(int h){return indicators.erase(h);}
 template<class T>int CopyBuffer(int h,int buffer,int shift,int,T&a){if(!indicators.count(h) || !symbols[indicators[h].symbol].ready)return -1;
- auto &d=indicators.at(h);auto &s=symbols.at(d.symbol);double v=0;
+ auto &d=indicators.at(h);d.requested=true;auto &s=symbols.at(d.symbol);double v=0;
  if(d.kind==0)v=s.atr;
  if(d.kind==1)v=s.bid-s.atr*(d.period==20?.20:d.period==50?.5:1.8)-(shift-1)*s.atr*.10;
  if(d.kind==2)v=buffer==0?32:buffer==1?35:10;
