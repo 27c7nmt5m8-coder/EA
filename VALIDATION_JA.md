@@ -16,6 +16,8 @@ Strategy Testerで取引数0が継続する場合に、売買条件を変更せ�
 
 取引数0の再現では、元の銘柄・期間・M1・AUTO・入力設定・費用条件を維持し、`[MT3 TESTER DIAG]` のstatus遷移と最初の拒否理由を確認します。権限・履歴・MC等を通過した場合は、パターン・スコア・方向一致・同一M1バー等の既存gateへ追跡します。このログはJournalSample時点の状態であり、全gateの通過履歴やカウンターではありません。原因不明の段階で条件を緩和しません。個人ログ・口座情報はGitHubへ掲載しません。
 
+2026-09-20には既存の再現設定（2026-06-01〜2026-09-01、USDJPY/M1、AUTO、OpenAI無効、実ティック）を用いて隔離したMT5で再実行を試みました。認証情報を移さない環境では `tester not started because the account is not specified` によりEA実行前に終了したため、Strategy Tester結果は未実測です。次は口座設定済みのMT5のテスターで同条件を実行し、診断statusから停止gateを特定します。この環境制約をEA不具合や取引数0の再現成功として数えません。
+
 ## Strategy Tester接続判定の追加検証
 
 `EntryPreflight()` は実運用では引き続き `TERMINAL_CONNECTED` を要求しますが、`MQL_TESTER` のときだけライブ接続要件を除外します。端末・MQL・口座の売買許可、未解決注文、総ポートフォリオリスクなど他の安全判定は維持します。
