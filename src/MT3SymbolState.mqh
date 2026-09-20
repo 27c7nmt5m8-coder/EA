@@ -45,6 +45,13 @@ double g_returns[];
 string g_status;
 string m_lastTesterDiagnosticStatus;
 int m_testerDiagnosticCount;
+// Tester AUTO diagnostics only; no persistence and no decision inputs.
+bool m_diagActive,m_diagCandidate,m_diagFinished,m_diagQueued;
+string m_diagReason;
+int m_diagEvaluations,m_diagCandidates,m_diagRejections,m_diagQueuePasses;
+int m_diagAttempts,m_diagAccepted,m_diagOrderRejected,m_diagCost,m_diagDropped;
+string m_diagKeys[];
+int m_diagCounts[];
 string LINE_PREFIX;
 PendingAIDecision g_aiRequest;
 ulong g_aiLastTry;
@@ -126,6 +133,9 @@ g_lastObservedBalance=0;
 g_status="Starting";
 m_lastTesterDiagnosticStatus="";
 m_testerDiagnosticCount=0;
+m_diagActive=false;m_diagCandidate=false;m_diagFinished=false;m_diagQueued=false;m_diagReason="";
+m_diagEvaluations=0;m_diagCandidates=0;m_diagRejections=0;m_diagQueuePasses=0;
+m_diagAttempts=0;m_diagAccepted=0;m_diagOrderRejected=0;m_diagCost=0;m_diagDropped=0;
 LINE_PREFIX="MTFAUTO_";
 ZeroMemory(g_aiRequest);
 g_aiLastTry=0;
@@ -155,6 +165,67 @@ m_mcPeak=100;
 m_mcDD=0;
 int allocated=ArrayResize(m_mtf,7);for(int i=0;i<allocated;i++) ZeroMemory(m_mtf[i]);
 for(int i=0;i<2;i++) ZeroMemory(m_trends[i]);
+}
+
+// An assessment after pattern selection is a candidate. Queue revalidation
+// reuses it; a fresh scan after a terminal rejection is a new assessment.
+void DiagBegin(bool reuse=false)
+{
+ m_diagActive=MQLInfoInteger(MQL_TESTER) && ExecutionMode==EXECUTION_AUTO;
+ if(!m_diagActive) return;
+ m_diagEvaluations++;m_diagCandidate=reuse;m_diagFinished=false;m_diagQueued=reuse;m_diagReason="";
+}
+void DiagReuse(bool reuse)
+{if(m_diagActive) {m_diagCandidate=reuse;m_diagQueued=reuse;}}
+void DiagCandidate()
+{if(m_diagActive && !m_diagCandidate) {m_diagCandidate=true;m_diagCandidates++;}}
+bool DiagReject(bool rejected,string reason)
+{if(m_diagActive && rejected && m_diagReason=="") m_diagReason=reason;return rejected;}
+bool DiagPass(bool passed,string reason)
+{DiagReject(!passed,reason);return passed;}
+void DiagCount(string key)
+{
+ for(int i=0;i<ArraySize(m_diagKeys);i++) if(m_diagKeys[i]==key) {m_diagCounts[i]++;return;}
+ int n=ArraySize(m_diagKeys);
+ if(ArrayResize(m_diagCounts,n+1)!=n+1 || ArrayResize(m_diagKeys,n+1)!=n+1) {m_diagDropped++;return;}
+ m_diagKeys[n]=key;m_diagCounts[n]=1;
+ PrintFormat("[MT3 ENTRY FIRST] symbol=%s candidate_id=%d key=%s",m_symbol,m_diagCandidate?m_diagCandidates:0,key);
+}
+bool DiagEnd(bool passed,string gate)
+{
+ if(!m_diagActive || m_diagFinished) return passed;
+ if(!passed)
+ {
+  if(m_diagReason=="") m_diagReason=gate;
+  DiagCount((m_diagCandidate?"candidate/":"pre_candidate/")+gate+"/"+m_diagReason);
+  if(m_diagCandidate) m_diagRejections++;
+  if(gate=="cost_or_stop_gate") m_diagCost++;
+  m_diagFinished=true;
+ }
+ else if(gate=="queued") {if(!m_diagQueued) m_diagQueuePasses++;m_diagQueued=true;}
+ else m_diagFinished=true;
+ m_diagActive=false;return passed;
+}
+void DiagExecution(bool manual)
+{
+ m_diagActive=MQLInfoInteger(MQL_TESTER) && ExecutionMode==EXECUTION_AUTO && !manual && m_diagCandidate && !m_diagFinished;
+ if(m_diagActive) m_diagReason="";
+}
+void DiagOrderAttempt()
+{if(m_diagActive) {m_diagAttempts++;PrintFormat("[MT3 ENTRY ORDER] symbol=%s candidate_id=%d event=attempt",m_symbol,m_diagCandidates);}}
+void DiagOrderResult(bool ok,uint rc)
+{
+ if(!m_diagActive) return;
+ // Accepted submission is not a filled trade/deal; keep broker outcome separate.
+ if(ok && (rc==TRADE_RETCODE_DONE || rc==TRADE_RETCODE_DONE_PARTIAL || rc==TRADE_RETCODE_PLACED)) m_diagAccepted++;
+ else m_diagOrderRejected++;
+ PrintFormat("[MT3 ENTRY ORDER] symbol=%s candidate_id=%d event=result ok=%d retcode=%u",m_symbol,m_diagCandidates,(int)ok,rc);
+}
+void DiagSummary()
+{
+ if(!MQLInfoInteger(MQL_TESTER) || ExecutionMode!=EXECUTION_AUTO) return;
+ PrintFormat("[MT3 ENTRY SUMMARY] symbol=%s evaluations=%d candidates=%d rejections=%d queue_passes=%d order_attempts=%d order_accepted=%d order_rejected=%d cost_or_stop_gate=%d dropped=%d",m_symbol,m_diagEvaluations,m_diagCandidates,m_diagRejections,m_diagQueuePasses,m_diagAttempts,m_diagAccepted,m_diagOrderRejected,m_diagCost,m_diagDropped);
+ for(int i=0;i<ArraySize(m_diagKeys);i++) PrintFormat("[MT3 ENTRY REASON] symbol=%s key=%s count=%d",m_symbol,m_diagKeys[i],m_diagCounts[i]);
 }
 
 color ThemeRed() {return C'242,54,69';}
@@ -309,9 +380,9 @@ double NormalizeVolume(double volume)
  double lo=SymbolInfoDouble(m_symbol,SYMBOL_VOLUME_MIN);
  double hi=SymbolInfoDouble(m_symbol,SYMBOL_VOLUME_MAX);
  double step=SymbolInfoDouble(m_symbol,SYMBOL_VOLUME_STEP);
- if(step<=0 || volume<lo) return 0;
+ if(DiagReject(step<=0,"lot_step_invalid") || DiagReject(volume<lo,"lot_below_min")) return 0;
  double v=NormalizeDouble(MathFloor(MathMin(volume,hi)/step+1e-9)*step,8);
- if(v>volume+1e-8 || v<lo-1e-8) return 0;
+ if(DiagReject(v>volume+1e-8,"lot_rounding_exceeds_request") || DiagReject(v<lo-1e-8,"lot_below_min")) return 0;
  return v;
 }
 
@@ -2327,52 +2398,52 @@ bool BuildStops(bool buy,MqlTick &tick,double &sl,double &tp)
  {
   bool ok=buy?GetLatestSwingLow(PERIOD_M1,SwingDepth,PatternLookbackBars,shift,price):
               GetLatestSwingHigh(PERIOD_M1,SwingDepth,PatternLookbackBars,shift,price);
-  if(!ok) return false;
+  if(DiagReject(!ok,"swing_not_found")) return false;
  }
  else
  {
   shift=buy?iLowest(m_symbol,PERIOD_M1,MODE_LOW,StopSwingLookback,1):
             iHighest(m_symbol,PERIOD_M1,MODE_HIGH,StopSwingLookback,1);
-  if(shift<1) return false;
+  if(DiagReject(shift<1,"swing_index_missing")) return false;
   price=buy?iLow(m_symbol,PERIOD_M1,shift):iHigh(m_symbol,PERIOD_M1,shift);
  }
  double entry=buy?tick.ask:tick.bid;
- if(price<=0 || (buy?price>=entry:price<=entry)) return false;
+ if(DiagReject(price<=0,"swing_price_invalid") || DiagReject((buy?price>=entry:price<=entry),"swing_wrong_side")) return false;
  double minDistance=(double)SymbolInfoInteger(m_symbol,SYMBOL_TRADE_STOPS_LEVEL)*m_point
    +SymbolInfoDouble(m_symbol,SYMBOL_TRADE_TICK_SIZE);
  if(buy)
  {
   sl=PriceFloor(MathMin(price-StopBuffer(),tick.bid-minDistance));
   tp=PriceCeil(entry+(entry-sl)*RiskRewardRatio);
-  if(tp<tick.bid+minDistance) return false;
+  if(DiagReject(tp<tick.bid+minDistance,"tp_broker_gap")) return false;
  }
  else
  {
   sl=PriceCeil(MathMax(price+StopBuffer(),tick.ask+minDistance));
   tp=PriceFloor(entry-(sl-entry)*RiskRewardRatio);
-  if(tp>tick.ask-minDistance) return false;
+  if(DiagReject(tp>tick.ask-minDistance,"tp_broker_gap")) return false;
  }
- return sl>0 && tp>0;
+ return DiagPass(sl>0,"invalid_sl") && DiagPass(tp>0,"invalid_tp");
 }
 
 double CalculateLotByRisk(bool buy,MqlTick &tick,double sl,double riskPercent)
 {
  if(!SpreadOK(tick,sl,buy)) return 0;
 
- if(riskPercent<=0) return 0;
+ if(DiagReject(riskPercent<=0,"risk_limit")) return 0;
  double money=AccountInfoDouble(ACCOUNT_EQUITY)*riskPercent/100.0;
  double testLot=SymbolInfoDouble(m_symbol,SYMBOL_VOLUME_MIN),profit=0;
  double entry=buy?tick.ask+DeviationPoints()*m_point:tick.bid-DeviationPoints()*m_point;
  double exit=buy?sl-StopSlippage():sl+StopSlippage();
- if(testLot<=0 || exit<=0 || !OrderCalcProfit(buy?ORDER_TYPE_BUY:ORDER_TYPE_SELL,m_symbol,testLot,entry,exit,profit)) return 0;
+ if(DiagReject(testLot<=0,"broker_min_lot_invalid") || DiagReject(exit<=0,"sizing_exit_invalid") || DiagReject(!OrderCalcProfit(buy?ORDER_TYPE_BUY:ORDER_TYPE_SELL,m_symbol,testLot,entry,exit,profit),"profit_calculation_failed")) return 0;
  double lossPerLot=MathAbs(profit)/testLot+RoundTurnCommissionPerLot;
- if(lossPerLot<=0) return 0;
+ if(DiagReject(lossPerLot<=0,"loss_per_lot_invalid")) return 0;
  double lot=NormalizeVolume(MathMin(money/lossPerLot,AvailableDirectionalVolume(buy)));
  if(lot<=0) return 0;
  double margin=0;
- if(!OrderCalcMargin(buy?ORDER_TYPE_BUY:ORDER_TYPE_SELL,m_symbol,lot,entry,margin)) return 0;
+ if(DiagReject(!OrderCalcMargin(buy?ORDER_TYPE_BUY:ORDER_TYPE_SELL,m_symbol,lot,entry,margin),"margin_calculation_failed")) return 0;
  double free=AccountInfoDouble(ACCOUNT_MARGIN_FREE)*0.95;
- if(margin>free && margin>0) lot=NormalizeVolume(lot*free/margin);
+ if(margin>free && margin>0) {lot=NormalizeVolume(lot*free/margin);if(m_diagActive && lot<=0) m_diagReason="insufficient_margin_min_lot";}
  // Never raise to broker minimum: zero means skip the trade.
  return lot;
 }
@@ -2511,23 +2582,23 @@ void RefreshEntryState()
 
 bool EntryPreflight(bool manual)
 {
- if(!manual && !InUniverseNow()) {g_status="Symbol outside entry universe";return false;}
- if(AnyAccountUnresolved()) {g_status="Account has an unresolved order";return false;}
+ if(!manual && !InUniverseNow()) {g_status="Symbol outside entry universe";return DiagPass(false,"outside_universe");}
+ if(AnyAccountUnresolved()) {g_status="Account has an unresolved order";return DiagPass(false,"account_unresolved_order");}
 
- if(!EntryModeAllowed(manual)) {g_status="Selected execution mode does not allow this entry";return false;}
- if(HasUnresolvedOrder()) {g_status="ORDER UNRESOLVED | reconcile token "+PendingOrderToken();return false;}
- if(EntryExposureBlocked()) {g_status="Existing exposure blocks entry";return false;}
+ if(!EntryModeAllowed(manual)) {g_status="Selected execution mode does not allow this entry";return DiagPass(false,"entry_mode");}
+ if(HasUnresolvedOrder()) {g_status="ORDER UNRESOLVED | reconcile token "+PendingOrderToken();return DiagPass(false,"symbol_unresolved_order");}
+ if(EntryExposureBlocked()) {g_status="Existing exposure blocks entry";return DiagPass(false,"existing_exposure");}
  if((!MQLInfoInteger(MQL_TESTER) && !TerminalInfoInteger(TERMINAL_CONNECTED)) || !TerminalInfoInteger(TERMINAL_TRADE_ALLOWED) || !MQLInfoInteger(MQL_TRADE_ALLOWED) ||
     !AccountInfoInteger(ACCOUNT_TRADE_ALLOWED) || !AccountInfoInteger(ACCOUNT_TRADE_EXPERT))
- {g_status="Trading permission or broker connection is OFF";return false;}
- if(!g_historyOK) {g_status="Waiting for trade history";return false;}
+ {g_status="Trading permission or broker connection is OFF";return DiagPass(false,"trading_permission");}
+ if(!g_historyOK) {g_status="Waiting for trade history";return DiagPass(false,"history_wait");}
  double risk=RiskMode==RISK_MONTE_CARLO?MaximumRiskPercent:ManualFixedRisk(); // Score-independent base and loss cap, also used for AI preflight.
  if(RiskMode!=RISK_FIXED_ADJUST)
  {
-  if(!g_mcReady || !g_mcAllowed) {g_status="Monte Carlo blocks entry";return false;}
+  if(!g_mcReady || !g_mcAllowed) {g_status="Monte Carlo blocks entry";return DiagPass(false,"monte_carlo");}
   risk=RiskMode==RISK_MONTE_CARLO?g_mcRisk:MathMin(risk,g_mcRisk);
  }
- if(MathMin(risk,PropRiskCap())<=0) {g_status="Risk / loss-streak / DD protection blocked entry";return false;}
+ if(MathMin(risk,PropRiskCap())<=0) {g_status="Risk / loss-streak / DD protection blocked entry";return DiagPass(false,"risk_limit");}
  return true;
 }
 
@@ -3125,29 +3196,29 @@ bool ExecuteEntryLocked(bool buy,double score,PatternSignal &pattern,bool manual
                   datetime decisionBar=0,ulong decisionStarted=0,double referenceEntry=0)
 {
  RefreshAccountHistory(true);
- if(!SymbolDirectionAllowed(buy)) {g_status="Symbol trade direction disabled";return false;}
- if(!manual && pattern.valid && IsPatternAlreadyUsed(pattern)) {g_status="Pattern already consumed";return false;}
+ if(!SymbolDirectionAllowed(buy)) {g_status="Symbol trade direction disabled";return DiagPass(false,"symbol_direction");}
+ if(!manual && pattern.valid && IsPatternAlreadyUsed(pattern)) {g_status="Pattern already consumed";return DiagPass(false,"pattern_consumed");}
  trade.SetDeviationInPoints(DeviationPoints());
 
  RefreshEntryState();
- if(!EntryPreflight(manual) || (buy?!IsBuyAllowed():!IsSellAllowed())) return false;
+ if(!EntryPreflight(manual) || (buy?!IsBuyAllowed():!IsSellAllowed())) return DiagPass(false,"preflight_or_entry_direction");
  datetime bar=iTime(m_symbol,PERIOD_M1,0);
  if((OneEntryPerBar || !manual) && (bar<=0 || bar==g_lastTradeBar || bar==g_lastAttemptBar))
- {g_status="One entry/attempt per M1 bar; wait for next bar";return false;}
- MqlTick tick;if(!FreshQuote(tick)) return false;
- if(!AIExecutionFresh(decisionBar,decisionStarted,referenceEntry,buy,tick)) {g_status="AI decision expired before sizing";return false;}
- if(!SpreadOK(tick) || !PatternEntryLocationOK(pattern,tick,buy)) {g_status="Spread / pattern price invalid";return false;}
+ {g_status="One entry/attempt per M1 bar; wait for next bar";return DiagPass(false,"duplicate_m1");}
+ MqlTick tick;if(!FreshQuote(tick)) return DiagPass(false,"quote_invalid");
+ if(!AIExecutionFresh(decisionBar,decisionStarted,referenceEntry,buy,tick)) {g_status="AI decision expired before sizing";return DiagPass(false,"ai_price_or_age_before_sizing");}
+ if(!SpreadOK(tick) || !PatternEntryLocationOK(pattern,tick,buy)) {g_status="Spread / pattern price invalid";return DiagPass(false,"spread_or_pattern_location");}
  double risk=manual?CalculateManualRisk():CalculateFinalRisk(score);
- if(risk<=0) {g_status="Risk / loss-streak / DD protection blocked entry";return false;}
+ if(risk<=0) {g_status="Risk / loss-streak / DD protection blocked entry";return DiagPass(false,"risk_limit");}
  double sl,tp;string slSource=manual?"MANUAL":"",slFallback="";
  bool stopsOK=manual?BuildManualStops(buy,tick,requestedSL,sl,tp):BuildEntryStops(buy,tick,pattern,sl,tp,slSource,slFallback);
  stopsOK=stopsOK && EntryStopsValid(buy,tick,sl,tp);
- if(!stopsOK) {g_status="SL is on wrong side, too close, or invalid";return false;}
+ if(!stopsOK) {g_status="SL is on wrong side, too close, or invalid";return DiagPass(false,"stop_validation");}
  double portfolioBefore=0,plannedRisk=0;string portfolioReason;
- if(EnablePortfolioRiskLimit && !ManagedPortfolioRisk(portfolioBefore,portfolioReason)) {ReportPortfolioReject(portfolioReason);return false;}
+ if(EnablePortfolioRiskLimit && !ManagedPortfolioRisk(portfolioBefore,portfolioReason)) {ReportPortfolioReject(portfolioReason);return DiagPass(false,"portfolio_unknown");}
  double lot=CalculateLotByRisk(buy,tick,sl,risk);
- if(lot<=0) {g_status="Lot below minimum or insufficient margin";return false;}
- if(!CheckPortfolioEntry(buy,tick,sl,lot,portfolioBefore,plannedRisk)) return false;
+ if(lot<=0) {g_status="Lot below minimum or insufficient margin";return DiagPass(false,"lot_invalid");}
+ if(!CheckPortfolioEntry(buy,tick,sl,lot,portfolioBefore,plannedRisk)) return DiagPass(false,"portfolio_risk_limit");
  MqlTradeRequest req={};MqlTradeCheckResult check={};
  req.action=TRADE_ACTION_DEAL;req.magic=MagicNumber;req.symbol=m_symbol;
  req.type=buy?ORDER_TYPE_BUY:ORDER_TYPE_SELL;req.volume=lot;
@@ -3156,28 +3227,30 @@ bool ExecuteEntryLocked(bool buy,double score,PatternSignal &pattern,bool manual
  if((filling&SYMBOL_FILLING_FOK)!=0) req.type_filling=ORDER_FILLING_FOK;
  else if((filling&SYMBOL_FILLING_IOC)!=0) req.type_filling=ORDER_FILLING_IOC;
  else req.type_filling=ORDER_FILLING_RETURN;
- if(!OrderCheck(req,check)) {g_status="OrderCheck: "+check.comment;Print(g_status);return false;}
+ if(!OrderCheck(req,check)) {g_status="OrderCheck: "+check.comment;Print(g_status);return DiagPass(false,"order_check");}
  MqlTick latest;if(!FreshQuote(latest) || !AIExecutionFresh(decisionBar,decisionStarted,referenceEntry,buy,latest))
- {g_status="AI decision expired during order preparation";return false;}
- if(bar!=iTime(m_symbol,PERIOD_M1,0) || !SpreadOK(latest,sl,buy)) return false;
+ {g_status="AI decision expired during order preparation";return DiagPass(false,"ai_price_or_age_preparation");}
+ if(bar!=iTime(m_symbol,PERIOD_M1,0) || !SpreadOK(latest,sl,buy)) return DiagPass(false,"bar_or_spread_changed");
  if(MathAbs((buy?latest.ask:latest.bid)-(buy?tick.ask:tick.bid))>req.deviation*m_point+m_point*1e-8)
- {g_status="Quote moved beyond sizing reserve during preparation";return false;}
- if(!BeginPendingOrder()) {g_status="Could not persist order intent / previous order unresolved";return false;}
+ {g_status="Quote moved beyond sizing reserve during preparation";return DiagPass(false,"sizing_price_drift");}
+ if(!BeginPendingOrder()) {g_status="Could not persist order intent / previous order unresolved";return DiagPass(false,"order_intent_persistence");}
  g_lastAttemptBar=bar;
- if(GlobalVariableSet(g_statePrefix+"attempt.bar",(double)bar)==0) {ClearPendingOrder();return false;}
+ if(GlobalVariableSet(g_statePrefix+"attempt.bar",(double)bar)==0) {ClearPendingOrder();return DiagPass(false,"attempt_bar_persistence");}
  GlobalVariablesFlush();
- if(!manual && !PersistPatternClaims(pattern)) {ClearPendingOrder();g_status="Pattern receipt persistence failed";return false;}
+ if(!manual && !PersistPatternClaims(pattern)) {ClearPendingOrder();g_status="Pattern receipt persistence failed";return DiagPass(false,"pattern_receipt_persistence");}
  PrepareTradeJournal(buy,manual,score,pattern,tick,sl,tp,lot,slSource,slFallback,portfolioBefore,plannedRisk);
  // Re-read all managed symbols and equity inside the account mutex after order preparation/log I/O.
- if(!CheckPortfolioEntry(buy,tick,sl,lot,portfolioBefore,plannedRisk)) {ClearPendingOrder();return false;}
+ if(!CheckPortfolioEntry(buy,tick,sl,lot,portfolioBefore,plannedRisk)) {ClearPendingOrder();return DiagPass(false,"portfolio_risk_limit");}
  if(!FreshQuote(latest) || !PatternEntryLocationOK(pattern,latest,buy) || bar!=iTime(m_symbol,PERIOD_M1,0) || !AIExecutionFresh(decisionBar,decisionStarted,referenceEntry,buy,latest) ||
     !SpreadOK(latest,sl,buy) || MathAbs((buy?latest.ask:latest.bid)-(buy?tick.ask:tick.bid))>req.deviation*m_point+m_point*1e-8)
- {ClearPendingOrder();g_status="Decision / quote changed before send";return false;}
+ {ClearPendingOrder();g_status="Decision / quote changed before send";return DiagPass(false,"decision_or_quote_before_send");}
  if(!EntryStopsValid(buy,latest,sl,tp))
- {ClearPendingOrder();g_status="Stops invalid at latest quote";return false;}
+ {ClearPendingOrder();g_status="Stops invalid at latest quote";return DiagPass(false,"latest_stop_validation");}
  string orderComment=PendingOrderComment();
+ DiagOrderAttempt();
  bool ok=buy?trade.Buy(lot,m_symbol,latest.ask,sl,tp,orderComment):trade.Sell(lot,m_symbol,latest.bid,sl,tp,orderComment);
  MqlTradeResult result={};trade.Result(result);uint rc=result.retcode;
+ DiagOrderResult(ok,rc);
  if(result.order>0) SaveU64(g_statePrefix+"ord.ticket",result.order);
  if(result.deal>0) SaveU64(g_statePrefix+"ord.deal",result.deal);
  GlobalVariableSet(g_statePrefix+"ord.state",2);GlobalVariablesFlush();
@@ -3188,7 +3261,7 @@ bool ExecuteEntryLocked(bool buy,double score,PatternSignal &pattern,bool manual
   else RecordEntryAttempt(manual,pattern);
   g_status="Order result: "+trade.ResultRetcodeDescription();
   if(HasUnresolvedOrder()) g_status+=" | UNRESOLVED token "+PendingOrderToken();
-  Print(g_status);return false;
+  Print(g_status);return DiagPass(false,"order_result");
  }
  RecordEntryAttempt(manual,pattern);g_historyDirty=true;ReconcilePendingOrder();CaptureInitialRisks();
  g_currentRiskPercent=risk;
@@ -3227,14 +3300,14 @@ bool SymbolDirectionAllowed(bool buy)
 
 bool FreshQuote(MqlTick &tick,int ageLimit=0)
 {
- if(!SymbolInfoTick(m_symbol,tick) || !MathIsValidNumber(tick.bid) || !MathIsValidNumber(tick.ask) ||
-    tick.bid<=0 || tick.ask<tick.bid || tick.time_msc<=0) return false;
+ if(DiagReject(!SymbolInfoTick(m_symbol,tick),"quote_unavailable") || DiagReject(!MathIsValidNumber(tick.bid),"invalid_bid") || DiagReject(!MathIsValidNumber(tick.ask),"invalid_ask") ||
+    DiagReject(tick.bid<=0,"invalid_bid") || DiagReject(tick.ask<tick.bid,"invalid_bid_ask") || DiagReject(tick.time_msc<=0,"quote_timestamp_missing")) return false;
  ulong now=GetTickCount64();
  if(tick.time_msc!=m_quoteTimeMsc)
  {m_quoteTimeMsc=tick.time_msc;g_lastSymbolTickMs=now;m_quoteSeen=true;}
  if(ageLimit<=0) ageLimit=MaxQuoteAgeMs;
  long serverMs=(long)(MQLInfoInteger(MQL_TESTER)?TimeCurrent():TimeTradeServer())*1000;
- if(serverMs<=0 || tick.time_msc>serverMs+1000 || serverMs-tick.time_msc>ageLimit) return false;
+ if(DiagReject(serverMs<=0,"server_time_missing") || DiagReject(tick.time_msc>serverMs+1000,"quote_from_future") || DiagReject(serverMs-tick.time_msc>ageLimit,"quote_stale")) return false;
  // Polling the same quote must not refresh the monotonic receipt timestamp.
  if(!MQLInfoInteger(MQL_TESTER) && (!m_quoteSeen || now<g_lastSymbolTickMs || now-g_lastSymbolTickMs>(ulong)ageLimit)) return false;
  return true;
@@ -3243,12 +3316,12 @@ bool FreshQuote(MqlTick &tick,int ageLimit=0)
 bool SpreadOK(MqlTick &tick,double sl=0,bool buy=true)
 {
  double atr=GetATR(PERIOD_M1,14,1),spread=tick.ask-tick.bid;
- if(atr<=0 || spread<0 || spread>atr*MaxSpreadATR+TickSize()*1e-8) return false;
- if(MaxSpreadPoints>0 && spread>MaxSpreadPoints*m_point) return false;
+ if(DiagReject(atr<=0,"spread_atr_unavailable") || DiagReject(spread<0,"invalid_spread") || DiagReject(spread>atr*MaxSpreadATR+TickSize()*1e-8,"spread_atr_limit")) return false;
+ if(DiagReject(MaxSpreadPoints>0 && spread>MaxSpreadPoints*m_point,"spread_points_limit")) return false;
  if(sl>0)
  {
   double distance=MathAbs((buy?tick.ask:tick.bid)-sl);
-  if(distance<=0 || spread>distance*MaxSpreadSL+TickSize()*1e-8) return false;
+  if(DiagReject(distance<=0,"sl_distance_zero") || DiagReject(spread>distance*MaxSpreadSL+TickSize()*1e-8,"spread_sl_limit")) return false;
  }
  return true;
 }
@@ -3273,9 +3346,10 @@ double AvailableDirectionalVolume(bool buy)
 bool ExecuteEntry(bool buy,double score,PatternSignal &pattern,bool manual=false,double requestedSL=0,
                   datetime decisionBar=0,ulong decisionStarted=0,double referenceEntry=0)
 {
- if(!AcquireExecution()) {g_status="Account execution busy";return false;}
+ DiagExecution(manual);
+ if(!AcquireExecution()) {g_status="Account execution busy";return DiagEnd(false,"execution_lock");}
  bool ok=ExecuteEntryLocked(buy,score,pattern,manual,requestedSL,decisionBar,decisionStarted,referenceEntry);
- ReleaseExecution();return ok;
+ ReleaseExecution();return DiagEnd(ok,"execution");
 }
 
 bool SolePositionOwner(ulong ticket)
@@ -3380,12 +3454,14 @@ bool InUniverseNow()
 bool RefreshCandidate()
 {
  bool was=m_candidate;datetime previous=m_candidateBar;ulong sequence=m_candidateSequence;m_candidate=false;
- if(!InUniverseNow() || !EntryPreflight(false) || g_aiRequest.active) return false;
+ DiagBegin(was);
+ if(!InUniverseNow() || !EntryPreflight(false) || g_aiRequest.active) return DiagEnd(false,"preflight");
  datetime bar=iTime(m_symbol,PERIOD_M1,0);
+ DiagReuse(was && previous==bar);
  if(bar<=0 || bar==g_lastTradeBar || bar==g_lastAttemptBar ||
-    ((ExecutionMode==EXECUTION_AI || ExecutionMode==EXECUTION_HYBRID) && bar==g_aiLastBar)) return false;
+    ((ExecutionMode==EXECUTION_AI || ExecutionMode==EXECUTION_HYBRID) && bar==g_aiLastBar)) return DiagEnd(false,"bar_or_ai_lock");
  MTFResult r[];
- if(!AnalyzeAllTimeframes(r)) {g_status="Waiting for all 7 timeframe indicators";return false;}
+ if(!AnalyzeAllTimeframes(r)) {g_status="Waiting for all 7 timeframe indicators";return DiagEnd(false,"indicator_wait");}
  PatternSignal p;ZeroMemory(p);bool buy=true;double score=0;
  if(ExecutionMode==EXECUTION_AI)
  {
@@ -3398,22 +3474,23 @@ bool RefreshCandidate()
  }
  else
  {
-  if(!SelectReversalPattern(r,p)) {g_status="Waiting for fresh neckline breakout";return false;}
-  if(IsPatternAlreadyUsed(p)) return false;
+  if(!SelectReversalPattern(r,p)) {g_status="Waiting for fresh neckline breakout";return DiagEnd(false,"pattern_wait");}
+  DiagCandidate();
+  if(IsPatternAlreadyUsed(p)) return DiagEnd(false,"pattern_consumed");
   buy=PatternDirection(p)==ENTRY_BUY;
-  if(buy?!BuySignalOK(p,r):!SellSignalOK(p,r)) {g_status="Weighted agreement / strong opposition";return false;}
-  if(buy?!IsBuyAllowed():!IsSellAllowed()) return false;
+  if(buy?!BuySignalOK(p,r):!SellSignalOK(p,r)) {g_status="Weighted agreement / strong opposition";return DiagEnd(false,"weighted_agreement_or_opposition");}
+  if(buy?!IsBuyAllowed():!IsSellAllowed()) return DiagEnd(false,"entry_direction");
   score=buy?CalculateFinalBuyScore(p,r):CalculateFinalSellScore(p,r);
  }
- if(score<MinimumSignalScore) {g_status=StringFormat("Local score %.1f < %.1f",score,MinimumSignalScore);return false;}
+ if(score<MinimumSignalScore) {g_status=StringFormat("Local score %.1f < %.1f",score,MinimumSignalScore);return DiagEnd(false,"score_below_threshold");}
  MqlTick tick;double sl,tp;string slSource,slFallback;
- if(!SymbolDirectionAllowed(buy) || !FreshQuote(tick) || !BuildEntryStops(buy,tick,p,sl,tp,slSource,slFallback) || !SpreadOK(tick,sl,buy) || !PatternEntryLocationOK(p,tick,buy))
- {g_status="Quote / relative cost / stop geometry blocks entry";return false;}
- if(bar!=iTime(m_symbol,PERIOD_M1,0) || !MTFSnapshotCurrent()) return false;
+ if(!DiagPass(SymbolDirectionAllowed(buy),"symbol_direction") || !FreshQuote(tick) || !BuildEntryStops(buy,tick,p,sl,tp,slSource,slFallback) || !SpreadOK(tick,sl,buy) || !PatternEntryLocationOK(p,tick,buy))
+ {g_status="Quote / relative cost / stop geometry blocks entry";return DiagEnd(false,"cost_or_stop_gate");}
+ if(bar!=iTime(m_symbol,PERIOD_M1,0) || !MTFSnapshotCurrent()) return DiagEnd(false,"snapshot_changed");
  m_candidate=true;m_candidateBuy=buy;m_candidateScore=score;m_candidatePattern=p;m_candidateBar=bar;
  m_candidateSequence=was && previous==bar?sequence:++g_queueSequence;
  g_status=StringFormat("Candidate %s score %.1f | agreement %.0f%%",buy?"BUY":"SELL",score,WeightedAgreement(r,buy));
- return true;
+ return DiagEnd(true,"queued");
 }
 
 bool DispatchCandidate()
@@ -3494,6 +3571,7 @@ void Shutdown()
   if(m_isChart) {DeleteManualPanel();DeleteAutoHorizontalLines();DeleteAutoTrendLines();RestoreChartTheme();}
   GlobalVariableSetOnCondition(g_lockKey,0,1);g_lockOwned=false;
  }
+ DiagSummary();
  ReleaseIndicators();GlobalVariablesFlush();
 }
 

@@ -1,5 +1,12 @@
 # CHANGELOG — v2.43 → v2.44
 
+## 2026-09-21：Tester AUTOの最初の拒否理由を候補単位で集計
+
+- PR #10マージ後のmain `bcb41c8` から診断を分離。従来status/CSV/inputを保ち、cost_or_stop_gateの内部条件と候補生成前・候補拒否・発注・応答を区別する。実運用とAI/HYBRID/MANUALでは新診断を無効化。
+- 既存条件の評価結果だけを記録し、fallbackで回復する途中失敗は拒否に数えない。条件式・短絡順序・生成値を保持し、baselineを変えずに正確な逆変換で13ソースを照合する。
+- 同条件の実機で候補評価67,196件、最初の拒否67,196件、発注0回。ATR比spread上限45,691件、score不足20,565件、SL broker gap797件、fallback swing逆側143件を測定。取引/dealは引き続き0。従来status遷移の798回と候補単位のcost/stop拒否46,631件は区別する。
+- MetaEditor本体・Worker0 errors / 0 warnings。実測と限界はVALIDATION_JA.md、経路一覧はENTRY_DIAGNOSTICS_JA.md。売買条件の緩和は含めない。
+
 ## 2026-09-20：非ビジュアルテスターの指標初期化待ちを修正
 
 - 実機で取引数0と `Waiting for all 7 timeframe indicators` の継続を確認。非ビジュアルテスターではバッファ要求時に指標計算が起動するため、`BarsCalculated` を先に調べる短絡評価が最初の `CopyBuffer` を妨げていた。

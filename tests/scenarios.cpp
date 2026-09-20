@@ -273,8 +273,9 @@ void tester_connection_tests(){
  check(!unresolved.EntryPreflight(false)&&order_calls==0,"disconnected tester still blocks an unresolved account order");unresolved.Shutdown();
 }
 void v243_tests();void v244_tests();void v244_lock_tests(const std::string &only="");
+void entry_diagnostic_tests();
 int main(int argc,char **argv){
  if(argc>1)v244_lock_tests(argv[1]);
- else {scoring_tests();pattern_tests();adaptive_tests();order_tests();ai_tests();scanner_tests();risk_tests();v243_tests();v244_tests();v244_lock_tests();tester_connection_tests();}
+ else {scoring_tests();pattern_tests();adaptive_tests();order_tests();ai_tests();scanner_tests();risk_tests();v243_tests();v244_tests();v244_lock_tests();tester_connection_tests();entry_diagnostic_tests();}
  std::cout<<"{\"passed\":"<<checks<<",\"failed\":0}\n";
 }

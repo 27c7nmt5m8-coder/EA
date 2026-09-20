@@ -2,13 +2,13 @@
 bool ValidPatternPrice(double price) {return MathIsValidNumber(price) && price>0;}
 bool EntryStopsValid(bool buy,MqlTick &tick,double sl,double tp)
 {
- double step=TickSize();if(step<=0 || !ValidPatternPrice(sl) || !ValidPatternPrice(tp) || tick.bid<=0 || tick.ask<tick.bid) return false;
+ double step=TickSize();if(DiagReject(step<=0,"tick_size_invalid") || DiagReject(!ValidPatternPrice(sl),"invalid_sl") || DiagReject(!ValidPatternPrice(tp),"invalid_tp") || DiagReject(tick.bid<=0,"invalid_bid") || DiagReject(tick.ask<tick.bid,"invalid_bid_ask")) return false;
  long stops=SymbolInfoInteger(m_symbol,SYMBOL_TRADE_STOPS_LEVEL),freeze=SymbolInfoInteger(m_symbol,SYMBOL_TRADE_FREEZE_LEVEL);
  double gap=(double)MathMax(stops,freeze)*m_point+step,eps=step*1e-8;
  double entry=buy?tick.ask:tick.bid;
- if(MathAbs(sl/step-MathRound(sl/step))>1e-6 || MathAbs(tp/step-MathRound(tp/step))>1e-6) return false;
- return buy?(sl<entry && sl<=tick.bid-gap+eps && tp>=tick.bid+gap-eps):
-            (sl>entry && sl>=tick.ask+gap-eps && tp<=tick.ask-gap+eps);
+ if(DiagReject(MathAbs(sl/step-MathRound(sl/step))>1e-6,"sl_tick_alignment") || DiagReject(MathAbs(tp/step-MathRound(tp/step))>1e-6,"tp_tick_alignment")) return false;
+ return buy?(DiagPass(sl<entry,"sl_wrong_side") && DiagPass(sl<=tick.bid-gap+eps,"sl_broker_gap") && DiagPass(tp>=tick.bid+gap-eps,"tp_broker_gap")):
+            (DiagPass(sl>entry,"sl_wrong_side") && DiagPass(sl>=tick.ask+gap-eps,"sl_broker_gap") && DiagPass(tp<=tick.ask-gap+eps,"tp_broker_gap"));
 }
 bool PatternStopAnchor(bool buy,PatternSignal &p,double &anchor,string &source,string &why)
 {
@@ -36,6 +36,7 @@ bool PatternStopAnchor(bool buy,PatternSignal &p,double &anchor,string &source,s
 }
 bool BuildEntryStops(bool buy,MqlTick &tick,PatternSignal &p,double &sl,double &tp,string &source,string &fallback)
 {
+ string diagBefore=m_diagReason;
  sl=0;tp=0;source="";fallback="";double anchor=0;
  bool hasPattern=p.valid && p.type!=PATTERN_NONE;
  if(PatternStopAnchor(buy,p,anchor,source,fallback))
@@ -58,6 +59,7 @@ bool BuildEntryStops(bool buy,MqlTick &tick,PatternSignal &p,double &sl,double &
   Print("SL fallback ",m_symbol," ",PatternName(p.type),": ",fallback);
   m_lastSLFallbackBar=iTime(m_symbol,PERIOD_M1,0);m_lastSLFallbackReason=fallback;
  }
+ if(m_diagActive) m_diagReason=diagBefore; // Structural failure can recover via the existing fallback.
  if(!BuildStops(buy,tick,sl,tp) || !EntryStopsValid(buy,tick,sl,tp)) return false;
  return true;
 }
@@ -90,9 +92,9 @@ bool CheckPortfolioEntry(bool buy,MqlTick &tick,double sl,double lot,double &bef
  if(!known) before=-1;
  if(!plannedOK) planned=-1;
  if(!EnablePortfolioRiskLimit) return true;
- if(!known) {ReportPortfolioReject(why);return false;}
- if(!plannedOK) {ReportPortfolioReject("Cannot calculate new planned risk");return false;}
+ if(!known) {ReportPortfolioReject(why);return DiagPass(false,"portfolio_unknown");}
+ if(!plannedOK) {ReportPortfolioReject("Cannot calculate new planned risk");return DiagPass(false,"planned_risk_unknown");}
  if(!PortfolioBudgetAllows(before,planned,AccountInfoDouble(ACCOUNT_EQUITY)))
- {ReportPortfolioReject(StringFormat("current %.2f + planned %.2f exceeds %.2f",before,planned,AccountInfoDouble(ACCOUNT_EQUITY)*MaxPortfolioRiskPercent/100.0));return false;}
+ {ReportPortfolioReject(StringFormat("current %.2f + planned %.2f exceeds %.2f",before,planned,AccountInfoDouble(ACCOUNT_EQUITY)*MaxPortfolioRiskPercent/100.0));return DiagPass(false,"portfolio_risk_limit");}
  return true;
 }

@@ -2,12 +2,13 @@
 
 Only the four reviewed existence guards, eight explicit local initializers, and
 the tester-only live connection exception, status diagnostics and exact indicator
-data-request ordering may differ.
+data-request ordering and exact Tester AUTO observation hooks may differ.
 Historical hashes and all other production bytes remain fixed.
 """
 from pathlib import Path
 import hashlib
 import json
+from entry_diagnostic_audit import project
 
 ROOT = Path(__file__).resolve().parents[1]
 baseline = json.loads((ROOT / 'tests/v244_lock_fix_baseline.json').read_text())
@@ -29,7 +30,7 @@ assert actual == set(baseline['source_sha256']), 'Unexpected production file add
 results = []
 for name, expected in baseline['source_sha256'].items():
     original_bytes = (ROOT / 'src' / name).read_bytes()
-    projected = original_bytes
+    projected = project(name, original_bytes.decode()).encode()
     for key in keys.get(name, []):
         projected = replace_once(projected,
             '(!GlobalVariableCheck(' + key + ') && !GlobalVariableTemp(' + key + '))',
@@ -58,8 +59,8 @@ for name, expected in baseline['source_sha256'].items():
                     'byte_identical_to_input': original_bytes == projected,
                     'sha256': hashlib.sha256(original_bytes).hexdigest()})
 
-result = {'scope': 'Exact production bytes after reversing lock/initializer/tester exception, tester-only diagnostics and indicator demand ordering.',
+result = {'scope': 'Exact production bytes after reversing lock/initializer/tester exception, tester-only diagnostics, indicator demand ordering and exact candidate observation hooks.',
           'input_zip_sha256': baseline['input_zip_sha256'], 'passed': len(results), 'failed': 0,
-          'lock_sites': 4, 'explicit_initializers': 8, 'tester_connection_exceptions': 1, 'tester_diagnostics': 1, 'indicator_demand_ordering': 1, 'files': results}
+          'lock_sites': 4, 'explicit_initializers': 8, 'tester_connection_exceptions': 1, 'tester_diagnostics': 1, 'indicator_demand_ordering': 1, 'candidate_diagnostics': 1, 'files': results}
 (ROOT / 'verification/lock_fix_scope.json').write_text(json.dumps(result, indent=2) + '\n')
-print('PASS', len(results), 'production files: lock/initializer/tester exception + tester diagnostics + indicator demand ordering only')
+print('PASS', len(results), 'production files: lock/initializer/tester exception + tester diagnostics + indicator demand ordering + exact candidate observation hooks only')
