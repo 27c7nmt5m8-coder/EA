@@ -1,6 +1,7 @@
 """Byte-level scope audit against the uploaded v2.44 ZIP; not native compilation.
 
-Only the four reviewed existence guards, eight explicit local initializers, and
+After reversing the exact reviewed v2.45 UI/display hunks, only the four
+reviewed existence guards, eight explicit local initializers, and
 the tester-only live connection exception, status diagnostics and exact indicator
 data-request ordering may differ.
 Historical hashes and all other production bytes remain fixed.
@@ -59,8 +60,8 @@ for name, expected in baseline['source_sha256'].items():
                     'byte_identical_to_input': original_bytes == projected,
                     'sha256': hashlib.sha256(original_bytes).hexdigest()})
 
-result = {'scope': 'Exact production bytes after reversing lock/initializer/tester exception, tester-only diagnostics and indicator demand ordering.',
+result = {'scope': 'Exact production bytes after reversing reviewed v2.45 UI/display hunks, lock/initializer/tester exception, tester-only diagnostics and indicator demand ordering.',
           'input_zip_sha256': baseline['input_zip_sha256'], 'passed': len(results), 'failed': 0,
           'lock_sites': 4, 'explicit_initializers': 8, 'tester_connection_exceptions': 1, 'tester_diagnostics': 1, 'indicator_demand_ordering': 1, 'files': results}
 (ROOT / 'verification/lock_fix_scope.json').write_text(json.dumps(result, indent=2) + '\n')
-print('PASS', len(results), 'production files: lock/initializer/tester exception + tester diagnostics + indicator demand ordering only')
+print('PASS', len(results), 'production files: exact reviewed v2.45 hunks + existing v2.44 exceptions only')
