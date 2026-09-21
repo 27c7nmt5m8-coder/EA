@@ -67,11 +67,48 @@ void v245_tests(){
  double visibleScore=trend.CalculateLineScore(ENTRY_BUY);bool visibleNear=trend.NearTrend(true);auto virtualBefore=trend.m_trends[0];
  ShowAutoTrendLines=false;
  check(trend.CreateOrUpdateTrendLine(name,server_time-120,100,server_time-60,100,clrOrange),"hidden trend calculation succeeds");
- check(ObjectFind(0,name)<0&&ObjectFind(0,other)>=0&&ObjectFind(0,trend.ManualName(u"SL"))>=0&&ObjectFind(0,trend.ManualName(u"BUY"))>=0,"hide deletes only the automatic trend object");
+ check(ObjectFind(0,name)<0&&ObjectFind(0,other)>=0&&ObjectFind(0,trend.ManualName(u"SL"))>=0&&ObjectFind(0,trend.ManualName(u"BUY"))>=0&&ObjectFind(0,trend.ManualName(u"TP"))>=0,"hide deletes only the automatic trend object");
  check(trend.CalculateLineScore(ENTRY_BUY)==visibleScore&&trend.NearTrend(true)==visibleNear&&trend.m_trends[0].p1==virtualBefore.p1&&trend.m_trends[0].t2==virtualBefore.t2,"hidden trend preserves virtual geometry and LineScore");
  fixture_pattern(u"FX");ShowAutoTrendLines=true;trend.UpdateAutoTrendLines();
  double scoreBefore=trend.CalculateLineScore(ENTRY_BUY);auto support=trend.m_trends[0],resistance=trend.m_trends[1];
  ShowAutoTrendLines=false;trend.UpdateAutoTrendLines();
  check(scoreBefore==trend.CalculateLineScore(ENTRY_BUY)&&support.p1==trend.m_trends[0].p1&&resistance.p1==trend.m_trends[1].p1,"swing calculation runs identically with display off");
  trend.Shutdown();
+ // Same frozen v2.44 methods, same services and exact outputs at relevant gates.
+ reset();SymbolState parity;setup(parity);
+ for(bool buy:{true,false})for(int scenario=0;scenario<9;scenario++){
+  symbols[u"FX"]=MockSymbol{};free_margin=100000;profit_ok=true;
+  double requested=buy?96:104,risk=.5;
+  if(scenario==1)requested=buy?101:99;
+  if(scenario==2){symbols[u"FX"].stops=10;requested=buy?99.95:100.05;}
+  if(scenario==3)symbols[u"FX"].atr=0;
+  if(scenario==4)symbols[u"FX"].atr=.01;
+  if(scenario==5)symbols[u"FX"].minLot=10;
+  if(scenario==6)free_margin=0;
+  if(scenario==7)profit_ok=false;
+  if(scenario==8)risk=0;
+  SymbolInfoTick(u"FX",tick);double oldSL=0,oldTP=0,newSL=0,newTP=0;
+  bool oldOK=parity.BuildManualStopsV244Reference(buy,tick,requested,oldSL,oldTP);
+  bool newOK=parity.BuildManualStops(buy,tick,requested,newSL,newTP);
+  check(oldOK==newOK&&oldSL==newSL&&oldTP==newTP,"v2.44/v2.45 SL TP result parity");
+  check(parity.SpreadOKV244Reference(tick,requested,buy)==parity.SpreadOK(tick,requested,buy),"v2.44/v2.45 spread decision parity");
+  check(parity.CalculateLotByRiskV244Reference(buy,tick,requested,risk)==parity.CalculateLotByRisk(buy,tick,requested,risk),"v2.44/v2.45 lot and margin result parity");
+ }
+ parity.Shutdown();
+ reset();ExecutionMode=EXECUTION_MANUAL;SymbolState managed;setup(managed,u"FX",true);
+ positions[10]={10,MagicNumber,u"FX",POSITION_TYPE_BUY,.1,98,96,105};
+ GlobalVariableSet(managed.PositionKey(10,u".r"),2);managed.ManagePositions();
+ check(modify_calls==1&&positions[10].sl>98,"MANUAL smart break-even/trailing still improves SL");
+ double protectedSL=positions[10].sl;objects[managed.ManualName(u"SL")]=90;
+ managed.ChartEvent(CHARTEVENT_OBJECT_DRAG,lp,dp,managed.ManualName(u"SL"));
+ check(positions[10].sl==protectedSL,"manual next-entry drag does not replace an existing position SL");
+ symbols[u"FX"].bid=99.8;symbols[u"FX"].ask=99.82;symbols[u"FX"].tickMs++;managed.ManagePositions();
+ check(positions[10].sl>=protectedSL,"MANUAL management never loosens SL");
+ AccountMode=FINTOKEI;FintokeiInitialBalance=100000;FintokeiDailyReference=100000;FintokeiReferenceDateUTC=server_time;equity=90000;
+ managed.UpdatePropProtection();check(close_calls==1&&positions.empty(),"MANUAL Fintokei DD protection still closes own exposure");managed.Shutdown();
+ for(bool show:{false,true}){
+  reset();ShowAutoTrendLines=show;fixture_pattern(u"FX");
+  check(OnInit()==INIT_SUCCEEDED,"AUTO initializes with either trend visibility");OnTimer();
+  check(order_calls==1,"AUTO eligible fixture trades with either trend visibility");OnDeinit(0);
+ }
 }

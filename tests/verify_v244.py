@@ -1,7 +1,8 @@
 """Compile actual EA/worker code as C++17 with MT5 mocks; NOT a native MQL compile."""
 from pathlib import Path
 import re,json,subprocess,hashlib,sys
-from json_support import HEADER
+from json_support import HEADER,extract
+from v245_audit_helpers import project_v245
 ROOT=Path(__file__).resolve().parents[1];SRC=ROOT/'src';TEST=ROOT/'verification'
 TEST.mkdir(exist_ok=True)
 
@@ -49,6 +50,13 @@ def constants(source):
 
 def run():
     product=expand(SRC/'MTFAutoTrader_3Mode_AI_v2_44.mq5',set())
+    # Differential tests execute the exact pre-v2.45 methods from the immutable
+    # main projection alongside current methods. These never enter shipped MQL.
+    previous=project_v245('MT3SymbolState.mqh',(SRC/'MT3SymbolState.mqh').read_text(encoding='utf-8'))
+    reference='\n'.join(extract(name,previous) for name in ['BuildManualStops','SpreadOK','CalculateLotByRisk'])
+    for name in ['BuildManualStops','SpreadOK','CalculateLotByRisk']:
+        reference=reference.replace(name+'(',name+'V244Reference(')
+    product=product.replace('class SymbolState\n{\npublic:', 'class SymbolState\n{\npublic:\n'+reference,1)
     worker=(SRC/'MTFAutoTrader_AI_Worker.mq5').read_text()
     for old,new in [('OnInit','WorkerInit'),('OnDeinit','WorkerDeinit'),('OnTimer','WorkerTimer'),('OnChartEvent','WorkerEvent')]:worker=worker.replace(old+'(',new+'(')
     source=product+'\n'+worker
