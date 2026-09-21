@@ -111,4 +111,14 @@ void v245_tests(){
   check(OnInit()==INIT_SUCCEEDED,"AUTO initializes with either trend visibility");OnTimer();
   check(order_calls==1,"AUTO eligible fixture trades with either trend visibility");OnDeinit(0);
  }
+ reset();ExecutionMode=EXECUTION_MANUAL;SymbolState preview;setup(preview,u"FX",true);
+ AccountMode=FINTOKEI;FintokeiInitialBalance=100000;FintokeiDailyReference=100000;FintokeiReferenceDateUTC=server_time;equity=90000;
+ positions[10]={10,MagicNumber,u"FX",POSITION_TYPE_BUY,.1,100,98,102};
+ objects.erase(preview.ManualName(u"SL"));symbols[u"FX"].ready=false;symbols[u"FX"].tickMs-=10000;
+ auto savedProtection=globals;int savedCloses=close_calls;
+ preview.RefreshManualPanel();
+ check(globals==savedProtection&&close_calls==savedCloses&&positions.size()==1,"Fintokei stale/missing-SL preview cannot persist protection or close exposure");
+ symbols[u"FX"].ready=true;newbar();preview.RefreshManualPanel();
+ check(globals==savedProtection&&close_calls==savedCloses&&positions.size()==1,"Fintokei valid-data preview is also calculation-only");
+ preview.Maintain(true);check(close_calls==savedCloses+1&&positions.empty(),"normal MANUAL maintenance still latches and executes DD protection");preview.Shutdown();
 }
