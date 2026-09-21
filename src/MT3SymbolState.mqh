@@ -2262,10 +2262,13 @@ bool OpenRiskReserve(double &reserve)
  return true;
 }
 
-double PropRiskCap()
+double PropRiskCap(bool refreshProtection=true)
 {
  if(AccountMode!=FINTOKEI) return MaximumRiskPercent;
- UpdatePropProtection();
+ // Execution keeps the original update; UI estimates must never save or close.
+ if(refreshProtection) UpdatePropProtection();
+ else if(g_propDay!=UTCDay(UTCNow()) || StateGet(g_propPrefix+"overall")>0 ||
+         StateGet(g_propPrefix+"stop."+IntegerToString(g_propDay))>0) return 0;
  if(g_propStop>0 || g_dailyReference<=0) return 0;
  if(!g_accountHistoryOK || g_accountLossStreak>=FintokeiMaxConsecutiveLosses || g_consecutiveLosses>=FintokeiMaxConsecutiveLosses) return 0;
  double equity=AccountInfoDouble(ACCOUNT_EQUITY),reserve=0;
@@ -2520,7 +2523,7 @@ void RefreshEntryState()
  if(g_historyOK) UpdateMonteCarloRisk(changed);
 }
 
-bool EntryPreflight(bool manual)
+bool EntryPreflight(bool manual,bool refreshProtection=true)
 {
  if(!manual && !InUniverseNow()) {g_status="Symbol outside entry universe";return false;}
  if(AnyAccountUnresolved()) {g_status="Account has an unresolved order";return false;}
@@ -2538,7 +2541,7 @@ bool EntryPreflight(bool manual)
   if(!g_mcReady || !g_mcAllowed) {g_status="Monte Carlo blocks entry";return false;}
   risk=RiskMode==RISK_MONTE_CARLO?g_mcRisk:MathMin(risk,g_mcRisk);
  }
- if(MathMin(risk,PropRiskCap())<=0) {g_status="Risk / loss-streak / DD protection blocked entry";return false;}
+ if(MathMin(risk,PropRiskCap(refreshProtection))<=0) {g_status="Risk / loss-streak / DD protection blocked entry";return false;}
  return true;
 }
 
@@ -2760,7 +2763,7 @@ double ManualFixedRisk()
  return LimitRisk(risk);
 }
 
-double CalculateManualRisk()
+double CalculateManualRisk(bool refreshProtection=true)
 {
  if(!g_historyOK) return 0;
  double fixed=ManualFixedRisk(),risk=fixed;
@@ -2769,7 +2772,7 @@ double CalculateManualRisk()
   if(!g_mcReady || !g_mcAllowed) return 0;
   risk=RiskMode==RISK_MONTE_CARLO?g_mcRisk:MathMin(fixed,g_mcRisk);
  }
- return LimitRisk(MathMin(risk,PropRiskCap()));
+ return LimitRisk(MathMin(risk,PropRiskCap(refreshProtection)));
 }
 
 bool EntryModeAllowed(bool manual)
@@ -2890,7 +2893,7 @@ string ManualCommonWait(MqlTick &tick,double &atr)
 {
  if(!FreshQuote(tick)) return "quote stale or unavailable";
  atr=GetATR(PERIOD_M1,14,1);if(atr<=0) return "M1 ATR not ready";
- string saved=g_status;bool allowed=EntryPreflight(true);string why=g_status;g_status=saved;
+ string saved=g_status;bool allowed=EntryPreflight(true,false);string why=g_status;g_status=saved;
  if(!allowed) return why;
  if(g_manualBusy || g_execOwned || (GlobalVariableCheck(g_execKey) && GlobalVariableGet(g_execKey)!=0)) return "entry lock busy";
  datetime bar=iTime(m_symbol,PERIOD_M1,0);
@@ -2920,7 +2923,7 @@ void RefreshManualPanel()
 {
  if(!m_isChart || ExecutionMode!=EXECUTION_MANUAL) return;
  InitializeManualPanel();
- MqlTick tick;ZeroMemory(tick);double atr=0,requested=0,risk=CalculateManualRisk();
+ MqlTick tick;ZeroMemory(tick);double atr=0,requested=0,risk=CalculateManualRisk(false);
  string common=ManualCommonWait(tick,atr);
  bool hasSL=ObjectFind(0,ManualName("SL"))>=0 && ObjectGetDouble(0,ManualName("SL"),OBJPROP_PRICE,0,requested);
  if(common=="" && !hasSL) common="SL line unavailable";
