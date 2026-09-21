@@ -20,6 +20,8 @@ def adapt(code):
     code=re.sub(r'\b(\w+)\s+(\w+\[\](?:,\w+\[\])+);',lambda m:'std::vector<'+m[1]+'> '+m[2].replace('[]','')+';',code)
     code=re.sub(r'\b(\w+)\s+(\*)?\s*(\w+)\[\];',lambda m:'std::vector<'+m[1]+('*' if m[2] else '')+'> '+m[3]+';',code)
     code=code.replace('m_mcReturns[],m_mcDDs[]','m_mcReturns,m_mcDDs')
+    # MQL strings concatenate literal + conditional literal; C++ pointers do not.
+    code=code.replace('"Ready ("+(buyOK?"BUY":"SELL")','string("Ready (")+(buyOK?"BUY":"SELL")')
     code=re.sub(r'g_symbols\[([^\]]+)\]\.',r'g_symbols[\1]->',code)
     code=re.sub(r'\bstate\.(Init|Shutdown|m_wanted)',r'state->\1',code)
     tokens=r'''//[^\n]*|/\*[\s\S]*?\*/|'(?:\\.|[^'\\])*'|"(?:\\.|[^"\\])*"'''
