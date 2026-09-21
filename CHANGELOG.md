@@ -1,4 +1,14 @@
-# CHANGELOG — v2.43 → v2.44
+# CHANGELOG — v2.43 → v2.45
+
+## 2026-09-21：v2.45 MANUAL readiness・描画専用トレンド設定
+
+- 最新GitHub main `bcb41c8` から独立branchで作成。旧v2.45 ZIPや未マージの診断PRを基準にしない。
+- パネル生成がSL初期配置用ATRに依存して消える経路を解消。データ待ちでもボタン・理由を描画し、初期化と通常のtimer/tickで更新する。
+- SL・方向・spreadの複合失敗を一律SLエラーにする表示と、ボタン判定を無視したReadyを修正。既存のSL/spread/ロット計算をそのまま詳細理由付き関数で共有し、プレビューに既存preflight・stop/freeze・Portfolio Risk等を反映。注文・管理経路は変更しない。
+- M1 ATRは従来から `PERIOD_M1,14,1` 固定。PR #10のCopyBuffer先行処理、失敗handleをキャッシュしない再試行、Shutdown時の解放を維持。時間足による永続INVALID_HANDLEの実装原因は確認されておらず、不要なhandle作り直しは追加しない。
+- レビューでプレビューからFintokei状態保存・決済へ到達する経路を検出し、回帰テストで再現後、参照のみの経路へ修正。通常の監視・注文は従来どおり保護を更新し、プレビューは保存・発注・決済を行わない。
+- `ShowAutoTrendLines=false` を追加。仮想線を保存した後で描画だけを抑止し、LineScore計算、既存input/default、売買・リスク条件を維持する。
+- ATR待ちのパネル欠落を修正前CIで再現。回帰・ネイティブ結果と実機未実測範囲は [VALIDATION_JA.md](VALIDATION_JA.md#v245) を参照。過去のbaselineは変更せず、今回の正確な差分だけを逆変換して全ソースを照合する。
 
 ## 2026-09-20：非ビジュアルテスターの指標初期化待ちを修正
 

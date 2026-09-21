@@ -44,7 +44,7 @@ jobs:
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
           set -o pipefail
-          python tests/run_all.py 2>&1 | tee verification/ci_run.log
+          python3 tests/run_all.py 2>&1 | tee verification/ci_run.log
 
       - name: Upload validation diagnostics
         if: ${{ always() }}

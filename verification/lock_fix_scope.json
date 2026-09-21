@@ -1,5 +1,5 @@
 {
-  "scope": "Exact production bytes after reversing lock/initializer/tester exception and tester-only diagnostics.",
+  "scope": "Exact production bytes after reversing reviewed v2.45 UI/display hunks, lock/initializer/tester exception, tester-only diagnostics and indicator demand ordering.",
   "input_zip_sha256": "eac671507e4ba8b36a96a61fcb7af6b346242b54cf48bd7c83bdb7036a36d4c6",
   "passed": 13,
   "failed": 0,
@@ -7,6 +7,7 @@
   "explicit_initializers": 8,
   "tester_connection_exceptions": 1,
   "tester_diagnostics": 1,
+  "indicator_demand_ordering": 1,
   "files": [
     {
       "file": "MT3AIProtocol.mqh",
@@ -17,8 +18,8 @@
     {
       "file": "MT3Config.mqh",
       "passed": true,
-      "byte_identical_to_input": true,
-      "sha256": "f75363429a3b1abc1759140910773c2e1a0f58278e83ca757d6a09d1ad117fd7"
+      "byte_identical_to_input": false,
+      "sha256": "20cf80e27c960cedbee9a6857ad350483e6bb0131dabf4fa52d8208cf7e1d635"
     },
     {
       "file": "MT3Json.mqh",
@@ -54,7 +55,7 @@
       "file": "MT3SymbolState.mqh",
       "passed": true,
       "byte_identical_to_input": false,
-      "sha256": "8205a87eeb5e089e8b797f99099a5c14f3f8306b125079ed35d94a541a33ffb9"
+      "sha256": "4b7276af794a7560d0234371631bf8a2f2dc21dfd0f3ac0e532d263abc48a3fa"
     },
     {
       "file": "MT3TradeJournal.mqh",
@@ -78,7 +79,7 @@
       "file": "MTFAutoTrader_3Mode_AI_v2_44.mq5",
       "passed": true,
       "byte_identical_to_input": false,
-      "sha256": "6ef8f35b6343173d5a91ac280cd13702f723ba4678d3bdec4b3274218333aee1"
+      "sha256": "1eea0236a00e7baafbe464789c7e3e94c9cd4e964813ffcbc4245957a7aca56c"
     },
     {
       "file": "MTFAutoTrader_AI_Worker.mq5",

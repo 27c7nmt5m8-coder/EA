@@ -5,7 +5,7 @@ bool near(double a,double b,double e=1e-8){return std::abs(a-b)<=e;}
 void reset(){
  if(!g_symbols.empty())OnDeinit(0);
  globals.clear();symbols.clear();indicators.clear();series.clear();positions.clear();active_orders.clear();history_orders.clear();history_deals.clear();
- files.clear();open_files.clear();events.clear();objects.clear();hist_order_view.clear();hist_deal_view.clear();
+ files.clear();open_files.clear();events.clear();objects.clear();object_text.clear();hist_order_view.clear();hist_deal_view.clear();
  mono=100000;server_time=1700000041;chart_id=1;tester=false;permissions=connected=history_ok=queue_ok=file_ok=true;
  fail_global=u"";order_calls=http_calls=modify_calls=close_calls=chart_operations=0;ordercheck_advance=0;broker_retcode=TRADE_RETCODE_DONE;
  fill_visible=position_visible=true;deal_only=false;during_http={};during_ordercheck={};http_code=200;
@@ -20,7 +20,8 @@ void reset(){
  MaxSpreadATR=.1;MaxSpreadSL=.15;MaxSpreadPoints=SlippagePoints=StopSlippageBufferPoints=0;SLBufferPoints=0;
  MaxQuoteAgeMs=OpenAIMaxQuoteAgeMs=3000;OpenAIMaxDecisionAgeMs=10000;OpenAIMaxPriceDriftPoints=0;OpenAIMaxPriceDriftATR=.1;
  EntryDirection=ENTRY_BOTH;StopAfterConsecutiveLosses=6;LossStreakResetTime=0;EnableTripleBottom=EnableTripleTop=true;
- EnableAutoHorizontalLines=EnableAutoTrendLines=true;MinimumSLImprovementPoints=0;ManualInitialSL=0;
+ EnableAutoHorizontalLines=EnableAutoTrendLines=true;ShowAutoTrendLines=false;MinimumSLImprovementPoints=0;ManualInitialSL=0;
+ fail_atr_handle=fail_copy_buffer=false;
  g_account=u"MOCK_SERVER/123456";g_chartSymbol=u"FX";g_accountPrefix=u"MT3A."+ScopeDigest(g_account)+u".";g_execKey=u"MT3EXEC."+ScopeDigest(g_account);
  g_execOwned=g_propControllerOwned=false;g_accountHistoryOK=true;g_accountHistoryDirty=true;g_accountHistoryAt=0;g_accountLossStreak=0;
  g_queueSequence=0;g_scanCursor=g_mcCursor=0;g_universeAt=0;
@@ -273,8 +274,9 @@ void tester_connection_tests(){
  check(!unresolved.EntryPreflight(false)&&order_calls==0,"disconnected tester still blocks an unresolved account order");unresolved.Shutdown();
 }
 void v243_tests();void v244_tests();void v244_lock_tests(const std::string &only="");
+void v245_tests();
 int main(int argc,char **argv){
  if(argc>1)v244_lock_tests(argv[1]);
- else {scoring_tests();pattern_tests();adaptive_tests();order_tests();ai_tests();scanner_tests();risk_tests();v243_tests();v244_tests();v244_lock_tests();tester_connection_tests();}
+ else {scoring_tests();pattern_tests();adaptive_tests();order_tests();ai_tests();scanner_tests();risk_tests();v243_tests();v244_tests();v244_lock_tests();tester_connection_tests();v245_tests();}
  std::cout<<"{\"passed\":"<<checks<<",\"failed\":0}\n";
 }

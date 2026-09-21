@@ -2,7 +2,7 @@
 
 ## 対象・優先順位
 
-MTFAutoTrader v2.44のMQL5配布物。src/の本体・Worker・ヘッダー13ファイルを一体として扱う。利用仕様は[README_JA.md](README_JA.md)、テスト手順・限界は[VALIDATION_JA.md](VALIDATION_JA.md)、履歴は[CHANGELOG.md](CHANGELOG.md)を参照する。
+MTFAutoTrader v2.45のMQL5配布物。src/の本体・Worker・ヘッダー13ファイルを一体として扱う。利用仕様は[README_JA.md](README_JA.md)、テスト手順・限界は[VALIDATION_JA.md](VALIDATION_JA.md)、履歴は[CHANGELOG.md](CHANGELOG.md)を参照する。
 
 システム・開発者指示と実行権限の範囲内で「現在のユーザーの明示的な依頼 → リポジトリ固有の安全・品質ルール → Skill / AGENTS.mdの一般手順」の順に扱う。依頼範囲の拡大や安全機構の変更許可を推測しない。
 

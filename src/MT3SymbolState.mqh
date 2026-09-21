@@ -12,6 +12,7 @@ ulong g_manualLastClick;
 datetime g_manualAnalysisBar;
 string g_manualMessage;
 string g_manualAnalysis;
+string g_manualReadiness;
 string g_aiLastDecision;
 datetime g_aiLastBar;
 datetime g_lastBarTime;
@@ -95,6 +96,7 @@ g_manualLastClick=0;
 g_manualAnalysisBar=0;
 g_manualMessage="";
 g_manualAnalysis="Analysis loading";
+g_manualReadiness="WAIT: data loading";
 g_aiLastDecision="AI idle";
 g_aiLastBar=0;
 g_lastBarTime=0;
@@ -1412,6 +1414,8 @@ bool CreateOrUpdateTrendLine(string name,
                              int width=1)
   {
  StoreTrend(name,time1,price1,time2,price2);if(!m_isChart) return true;
+ // Visibility never controls the virtual trend used by LineScore.
+ if(!ShowAutoTrendLines) {if(ObjectFind(0,name)>=0) ObjectDelete(0,name);return true;}
 
    if(time1<=0 || time2<=0)
       return false;
@@ -2258,10 +2262,13 @@ bool OpenRiskReserve(double &reserve)
  return true;
 }
 
-double PropRiskCap()
+double PropRiskCap(bool refreshProtection=true)
 {
  if(AccountMode!=FINTOKEI) return MaximumRiskPercent;
- UpdatePropProtection();
+ // Execution keeps the original update; UI estimates must never save or close.
+ if(refreshProtection) UpdatePropProtection();
+ else if(g_propDay!=UTCDay(UTCNow()) || StateGet(g_propPrefix+"overall")>0 ||
+         StateGet(g_propPrefix+"stop."+IntegerToString(g_propDay))>0) return 0;
  if(g_propStop>0 || g_dailyReference<=0) return 0;
  if(!g_accountHistoryOK || g_accountLossStreak>=FintokeiMaxConsecutiveLosses || g_consecutiveLosses>=FintokeiMaxConsecutiveLosses) return 0;
  double equity=AccountInfoDouble(ACCOUNT_EQUITY),reserve=0;
@@ -2357,22 +2364,29 @@ bool BuildStops(bool buy,MqlTick &tick,double &sl,double &tp)
 
 double CalculateLotByRisk(bool buy,MqlTick &tick,double sl,double riskPercent)
 {
- if(!SpreadOK(tick,sl,buy)) return 0;
+ string reason;return CalculateLotByRiskDetailed(buy,tick,sl,riskPercent,reason);
+}
 
- if(riskPercent<=0) return 0;
+double CalculateLotByRiskDetailed(bool buy,MqlTick &tick,double sl,double riskPercent,string &reason)
+{
+ reason="";
+ if(!SpreadOKDetailed(tick,sl,buy,reason)) return 0;
+
+ if(riskPercent<=0) {reason="risk / DD protection blocked entry";return 0;}
  double money=AccountInfoDouble(ACCOUNT_EQUITY)*riskPercent/100.0;
  double testLot=SymbolInfoDouble(m_symbol,SYMBOL_VOLUME_MIN),profit=0;
  double entry=buy?tick.ask+DeviationPoints()*m_point:tick.bid-DeviationPoints()*m_point;
  double exit=buy?sl-StopSlippage():sl+StopSlippage();
- if(testLot<=0 || exit<=0 || !OrderCalcProfit(buy?ORDER_TYPE_BUY:ORDER_TYPE_SELL,m_symbol,testLot,entry,exit,profit)) return 0;
+ if(testLot<=0 || exit<=0 || !OrderCalcProfit(buy?ORDER_TYPE_BUY:ORDER_TYPE_SELL,m_symbol,testLot,entry,exit,profit)) {reason="broker minimum volume / profit calculation unavailable";return 0;}
  double lossPerLot=MathAbs(profit)/testLot+RoundTurnCommissionPerLot;
- if(lossPerLot<=0) return 0;
+ if(lossPerLot<=0) {reason="invalid loss per lot";return 0;}
  double lot=NormalizeVolume(MathMin(money/lossPerLot,AvailableDirectionalVolume(buy)));
- if(lot<=0) return 0;
+ if(lot<=0) {reason="lot below broker minimum / directional volume limit";return 0;}
  double margin=0;
- if(!OrderCalcMargin(buy?ORDER_TYPE_BUY:ORDER_TYPE_SELL,m_symbol,lot,entry,margin)) return 0;
+ if(!OrderCalcMargin(buy?ORDER_TYPE_BUY:ORDER_TYPE_SELL,m_symbol,lot,entry,margin)) {reason="margin calculation unavailable";return 0;}
  double free=AccountInfoDouble(ACCOUNT_MARGIN_FREE)*0.95;
  if(margin>free && margin>0) lot=NormalizeVolume(lot*free/margin);
+ if(lot<=0) reason="insufficient margin for broker minimum lot";
  // Never raise to broker minimum: zero means skip the trade.
  return lot;
 }
@@ -2509,7 +2523,7 @@ void RefreshEntryState()
  if(g_historyOK) UpdateMonteCarloRisk(changed);
 }
 
-bool EntryPreflight(bool manual)
+bool EntryPreflight(bool manual,bool refreshProtection=true)
 {
  if(!manual && !InUniverseNow()) {g_status="Symbol outside entry universe";return false;}
  if(AnyAccountUnresolved()) {g_status="Account has an unresolved order";return false;}
@@ -2527,7 +2541,7 @@ bool EntryPreflight(bool manual)
   if(!g_mcReady || !g_mcAllowed) {g_status="Monte Carlo blocks entry";return false;}
   risk=RiskMode==RISK_MONTE_CARLO?g_mcRisk:MathMin(risk,g_mcRisk);
  }
- if(MathMin(risk,PropRiskCap())<=0) {g_status="Risk / loss-streak / DD protection blocked entry";return false;}
+ if(MathMin(risk,PropRiskCap(refreshProtection))<=0) {g_status="Risk / loss-streak / DD protection blocked entry";return false;}
  return true;
 }
 
@@ -2749,7 +2763,7 @@ double ManualFixedRisk()
  return LimitRisk(risk);
 }
 
-double CalculateManualRisk()
+double CalculateManualRisk(bool refreshProtection=true)
 {
  if(!g_historyOK) return 0;
  double fixed=ManualFixedRisk(),risk=fixed;
@@ -2758,7 +2772,7 @@ double CalculateManualRisk()
   if(!g_mcReady || !g_mcAllowed) return 0;
   risk=RiskMode==RISK_MONTE_CARLO?g_mcRisk:MathMin(fixed,g_mcRisk);
  }
- return LimitRisk(MathMin(risk,PropRiskCap()));
+ return LimitRisk(MathMin(risk,PropRiskCap(refreshProtection)));
 }
 
 bool EntryModeAllowed(bool manual)
@@ -2770,8 +2784,13 @@ bool EntryModeAllowed(bool manual)
 
 bool BuildManualStops(bool buy,MqlTick &tick,double requestedSL,double &sl,double &tp)
 {
- sl=0;tp=0;
- if(!MathIsValidNumber(requestedSL) || requestedSL<=0 || tick.bid<=0 || tick.ask<tick.bid) return false;
+ string reason;return BuildManualStopsDetailed(buy,tick,requestedSL,sl,tp,reason);
+}
+
+bool BuildManualStopsDetailed(bool buy,MqlTick &tick,double requestedSL,double &sl,double &tp,string &reason)
+{
+ reason="";sl=0;tp=0;
+ if(!MathIsValidNumber(requestedSL) || requestedSL<=0 || tick.bid<=0 || tick.ask<tick.bid) {reason="invalid SL or quote";return false;}
  // Round to the symbol's price tick; do not silently move a user's SL farther away.
  sl=NormalizePrice(requestedSL);
  double minDistance=(double)SymbolInfoInteger(m_symbol,SYMBOL_TRADE_STOPS_LEVEL)*m_point
@@ -2779,16 +2798,17 @@ bool BuildManualStops(bool buy,MqlTick &tick,double requestedSL,double &sl,doubl
  double entry=buy?tick.ask:tick.bid;
  if(buy)
  {
-  if(sl<=0 || sl>tick.bid-minDistance) return false;
+  if(sl<=0 || sl>tick.bid-minDistance) {reason=sl<=0?"invalid SL":sl>=tick.bid?"SL on wrong side":"SL too close";return false;}
   tp=PriceCeil(entry+(entry-sl)*RiskRewardRatio);
-  if(tp<tick.bid+minDistance) return false;
+  if(tp<tick.bid+minDistance) {reason="TP below broker minimum distance";return false;}
  }
  else
  {
-  if(sl<tick.ask+minDistance) return false;
+  if(sl<tick.ask+minDistance) {reason=sl<=tick.ask?"SL on wrong side":"SL too close";return false;}
   tp=PriceFloor(entry-(sl-entry)*RiskRewardRatio);
-  if(tp>tick.ask-minDistance) return false;
+  if(tp>tick.ask-minDistance) {reason="TP below broker minimum distance";return false;}
  }
+ if(tp<=0) reason="invalid TP";
  return tp>0;
 }
 
@@ -2867,35 +2887,69 @@ void UpdateManualAnalysis()
   WeightedAgreement(r,true),WeightedAgreement(r,false),WeightedMTFScore(r,true),WeightedMTFScore(r,false));
 }
 
+// Read-only estimate. ExecuteEntry still rechecks all gates, reserves the mutex,
+// performs OrderCheck and validates the latest quote before sending an order.
+string ManualCommonWait(MqlTick &tick,double &atr)
+{
+ if(!FreshQuote(tick)) return "quote stale or unavailable";
+ atr=GetATR(PERIOD_M1,14,1);if(atr<=0) return "M1 ATR not ready";
+ string saved=g_status;bool allowed=EntryPreflight(true,false);string why=g_status;g_status=saved;
+ if(!allowed) return why;
+ if(g_manualBusy || g_execOwned || (GlobalVariableCheck(g_execKey) && GlobalVariableGet(g_execKey)!=0)) return "entry lock busy";
+ datetime bar=iTime(m_symbol,PERIOD_M1,0);
+ if(OneEntryPerBar && (bar<=0 || bar==g_lastTradeBar || bar==g_lastAttemptBar)) return "one-entry-per-bar / M1 bar not ready";
+ return "";
+}
+
+string ManualSideWait(bool buy,MqlTick &tick,double requested,double risk,double &sl,double &tp,double &lot)
+{
+ string why;
+ if((buy?!IsBuyAllowed():!IsSellAllowed()) || !SymbolDirectionAllowed(buy)) return "symbol direction blocked";
+ if(!BuildManualStopsDetailed(buy,tick,requested,sl,tp,why)) return why;
+ if(!EntryStopsValid(buy,tick,sl,tp)) return "SL/TP broker stop or freeze distance / tick alignment";
+ if(!SpreadOKDetailed(tick,sl,buy,why)) return why;
+ lot=CalculateLotByRiskDetailed(buy,tick,sl,risk,why);if(lot<=0) return why;
+ if(EnablePortfolioRiskLimit)
+ {
+  double before=0,planned=0;
+  if(!ManagedPortfolioRisk(before,why)) return "portfolio risk unavailable: "+why;
+  if(!PlannedPortfolioRisk(buy,tick,sl,lot,planned)) return "portfolio planned risk unavailable";
+  if(!PortfolioBudgetAllows(before,planned,AccountInfoDouble(ACCOUNT_EQUITY))) return "portfolio risk blocked";
+ }
+ return "";
+}
+
 void RefreshManualPanel()
 {
- if(!m_isChart) return;
-
- if(ExecutionMode!=EXECUTION_MANUAL) return;
+ if(!m_isChart || ExecutionMode!=EXECUTION_MANUAL) return;
  InitializeManualPanel();
- string name=ManualName("SL");
- if(ObjectFind(0,name)<0) return;
- MqlTick tick;if(!FreshQuote(tick)) return;
- double requested=ObjectGetDouble(0,name,OBJPROP_PRICE),risk=CalculateManualRisk();
- bool permissions=TerminalInfoInteger(TERMINAL_TRADE_ALLOWED) && MQLInfoInteger(MQL_TRADE_ALLOWED) &&
-   AccountInfoInteger(ACCOUNT_TRADE_ALLOWED) && AccountInfoInteger(ACCOUNT_TRADE_EXPERT);
- bool blocked=!EntryModeAllowed(true) || !permissions || EntryExposureBlocked() || risk<=0 || HasUnresolvedOrder() || AnyAccountUnresolved();
- if(MaxSpreadPoints>0 && GetSpreadPoints()>MaxSpreadPoints) blocked=true;
- datetime bar=iTime(m_symbol,PERIOD_M1,0);
- if(OneEntryPerBar && (bar==g_lastTradeBar || bar==g_lastAttemptBar)) blocked=true;
+ MqlTick tick;ZeroMemory(tick);double atr=0,requested=0,risk=CalculateManualRisk(false);
+ string common=ManualCommonWait(tick,atr);
+ bool hasSL=ObjectFind(0,ManualName("SL"))>=0 && ObjectGetDouble(0,ManualName("SL"),OBJPROP_PRICE,0,requested);
+ if(common=="" && !hasSL) common="SL line unavailable";
  double bs=0,bt=0,ss=0,st=0,bl=0,sellLot=0;
- bool buyOK=BuildManualStops(true,tick,requested,bs,bt) && IsBuyAllowed() && SymbolDirectionAllowed(true) && SpreadOK(tick,bs,true);
- bool sellOK=BuildManualStops(false,tick,requested,ss,st) && IsSellAllowed() && SymbolDirectionAllowed(false) && SpreadOK(tick,ss,false);
- if(buyOK) bl=CalculateLotByRisk(true,tick,bs,risk);
- if(sellOK) sellLot=CalculateLotByRisk(false,tick,ss,risk);
- ManualButton("BUY",12,EnableTradingViewTheme?ThemeRed():clrCrimson,!blocked && buyOK && bl>0);
- ManualButton("SELL",142,EnableTradingViewTheme?ThemeBlue():clrRoyalBlue,!blocked && sellOK && sellLot>0);
- string buyText=buyOK?StringFormat("BUY  lots %.4f | entry %.*f | SL %.*f | TP %.*f",bl,m_digits,tick.ask,m_digits,bs,m_digits,bt):"BUY: SL must be below Bid and meet broker minimum distance";
- string sellText=sellOK?StringFormat("SELL lots %.4f | entry %.*f | SL %.*f | TP %.*f",sellLot,m_digits,tick.bid,m_digits,ss,m_digits,st):"SELL: SL must be above Ask and meet broker minimum distance";
- ManualLabel("HEADER",StringFormat("MANUAL | risk %.4f%% | RR %.2f | %s",risk,RiskRewardRatio,blocked?"ENTRY BLOCKED":"Ready"),195,clrOrange);
+ string buyWhy=common,sellWhy=common;
+ if(common=="")
+ {
+  buyWhy=ManualSideWait(true,tick,requested,risk,bs,bt,bl);
+  sellWhy=ManualSideWait(false,tick,requested,risk,ss,st,sellLot);
+ }
+ bool buyOK=buyWhy=="",sellOK=sellWhy=="";
+ ManualButton("BUY",12,EnableTradingViewTheme?ThemeRed():clrCrimson,buyOK);
+ ManualButton("SELL",142,EnableTradingViewTheme?ThemeBlue():clrRoyalBlue,sellOK);
+ string buyText=buyOK?StringFormat("BUY  lots %.4f | entry %.*f | SL %.*f | TP %.*f",bl,m_digits,tick.ask,m_digits,bs,m_digits,bt):"BUY WAIT: "+buyWhy;
+ string sellText=sellOK?StringFormat("SELL lots %.4f | entry %.*f | SL %.*f | TP %.*f",sellLot,m_digits,tick.bid,m_digits,ss,m_digits,st):"SELL WAIT: "+sellWhy;
+ g_manualReadiness=buyOK || sellOK?"Ready ("+(buyOK?"BUY":"SELL")+" preview; rechecked on click)":"WAIT: "+(common!=""?common:buyWhy+" / "+sellWhy);
+ ManualLabel("HEADER",StringFormat("MANUAL | risk %.4f%% | RR %.2f | %s",risk,RiskRewardRatio,g_manualReadiness),195,clrOrange);
  ManualLabel("BUY_INFO",buyText,262,PanelForeground());ManualLabel("SELL_INFO",sellText,282,PanelForeground());
  ManualLabel("ANALYSIS",g_manualAnalysis,302,PanelForeground());
  ManualLabel("MESSAGE",HasUnresolvedOrder()?"ORDER UNRESOLVED - token "+PendingOrderToken():g_manualMessage,324,clrOrange);
+ ManualLabel("DATA",StringFormat("Bid %.*f Ask %.*f | spread %.*f / ATR %.*f (max %.3f ATR)",
+  m_digits,tick.bid,m_digits,tick.ask,m_digits,tick.ask-tick.bid,m_digits,atr,MaxSpreadATR),344,PanelForeground());
+ ManualLabel("SL_DATA",StringFormat("SL requested %.*f / normalized %.*f | stops %d freeze %d | tick %.*f | lot min/step %.4f/%.4f",
+  m_digits,requested,m_digits,NormalizePrice(requested),(int)SymbolInfoInteger(m_symbol,SYMBOL_TRADE_STOPS_LEVEL),
+  (int)SymbolInfoInteger(m_symbol,SYMBOL_TRADE_FREEZE_LEVEL),m_digits,TickSize(),
+  SymbolInfoDouble(m_symbol,SYMBOL_VOLUME_MIN),SymbolInfoDouble(m_symbol,SYMBOL_VOLUME_STEP)),364,PanelForeground());
  string tpName=ManualName("TP");
  if(buyOK || sellOK)
  {
@@ -3242,13 +3296,21 @@ bool FreshQuote(MqlTick &tick,int ageLimit=0)
 
 bool SpreadOK(MqlTick &tick,double sl=0,bool buy=true)
 {
+ string reason;return SpreadOKDetailed(tick,sl,buy,reason);
+}
+
+bool SpreadOKDetailed(MqlTick &tick,double sl,bool buy,string &reason)
+{
+ reason="";
  double atr=GetATR(PERIOD_M1,14,1),spread=tick.ask-tick.bid;
- if(atr<=0 || spread<0 || spread>atr*MaxSpreadATR+TickSize()*1e-8) return false;
- if(MaxSpreadPoints>0 && spread>MaxSpreadPoints*m_point) return false;
+ if(atr<=0 || spread<0 || spread>atr*MaxSpreadATR+TickSize()*1e-8)
+ {reason=atr<=0?"M1 ATR not ready":spread<0?"invalid bid/ask":"spread too wide (ATR)";return false;}
+ if(MaxSpreadPoints>0 && spread>MaxSpreadPoints*m_point) {reason="spread too wide (points)";return false;}
  if(sl>0)
  {
   double distance=MathAbs((buy?tick.ask:tick.bid)-sl);
-  if(distance<=0 || spread>distance*MaxSpreadSL+TickSize()*1e-8) return false;
+  if(distance<=0 || spread>distance*MaxSpreadSL+TickSize()*1e-8)
+  {reason=distance<=0?"invalid SL distance":"spread too wide (SL ratio)";return false;}
  }
  return true;
 }
@@ -3476,6 +3538,7 @@ bool Init(string symbol,bool chart,bool scan)
  if(RunSelfTestsOnInit && !SelfTests()) return false;
  if(m_isChart) ApplyChartTheme();
  g_status="Loading symbol data";
+ if(m_isChart && ExecutionMode==EXECUTION_MANUAL) RefreshManualPanel();
  return true;
 }
 

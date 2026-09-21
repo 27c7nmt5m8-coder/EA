@@ -1,6 +1,6 @@
-﻿// MTFAutoTrader v2.44: one controller, isolated SymbolState engines.
+﻿// MTFAutoTrader v2.45: one controller, isolated SymbolState engines.
 #property strict
-#property version "2.44"
+#property version "2.45"
 #property description "Weighted M1 multi-symbol trader with asynchronous AI worker"
 #include <Trade/Trade.mqh>
 #include "MT3AIProtocol.mqh"
@@ -196,7 +196,7 @@ void ServiceTradeJournals()
 void RenderDashboard()
 {
  int active=0;for(int i=0;i<ArraySize(g_symbols);i++) if(g_symbols[i].m_scanEnabled) active++;
- string text=StringFormat("MTF AutoTrader v2.44 | %s | %s\n%s | scanning %d symbols | agreement >= %.0f%% | score >= %.0f\n",
+ string text=StringFormat("MTF AutoTrader v2.45 | %s | %s\n%s | scanning %d symbols | agreement >= %.0f%% | score >= %.0f\n",
   EnumToString(ExecutionMode),EnumToString(RiskMode),EnumToString(ScanMode),active,MinimumWeightedAgreement,MinimumSignalScore);
  if(AnyAccountUnresolved()) text+="ACCOUNT ENTRY BLOCK: ORDER UNRESOLVED\n";
  int chart=FindSymbolState(g_chartSymbol);
@@ -216,7 +216,10 @@ void RenderDashboard()
   bool urgent=g_symbols[i].HasUnresolvedOrder() || g_symbols[i].g_aiRequest.active;
   if(urgent!=(pass==0)) continue;
   if(!urgent && !g_symbols[i].m_scanEnabled && !g_symbols[i].m_isChart) continue;
-  text+=g_symbols[i].m_symbol+" | "+g_symbols[i].g_status+"\n";shown++;
+  string status=g_symbols[i].g_status;
+  if(ExecutionMode==EXECUTION_MANUAL && g_symbols[i].m_isChart && !urgent && g_symbols[i].g_propStop==0)
+   status=g_symbols[i].g_manualReadiness;
+  text+=g_symbols[i].m_symbol+" | "+status+"\n";shown++;
  }
  Comment(text);
 }

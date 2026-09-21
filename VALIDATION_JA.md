@@ -1,4 +1,34 @@
-# v2.44 検証報告
+# v2.45 検証報告
+
+<a id="v245"></a>
+## 2026-09-21：v2.45
+
+基点はGitHub main `bcb41c8f9f775b170154ecddebeb0f6624d947ca`。変更はMANUALの可視性・正確なWAIT理由・Ready整合、描画専用 `ShowAutoTrendLines=false`、本体バージョンと関連検証文書です。Worker・protocol 242・schema、全10パターン、スコア、SL/TP計算、ロット・リスク・Monte Carlo・Fintokei・注文と管理処理を維持します。
+
+### 原因と確認範囲
+
+`InitializeManualPanel` はSL初期値が0かつATR未取得なら戻り、旧 `RefreshManualPanel` もSLオブジェクトなしで戻るため、ボタンまで非表示でした。さらに `BuildManualStops && direction && SpreadOK` の失敗をすべてSLエラーと表示し、ヘッダーは別の粗いblocked判定だけでReadyとしていました。
+
+ユーザーのEURUSD・MANUAL・COMBINED・既定値でのWAITは、十分なSL距離だけでは説明できません。既存の `SpreadOK` はM1 ATR未取得や `spread > ATR * 0.10` でも拒否し、SL比・数量・安全条件も別に残ります。報告された瞬間のquote/ATR/MC状態を実測していないため、**実機の唯一の原因がATRまたはspreadだと断定しません**。新UIの理由と数値で切り分けます。
+
+M1 ATRはチャート時間足ではなく `PERIOD_M1,14,1` を使用します。`ReadIndicator` はPR #10の `CopyBuffer → BarsCalculated` を維持し、失敗した作成はキャッシュせず再試行、Shutdownで全handleを解放します。回帰テストのチャート変更はOnDeinit/OnInitの呼び直しであり、MT5実機のM1→M15クリック操作や実リソースのleak測定とは区別します。
+
+### 検証
+
+- Red: [CI 35543409145](https://github.com/27c7nmt5m8-coder/EA/actions/runs/35543409145)、修正前HEAD `172a45a` で `MANUAL panel exists before ATR readiness` の失敗を確認。
+- レビュー回帰のRed: [CI 35557235588](https://github.com/27c7nmt5m8-coder/EA/actions/runs/35557235588) でFintokeiプレビューが保護状態保存・決済を行う問題を再現。`PropRiskCap`・preflight・MANUAL riskに計算参照モードを共有し、UIだけ保護更新を呼ばないよう修正。通常の監視・注文は既定の更新経路を維持し、DD決済も回帰確認する。
+- 追加回帰: ATR待ち表示・注文拒否・timer復旧、作成/CopyBuffer失敗・繰返し再初期化・cache再利用、BUY/SELLのSL、spread・lot/margin・permission・unresolved・Portfolio Risk・MC/DD・bar/方向/lock・stale quoteの理由、Ready整合、プレビューの安全状態非変更、SLドラッグ、共通注文、trend表示とLineScore同一性。
+- 全体ゲート: Python 3の `tests/run_all.py`。最新結果・CIリンク・件数は [v245_validation.json](verification/v245_validation.json) に記録する。C++の文字列型・fixture参照の修正はmock/adapter側で行い、製品を実MQL5仕様から逸脱させない。
+- 厳密な差分監査: `tests/v245_reviewed_scope.json` に記録した3ソースの正確な変更だけを逆変換し、mainのSHAと過去baselineへ一致させる。関数名だけの除外やbaselineの一括更新は行わない。manifest自体も製品コード同様にレビューする。
+- MetaEditor 5.0.0.6182: 本体・Workerとも0 errors / 0 warnings。対象ソース・EX5のSHAは [native_compile.json](verification/native_compile.json)。EX5配布・実口座への設置は行っていない。
+
+### NOT_MEASUREDと実機での確認
+
+EURUSD・MANUAL・RISK_COMBINED・既定値で、①起動直後もパネルがある、②待ち理由が実際のデータ/安全条件を示す、③M1/M15/H1を繰り返し切り替えてM1 ATRが復旧する、④BUYはBid下・SELLはAsk上のSLで各側を判定する、⑤ドラッグは次回注文のみへ適用される、⑥ShowAutoTrendLinesの切替が自動斜線だけに作用することを確認してください。
+
+実機の上記操作、chart object配置・重なり・ドラッグ、handle数の実測、実ブローカーでの注文/建値/トレーリング/DD、今回版のStrategy Tester、実AI/APIは **NOT_MEASURED**。mockで既存の保護・AUTO/AI/HYBRIDを確認しても実機合格とは扱いません。以前のv2.44 Tester結果を今回版の実測結果として再利用しません。
+
+以下はv2.44の履歴です。「今回」「最新」等は各記録当時を指します。
 
 ## 2026-09-20：指標要求順序の修正
 

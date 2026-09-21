@@ -1,0 +1,60 @@
+{
+  "version": "2.45",
+  "date": "2026-09-21",
+  "base_main": "bcb41c8f9f775b170154ecddebeb0f6624d947ca",
+  "validated_commit": "f19614d3a78259f27ee05ca1334c4ae9115a63d9",
+  "ci_url": "https://github.com/27c7nmt5m8-coder/EA/actions/runs/35557319841",
+  "gate": "tests/run_all.py using Python 3.11 on GitHub Actions",
+  "checks": {
+    "cpp_mock": 753,
+    "json": 55,
+    "csv_statistics": 20,
+    "static_source": 495,
+    "exact_source_scope": 13
+  },
+  "failed": 0,
+  "count_meaning": "Assertions including setup and boundary variants, not independent market scenarios.",
+  "red_regressions": [
+    {
+      "commit": "172a45a5c5ecb3383201e48895b97160d9016ec2",
+      "run": 35543409145,
+      "failure": "MANUAL panel exists before ATR readiness"
+    },
+    {
+      "commit": "aa5a4a1327d6d7e5be435abecc9eedcfb6a1db1e",
+      "run": 35557235588,
+      "failure": "Fintokei stale/missing-SL preview cannot persist protection or close exposure"
+    }
+  ],
+  "intermediate_test_issues": [
+    "C++ adapter did not support MQL literal plus conditional string concatenation",
+    "Test fixture used unqualified SymbolState.StateGet; corrected test reference"
+  ],
+  "native_compile": "MEASURED: main and worker 0 errors / 0 warnings; see native_compile.json",
+  "source_sha256": {
+    "MT3AIProtocol.mqh": "25340f89525ddaa7ffd425fddad0b22919864e0f8ce3db9961775eb299db24de",
+    "MT3Config.mqh": "20cf80e27c960cedbee9a6857ad350483e6bb0131dabf4fa52d8208cf7e1d635",
+    "MT3Json.mqh": "b392a69a399f8759d725e2ab7c6b30abd4c20656e227a90373ef1304b8b7c429",
+    "MT3PatternStops.mqh": "c336b7e5d113dd11aa8c5792aff49e941c373f971a701ddeb6a9dd637ee63a07",
+    "MT3PortfolioRisk.mqh": "3904bd36f35cecd6c14c5ea0874ee7a9daf76a00eaa2ebe5ba9fe22d21de0787",
+    "MT3ReversalPatterns.mqh": "abb3c28a163e7530bd5db757bca4c74b519e866d00633823b72250d92e4d2289",
+    "MT3Scoring.mqh": "f57d1e185752e0676a08682c70e76cfd8441fb29c35d9c1c05975cf3eea4aa4d",
+    "MT3SymbolState.mqh": "4b7276af794a7560d0234371631bf8a2f2dc21dfd0f3ac0e532d263abc48a3fa",
+    "MT3TradeJournal.mqh": "df5e19223effd33b1a609bae1927dddae344f598f912912f96d02292ab186f2c",
+    "MT3TradeLog.mqh": "f3b32e3cd6b746bb5c86a03fc687c4e17be4c6e8193de24a96b4dcf9e914234a",
+    "MT3Types.mqh": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2",
+    "MTFAutoTrader_3Mode_AI_v2_44.mq5": "1eea0236a00e7baafbe464789c7e3e94c9cd4e964813ffcbc4245957a7aca56c",
+    "MTFAutoTrader_AI_Worker.mq5": "2d068d5046ec3d616568227d6e9f6be0d9166af814f48076ac8a000d4922e12c"
+  },
+  "review": "Independent review found Fintokei preview side effects; red regression reproduced, fix re-reviewed and resolved. Exact main methods differentially compared with current SL/spread/lot outputs.",
+  "not_measured": [
+    "Live EURUSD MANUAL WAIT cause at reported instant",
+    "MT5 real chart timeframe switching/handle counts/object layout/dragging",
+    "v2.45 market Strategy Tester",
+    "real broker execution and position management",
+    "real AI/API"
+  ],
+  "remaining_question": "The observed live EURUSD ATR/spread/MC/quote state was not captured; no unique live blocker is asserted. Read precise WAIT reason and data from the new UI.",
+  "protected_behavior": "Order/position management paths and default Fintokei refresh stay unchanged. Display-only preview does not write protection or send/close orders. Scoring/SL/TP/lot/risk formulas and existing inputs unchanged.",
+  "final_head_note": "This record binds the tested runtime source hashes. The final documentation/checksum commit is also gated in CI; its latest result is linked from the PR."
+}

@@ -1,10 +1,14 @@
-"""Static checks of the distributed MQL sources; no native compiler is available."""
+"""Static checks of the distributed MQL sources; separate from native compilation."""
 from pathlib import Path
 import re,json,hashlib
 from json_support import extract
 from v244_audit_helpers import legacy_engine_function,legacy_main,legacy_worker
+from v245_audit_helpers import project_v245
 ROOT=Path(__file__).resolve().parents[1];SRC=ROOT/'src'
-code={p.name:p.read_text(encoding='utf-8-sig') for p in sorted(SRC.iterdir()) if p.is_file()}
+code={p.name:p.read_text(encoding='utf-8') for p in sorted(SRC.iterdir()) if p.is_file()}
+assert '#property version "2.45"' in code['MTFAutoTrader_3Mode_AI_v2_44.mq5']
+assert 'input bool ShowAutoTrendLines = false;' in code['MT3Config.mqh']
+code={name:project_v245(name,text).lstrip('\ufeff') for name,text in code.items()}
 main=code['MTFAutoTrader_3Mode_AI_v2_44.mq5'];engine=code['MT3SymbolState.mqh']
 patterns=code['MT3ReversalPatterns.mqh'];types=code['MT3Types.mqh'];
 config=code['MT3Config.mqh'];worker=code['MTFAutoTrader_AI_Worker.mq5'];protocol=code['MT3AIProtocol.mqh'];scoring=code['MT3Scoring.mqh']

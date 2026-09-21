@@ -1,7 +1,8 @@
 """Compile actual EA/worker code as C++17 with MT5 mocks; NOT a native MQL compile."""
 from pathlib import Path
 import re,json,subprocess,hashlib,sys
-from json_support import HEADER
+from json_support import HEADER,extract
+from v245_audit_helpers import project_v245
 ROOT=Path(__file__).resolve().parents[1];SRC=ROOT/'src';TEST=ROOT/'verification'
 TEST.mkdir(exist_ok=True)
 
@@ -20,6 +21,8 @@ def adapt(code):
     code=re.sub(r'\b(\w+)\s+(\w+\[\](?:,\w+\[\])+);',lambda m:'std::vector<'+m[1]+'> '+m[2].replace('[]','')+';',code)
     code=re.sub(r'\b(\w+)\s+(\*)?\s*(\w+)\[\];',lambda m:'std::vector<'+m[1]+('*' if m[2] else '')+'> '+m[3]+';',code)
     code=code.replace('m_mcReturns[],m_mcDDs[]','m_mcReturns,m_mcDDs')
+    # MQL strings concatenate literal + conditional literal; C++ pointers do not.
+    code=code.replace('"Ready ("+(buyOK?"BUY":"SELL")','string("Ready (")+(buyOK?"BUY":"SELL")')
     code=re.sub(r'g_symbols\[([^\]]+)\]\.',r'g_symbols[\1]->',code)
     code=re.sub(r'\bstate\.(Init|Shutdown|m_wanted)',r'state->\1',code)
     tokens=r'''//[^\n]*|/\*[\s\S]*?\*/|'(?:\\.|[^'\\])*'|"(?:\\.|[^"\\])*"'''
@@ -47,6 +50,13 @@ def constants(source):
 
 def run():
     product=expand(SRC/'MTFAutoTrader_3Mode_AI_v2_44.mq5',set())
+    # Differential tests execute the exact pre-v2.45 methods from the immutable
+    # main projection alongside current methods. These never enter shipped MQL.
+    previous=project_v245('MT3SymbolState.mqh',(SRC/'MT3SymbolState.mqh').read_text(encoding='utf-8'))
+    reference='\n'.join(extract(name,previous) for name in ['BuildManualStops','SpreadOK','CalculateLotByRisk'])
+    for name in ['BuildManualStops','SpreadOK','CalculateLotByRisk']:
+        reference=reference.replace(name+'(',name+'V244Reference(')
+    product=product.replace('class SymbolState\n{\npublic:', 'class SymbolState\n{\npublic:\n'+reference,1)
     worker=(SRC/'MTFAutoTrader_AI_Worker.mq5').read_text()
     for old,new in [('OnInit','WorkerInit'),('OnDeinit','WorkerDeinit'),('OnTimer','WorkerTimer'),('OnChartEvent','WorkerEvent')]:worker=worker.replace(old+'(',new+'(')
     source=product+'\n'+worker
@@ -57,14 +67,16 @@ def run():
     header=header.replace('template<class... A>void Print(A...){ }',
         'int log_warning_count=0;template<class... A>void Print(const char16_t* first,A...){if(string(first).find(u"TradeLog warning:")==0)log_warning_count++;}\n'
         'template<class... A>void Print(A...){ }')
-    scenarios='\n'.join((ROOT/'tests'/name).read_text() for name in ['scenarios.cpp','new_scenarios.cpp','v244_scenarios.cpp','v244_lock_scenarios.cpp'])
+    scenarios='\n'.join((ROOT/'tests'/name).read_text() for name in ['scenarios.cpp','new_scenarios.cpp','v244_scenarios.cpp','v244_lock_scenarios.cpp','v245_scenarios.cpp'])
     header+='\n#include <set>\n#include <limits>\n#include <functional>\n#include <cstring>\n'+constants(source+(ROOT/'tests/mock_mt5.hpp').read_text()+scenarios)+'\n'
     code=header+(ROOT/'tests/mock_mt5.hpp').read_text()+adapt(source)+'\n'+scenarios
     (TEST/'integration.cpp').write_text(code)
     result=subprocess.run(['g++','-std=c++17','-O1','-Wall','-Wextra',str(TEST/'integration.cpp'),'-o',str(TEST/'integration')],capture_output=True,text=True)
     (TEST/'cpp_diagnostics.txt').write_text(result.stderr)
     if result.returncode:
-        print(result.stderr[:14000]);raise SystemExit(result.returncode)
+        # Keep full diagnostics in the artifact, but do not hide errors behind warnings.
+        errors=[line for line in result.stderr.splitlines() if 'error:' in line]
+        print('\n'.join(errors) if errors else result.stderr[-14000:]);raise SystemExit(result.returncode)
     run=subprocess.run([str(TEST/'integration'),*sys.argv[1:]],capture_output=True,text=True)
     print(run.stdout);print(run.stderr)
     if run.returncode:raise SystemExit(run.returncode)
