@@ -39,7 +39,7 @@ void v245_tests(){
  double beforeStatusHash=AIHash(s.g_status);auto globalsStable=globals;s.RefreshManualPanel();
  check(AIHash(s.g_status)==beforeStatusHash&&globals==globalsStable,"refresh preserves trading status and safety persistence");
  objects[s.ManualName(u"SL")]=96;long lp=0;double dp=0;s.ChartEvent(CHARTEVENT_OBJECT_DRAG,lp,dp,s.ManualName(u"SL"));
- check(StateGet(s.g_statePrefix+u"manual.sl")==96&&s.g_manualMessage.find(u"NEXT entry")!=string::npos,"drag saves only next-entry SL");
+ check(s.StateGet(s.g_statePrefix+u"manual.sl")==96&&s.g_manualMessage.find(u"NEXT entry")!=string::npos,"drag saves only next-entry SL");
  check(s.ExecuteEntry(true,0,empty,true,96)&&order_calls==1,"valid MANUAL entry still reaches the shared order path");
  OnDeinit(0);
  check(indicators.empty(),"shutdown releases all indicator handles in mock live lifecycle");

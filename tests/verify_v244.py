@@ -66,7 +66,9 @@ def run():
     result=subprocess.run(['g++','-std=c++17','-O1','-Wall','-Wextra',str(TEST/'integration.cpp'),'-o',str(TEST/'integration')],capture_output=True,text=True)
     (TEST/'cpp_diagnostics.txt').write_text(result.stderr)
     if result.returncode:
-        print(result.stderr[:14000]);raise SystemExit(result.returncode)
+        # Keep full diagnostics in the artifact, but do not hide errors behind warnings.
+        errors=[line for line in result.stderr.splitlines() if 'error:' in line]
+        print('\n'.join(errors) if errors else result.stderr[-14000:]);raise SystemExit(result.returncode)
     run=subprocess.run([str(TEST/'integration'),*sys.argv[1:]],capture_output=True,text=True)
     print(run.stdout);print(run.stderr)
     if run.returncode:raise SystemExit(run.returncode)
