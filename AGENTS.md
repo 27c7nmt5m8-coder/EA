@@ -19,7 +19,8 @@ MTFAutoTraderのMQL5配布物。`src/` の本体・Worker・全ヘッダーを�
 ## Skill
 
 - 適合する作業でのみSkillを使い、一般的な計画承認・毎回の全テストを上位の依頼へ追加しない。
-- TypeSafeAI / Jevの詳細は利用可能Skill一覧の `typesafe-ai` の `SKILL.md` に委ねる。適合時に利用してよいが、EA固有の売買仕様・安全機構・Risk管理・Git/検証ルールを上書きしない。Jevは軽量分類・関連候補整理・ログ分類等の補助に限定し、売買方向、Entry条件、Score、SL/TP、lot、Monte Carlo、Risk、Fintokei保護、安全装置の判断・変更を任せない。
+- 非自明な開発でモデル選択・昇格が有益なら [model-orchestrator](.agents/skills/model-orchestrator/SKILL.md) を使う。決定論的な確認・検証を優先し、能力・正確性・EA安全性・必要な検証を損なわない最低限十分なモデルと推論レベルを選ぶ。
+- TypeSafeAI / Jevの詳細は [typesafe-ai](.agents/skills/typesafe-ai/SKILL.md) に委ねる。決定論的確認後も限定的な意味判断が有益な場合だけ使い、利用不能時は通常経路へ戻す。`TYPESAFE_API_KEY` を表示・保存しない。EA固有の売買仕様・安全機構・Risk管理・Git/検証ルールを上書きしない。Jevは軽量分類・関連候補整理・ログ分類等の補助に限定し、売買方向、Entry条件、Score、SL/TP、lot、Monte Carlo、Risk、Fintokei保護、安全装置の判断・変更を任せない。
 
 ## 開発・Git・レビュー
 
