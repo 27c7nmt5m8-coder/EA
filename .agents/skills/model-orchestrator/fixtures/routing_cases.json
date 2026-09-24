@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "A",
+      "task": "Small README wording change",
+      "expected": {"routes": ["Luna/low", "Luna/medium"], "jev_attempts": 0, "jev_used": false, "jev_status": "not_needed", "first_evidence": "git_diff", "shadow": "none"}
+    },
+    {
+      "id": "B",
+      "task": "Aggregate 20 same-format Tester logs",
+      "expected": {"routes": ["Luna/low", "Luna/medium"], "jev_attempts": 0, "jev_used": false, "jev_status": "not_needed", "first_evidence": "parser", "shadow": "none"}
+    },
+    {
+      "id": "C",
+      "task": "Complex MQL5 runtime bug",
+      "expected": {"routes": ["Sol/high", "Sol/xhigh"], "jev_attempts": 0, "jev_used": false, "jev_status": "not_needed", "first_evidence": "git_diff", "shadow": "none"}
+    },
+    {
+      "id": "D",
+      "task": "EA-wide Risk architecture redesign",
+      "expected": {"routes": ["Astra/medium", "Astra/high", "Astra/xhigh", "Astra/max", "Astra/ultra"], "jev_attempts": 0, "jev_used": false, "jev_status": "not_needed", "first_evidence": "repository_specs", "shadow": "none"}
+    },
+    {
+      "id": "E",
+      "task": "Many candidate files with semantic priority unresolved",
+      "expected": {"routes": ["Sol/medium", "Sol/high"], "jev_attempts": 1, "jev_used": true, "jev_status": "used", "first_evidence": "git_search", "shadow": "none"}
+    },
+    {
+      "id": "F",
+      "task": "Compiler error diagnosis",
+      "expected": {"routes": ["Sol/low", "Sol/medium"], "jev_attempts": 0, "jev_used": false, "jev_status": "not_needed", "first_evidence": "compiler", "shadow": "none"}
+    },
+    {
+      "id": "G",
+      "task": "TypeSafe API unavailable during optional judgment",
+      "expected": {"routes": ["Sol/medium", "Sol/high"], "jev_attempts": 1, "jev_used": false, "jev_status": "unavailable", "first_evidence": "git_diff", "shadow": "none"}
+    },
+    {
+      "id": "H",
+      "task": "Simple change to high-risk order ownership protection",
+      "expected": {"routes": ["Sol/medium", "Sol/high", "Sol/xhigh", "Astra/medium", "Astra/high"], "jev_attempts": 0, "jev_used": false, "jev_status": "not_needed", "first_evidence": "git_diff", "shadow": "none"}
+    },
+    {
+      "id": "I",
+      "task": "User says bypass jev",
+      "expected": {"routes": ["Sol/medium", "Sol/high"], "jev_attempts": 0, "jev_used": false, "jev_status": "bypassed", "first_evidence": "git_diff", "shadow": "none"}
+    },
+    {
+      "id": "J",
+      "task": "Shadow Jev recommendation differs from the default route",
+      "expected": {"routes": ["Sol/high"], "jev_attempts": 1, "jev_used": true, "jev_status": "shadow", "first_evidence": "git_diff", "shadow": "different"}
+    },
+    {
+      "id": "K",
+      "task": "Sensitive task summary cannot be safely minimized",
+      "expected": {"routes": ["Sol/medium", "Sol/high"], "jev_attempts": 0, "jev_used": false, "jev_status": "privacy_skip", "first_evidence": "git_diff", "shadow": "none"}
+    }
+  ]
+}

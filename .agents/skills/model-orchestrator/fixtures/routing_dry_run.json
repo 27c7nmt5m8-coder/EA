@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "A", "default_route": "Luna/low", "actual_route": "Luna/low", "shadow_route": null,
+      "jev": {"attempts": 0, "used": false, "status": "not_needed"}, "evidence": ["git_diff", "links"], "sent_context": null
+    },
+    {
+      "id": "B", "default_route": "Luna/low", "actual_route": "Luna/low", "shadow_route": null,
+      "jev": {"attempts": 0, "used": false, "status": "not_needed"}, "evidence": ["parser", "aggregation_check"], "sent_context": null
+    },
+    {
+      "id": "C", "default_route": "Sol/high", "actual_route": "Sol/high", "shadow_route": null,
+      "jev": {"attempts": 0, "used": false, "status": "not_needed"}, "evidence": ["git_diff", "related_tests", "native_compile"], "sent_context": null
+    },
+    {
+      "id": "D", "default_route": "Astra/high", "actual_route": "Astra/high", "shadow_route": null,
+      "jev": {"attempts": 0, "used": false, "status": "not_needed"}, "evidence": ["repository_specs", "risk_controls"], "sent_context": null
+    },
+    {
+      "id": "E", "default_route": "Sol/medium", "actual_route": "Sol/medium", "shadow_route": null,
+      "jev": {"attempts": 1, "used": true, "status": "used"}, "evidence": ["git_search", "candidate_list"],
+      "sent_context": {"task_type": "candidate_ranking", "risk_level": "low", "candidate_count": 24, "changed_area": "docs", "uncertainty_reason": "semantic_priority"}
+    },
+    {
+      "id": "F", "default_route": "Sol/low", "actual_route": "Sol/low", "shadow_route": null,
+      "jev": {"attempts": 0, "used": false, "status": "not_needed"}, "evidence": ["compiler", "source_location"], "sent_context": null
+    },
+    {
+      "id": "G", "default_route": "Sol/medium", "actual_route": "Sol/medium", "shadow_route": null,
+      "jev": {"attempts": 1, "used": false, "status": "unavailable"}, "evidence": ["git_diff", "related_tests"],
+      "sent_context": {"task_type": "candidate_ranking", "risk_level": "low", "candidate_count": 24, "uncertainty_reason": "semantic_priority"}
+    },
+    {
+      "id": "H", "default_route": "Sol/medium", "actual_route": "Sol/medium", "shadow_route": null,
+      "jev": {"attempts": 0, "used": false, "status": "not_needed"}, "evidence": ["git_diff", "ownership_tests"], "sent_context": null
+    },
+    {
+      "id": "I", "default_route": "Sol/medium", "actual_route": "Sol/medium", "shadow_route": null,
+      "jev": {"attempts": 0, "used": false, "status": "bypassed"}, "evidence": ["git_diff"], "sent_context": null
+    },
+    {
+      "id": "J", "default_route": "Sol/high", "actual_route": "Sol/high", "shadow_route": "Luna/high",
+      "shadow_confidence": 0.91, "shadow_reason": "repetitive_bounded", "shadow_outcome": "not_applied",
+      "jev": {"attempts": 1, "used": true, "status": "shadow"}, "evidence": ["git_diff", "task_profile"],
+      "sent_context": {"task_type": "routing_comparison", "risk_level": "low", "candidate_count": 20, "test_state": "passed", "uncertainty_reason": "route_disagreement"}
+    },
+    {
+      "id": "K", "default_route": "Sol/medium", "actual_route": "Sol/medium", "shadow_route": null,
+      "jev": {"attempts": 0, "used": false, "status": "privacy_skip"}, "evidence": ["git_diff"], "sent_context": null
+    }
+  ]
+}

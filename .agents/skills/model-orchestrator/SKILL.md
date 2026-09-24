@@ -17,7 +17,7 @@ Prefer deterministic tools over model judgment: Git for repository state and cha
 
 ## Direct model routing
 
-Check the actual host's available models, reasoning levels, and switching mechanism before choosing or reporting one. Do not invent a model or level. Choose directly from task type **and** difficulty; never force a Luna Low → Medium → High → Sol → Astra chain. Routing guidance does not switch an active thread's model by itself: use only an available, authorized mechanism. If switching is unavailable, continue with the current model and report that limitation only when it matters; do not create a separate task solely to change models without authorization.
+Check the actual host's available models, reasoning levels, and switching mechanism before choosing or reporting one. Do not invent a model or level. Choose directly from task type, complexity, risk, and evidence; never force a Luna Low → Medium → High → Sol → Astra chain. Routing guidance does not switch an active thread's model by itself: use only an available, authorized mechanism. If switching is unavailable, continue with the current model and report that limitation only when it matters; do not create a separate task solely to change models without authorization.
 
 | Lane | Use when | Reasoning choice |
 | --- | --- | --- |
@@ -27,13 +27,25 @@ Check the actual host's available models, reasoning levels, and switching mechan
 
 A strong model's availability alone is not evidence for escalation. For example, route high-volume aggregation directly to Luna, ordinary implementation to Sol, complex MQL5 root cause to Sol High/xHigh when available, and major Risk architecture redesign to an Astra review lane when warranted. The model lane never replaces deterministic validation.
 
+### Minimum routing floor
+
+Set a capability floor before optimizing speed or cost. Treat authentication, authorization, secrets/credentials, destructive operations or deletion, migrations, concurrency, cryptography, payments, security boundaries, and production-critical architecture as high-risk. In this EA, also treat live trading, order execution/ownership/duplicate prevention, Magic/Symbol ownership, SL/TP/BE/trailing, lot sizing, risk percentage/modes/Monte Carlo/portfolio/Fintokei, spread/cost safety, FailOpen, Worker protocol, price drift, unresolved orders, and other safety mechanisms as high-risk.
+
+The floor depends on the work: use an appropriate Sol lane for high-risk implementation, allow Luna for a bounded deterministic bulk subtask with its results checked, and consider Astra for unusually difficult architecture or safety review. Raise reasoning within a family when needed. High-risk alone does not require Astra, but simplicity or price alone cannot justify a lane that lacks the needed judgment. Do not downgrade an active task when its accumulated context or unresolved risk would be lost.
+
 ## Jev as optional decision support
 
 Jev is a bounded semantic judgment service, not a fourth implementation model. After deterministic inspection, consider it only when useful ambiguity remains: choosing among plausible implementation routes, ranking many candidate files/tests, classifying irregular logs, continue/stop or retry/escalation decisions, lightweight review triage, completion assessment, or semantic relevance. A clear task needs no Jev call. Never call it after every tool call.
 
-Do not use Jev for code or patch generation, architecture design itself, calculations, Git/filesystem facts, or compiler/test outcomes. Exclude all EA trading and Risk/Safety design, implementation-route, review, completion, and settings decisions from Jev. Give it only the evidence needed for its narrow question, not the repository. Remove secrets, account identifiers, and real trading logs before an external request; if the needed evidence cannot be safely shared, skip Jev. For TypeSafe primitives, API behavior, and uncertainty handling, use the existing [typesafe-ai skill](../typesafe-ai/SKILL.md); do not duplicate its Choice/Score/Noul guidance here. Do not display, log, save, commit, or report `TYPESAFE_API_KEY`.
+Do not use Jev for code or patch generation, architecture design itself, calculations, Git/filesystem facts, deterministic parsing, or compiler/test/Strategy Tester outcomes. Exclude all EA trading and Risk/Safety design, implementation-route, review, completion, and settings decisions from Jev. Clear routing cases need no Jev call.
 
-If the user says **bypass jev**, make no Jev calls for that task. If Jev is unavailable, times out, returns invalid data, or has insufficient confidence, use the ordinary non-Jev route and verify it. Jev output cannot authorize actions or override the user request, EA specification, safety controls, Git rules, or validation gates.
+Before an external Jev request, make a minimal redacted summary. Prefer only structured fields such as `task_type`, `risk_level`, `candidate_count`, `test_state`, `failure_type`, `changed_area`, and `uncertainty_reason`. Do not send the full repository, unrelated files, chat history, credentials, account information, real trading logs, or unnecessary source code. Screen the intended payload for secret-like content; remove it or skip Jev when safe minimization is uncertain. Never put `TYPESAFE_API_KEY` in a prompt, stdout, log, report, fixture, or commit. For TypeSafe primitives, API behavior, and uncertainty handling, use the existing [typesafe-ai skill](../typesafe-ai/SKILL.md); do not duplicate its Choice/Score/Noul guidance here.
+
+If the user says **bypass jev**, make no Jev calls for that task. On API/runtime unavailability, timeout, authentication or quota/rate failure, malformed/invalid response, low confidence, or ambiguous result, treat Jev as having no opinion and continue with the deterministic/default route. Do not call that a successful Jev judgment or stop ordinary Codex work. This fail-open behavior applies only to development routing; it never relaxes the EA's separate FailOpen or safety gates. Jev output cannot authorize actions or override the user request, EA specification, safety controls, Git rules, or validation gates.
+
+### Shadow routing
+
+Choose the **default route** independently first. When routing evaluation is useful and a safe, bounded Jev question remains, a **shadow route** may record what Jev would recommend, with confidence and a short reason. The **actual route** stays the default route; a shadow recommendation cannot switch the model, lower the risk floor, or change the task. Do not run shadow calls for every clear task. Keep evaluation records only when needed, with route family/level, result status, confidence, and outcome; omit prompts, raw logs, source, and secrets. Consider automatic routing only after representative measurements show preserved safety, task quality, verification, latency, and cost, and an authorized switching mechanism exists.
 
 ## Decision loop and escalation
 
@@ -49,6 +61,10 @@ The current [AGENTS.md](../../../AGENTS.md), [README_JA.md](../../../README_JA.m
 
 Verify in proportion to the change: directly related → related → integration → required full gate before PR completion. Reuse a trustworthy success only for the same commit, diff, environment, and assumptions; reverify when code, mock, fixture, dependency, build environment, or relevant assumptions change. Do not delete or weaken existing tests. Documentation-only changes need link, command, diff, and checksum checks rather than invented EA runtime tests. Before completing a PR, follow the repository's `python3 tests/run_all.py` gate; keep it draft if the gate remains incomplete.
 
+Keep short tool output intact. Preserve FAIL/WARNING/UNKNOWN and abnormal output; compress only long, clear success output with deterministic methods when the summary is shorter and the original remains available. Do not introduce Jev-based compaction for this workflow.
+
 For MQL5 runtime changes, perform available native MetaEditor compilation, related Strategy Tester checks, and relevant reconnect/restart/reinitialization checks. Distinguish untested native compile, Strategy Tester, live broker, and real AI/API communication. Mock success does not establish any of those. For authentication, authorization, secrets, payments, migration, deletion, concurrency, cryptography, EA Risk/Safety, live trading, or major architecture work, use a stronger review lane when the evidence warrants it; never skip deterministic checks.
 
 Report **COMPLETE** only after the requested work is implemented, relevant deterministic checks pass, the actual diff fits scope, no blocking failure remains, required high-risk review is done, and untested areas are identified. Never describe an unrun test, build, compile, lint, review, Strategy Tester, forward/live check, or API test as passed. When useful, report the selected model family and reasoning level, the reason, Jev use, and any escalation in one concise note.
+
+For a small offline routing check from the repository root, compare [fixture expectations](fixtures/routing_cases.json) with [dry-run observations](fixtures/routing_dry_run.json) using `python .agents/skills/model-orchestrator/scripts/evaluate_routing.py`. Their evidence fields describe intended inspection order, not tests actually run. These examples do not call Jev or prove live routing quality; use representative, privacy-safe observations before considering any automatic routing.
