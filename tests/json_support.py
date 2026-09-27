@@ -1,5 +1,6 @@
 from pathlib import Path
 import itertools,json,re,subprocess
+from native_adapter import prepare
 ROOT=Path(__file__).resolve().parent
 TEST=ROOT/'verification'
 TEST.mkdir(exist_ok=True)
@@ -62,7 +63,7 @@ def adapt(code):
 
 def compile_run(name,code,args=()):
     path=TEST/(name+'.cpp');binary=TEST/name
-    path.write_text(HEADER+adapt((ROOT/'MT3Json.mqh').read_text())+code)
+    path.write_text(prepare(HEADER+adapt((ROOT/'MT3Json.mqh').read_text())+code),encoding='utf-8')
     p=subprocess.run(['g++','-std=c++17','-O2','-Wall','-Wextra',str(path),'-o',str(binary)],capture_output=True,text=True)
     if p.returncode:raise RuntimeError(p.stderr)
     return subprocess.run([str(binary),*map(str,args)],capture_output=True,text=True,check=True).stdout
