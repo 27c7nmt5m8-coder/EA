@@ -35,7 +35,10 @@ cc1plusの3033は同日08:32:32.0342219 UTC、integrationの3033は同日03:54:1
 Win32 4551のシステムメッセージもApplication Control policyによるblockを示す。
 ただし今回、既存integrationを一度起動した結果は `0xc0000135`（DLL不足）であり、
 4551を新規再現したとは記載しない。現行GCCのハッシュ一致3077をpreflightの根拠とする。
-`g++ --version` は現在実行可能で16.2.0 Rev4（MSYS2）だが、その成功はcc1plusの実行許可を意味しない。
+`g++ --version` は16.2.0 Rev4（MSYS2）。依存DLL用のUCRT64 binを通常のprocess PATHへ設定した
+`cc1plus --version` も今回成功した。PATH未設定では同じDLL不足となった。したがって過去の3077は
+直接の拒否証拠だが、現在も同じbinaryが常に4551になるとは断定しない。署名・評判・実行contextの
+現在の許可を過去イベントだけから証明できないため、preflightは保守的な停止であることを結果に明示する。
 
 ## ABIとCIの等価性
 
@@ -50,7 +53,7 @@ Win32 4551のシステムメッセージもApplication Control policyによるbl
 | 比較 | ローカル想定 | authoritative CI |
 |---|---|---|
 | OS / arch | Windows 11、x64 | Windows Server 2025 runner、x64 |
-| compiler | MSYS2 UCRT64 GCC 16.2.0 Rev4 | MSYS2 UCRT64 GCC（実versionをartifact記録） |
+| compiler | MSYS2 UCRT64 GCC 16.2.0 Rev4 | 同じ16.2.0 Rev4を初回CIで実測、毎回artifact記録 |
 | runtime / ABI | UCRT、MinGW-w64、LLP64 | 同じruntime/ABI family |
 | native `long` / pointer | 4 / 8 byte | runtime reportで4 / 8を確認 |
 | MQL `long` / `ulong` / `datetime` / `uint` | 8 / 8 / 8 / 4 | static_assert、64bit arithmetic、2040年UTC roundtrip |
@@ -92,6 +95,7 @@ FAILはCIで上書きしない。BLOCKED、NOT_RUN、UNKNOWN、DELEGATED_TO_CI�
 
 当回結果は `.validation/gate_result.json` と関連ログへ保存する。同梱verificationの過去記録は復元し、
 未実行gateに過去結果を流用しない。MetaEditorは隔離コピーのみをcompileし、MT5起動・EX5配備を行わない。
+同じcheckoutで複数のvalidation runnerを同時実行しない。
 CI artifactは30日保持。期限切れ時は同じHEADでCIを再実行する。ログ・JSONのみ保存しexeは公開しない。
 
 Windows security、execution policy、trust storeは一切変更しない。

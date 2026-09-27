@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import json
 import os
+import platform
 from pathlib import Path
 import re
 import shutil
@@ -30,6 +31,11 @@ def combined_status(states, ci_pass):
 
 def release_status(full, ci_pass, meta, scope, dirty):
     return 'PASS' if full == 'PASS' and ci_pass and meta == scope == 'PASS' and not dirty else 'INCOMPLETE'
+
+
+def clear_run_outputs(out):
+    for name in REPORTS + [name + '.log' for name in GATES]:
+        (out / name).unlink(missing_ok=True)
 
 
 def valid_ci(run, jobs, repo, branch, sha):
@@ -114,14 +120,17 @@ def main():
     dirty = bool(git('status', '--porcelain'))
     inputs = input_fingerprint()
     result = {'repository': repo, 'branch': branch, 'commit': sha, 'dirty': dirty,
+              'environment': {'system': platform.system(), 'release': platform.release(),
+                              'version': platform.version(), 'architecture': platform.machine(),
+                              'python': platform.python_version()},
               'gates': ['NOT_RUN'] * 5, 'ci_native': {'status': 'NOT_RUN'},
               'metaeditor': {'status': 'NOT_RUN'}, 'full_gate': 'INCOMPLETE', 'authoritative_release': 'INCOMPLETE'}
     before = {name: (ROOT / 'verification' / name).read_bytes()
               if (ROOT / 'verification' / name).exists() else None for name in REPORTS}
     try:
+        clear_run_outputs(out)
         for name in REPORTS:
             (ROOT / 'verification' / name).unlink(missing_ok=True)
-            (out / name).unlink(missing_ok=True)
         evidence = preflight()
         result['preflight'] = evidence
         blocked = evidence.get('status') == 'BLOCKED'
@@ -142,6 +151,7 @@ def main():
             assert len(strict_json['cases']) == 55 and all(c['passed'] for c in strict_json['cases'])
             assert integration['abi']['contract'] == 'mql64-v1'
             result['native_assertions'] = {'integration': 582, 'json': 55, 'abi': integration['abi']}
+            print('Native evidence:', json.dumps(result['native_assertions']), flush=True)
         if args.metaeditor:
             from metaeditor_compile import compile_sources
             result['metaeditor'] = compile_sources(args.metaeditor, args.mql_include, out, sha)

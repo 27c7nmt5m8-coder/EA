@@ -1,10 +1,20 @@
 """Regression tests for false-green prevention; no native executable is launched."""
 import copy
 import unittest
+from pathlib import Path
+import tempfile
 import run_all as runner
 
 
 class ReleaseContract(unittest.TestCase):
+    def test_old_gate_logs_are_removed_before_a_blocked_run(self):
+        with tempfile.TemporaryDirectory() as directory:
+            out = Path(directory)
+            for name in runner.REPORTS + [name + '.log' for name in runner.GATES]:
+                (out / name).write_text('old PASS')
+            runner.clear_run_outputs(out)
+            self.assertEqual(list(out.iterdir()), [])
+
     def test_release_always_requires_current_ci_and_clean_local_evidence(self):
         self.assertEqual(runner.release_status('PASS', False, 'PASS', 'PASS', False), 'INCOMPLETE')
         self.assertEqual(runner.release_status('PASS', True, 'PASS', 'PASS', False), 'PASS')

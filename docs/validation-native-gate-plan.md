@@ -13,8 +13,9 @@ The user's ten phases and acceptance criteria are the governing specification.
   post-2038 UTC conversion assertions without changing existing test expectations.
 - [x] Extend existing CI with Windows UCRT64 native-only job and SHA-tagged evidence.
 - [x] Local Python gates and MetaEditor compilation on isolated source copies.
-- [ ] Review exact diff, secret scan, checksum update, commit, draft PR, actual CI.
-- [ ] Exact HEAD CI verification plus fresh local combined run, report limitations.
+- [x] Review exact diff, secret scan, checksum update, commit, draft PR, actual CI.
+- [ ] Final exact HEAD CI verification plus fresh local combined run; results are
+  recorded in .validation/gate_result.json and the PR, not self-referencing source commits.
 
 Review focus: stale/foreign SHA; skipped jobs or failed steps; unknown or unreadable
 events; dirty or changing worktree; Linux LP64 versus Windows LLP64; stale output
@@ -26,3 +27,6 @@ Ruling: reuse existing checkout on a new branch based on fetched origin/main;
 starting checkout was clean. No unrelated branch changes are imported.
 Ruling: use wevtutil read-only XML through Python because local PowerShell script
 execution is disabled. Execution policy and all security settings remain unchanged.
+Ruling: Git push credentials were unavailable. With user approval, preserve the
+original local branch and register its identical Git tree on a separate connected
+GitHub branch. Subsequent updates are ordinary fast-forwards, never force updates.
