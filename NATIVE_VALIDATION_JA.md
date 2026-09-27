@@ -61,6 +61,10 @@ Win32 4551のシステムメッセージもApplication Control policyによるbl
 | files / fixtures / command | exact HEADのsrc＋tests、既存fixture | clean exact HEAD checkout、同じ2 scripts |
 | expected | 統合582/失敗0、JSON55/失敗0 | 同じassertions、ABI契約`mql64-v1`も必須 |
 
+Windows CI checkoutでは`core.autocrlf=false`をprocess環境だけに指定し、src/testsの実バイトを
+Git blobと照合する。初回CIのCRLF変換によるartifact source hash差を検出して修正したもので、
+製品ファイルの改行・内容やWindowsのsecurity設定は変更しない。
+
 Windows CIの上記契約を満たすPASSは、これらのoffline deterministic試験の目的について
 **EQUIVALENT**と扱う。OS buildや署名許可、実MT5/broker/API環境の完全一致を意味しない。
 Ubuntuのみ、ABI不一致、Windows job未実行／失敗は代用不可。新toolchainでも契約を満たさない限り緑にしない。

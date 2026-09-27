@@ -69,6 +69,10 @@ jobs:
     runs-on: windows-2025
     timeout-minutes: 20
     env:
+      # Preserve Git blob bytes across Windows checkout (no CRLF conversion).
+      GIT_CONFIG_COUNT: '1'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
       PYTHONUTF8: '1'
       PYTHONDONTWRITEBYTECODE: '1'
       EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -83,6 +87,11 @@ jobs:
         run: |
           if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Checkout SHA mismatch' }
           if (git status --porcelain) { throw 'Checkout is not clean' }
+          git ls-files src tests | ForEach-Object {
+            if ((git hash-object --no-filters $_) -ne (git rev-parse "HEAD:$_")) {
+              throw "Checkout bytes differ from commit: $_"
+            }
+          }
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
