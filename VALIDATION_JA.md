@@ -220,7 +220,7 @@ AIの高スコア順キュー、HTTP中の枠保持、全銘柄送信の禁止�
 | ソース構造・既存安全仕様の保持 | `python3 tests/audit_source.py` | Python 3のみ。静的監査 |
 | 承認済み修正以外のソース差分 | `python3 tests/verify_lock_scope.py` | Python 3のみ。13ソースの厳密な差分照合 |
 
-全体検証は次を使います。GitHub ActionsもUbuntu、Python 3.11、g++で同じ5ゲートを実行します。ローカルにg++がなければPythonのみの3ゲートを実施し、C++依存の2ゲートはCI等で確認します。`run_all.py` は最初の失敗で終了するため、後続ゲートを合格と解釈しないでください。
+全体検証は次を使います。既存Ubuntu CIの5ゲートに加え、同じworkflowのWindows/UCRT64 jobがC++依存の2ゲートを検証します。`run_all.py` はApplication Controlのハッシュ一致blockをpreflightで検出し、nativeはBLOCKEDのままPythonの3ゲートを続行します。BLOCKED単独は非ゼロ終了です。exact HEAD CI・ローカル結果・MetaEditorを集約する正式release判定、ABI比較、操作手順は [NATIVE_VALIDATION_JA.md](NATIVE_VALIDATION_JA.md) を参照してください。
 
 ```bash
 python3 tests/run_all.py

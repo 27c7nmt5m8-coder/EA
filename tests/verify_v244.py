@@ -2,6 +2,7 @@
 from pathlib import Path
 import re,json,subprocess,hashlib,sys
 from json_support import HEADER
+from native_adapter import prepare
 ROOT=Path(__file__).resolve().parents[1];SRC=ROOT/'src';TEST=ROOT/'verification'
 TEST.mkdir(exist_ok=True)
 
@@ -42,7 +43,7 @@ def constants(source):
     names.update(values)
     out='\n'.join('using '+n+'=int;' for n in sorted(aliases))+'\nusing color=int;\n'
     out+='\n'.join('const '+('double' if n in ['DBL_MAX','EMPTY_VALUE'] else 'int')+' '+n+'='+str(values[n])+';' for n in sorted(names))
-    colors=set(re.findall(r'\bclr\w+',source));out+='\n'+'\n'.join('const color '+n+'=0;' for n in colors)
+    colors=set(re.findall(r'\bclr\w+',source));out+='\n'+'\n'.join('const color '+n+'=0;' for n in sorted(colors))
     return out
 
 def run():
@@ -60,7 +61,7 @@ def run():
     scenarios='\n'.join((ROOT/'tests'/name).read_text() for name in ['scenarios.cpp','new_scenarios.cpp','v244_scenarios.cpp','v244_lock_scenarios.cpp'])
     header+='\n#include <set>\n#include <limits>\n#include <functional>\n#include <cstring>\n'+constants(source+(ROOT/'tests/mock_mt5.hpp').read_text()+scenarios)+'\n'
     code=header+(ROOT/'tests/mock_mt5.hpp').read_text()+adapt(source)+'\n'+scenarios
-    (TEST/'integration.cpp').write_text(code)
+    (TEST/'integration.cpp').write_text(prepare(code),encoding='utf-8')
     result=subprocess.run(['g++','-std=c++17','-O1','-Wall','-Wextra',str(TEST/'integration.cpp'),'-o',str(TEST/'integration')],capture_output=True,text=True)
     (TEST/'cpp_diagnostics.txt').write_text(result.stderr)
     if result.returncode:
@@ -70,6 +71,7 @@ def run():
     if run.returncode:raise SystemExit(run.returncode)
     if len(sys.argv)>1:return  # A focused run must not overwrite the full-suite report.
     data=json.loads(run.stdout)
+    data['abi']=json.loads(next(line.removeprefix('ABI_CONTRACT ') for line in run.stderr.splitlines() if line.startswith('ABI_CONTRACT ')))
     data['scope']='Actual main EA, headers and worker adapted to UTF-16 C++17 using simulated MT5 services. No MetaEditor compilation, real trading, market backtest, or API call.'
     data['source_sha256']={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(SRC.iterdir()) if p.is_file()}
     (TEST/'integration_results.json').write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')

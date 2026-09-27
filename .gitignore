@@ -1,0 +1,10 @@
+# Validation-generated files; never distribute local executables or private logs.
+.validation/
+__pycache__/
+verification/*.exe
+verification/*.cpp
+verification/integration
+verification/json_test
+verification/initial.json
+verification/case.json
+verification/ci_run.log
