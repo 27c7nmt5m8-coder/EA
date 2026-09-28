@@ -5,6 +5,7 @@ from .triage import mandatory_reasons
 
 def summarize(rows):
     valid = []
+    paired_originals = set()
     for row in rows:
         if row.get('a', {}).get('status') != 'OK' or row.get('b', {}).get('status') != 'OK':
             continue
@@ -26,6 +27,7 @@ def summarize(rows):
             if row['a'].get('model') != row['b'].get('model') or row['a'].get('reasoning_effort') != row['b'].get('reasoning_effort'):
                 raise ValueError('unmatched_models')
             valid.append(normalized)
+            paired_originals.add(id(row))
         except (KeyError, ValueError, TypeError):
             continue
     totals = {arm: {key: sum(r[arm]['usage'][key] for r in valid)
@@ -51,22 +53,36 @@ def summarize(rows):
     labels_known = all(r.get('truth') in ('candidate', 'review', 'unknown') for r in valid)
     reworks = [r.get('rework_count') for r in valid]
     known_jev_tokens = 0
+    paired_jev_tokens = 0
     missing_jev_usage = 0
     for r in rows:
         jev = r.get('jev', {})
         try:
             measured = usage_numbers(jev.get('usage'))
-            if r in valid:
-                known_jev_tokens += measured['total_tokens']
+            known_jev_tokens += measured['total_tokens']
+            if id(r) in paired_originals:paired_jev_tokens += measured['total_tokens']
         except ValueError:
-            missing_jev_usage += jev.get('attempts', 0) > 0
+            missing_jev_usage += jev.get('attempts', 0)
     jev_tokens = None if missing_jev_usage else known_jev_tokens
     elapsed = {arm: round(sum(r[arm]['elapsed_seconds'] for r in valid), 6) for arm in ('a', 'b')}
-    jev_seconds = sum(r.get('jev', {}).get('elapsed_seconds', 0) for r in valid)
+    jev_seconds = []
+    import math
+    for r in valid:
+        jev=r.get('jev',{})
+        duration=jev.get('elapsed_seconds',0 if not jev.get('attempts',0) else None)
+        if type(duration) not in (int,float) or not math.isfinite(duration) or duration<0:jev_seconds=None;break
+        jev_seconds.append(duration)
+    b_known_tokens=0
+    b_usage_complete=bool(rows)
+    for r in rows:
+        try:
+            b_known_tokens+=usage_numbers(r['b']['usage'])['total_tokens']
+            if r['b'].get('status')!='OK':b_usage_complete=False
+        except (KeyError,ValueError,TypeError):b_usage_complete=False
     result = dict(scope='synthetic_fixed_review_tasks; not end-to-end EA development',
                   pairs=len(rows), valid_pairs=len(valid), invalid_pairs=len(rows)-len(valid),
                   gpt6_totals=totals, gpt6_reduction_percent=reduction,
-                  review_seconds=elapsed, b_including_jev_seconds=round(elapsed['b']+jev_seconds, 6),
+                  review_seconds=elapsed, b_including_jev_seconds=round(elapsed['b']+sum(jev_seconds), 6) if jev_seconds is not None else None,
                   agreement_count=agrees, agreement_denominator=len(comparable),
                   jev_sol_agreement_rate=agrees/len(comparable) if comparable else None,
                   agreement_coverage=len(comparable)/len(valid) if valid else None,
@@ -80,7 +96,8 @@ def summarize(rows):
                   actual_sol_review_rate=1.0 if valid else None, review_skip_enabled=False,
                   actual_reviews_skipped=0, rework_count=sum(reworks) if reworks and all(type(x) is int for x in reworks) else None,
                   jev_total_tokens=jev_tokens, jev_known_token_subtotal=known_jev_tokens,
-                  b_all_provider_total_tokens=totals['b']['total_tokens']+jev_tokens if jev_tokens is not None else None,
+                  paired_jev_token_subtotal=paired_jev_tokens,b_known_gpt6_token_subtotal=b_known_tokens,
+                  b_all_provider_total_tokens=b_known_tokens+jev_tokens if jev_tokens is not None and b_usage_complete else None,
                   quality_certified=False, labels_complete=labels_known,
                   decision='BLOCKED_CRITICAL_MISS' if critical or critical_shadow else 'SHADOW_ONLY_INSUFFICIENT_FOR_ADOPTION',
                   remediation='Analyze misses and revise routing before any separate skip implementation.' if critical or critical_shadow else None)
@@ -95,7 +112,8 @@ def summarize(rows):
     result['jev_model_drift'] = len(result['model_versions']) > 1
     result['jev_critical_cases_evaluated'] = sum(r.get('severity') == 'critical' for r in comparable)
     result['jev_false_negative_denominator'] = sum(r.get('truth') in ('review', 'unknown') for r in comparable)
-    result['all_provider_total_reduction_percent'] = round(100*(totals['a']['total_tokens']-result['b_all_provider_total_tokens'])/totals['a']['total_tokens'],4) if totals['a']['total_tokens'] and jev_tokens is not None else None
+    paired_jev_complete=all(not r.get('jev',{}).get('attempts',0) or r.get('jev',{}).get('usage') for r in valid)
+    result['all_provider_total_reduction_percent'] = round(100*(totals['a']['total_tokens']-totals['b']['total_tokens']-paired_jev_tokens)/totals['a']['total_tokens'],4) if totals['a']['total_tokens'] and jev_tokens is not None and paired_jev_complete else None
     scenario = {}
     for arm in ('a', 'b'):
         eligible = valid and all(r[arm].get('model') == 'gpt-6-sol' and r[arm]['usage']['input_tokens'] <= 272000

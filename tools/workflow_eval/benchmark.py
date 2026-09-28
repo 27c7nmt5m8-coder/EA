@@ -70,7 +70,7 @@ def run_case(case, index, live_jev=False):
     from .triage import PROTECTED
     full = '\n\n'.join(b['text'] for b in case['context_blocks'])
     facts = dict(case['facts'], missing_context=selected['missing_context'],
-                 protected=case['facts'].get('protected') is not False or bool(PROTECTED.search(case['task']+full)))
+                 protected=case['severity']=='critical' or case['facts'].get('protected') is not False or bool(PROTECTED.search(case['task']+full)))
     mandatory = mandatory_reasons(facts)
     effort = 'xhigh' if mandatory else 'high'
     state = dict(task=case['task'], evidence=selected['text'])

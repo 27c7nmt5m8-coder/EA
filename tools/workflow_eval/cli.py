@@ -53,6 +53,9 @@ def main(argv=None):
     p = sub.add_parser('bundle'); p.add_argument('--base', default='origin/main'); p.add_argument('--task-file', required=True); p.add_argument('--related', action='append', default=[])
     p = sub.add_parser('triage'); p.add_argument('bundle'); p.add_argument('--test-evidence'); p.add_argument('--live-jev', action='store_true')
     p = sub.add_parser('report'); p.add_argument('rows')
+    p = sub.add_parser('decompose'); p.add_argument('rows')
+    p = sub.add_parser('cohort-record'); p.add_argument('record'); p.add_argument('--update-audit', action='store_true')
+    p = sub.add_parser('cohort-report')
     p = sub.add_parser('benchmark'); p.add_argument('--cases', default='tests/fixtures/workflow_eval_cases.json'); p.add_argument('--split', choices=['calibration', 'holdout'], required=True); p.add_argument('--live-jev', action='store_true'); p.add_argument('--workers', type=int, default=2)
     args = parser.parse_args(argv)
     root = Path.cwd()
@@ -88,6 +91,30 @@ def main(argv=None):
         path = output(root, 'triage.json', dict(facts=facts, jev=jev, routing=route(facts, jev.get('answer'))))
     elif args.command == 'report':
         path = output(root, 'report.json', summarize(load(args.rows)))
+    elif args.command == 'decompose':
+        from .analysis import decompose
+        path = output(root, 'decomposition.json', decompose(load(args.rows)))
+    elif args.command == 'cohort-record':
+        from .real_tasks import validate_record, update_record, summarize as real_summary
+        row = validate_record(load(args.record))
+        target = output_path(root, 'real-tasks.json')
+        rows = load(target) if target.is_file() else []
+        identity = (row['repository'], row['request_id'])
+        prior = next((r for r in rows if (r['repository'],r['request_id'])==identity),None)
+        if prior is not None:
+            if not args.update_audit: raise ValueError('duplicate_real_task_use_explicit_audit_update')
+            row=update_record(prior,row)
+            output(root, 'prior-audit-'+digest(json.dumps(prior,sort_keys=True).encode())+'.json', prior)
+            rows[rows.index(prior)]=row
+        else:
+            if args.update_audit: raise ValueError('audit_update_requires_existing_task')
+            rows.append(row)
+        real_summary(rows)
+        path = output(root, 'real-tasks.json', rows)
+    elif args.command == 'cohort-report':
+        from .real_tasks import summarize as real_summary
+        target = output_path(root, 'real-tasks.json')
+        path = output(root, 'real-cohort-report.json', real_summary(load(target) if target.is_file() else []))
     else:
         from .benchmark import run_cases
         dataset = load(args.cases)
