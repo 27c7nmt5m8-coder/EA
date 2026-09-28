@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["verdict", "findings", "missing_context_ids"],
+  "properties": {
+    "verdict": {"type": "string", "enum": ["pass", "needs_changes", "unknown"]},
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["severity", "code", "evidence_id", "reason"],
+        "properties": {
+          "severity": {"type": "string", "enum": ["critical", "important", "minor"]},
+          "code": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,80}$"},
+          "evidence_id": {"type": "string"},
+          "reason": {"type": "string"}
+        }
+      }
+    },
+    "missing_context_ids": {"type": "array", "items": {"type": "string"}}
+  }
+}
