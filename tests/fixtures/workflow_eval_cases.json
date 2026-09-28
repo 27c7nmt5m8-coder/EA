@@ -1,0 +1,1042 @@
+{
+  "version": 1,
+  "scope": "hand-labeled synthetic fixed-review cases, not real EA development tasks",
+  "cases": [
+    {
+      "id": "C01",
+      "split": "calibration",
+      "task": "Document timestamps in UTC.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The developer note specifies ISO-8601 UTC timestamps."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "candidate",
+      "severity": "minor"
+    },
+    {
+      "id": "C02",
+      "split": "calibration",
+      "task": "Document durations in seconds rather than milliseconds.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The revised developer note calls the unconverted millisecond value seconds."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "review",
+      "severity": "important"
+    },
+    {
+      "id": "C03",
+      "split": "calibration",
+      "task": "Explain that unavailable measurements are null.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The revised developer note says unavailable values are zero."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "review",
+      "severity": "important"
+    },
+    {
+      "id": "C04",
+      "split": "calibration",
+      "task": "Add the calibration command with --split calibration.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The developer note now contains python -m tools.workflow_eval.cli benchmark --split calibration."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "candidate",
+      "severity": "minor"
+    },
+    {
+      "id": "C05",
+      "split": "calibration",
+      "task": "Explain that model output and reasoning counts overlap.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The developer note explains that reasoning is included in output tokens, so it is not added again."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "candidate",
+      "severity": "minor"
+    },
+    {
+      "id": "C06",
+      "split": "calibration",
+      "task": "Document that cached input is included in input tokens.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The developer note tells readers to add cached input to the already inclusive input count."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "review",
+      "severity": "important"
+    },
+    {
+      "id": "C07",
+      "split": "calibration",
+      "task": "Explain that elapsed duration includes tool waiting.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The developer note says elapsed duration includes both inference and tool waiting."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "candidate",
+      "severity": "minor"
+    },
+    {
+      "id": "C08",
+      "split": "calibration",
+      "task": "Remove a duplicate empty heading while retaining the measurement instructions.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "One empty duplicate heading was removed. All measurement instructions are retained."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "candidate",
+      "severity": "minor"
+    },
+    {
+      "id": "C09",
+      "split": "calibration",
+      "task": "Document both start and end event fields according to the interface.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The revised developer note lists event start and event end."
+        },
+        {
+          "id": "interface",
+          "text": "Interface definition: event may be start or end; elapsed_seconds may be a fractional nonnegative value."
+        }
+      ],
+      "required_context_ids": [
+        "evidence",
+        "interface"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "candidate",
+      "severity": "minor"
+    },
+    {
+      "id": "C10",
+      "split": "calibration",
+      "task": "Assess a change across two independent developer modules.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The change modifies the context collector and the paired report generator together."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-context.md",
+          "docs/dev-metrics.md"
+        ],
+        "dependency": "known",
+        "module_count": 2,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "review",
+      "severity": "important"
+    },
+    {
+      "id": "H01",
+      "split": "holdout",
+      "task": "Correct a spelling error in the developer note without changing its meaning.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The word measurment is corrected to measurement. The explanatory sentence retains its meaning."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "candidate",
+      "severity": "minor"
+    },
+    {
+      "id": "H02",
+      "split": "holdout",
+      "task": "Document the metric output path as .workflow-eval/report.json.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The developer note specifies .workflow-eval/report.json as the metric output path."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "candidate",
+      "severity": "minor"
+    },
+    {
+      "id": "H03",
+      "split": "holdout",
+      "task": "Keep the input, output and total columns in the comparison table.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The revised comparison table retains input and total but removes the output column."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "review",
+      "severity": "important"
+    },
+    {
+      "id": "H04",
+      "split": "holdout",
+      "task": "Document a 1500 millisecond sample as 1.5 seconds.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The developer note describes the 1500 millisecond sample as 1500 seconds."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "review",
+      "severity": "important"
+    },
+    {
+      "id": "H05",
+      "split": "holdout",
+      "task": "State that tuning uses calibration and the holdout is evaluated afterwards.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The developer note states that tuning uses calibration; the fixed policy is evaluated on the holdout afterwards."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "candidate",
+      "severity": "minor"
+    },
+    {
+      "id": "H06",
+      "split": "holdout",
+      "task": "Explain that twenty examples alone do not certify general quality.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The revised note concludes that passing twenty examples proves general quality for every future task."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "review",
+      "severity": "important"
+    },
+    {
+      "id": "H07",
+      "split": "holdout",
+      "task": "Document the boundary values from the interface, preserving the example.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The note preserves the example and states that durations may include fractions."
+        },
+        {
+          "id": "interface",
+          "text": "Interface definition: event may be start or end; elapsed_seconds may be a fractional nonnegative value."
+        }
+      ],
+      "required_context_ids": [
+        "evidence",
+        "interface"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "candidate",
+      "severity": "minor"
+    },
+    {
+      "id": "H08",
+      "split": "holdout",
+      "task": "Remove a duplicated paragraph while preserving the first copy.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The second copy was removed. The identical first paragraph remains in the developer note."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "candidate",
+      "severity": "minor"
+    },
+    {
+      "id": "H09",
+      "split": "holdout",
+      "task": "Replace an outdated local document reference with docs/dev-measurements.md.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The developer note now references docs/dev-measurements.md and no longer references the obsolete note."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "candidate",
+      "severity": "minor"
+    },
+    {
+      "id": "H10",
+      "split": "holdout",
+      "task": "Distinguish an unavailable review count from a measured zero.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The developer note says a missing review count means zero reviews were performed."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "review",
+      "severity": "important"
+    },
+    {
+      "id": "H11",
+      "split": "holdout",
+      "task": "Review a change to a developer metrics parser.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The parser behavior changes for duplicated cumulative events."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "tools/synthetic_metrics.py"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "review",
+      "severity": "important"
+    },
+    {
+      "id": "H12",
+      "split": "holdout",
+      "task": "Review a change to the developer test-result collector.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The collector changes interpretation of blocked validation outcomes."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "tools/synthetic_metrics.py"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "review",
+      "severity": "important"
+    },
+    {
+      "id": "H13",
+      "split": "holdout",
+      "task": "Assess a developer change whose dependencies have not been established.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The dependency graph for the requested change is unknown."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "unknown",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "review",
+      "severity": "important"
+    },
+    {
+      "id": "H14",
+      "split": "holdout",
+      "task": "Assess a change across two independent developer modules.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "Both a context extractor and a telemetry recorder are changed."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-context.md",
+          "docs/dev-metrics.md"
+        ],
+        "dependency": "known",
+        "module_count": 2,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "review",
+      "severity": "important"
+    },
+    {
+      "id": "H15",
+      "split": "holdout",
+      "task": "Assess a developer documentation change with a failed required check.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "The required mechanical check failed."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "docs/dev-measurements.md"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "FAIL",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": false
+      },
+      "truth": "review",
+      "severity": "important"
+    },
+    {
+      "id": "H16",
+      "split": "holdout",
+      "task": "Route a synthetic SL TP Break Even Trailing Stop change.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "Protected EA logic is changed; no source code is supplied or executed."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "src/synthetic_placeholder.mqh"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": true
+      },
+      "truth": "review",
+      "severity": "critical"
+    },
+    {
+      "id": "H17",
+      "split": "holdout",
+      "task": "Route a synthetic lot sizing and Monte Carlo capital management change.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "Protected risk and margin behavior is changed; no trading is performed."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "src/synthetic_placeholder.mqh"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": true
+      },
+      "truth": "review",
+      "severity": "critical"
+    },
+    {
+      "id": "H18",
+      "split": "holdout",
+      "task": "Route a synthetic order send modify cancel and position interference change.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "Protected order processing is changed; no order is sent."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "src/synthetic_placeholder.mqh"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": true
+      },
+      "truth": "review",
+      "severity": "critical"
+    },
+    {
+      "id": "H19",
+      "split": "holdout",
+      "task": "Route a synthetic safety device forced stop daily loss and maximum drawdown change.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "Protected safety behavior is changed; no EA is executed."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "src/synthetic_placeholder.mqh"
+        ],
+        "dependency": "known",
+        "module_count": 1,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": true
+      },
+      "truth": "review",
+      "severity": "critical"
+    },
+    {
+      "id": "H20",
+      "split": "holdout",
+      "task": "Route a synthetic multiple-module EA change with unknown dependencies.",
+      "context_blocks": [
+        {
+          "id": "evidence",
+          "text": "Protected modules and unknown dependencies require advanced Sol review."
+        }
+      ],
+      "required_context_ids": [
+        "evidence"
+      ],
+      "selected_context_ids": [
+        "evidence"
+      ],
+      "facts": {
+        "paths": [
+          "src/synthetic_placeholder.mqh"
+        ],
+        "dependency": "unknown",
+        "module_count": 2,
+        "tests": "PASS",
+        "changed_lines": 4,
+        "missing_context": [],
+        "sensitive": false,
+        "scope_ok": true,
+        "current": true,
+        "protected": true
+      },
+      "truth": "review",
+      "severity": "critical"
+    }
+  ],
+  "common_context_blocks": [
+    {
+      "id": "unrelated-0",
+      "text": "Unrelated historical presentation reference 0: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. Unrelated historical presentation reference 0: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. Unrelated historical presentation reference 0: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. "
+    },
+    {
+      "id": "unrelated-1",
+      "text": "Unrelated historical presentation reference 1: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. Unrelated historical presentation reference 1: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. Unrelated historical presentation reference 1: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. "
+    },
+    {
+      "id": "unrelated-2",
+      "text": "Unrelated historical presentation reference 2: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. Unrelated historical presentation reference 2: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. Unrelated historical presentation reference 2: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. "
+    },
+    {
+      "id": "unrelated-3",
+      "text": "Unrelated historical presentation reference 3: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. Unrelated historical presentation reference 3: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. Unrelated historical presentation reference 3: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. "
+    },
+    {
+      "id": "unrelated-4",
+      "text": "Unrelated historical presentation reference 4: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. Unrelated historical presentation reference 4: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. Unrelated historical presentation reference 4: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. "
+    },
+    {
+      "id": "unrelated-5",
+      "text": "Unrelated historical presentation reference 5: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. Unrelated historical presentation reference 5: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. Unrelated historical presentation reference 5: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. "
+    },
+    {
+      "id": "unrelated-6",
+      "text": "Unrelated historical presentation reference 6: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. Unrelated historical presentation reference 6: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. Unrelated historical presentation reference 6: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. "
+    },
+    {
+      "id": "unrelated-7",
+      "text": "Unrelated historical presentation reference 7: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. Unrelated historical presentation reference 7: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. Unrelated historical presentation reference 7: table labels use plain words, captions use sentence case, paragraph spacing is consistent, labels are aligned for readability. This reference has no bearing on the current task. "
+    }
+  ]
+}
