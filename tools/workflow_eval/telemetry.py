@@ -10,7 +10,7 @@ USAGE_KEYS = ('input_tokens', 'cached_input_tokens', 'cache_write_input_tokens',
 def usage_numbers(value):
     if not isinstance(value, dict):
         raise ValueError('invalid_usage')
-    result = {k: value.get(k, 0) for k in USAGE_KEYS}
+    result = {k: value[k] for k in USAGE_KEYS if k in value}
     for number in result.values():
         if type(number) is not int or number < 0:
             raise ValueError('invalid_usage')
@@ -18,10 +18,20 @@ def usage_numbers(value):
         raise ValueError('missing_usage')
     result['total_tokens'] = value.get('total_tokens', result['input_tokens'] + result['output_tokens'])
     if (result['total_tokens'] != result['input_tokens'] + result['output_tokens']
-            or result['cached_input_tokens'] > result['input_tokens']
-            or result['reasoning_output_tokens'] > result['output_tokens']):
+            or result.get('cached_input_tokens', 0) > result['input_tokens']
+            or result.get('reasoning_output_tokens', 0) > result['output_tokens']):
         raise ValueError('inconsistent_usage')
     return result
+
+
+def codex_events(stdout):
+    if isinstance(stdout, bytes): stdout = stdout.decode('utf-8', errors='replace')
+    events = []
+    for line in (stdout or '').splitlines():
+        if not line.lstrip().startswith(('{', '[')): continue
+        try: events.append(json.loads(line))
+        except ValueError: events.append({'type': 'error'})
+    return events
 
 
 def extract_usage(events):
@@ -31,6 +41,7 @@ def extract_usage(events):
     invalid = False
     models = set()
     completed = started = 0
+    usage_fields = []
     for event in events:
         payload = event.get('payload', {})
         if event.get('type') == 'turn_context':
@@ -45,12 +56,13 @@ def extract_usage(events):
             continue
         try:
             current = usage_numbers(info['total_token_usage'])
+            usage_fields = [k for k in USAGE_KEYS if k in info['total_token_usage']]
             if previous is None and info.get('last_token_usage'):
                 inherited = current != usage_numbers(info['last_token_usage'])
             if current == previous:
                 duplicates += 1
                 continue
-            if previous and any(current[k] < previous[k] for k in USAGE_KEYS):
+            if previous and any(current[k] < previous[k] for k in current.keys() & previous.keys()):
                 invalid = True
             previous = current
             updates += 1
@@ -64,7 +76,8 @@ def extract_usage(events):
                 usage_scope='single_turn' if task_known else 'session_cumulative',
                 observed_usage_updates=updates, duplicate_events=duplicates,
                 gpt6_call_count=None, inherited_context=inherited,
-                completed_turns=completed, models=sorted(models, key=lambda pair: tuple(str(x) for x in pair)))
+                completed_turns=completed, usage_fields=usage_fields,
+                models=sorted(models, key=lambda pair: tuple(str(x) for x in pair)))
 
 
 def capture(path):

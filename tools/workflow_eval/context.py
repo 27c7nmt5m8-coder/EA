@@ -53,6 +53,8 @@ def build_bundle(root, base, related, task):
         index += 1 + count
     changed = b'\0'.join(changed_names) + b'\0'
     untracked = git(root, 'ls-files', '--others', '--exclude-standard', '-z')
+    untracked_names = {v.decode('utf-8') for v in untracked.split(b'\0') if v
+                       and not v.startswith((b'.workflow-eval/', b'.validation/'))}
     paths = sorted({v.decode('utf-8') for v in (changed + untracked).split(b'\0') if v
                     and not v.startswith((b'.workflow-eval/', b'.validation/'))})
     patch = git(root, 'diff', '--no-ext-diff', '--no-textconv', '--binary', base_sha, '--').decode('utf-8', errors='replace')
@@ -78,11 +80,14 @@ def build_bundle(root, base, related, task):
                                                 if re.match(r'\s*(input |enum |class |struct )', line)]))
     if SENSITIVE.search(task) or SENSITIVE.search(patch):
         raise ValueError('sensitive_context')
-    return dict(schema_version=2, base=base_sha, head=head, fingerprint=fingerprint(root),
+    changed_lines = sum(line.startswith(('+', '-')) and not line.startswith(('+++', '---')) for line in patch.splitlines())
+    changed_lines += sum(len(b['text'].splitlines()) for b in blocks if b['path'] in untracked_names)
+    if untracked_names & set(unknown): changed_lines = None
+    return dict(schema_version=3, base=base_sha, head=head, fingerprint=fingerprint(root),
                 index_sha256=digest(git(root, 'ls-files', '--stage', '-z')),
-                changed_paths=paths, patch=patch, blocks=blocks, task=task,
+                changed_paths=paths, changed_lines=changed_lines, patch=patch, blocks=blocks, task=task,
                 dependency='unknown' if unknown or any(not p.startswith('docs/') for p in paths) else 'known',
-                expansion_required=unknown, protected=bool(PROTECTED.search(task + patch)),
+                expansion_required=unknown, protected=bool(PROTECTED.search(task + patch + '\n'.join(b['text'] for b in blocks))),
                 status_porcelain=git(root, 'status', '--porcelain=v1', '-z').decode('utf-8'))
 
 

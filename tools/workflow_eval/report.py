@@ -3,7 +3,7 @@ from .telemetry import usage_numbers
 from .triage import mandatory_reasons
 
 
-def summarize(rows):
+def paired_rows(rows):
     valid = []
     paired_originals = set()
     for row in rows:
@@ -30,6 +30,11 @@ def summarize(rows):
             paired_originals.add(id(row))
         except (KeyError, ValueError, TypeError):
             continue
+    return valid, paired_originals
+
+
+def summarize(rows):
+    valid, paired_originals = paired_rows(rows)
     totals = {arm: {key: sum(r[arm]['usage'][key] for r in valid)
                     for key in ('input_tokens', 'output_tokens', 'total_tokens')} for arm in ('a', 'b')}
     reduction = {k: round(100 * (totals['a'][k] - totals['b'][k]) / totals['a'][k], 4)
@@ -117,11 +122,12 @@ def summarize(rows):
     scenario = {}
     for arm in ('a', 'b'):
         eligible = valid and all(r[arm].get('model') == 'gpt-6-sol' and r[arm]['usage']['input_tokens'] <= 272000
-                                 and r[arm]['usage']['cache_write_input_tokens'] == 0 for r in valid)
+                                 and {'cached_input_tokens','cache_write_input_tokens'} <= set(r[arm].get('usage_fields', []))
+                                 and r[arm]['usage'].get('cache_write_input_tokens') == 0 for r in valid)
         scenario[arm] = round(sum(((r[arm]['usage']['input_tokens']-r[arm]['usage']['cached_input_tokens'])*2
                                   +r[arm]['usage']['cached_input_tokens']*.2+r[arm]['usage']['output_tokens']*10)/1e6
                                  for r in valid),6) if eligible else None
     result['standard_short_context_sol_api_equivalent_usd'] = scenario
     result['all_provider_cost_usd'] = None
-    result['cost_limitations'] = 'Standard text-token scenario only; actual CLI billing/tier and JEV rates unavailable.'
+    result['cost_limitations'] = 'Standard text-token scenario only with reported cache coverage; absent legacy provenance is unknown. Actual CLI billing/tier and JEV rates unavailable.'
     return result

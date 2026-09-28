@@ -137,13 +137,13 @@ def call_jev(state, key=None, opener=None):
         if len(raw) > 65536:
             raise ValueError('large_response')
         result = json.loads(raw)
+        from .telemetry import usage_numbers
+        base['usage'] = usage_numbers(result['usage'])
         answer = result['answers']['routing']
         if not valid_answer(answer) or not re.fullmatch(r'jev-[A-Za-z0-9_.-]+', result['model']):
             raise ValueError('invalid_response')
-        from .telemetry import usage_numbers
-        usage = usage_numbers(result['usage'])
         base.update(status='OK', answer={k: answer[k] for k in ('type', 'choice', 'confidence', 'probabilities')},
-                    usage=usage, model=result['model'], reason=None)
+                    model=result['model'], reason=None)
     except error.HTTPError as exc:
         base['reason'] = 'http_' + str(exc.code)
     except (OSError, TimeoutError):

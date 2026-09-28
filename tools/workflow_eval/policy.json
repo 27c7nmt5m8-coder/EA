@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "mode": "shadow",
   "review_skip_enabled": false,
   "confidence_threshold": 0.9,

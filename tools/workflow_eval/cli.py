@@ -80,7 +80,7 @@ def main(argv=None):
         test = load(args.test_evidence) if args.test_evidence else {}
         facts = dict(paths=bundle['changed_paths'], dependency=bundle['dependency'],
                      module_count=len(bundle['changed_paths']), tests=test.get('status', 'UNKNOWN'),
-                     changed_lines=sum(line.startswith(('+', '-')) and not line.startswith(('+++', '---')) for line in bundle['patch'].splitlines()),
+                     changed_lines=bundle.get('changed_lines'),
                      missing_context=bundle['expansion_required'], sensitive=False, scope_ok=True,
                      current=is_current(root, bundle) and test.get('fingerprint') == bundle['fingerprint'],
                      protected=bundle['protected'])
@@ -95,12 +95,12 @@ def main(argv=None):
         from .analysis import decompose
         path = output(root, 'decomposition.json', decompose(load(args.rows)))
     elif args.command == 'cohort-record':
-        from .real_tasks import validate_record, update_record, summarize as real_summary
+        from .real_tasks import validate_record, update_record, task_identity, summarize as real_summary
         row = validate_record(load(args.record))
         target = output_path(root, 'real-tasks.json')
         rows = load(target) if target.is_file() else []
-        identity = (row['repository'], row['request_id'])
-        prior = next((r for r in rows if (r['repository'],r['request_id'])==identity),None)
+        identity = task_identity(row)
+        prior = next((r for r in rows if task_identity(r)==identity),None)
         if prior is not None:
             if not args.update_audit: raise ValueError('duplicate_real_task_use_explicit_audit_update')
             row=update_record(prior,row)

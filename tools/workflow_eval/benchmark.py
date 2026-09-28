@@ -7,7 +7,7 @@ import tempfile
 import time
 
 from .context import expand_context, digest
-from .telemetry import usage_numbers
+from .telemetry import usage_numbers, codex_events, USAGE_KEYS
 from .triage import policy, mandatory_reasons, route, safe_state, call_jev, validate_facts, SENSITIVE
 
 
@@ -16,24 +16,31 @@ def parse_codex(events):
     usages = []
     invalid = False
     for event in events:
+        if not isinstance(event, dict): invalid = True; continue
         if event.get('type') in ('error', 'turn.failed'):
             invalid = True
         if event.get('type') == 'item.completed':
             item = event.get('item', {})
+            if not isinstance(item, dict): invalid = True; continue
             if item.get('type') == 'agent_message':
                 messages.append(item.get('text', ''))
             elif item.get('type') not in ('reasoning',):
                 invalid = True
         if event.get('type') == 'turn.completed':
             usages.append(event.get('usage'))
+    result = dict(status='UNKNOWN', route=None, usage=None, usage_fields=[],
+                  observed_completed_turns=len(usages), exact_backend_calls=None)
+    if len(usages) == 1:
+        try:
+            result.update(usage=usage_numbers(usages[0]), usage_fields=[k for k in USAGE_KEYS if k in usages[0]])
+        except (ValueError, TypeError): pass
     try:
         answer = json.loads(messages[-1])
-        if not isinstance(answer, dict) or invalid or len(usages) != 1 or answer.get('route') not in ('candidate', 'review', 'unknown'):
+        if not isinstance(answer, dict) or invalid or result['usage'] is None or answer.get('route') not in ('candidate', 'review', 'unknown'):
             raise ValueError()
-        return dict(status='OK', route=answer['route'], usage=usage_numbers(usages[0]),
-                    observed_completed_turns=1, exact_backend_calls=None)
-    except (ValueError, TypeError, IndexError):
-        return dict(status='UNKNOWN', route=None, usage=None, observed_completed_turns=len(usages), exact_backend_calls=None)
+        result.update(status='OK', route=answer['route'])
+    except (ValueError, TypeError, IndexError): pass
+    return result
 
 
 def sol_review(task, evidence, effort):
@@ -54,9 +61,12 @@ def sol_review(task, evidence, effort):
     try:
         completed = subprocess.run(cmd, input=prompt, text=True, encoding='utf-8',
                                    errors='replace', capture_output=True, timeout=120)
-        events = [json.loads(line) for line in completed.stdout.splitlines() if line.startswith('{')]
-        result = parse_codex(events) if completed.returncode == 0 else dict(status='UNAVAILABLE', route=None, usage=None)
-    except (OSError, subprocess.TimeoutExpired, ValueError):
+        result = parse_codex(codex_events(completed.stdout))
+        if completed.returncode != 0: result.update(status='UNAVAILABLE', route=None)
+    except subprocess.TimeoutExpired as exc:
+        result = parse_codex(codex_events(exc.stdout))
+        result.update(status='UNAVAILABLE', route=None)
+    except (OSError, ValueError):
         result = dict(status='UNAVAILABLE', route=None, usage=None)
     result.update(model='gpt-6-sol', reasoning_effort=effort,
                   elapsed_seconds=round(time.perf_counter()-start, 6),

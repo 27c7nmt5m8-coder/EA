@@ -192,6 +192,9 @@ class RealTaskTests(unittest.TestCase):
                    b=dict(usage=dict(input_tokens=900, output_tokens=120), reasoning_effort='high'),
                    jev=dict(status='OK', usage=dict(input_tokens=20, output_tokens=10), answer=dict(choice='candidate', confidence=.89)),
                    shadow=dict(shadow_route='review', mandatory_reasons=[]))
+        row['facts']=dict(paths=['docs/dev-note.md'],dependency='known',module_count=1,tests='PASS',
+            changed_lines=1,missing_context=[],sensitive=False,scope_ok=True,current=True,protected=False)
+        for arm in ('a','b'):row[arm].update(status='OK',model='gpt-6-sol',route='review',elapsed_seconds=1)
         got = self.module('analysis').decompose([row])
         self.assertEqual(got['input_tokens_removed'], 100)
         self.assertEqual(got['extra_output_tokens'], 20)
