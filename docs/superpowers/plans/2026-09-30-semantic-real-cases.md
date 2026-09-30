@@ -31,20 +31,20 @@
 
 ### 1. Fixed contracts and provenance
 
-- [ ] Inspect primary source diffs/reviews/tests for four PRs; reject unsupported contracts.
-- [ ] Create `tests/fixtures/workflow_semantic_real_cases.json` and provenance manifest with pinned source file hashes and case fingerprints; 15–20 distinct contracts including controls.
-- [ ] Add failing offline fixture validation tests in `tests/test_workflow_semantic_real.py`.
-- [ ] Implement loading, provenance verification and payload separation in `tools/workflow_eval/semantic_real.py`; run focused tests.
+- [x] Inspect primary source diffs/reviews/tests for four PRs; reject unsupported contracts.
+- [x] Create `tests/fixtures/workflow_semantic_real_cases.json` and provenance manifest with pinned source file hashes and case fingerprints; 15–20 distinct contracts including controls.
+- [x] Add failing offline fixture validation tests in `tests/test_workflow_semantic_real.py`.
+- [x] Implement loading, provenance verification and payload separation in `tools/workflow_eval/semantic_real.py`; run focused tests.
 
 ### 2. Independent measurements and report
 
-- [ ] Add failing tests for null usage, retries, stale/model mismatch, miss retention, malformed answers, timeouts and cohort isolation.
-- [ ] Implement explicit live adapters and summaries using existing semantic schema/telemetry; add `semantic-real` command to existing CLI.
-- [ ] Commit fixed fixture before live; check credential presence without displaying it; run only this cohort into new exclusive output files.
-- [ ] Document quality, token, cost, time, coverage, context/rework limits separately in `docs/workflow-semantic-real.md`.
+- [x] Add failing tests for null usage, retries, stale/model mismatch, miss retention, malformed answers, timeouts and cohort isolation.
+- [x] Implement explicit live adapters and summaries using existing semantic schema/telemetry; add `semantic-real` command to existing CLI.
+- [x] Commit fixed fixture before live; check credential presence without displaying it; run only this cohort into new exclusive output files.
+- [x] Document quality, token, cost, time, coverage, context/rework limits separately in `docs/workflow-semantic-real.md`.
 
 ### 3. Verify and publish
 
-- [ ] Focused/workflow tests, full run_all, diff check, source/policy/history invariance and checksums.
-- [ ] Independent GPT-6.1 Sol xhigh review, fix Critical/Important findings and review fixes again.
+- [x] Focused/workflow tests, full run_all, diff check, source/policy/history invariance and checksums.
+- [x] Independent GPT-6.1 Sol xhigh review, fix Critical/Important findings and review fixes again.
 - [ ] Publish dedicated branch, create/attach draft stacked PR with result and validation limitations; inspect CI and stop without merge/Ready.

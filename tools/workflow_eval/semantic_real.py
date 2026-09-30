@@ -10,6 +10,7 @@ import math
 from pathlib import Path
 import re
 import subprocess
+import uuid
 
 from .semantic_regression import CHOICES, SEVERITIES, valid_answer
 from .telemetry import usage_numbers
@@ -155,7 +156,7 @@ def run_case(case, *, base_sha, dataset_sha256, sol_evaluator=None, jev_evaluato
         except (ValueError, OSError, TypeError, KeyError):
             value = dict(status='UNAVAILABLE', reason='invalid_response')
         return normalize(value, arm)
-    return dict(experiment=COHORT, id=case['id'], base_sha=base_sha,
+    return dict(experiment=COHORT, id=case['id'], attempt_id=uuid.uuid4().hex, base_sha=base_sha,
                 dataset_sha256=dataset_sha256, case_fingerprint=fingerprint(case),
                 payload_sha256=fingerprint(payload), a=observe(sol_evaluator, 'sol'),
                 b=observe(jev_evaluator, 'jev'), shadow_only=True, actual_action='none')
@@ -169,11 +170,12 @@ def ratio(numerator, denominator):
 def summarize(rows, cases, *, base_sha, dataset_sha256):
     validate_cases(cases)
     expected = {c['id']: c for c in cases}
-    groups, stale = {}, 0
+    groups, stale, duplicates, legacy = {}, 0, 0, 0
+    identities = {}
     for row in rows:
         if not isinstance(row, dict) or row.get('experiment') != COHORT or row.get('id') not in expected:
             raise ValueError('mixed_or_unknown_cohort')
-        if set(row) != {'experiment', 'id', 'base_sha', 'dataset_sha256', 'case_fingerprint',
+        if set(row) - {'attempt_id'} != {'experiment', 'id', 'base_sha', 'dataset_sha256', 'case_fingerprint',
                        'payload_sha256', 'a', 'b', 'shadow_only', 'actual_action'}:
             raise ValueError('unsafe_result_fields')
         for arm in ('a', 'b'):
@@ -192,6 +194,22 @@ def summarize(rows, cases, *, base_sha, dataset_sha256):
                 row.get('payload_sha256') != fingerprint(provider_payload(case))):
             stale += 1
             continue
+        if 'attempt_id' in row:
+            if not isinstance(row['attempt_id'], str) or not re.fullmatch(r'[0-9a-f]{32}', row['attempt_id']):
+                raise ValueError('invalid_attempt_identity')
+            identity = ('attempt', row['attempt_id'])
+        else:
+            # Frozen v1 live observations remain immutable. A complete-row
+            # fingerprint detects exact copied observations without relabeling.
+            identity = ('legacy', fingerprint(row))
+        row_hash = fingerprint(row)
+        if identity in identities:
+            if identities[identity] != row_hash:
+                raise ValueError('conflicting_attempt_identity')
+            duplicates += 1
+            continue
+        identities[identity] = row_hash
+        legacy += identity[0] == 'legacy'
         groups.setdefault(row['id'], []).append(row)
     first = {identity: group[0] for identity, group in groups.items()}
     attempts = [r for group in groups.values() for r in group]
@@ -265,7 +283,8 @@ def summarize(rows, cases, *, base_sha, dataset_sha256):
                 verdict='BLOCKED_CRITICAL_MISS' if critical['count'] else 'SHADOW_ONLY' if complete else 'UNMEASURED',
                 shadow_only=True, actual_action='none', review_skip_enabled=False, confidence_threshold=.90,
                 real_task_cohort_included=False, expected_cases=len(cases), unique_observed_cases=len(first),
-                retry_rows=len(attempts)-len(first), stale_rows=stale,
+                retry_rows=len(attempts)-len(first), stale_rows=stale, duplicate_rows=duplicates,
+                legacy_identity_rows=legacy,
                 case_counts=dict(source_pr=dict(Counter(str(c['source_pr']) for c in cases)),
                                  severity=dict(Counter(c['severity'] for c in cases)),
                                  expected_result=dict(Counter(c['expected_result'] for c in cases))),
@@ -288,6 +307,7 @@ def summarize(rows, cases, *, base_sha, dataset_sha256):
                               quality_policy='first_attempt_per_case_unknown_separate_from_binary_confusion_matrix',
                               safety_policy='any_current_attempt_miss_retained'),
                 limitations=['real_pr_derived_condensed_mutations_not_real_task_cohort',
+                             'legacy_attempt_identity_uses_complete_row_hash_exact_copy_dedup_only',
                              'oracle_fixed_by_primary_evidence_then_independently_reviewed_not_new_human_labeling',
                              'no_ea_quality_guarantee', 'pilot_does_not_authorize_adoption'])
 

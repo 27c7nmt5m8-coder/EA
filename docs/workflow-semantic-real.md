@@ -66,6 +66,9 @@ default offlineは未測定を保存するだけでmockをliveに見せません
   accuracyはモデルの分類自体を測る値であり、confidenceで自動承認しません。
 - **token**：各providerのinput/output/totalと取得済みsubtotal、試行coverage。
   retryを含む全current試行を一度ずつ課金観測へ加算し、case数には加算しません。
+  新規測定にはattempt IDを付け、同一IDの再読込は二重加算せず、同じIDの矛盾は拒否。
+  凍結済み旧形式はrow全体hashで完全コピーを除外します。旧形式には独立した試行IDが
+  ないため、同一内容の独立実行とコピーを区別できない限界を明記します。
   combinedは実験のA+B消費合計。全case／全試行usageが揃わなければnull。
 - **費用**：現行model・provider単価の根拠がなければnull。historical Sol単価を流用しません。
 - **時間**：provider処理時間の和とrunのwall timeを分離。欠測はnull＋理由。
@@ -85,3 +88,102 @@ shadow-onlyでありEA品質保証、レビュー代替、Jev最終承認、CI�
 
 実測結果と独立レビューはPR本文にも記載します。MetaEditorは今回のsemantic検証の必須条件に
 追加しませんが、製品release gateの未実行状態は正確に区別します。
+
+## 2026-09-30 live結果
+
+19 unique cases、38 provider calls、retry 0。credentialの存在確認後に実行しました。
+run `semantic-real-20260930T140036994472`。fixture SHA-256
+`0cf1b672be68ab83188cbed89b2e33ebce1e0ed8ee118e4bf39c70388844a2e0` を
+live前のlocal commit `6c07b19` で凍結。GitHubへ公開したcommitはメタデータが異なりますが、
+その初期tree `b6031662e5eed3022425f116a6a90a4532431d78` は実行treeと一致します。
+以後fixture／oracleは編集していません。safe metadataはgitignoreされたローカル専用prefixへ
+保存し、GitやCI artifactへraw traceを追加していません。
+
+### 1. 品質
+
+| 指標 | Sol A | Jev B |
+| --- | ---: | ---: |
+| TP / TN / FP / FN | 15 / 3 / 0 / 0 | 15 / 4 / 0 / 0 |
+| binary scored / 全case | 18 / 19 | 19 / 19 |
+| unknown / unavailable | 1 / 0 | 0 / 0 |
+| recall | 15/15 | 15/15 |
+| specificity | 3/3 | 4/4 |
+| precision | 15/15 | 15/15 |
+| accuracy（二値判定のみ） | 18/18 | 19/19 |
+| confidence mean（19件） | 0.989737 | 0.952632 |
+| confidence < 0.90 | 0 | 2 |
+
+Critical Jev miss **0、監査5/5回帰**。Important miss **0、監査10/10回帰**、個別missなし。
+Critical総caseは6件で、残り1件はnon-regression controlです。
+agreementは二値同士18/18、全caseで同一choiceは18/19。
+ER003（診断観測control）はSol unknown、Jev no_regression/confidence 0.54。
+ER013（retry identity control）はJev no_regression/confidence 0.66。
+0.90未満を自動承認へ使いません。raw accuracyをconfidence適格率と混同しません。
+全caseの二値比較が揃わないため現行集計verdictは **UNMEASURED**
+（live未実行の意味ではなく、全比較の成立条件不足）です。
+tokenだけで成功／品質維持／採用を宣言しません。
+
+### 2. Token
+
+| provider | input | output | total | usage coverage |
+| --- | ---: | ---: | ---: | ---: |
+| Sol | 298,930 | 2,914 | 301,844 | 19/19 |
+| Jev | 9,499 | 916 | 10,415 | 19/19 |
+| 実験のA+B合計 | — | — | 312,259 | 38/38 |
+
+Solは各caseを新しいCLI contextで実行しており、共通CLI prefixとcached input233,088を含む
+reported input tokensです。実開発全体の削減率として外挿しません。
+combinedは両方式を測るために消費した総量であり、Jev-onlyの本番workflowコストではありません。
+
+### 3. 費用
+
+null。GPT-6.1とprovider双方の今回適用される単価／請求根拠を揃えていません。
+historical Sol価格の転用や0円推定はしていません。
+
+### 4. 時間
+
+Sol処理時間和304.503643秒、Jev処理時間和10.371709秒（各19/19）。
+serial run wall time315.364526秒。起動・共通contextの差を含みます。
+
+### 5. Context retrieval
+
+null／未観測。固定4フィールド分類でrepository discoveryを実施していません。
+
+### 6. Rework / test failure
+
+null／未観測。開発タスクを実行した評価ではありません。offline評価コードのテスト結果は
+pilotの開発test failureと分離して報告します。
+
+### 7. Coverage / missing data
+
+case19/19、回答38/38、usage38/38、時間38/38。malformed／provider unavailable 0。
+Sol unknown 1、Jev低confidence control 2、費用と開発工程指標は欠測。
+CLI backendのeffective model/effortはイベントに公開されず、要求値の証拠を保存しています。
+既存測定JSON65ファイルはhash不変、ローカルreal-tasks.jsonは不在で新規作成していません。
+外部にある30/50 cohort内容を新たに監査したという意味ではありません。
+
+### 8. Limitations
+
+小規模で作成者固定の要約mutationです。契約と適合baselineを与えるため、実PRの未知の
+要求を探索するレビューより狭い問題です。confidenceの校正や新しい人間の盲検ラベル、
+実開発での再作業／品質維持は未検証。EA品質や安全性の保証、レビュー省略、常用化の
+根拠にしません。synthetic／Trace／Jevgrep／real-task cohortは再実行・混合集計していません。
+
+独立レビューで「同じrowのコピーがtoken二重加算になる」Importantを検出しました。
+回帰テストで30→15 tokensとなることをRed→Green確認し、attempt ID・旧形式完全コピー
+検知・同一ID矛盾拒否を追加。原19件には重複がなく、fixtureもlive結果も編集せず、
+同じ記録を再集計して全品質・token・時間が変わらないことを確認済みです。
+
+## 評価コードの検証・独立レビュー
+
+focused offline test22件、全Python unittest183件成功（skip1）。
+初期公開treeの[push CI 36726547333](https://github.com/27c7nmt5m8-coder/EA/actions/runs/36726547333)
+はLinux offline-validation／native-windows成功。修正後の最終head CIはPR本文で確認します。
+ローカルtests/run_all.pyは既存Windows g++を指定するとGates1/2がApplication Controlで
+BLOCKED、Gates3/4/5はPASS。最初のtoolchain未検出による失敗と区別しています。
+MetaEditorは未実行で、Authoritative releaseは今回のsemantic検証の完了と区別します。
+
+GPT-6.1 Sol xhighの独立レビューでImportant1件を修正し、修正差分を再レビュー。
+未解決Critical0／Important0／Minor0。レビュアー自身も22テスト、一次資料hash、
+集計再現、fixture／65履歴の不変、Critical miss保持、重複加算修正を確認しました。
+レビュー用agentの初回capacityエラーは同じmodel/effortで再試行し、代替modelは使いませんでした。

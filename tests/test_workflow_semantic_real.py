@@ -208,5 +208,28 @@ class RealSemantic(unittest.TestCase):
         self.assertEqual(got['reason'], 'timeout')
         self.assertEqual(got['usage'], USAGE)
 
+    def test_duplicate_attempt_identity_cannot_double_bill(self):
+        row = self.row()
+        report = self.report([row, copy.deepcopy(row)])
+        self.assertEqual(report['tokens']['jev']['observed_total_tokens'], 15)
+        self.assertEqual(report['retry_rows'], 0)
+        self.assertEqual(report['duplicate_rows'], 1)
+
+    def test_distinct_attempts_bill_and_conflicting_identity_rejected(self):
+        one = self.row(); two = self.row()
+        self.assertNotEqual(one['attempt_id'], two['attempt_id'])
+        report = self.report([one, two])
+        self.assertEqual(report['tokens']['jev']['observed_total_tokens'], 30)
+        self.assertEqual(report['retry_rows'], 1)
+        changed = copy.deepcopy(one); changed['b']['choice'] = 'no_regression'
+        with self.assertRaises(ValueError): self.report([one, changed])
+
+    def test_legacy_exact_copy_dedup_without_overwriting_frozen_rows(self):
+        row = self.row(); row.pop('attempt_id')
+        report = self.report([row, copy.deepcopy(row)])
+        self.assertEqual(report['tokens']['sol']['observed_total_tokens'], 15)
+        self.assertEqual(report['duplicate_rows'], 1)
+        self.assertEqual(report['legacy_identity_rows'], 1)
+
 
 if __name__ == '__main__': unittest.main()
