@@ -1,5 +1,7 @@
 # 開発ワークフロー計測・差分context・JEV shadow
 
+追加のAgent Trace Evaluation、Semantic Regression Testing、Jevgrepの独立したshadow pilotは [Jev追加検証](workflow-experiments.md) を参照する。これらは本計測と30/50件の実タスクcohortへ算入しない。
+
 このツールは開発補助専用です。EA本体、売買処理、Worker、パラメータ、既存CI、Codex設定を変更しません。実際のレビュー省略は実装していません。policyのreview_skip_enabledをtrueにするとエラーになります。
 
 ## 実行
