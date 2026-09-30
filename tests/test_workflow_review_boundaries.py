@@ -76,12 +76,17 @@ class ReviewBoundaries(unittest.TestCase):
         self.assertEqual(got['status'],'UNKNOWN')
         self.assertEqual(got['usage']['total_tokens'],110)
 
-    def test_real_ea_high_is_rejected_before_provider_execution(self):
+    def test_real_ea_high_is_standard_and_reaches_provider(self):
         from tools.workflow_eval.real_tasks import perform_review
-        with patch('tools.workflow_eval.real_tasks.subprocess.run') as call:
-            with self.assertRaisesRegex(ValueError,'model_floor'):
-                perform_review('Review order risk changes.','Protected change.','high')
-        call.assert_not_called()
+        completed = subprocess.CompletedProcess([], 1, stdout='', stderr='')
+        with patch('tools.workflow_eval.real_tasks.subprocess.run', return_value=completed) as call:
+            got = perform_review('Review order risk changes.', 'Protected change.')
+        self.assertEqual(got['reasoning_effort'], 'high')
+        self.assertEqual(got['model'], 'gpt-6.1-sol')
+        cmd = call.call_args.args[0]
+        self.assertEqual(cmd[cmd.index('-m')+1], 'gpt-6.1-sol')
+        self.assertIn('model_reasoning_effort="high"', cmd)
+        self.assertEqual(call.call_count, 1)
 
     def test_untracked_documents_are_protected_and_counted_before_triage(self):
         from tools.workflow_eval.context import build_bundle
@@ -104,8 +109,138 @@ class ReviewBoundaries(unittest.TestCase):
                 with patch('tools.workflow_eval.cli.Path.cwd',return_value=root),patch('tools.workflow_eval.cli.call_jev') as call,patch('sys.stdout',new=io.StringIO()):
                     main(['triage',str(out/'bundle.json'),'--test-evidence',str(out/'test.json'),'--live-jev'])
                 got=json.loads((out/'triage.json').read_text(encoding='utf-8'))
-                self.assertEqual(got['routing']['sol_effort'],'xhigh')
+                self.assertEqual(got['routing']['sol_effort'],'high')
+                self.assertEqual(got['routing']['shadow_route'],'review')
+                self.assertFalse(got['routing']['actual_review_skipped'])
                 call.assert_not_called()
+
+    def test_policy_keeps_safety_constants_and_has_no_old_model_fallback(self):
+        from tools.workflow_eval.triage import policy
+        rules = policy()
+        self.assertEqual(rules['implementation_model'], 'gpt-6.1-sol')
+        self.assertEqual(rules['normal_effort'], 'high')
+        self.assertEqual(rules['mandatory_effort'], 'high')
+        self.assertEqual(rules['escalation_effort'], 'xhigh')
+        self.assertIs(rules['review_skip_enabled'], False)
+        self.assertEqual(rules['confidence_threshold'], .90)
+        for update in (dict(implementation_model='gpt-6-sol'), dict(mandatory_effort='xhigh'),
+                       dict(confidence_threshold=.91), dict(review_skip_enabled=True)):
+            with patch('tools.workflow_eval.triage.json.loads', return_value=dict(rules, **update)):
+                with self.assertRaisesRegex(ValueError, 'unsafe_policy'): policy()
+
+    def test_ordinary_and_mandatory_routes_stay_high_despite_xhigh_availability(self):
+        from tools.workflow_eval.triage import route
+        answer = dict(type='choice', choice='candidate', confidence=.99,
+                      probabilities=dict(candidate=.99, review=.01, unknown=0))
+        for update, mandatory in (({}, False), (dict(protected=True), True),
+                                  (dict(dependency='unknown'), True),
+                                  (dict(paths=['src/Risk.mqh']), True)):
+            with self.subTest(update=update):
+                got = route(dict(self.row()['facts'], **update), answer)
+                self.assertEqual(got['sol_model'], 'gpt-6.1-sol')
+                self.assertEqual(got['sol_effort'], 'high')
+                self.assertEqual(bool(got['mandatory_reasons']), mandatory)
+                self.assertEqual(got['shadow_route'], 'review' if mandatory else 'candidate')
+                self.assertEqual(got['actual_route'], 'review')
+                self.assertFalse(got['actual_review_skipped'])
+
+    def test_xhigh_requires_explicit_evidence_and_retains_provenance(self):
+        from tools.workflow_eval.real_tasks import perform_review
+        from tools.workflow_eval.triage import route
+        completed = subprocess.CompletedProcess([], 1, stdout='', stderr='')
+        escalation = dict(reason='high_review_material_uncertainty', evidence='High review R1: unresolved interface contract.')
+        with patch('tools.workflow_eval.real_tasks.subprocess.run', return_value=completed) as call:
+            got = perform_review('Developer note.', 'Sentence changed.', 'xhigh', escalation=escalation)
+        self.assertEqual(got['reasoning_effort'], 'xhigh')
+        self.assertEqual(got['escalation'], escalation)
+        self.assertIn('model_reasoning_effort="xhigh"', call.call_args.args[0])
+        routed = route(self.row()['facts'], escalation=escalation)
+        self.assertEqual(routed['sol_effort'], 'xhigh')
+        self.assertEqual(routed['shadow_route'], 'review')
+        for invalid in (None, {}, dict(reason='protected', evidence='Risk change'),
+                        dict(reason='high_review_material_uncertainty', evidence=' ')):
+            with self.subTest(escalation=invalid), patch('tools.workflow_eval.real_tasks.subprocess.run') as call:
+                with self.assertRaises(ValueError):
+                    perform_review('Developer note.', 'Sentence changed.', 'xhigh', escalation=invalid)
+                call.assert_not_called()
+
+    def test_provider_failure_does_not_retry_old_model_or_lower_effort(self):
+        from tools.workflow_eval.real_tasks import perform_review
+        with patch('tools.workflow_eval.real_tasks.subprocess.run', side_effect=OSError('unavailable')) as call:
+            got = perform_review('Developer note.', 'Sentence changed.')
+        self.assertEqual(got['status'], 'UNAVAILABLE')
+        self.assertEqual(got['model'], 'gpt-6.1-sol')
+        self.assertEqual(got['reasoning_effort'], 'high')
+        self.assertEqual(call.call_count, 1)
+
+    def test_mandatory_high_and_explicit_xhigh_records_are_valid(self):
+        from tools.workflow_eval.real_tasks import validate_record
+        from tools.workflow_eval.report import summarize
+        from tests.test_workflow_real_tasks import RealTaskTests
+        for effort in ('high', 'xhigh'):
+            with self.subTest(effort=effort):
+                real = RealTaskTests().record()
+                synthetic = self.row()
+                synthetic['facts']['protected'] = True
+                for arm in ('a', 'b'):
+                    real[arm].update(model='gpt-6.1-sol', reasoning_effort=effort)
+                    synthetic[arm].update(model='gpt-6.1-sol', reasoning_effort=effort)
+                validate_record(real)
+                report = summarize([synthetic])
+                self.assertEqual(report['valid_pairs'], 1)
+                self.assertEqual(report['review_provenance'][0]['reasoning_effort'], effort)
+                self.assertIsNone(report['standard_short_context_sol_api_equivalent_usd']['a'])
+
+    def test_legacy_pricing_remains_historical_and_not_used_for_new_model(self):
+        from tools.workflow_eval.report import summarize
+        historical = self.row()
+        for arm in ('a', 'b'):
+            historical[arm]['usage'].update(cached_input_tokens=20, cache_write_input_tokens=0)
+            historical[arm]['usage_fields'] = list(historical[arm]['usage'])
+        self.assertEqual(summarize([historical])['standard_short_context_sol_api_equivalent_usd']['a'], .000264)
+        current = copy.deepcopy(historical)
+        for arm in ('a', 'b'): current[arm]['model'] = 'gpt-6.1-sol'
+        self.assertIsNone(summarize([current])['standard_short_context_sol_api_equivalent_usd']['a'])
+
+    def test_benchmark_comparison_does_not_change_active_mandatory_route(self):
+        from tools.workflow_eval.benchmark import run_case
+        case = dict(id='critical', split='holdout', truth='review', severity='critical',
+                    task='Review order safety.', facts=self.row()['facts'],
+                    context_blocks=[dict(id='a', text='Fictional contract.')],
+                    selected_context_ids=['a'], required_context_ids=['a'])
+        for comparison in (None, 'xhigh'):
+            with self.subTest(comparison=comparison), patch('tools.workflow_eval.benchmark.sol_review', return_value={}) as sol, \
+                    patch('tools.workflow_eval.benchmark.call_jev') as jev:
+                got = run_case(case, 0, live_jev=True, comparison_effort=comparison)
+                self.assertEqual(sol.call_count, 2)
+                self.assertTrue(all(c.args[2] == (comparison or 'high') for c in sol.call_args_list))
+                self.assertEqual(got['shadow']['sol_effort'], 'high')
+                self.assertTrue(got['shadow']['mandatory_reasons'])
+                self.assertEqual(got['shadow']['shadow_route'], 'review')
+                jev.assert_not_called()
+
+    def test_telemetry_accepts_new_model_and_preserves_historical_provenance(self):
+        from tools.workflow_eval.telemetry import extract_usage, validate_event
+        for model in ('gpt-6.1-sol', 'gpt-6-sol'):
+            events = [dict(type='turn_context', payload=dict(model=model, effort='high')),
+                      dict(type='event_msg', payload=dict(type='task_started')),
+                      dict(type='event_msg', payload=dict(type='token_count', info=dict(
+                          total_token_usage=dict(input_tokens=100, output_tokens=10),
+                          last_token_usage=dict(input_tokens=100, output_tokens=10)))),
+                      dict(type='event_msg', payload=dict(type='task_complete'))]
+            got = extract_usage(events)
+            self.assertEqual(got['status'], 'OK')
+            self.assertEqual(got['models'], [(model, 'high')])
+            validate_event(dict(task_id='task', pair_id='pair', arm='A', phase='additional_review',
+                                event='end', model=model, reasoning_effort='high'))
+
+    def test_real_pairs_do_not_mix_effort_or_model_provenance(self):
+        from tools.workflow_eval.real_tasks import summarize
+        from tests.test_workflow_real_tasks import RealTaskTests
+        for mismatch in (dict(model='gpt-6.1-sol'), dict(reasoning_effort='high')):
+            row = RealTaskTests().record()
+            row['b'].update(mismatch)
+            self.assertEqual(summarize([row])['valid_review_pairs'], 0)
 
     def test_missing_cache_is_absent_and_cannot_create_cost_estimate(self):
         from tools.workflow_eval.telemetry import usage_numbers
