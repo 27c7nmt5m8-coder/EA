@@ -10,7 +10,7 @@ import time
 
 from .context import digest
 from .telemetry import usage_numbers, USAGE_KEYS, codex_events
-from .triage import SENSITIVE, valid_answer, policy, review_effort, RECORDED_SOL_MODELS
+from .triage import SENSITIVE, valid_answer, policy, review_effort, ACTIVE_SOL_MODEL, RECORDED_SOL_MODELS
 
 FIELDS = {'schema_version', 'repository', 'request_id', 'origin', 'kind', 'head', 'base',
           'started_at', 'completed_at', 'mandatory', 'a', 'b', 'jev', 'shadow_route',
@@ -75,8 +75,10 @@ def validate_record(row):
         if not isinstance(review, dict) or set(review)-REVIEW_FIELDS: raise ValueError('invalid_review_schema')
         if (review.get('model') not in RECORDED_SOL_MODELS or review.get('reasoning_effort') not in ('high', 'xhigh')):
             raise ValueError('model_floor')
-        if review.get('escalation') is not None:
-            review_effort(review['reasoning_effort'], review['escalation'])
+        # Active records obey execution's evidence requirement on every arm.
+        # Historical records may lack metadata; never infer or backfill it.
+        if review['model'] == ACTIVE_SOL_MODEL or review.get('escalation') is not None:
+            review_effort(review['reasoning_effort'], review.get('escalation'))
         if review.get('status') not in ('OK', 'UNKNOWN', 'UNAVAILABLE'): raise ValueError('invalid_review_status')
         nonnegative(review.get('elapsed_seconds'))
         if review.get('usage') is not None: strict_usage(review['usage'])
