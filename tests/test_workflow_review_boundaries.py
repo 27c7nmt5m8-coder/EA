@@ -173,7 +173,7 @@ class ReviewBoundaries(unittest.TestCase):
         self.assertEqual(got['reasoning_effort'], 'high')
         self.assertEqual(call.call_count, 1)
 
-    def test_mandatory_high_and_explicit_xhigh_records_are_valid(self):
+    def test_mandatory_high_and_evidenced_real_xhigh_records_are_valid(self):
         from tools.workflow_eval.real_tasks import validate_record
         from tools.workflow_eval.report import summarize
         from tests.test_workflow_real_tasks import RealTaskTests
@@ -184,12 +184,75 @@ class ReviewBoundaries(unittest.TestCase):
                 synthetic['facts']['protected'] = True
                 for arm in ('a', 'b'):
                     real[arm].update(model='gpt-6.1-sol', reasoning_effort=effort)
+                    if effort == 'xhigh':
+                        real[arm]['escalation'] = dict(reason='high_review_material_uncertainty',
+                            evidence='High review R1: unresolved interface contract.')
                     synthetic[arm].update(model='gpt-6.1-sol', reasoning_effort=effort)
                 validate_record(real)
                 report = summarize([synthetic])
                 self.assertEqual(report['valid_pairs'], 1)
                 self.assertEqual(report['review_provenance'][0]['reasoning_effort'], effort)
                 self.assertIsNone(report['standard_short_context_sol_api_equivalent_usd']['a'])
+
+    def test_active_high_records_allow_only_absent_or_null_escalation(self):
+        from tools.workflow_eval.real_tasks import validate_record
+        from tests.test_workflow_real_tasks import RealTaskTests
+        for explicit_null in (False, True):
+            with self.subTest(explicit_null=explicit_null):
+                row = RealTaskTests().record()
+                for arm in ('a', 'b'):
+                    row[arm].update(model='gpt-6.1-sol', reasoning_effort='high')
+                    if explicit_null: row[arm]['escalation'] = None
+                self.assertEqual(validate_record(row), row)
+
+    def test_active_xhigh_records_reject_missing_provenance_on_each_arm(self):
+        from tools.workflow_eval.real_tasks import validate_record
+        from tests.test_workflow_real_tasks import RealTaskTests
+        for arm in ('a', 'b'):
+            for status in ('OK', 'UNKNOWN', 'UNAVAILABLE'):
+                for explicit_null in (False, True):
+                    with self.subTest(arm=arm, status=status, explicit_null=explicit_null):
+                        row = RealTaskTests().record()
+                        row[arm].update(model='gpt-6.1-sol', reasoning_effort='xhigh', status=status)
+                        if explicit_null: row[arm]['escalation'] = None
+                        with self.assertRaisesRegex(ValueError, 'explicit_escalation_evidence_required'):
+                            validate_record(row)
+
+    def test_active_record_rejects_invalid_or_contradictory_provenance(self):
+        from tools.workflow_eval.real_tasks import validate_record
+        from tests.test_workflow_real_tasks import RealTaskTests
+        for arm in ('a', 'b'):
+            for model, effort, escalation in (
+                    ('gpt-6.1-sol', 'xhigh', {}),
+                    ('gpt-6.1-sol', 'xhigh', dict(reason='protected', evidence='Risk change.')),
+                    ('gpt-6.1-sol', 'xhigh', dict(reason='high_review_material_uncertainty', evidence=' \t\n')),
+                    ('gpt-6.1-sol', 'xhigh', dict(reason='high_review_material_uncertainty', evidence='password=fictional-secret-value')),
+                    ('gpt-6.1-sol', 'high', dict(reason='high_review_material_uncertainty', evidence='High review R1: unresolved contract.')),
+                    ('gpt-6.1-sol', 'high', {}),
+                    ('gpt-6-luna', 'high', None),
+                    ('gpt-6.1-sol', 'medium', None)):
+                with self.subTest(arm=arm, model=model, effort=effort, escalation=escalation):
+                    row = RealTaskTests().record()
+                    row[arm].update(model=model, reasoning_effort=effort, escalation=escalation)
+                    with self.assertRaises(ValueError): validate_record(row)
+
+    def test_historical_ingestion_does_not_enable_execution_fallback(self):
+        from tools.workflow_eval.real_tasks import validate_record, perform_review
+        from tests.test_workflow_real_tasks import RealTaskTests
+        historical = RealTaskTests().record()
+        original = copy.deepcopy(historical)
+        validate_record(historical)
+        self.assertEqual(historical, original)
+        for arm in ('a', 'b'):
+            self.assertNotIn('escalation', historical[arm])
+            self.assertEqual((historical[arm]['model'], historical[arm]['reasoning_effort']), ('gpt-6-sol', 'xhigh'))
+        with patch('tools.workflow_eval.real_tasks.subprocess.run', side_effect=OSError('unavailable')) as call:
+            got = perform_review('Developer note.', 'Sentence changed.')
+        cmd = call.call_args.args[0]
+        self.assertEqual(cmd[cmd.index('-m')+1], 'gpt-6.1-sol')
+        self.assertEqual(got['model'], 'gpt-6.1-sol')
+        self.assertEqual(got['status'], 'UNAVAILABLE')
+        self.assertEqual(call.call_count, 1)
 
     def test_legacy_pricing_remains_historical_and_not_used_for_new_model(self):
         from tools.workflow_eval.report import summarize
@@ -240,6 +303,9 @@ class ReviewBoundaries(unittest.TestCase):
         for mismatch in (dict(model='gpt-6.1-sol'), dict(reasoning_effort='high')):
             row = RealTaskTests().record()
             row['b'].update(mismatch)
+            if row['b']['model'] == 'gpt-6.1-sol' and row['b']['reasoning_effort'] == 'xhigh':
+                row['b']['escalation'] = dict(reason='high_review_material_uncertainty',
+                                            evidence='High review R1: unresolved interface contract.')
             self.assertEqual(summarize([row])['valid_review_pairs'], 0)
 
     def test_missing_cache_is_absent_and_cannot_create_cost_estimate(self):
