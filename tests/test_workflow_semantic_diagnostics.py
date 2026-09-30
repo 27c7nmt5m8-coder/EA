@@ -5,7 +5,6 @@ import json
 from pathlib import Path
 import sys
 import unittest
-from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tools.workflow_eval import semantic_diagnostics as diag
@@ -37,12 +36,15 @@ class Diagnostics(unittest.TestCase):
         self.assertEqual(self.plan['control_cases'], ['ER007', 'ER016', 'ER001', 'ER010'])
 
     def test_repeat_not_new_case_and_retry_billed_once_per_attempt(self):
-        rows = [self.row(repeat=i) for i in range(1, 6)]
-        retry = self.row(); retry['retry'] = 2; rows.append(retry)
+        rows = [self.row(provider='sol', repeat=i) for i in range(1, 4)]
+        rows[0]['observation'] = diag.normalize(dict(status='UNAVAILABLE', reason='timeout',
+            model=real.SOL_MODEL, reasoning_effort='xhigh', elapsed_seconds=.1,
+            usage=dict(input_tokens=10, output_tokens=2, total_tokens=12)), 'sol')
+        retry = self.row(provider='sol'); retry['retry'] = 2; rows.append(retry)
         report = diag.summarize(self.plan, rows)
         self.assertEqual(report['unique_target_cases'], 2)
-        self.assertEqual(report['cases']['ER003']['jev']['repeat_count'], 5)
-        self.assertEqual(report['cases']['ER003']['jev']['usage']['total_tokens']['value'], 72)
+        self.assertEqual(report['cases']['ER003']['sol']['repeat_count'], 3)
+        self.assertEqual(report['cases']['ER003']['sol']['usage']['total_tokens']['value'], 48)
 
     def test_duplicate_attempt_and_duplicate_slot_rejected(self):
         row = self.row()
@@ -197,6 +199,39 @@ class Diagnostics(unittest.TestCase):
         report=diag.summarize(self.plan,rows)
         self.assertEqual(report['binary_oracle_mismatch_observations'],5)
         self.assertEqual(report['verdict'],'BLOCKED_INSTABILITY')
+
+    def test_orphan_retry_and_retry_after_success_rejected(self):
+        row=self.row(provider='sol'); row['retry']=2
+        with self.assertRaises(ValueError): diag.summarize(self.plan,[row])
+        with self.assertRaises(ValueError): diag.summarize(self.plan,[self.row(provider='sol'),row])
+
+    def test_harness_failure_blocks_experiment_not_success(self):
+        row=self.row(); row['observation']=diag.normalize(dict(status='UNAVAILABLE',reason='invalid_response'),'jev')
+        self.assertEqual(diag.summarize(self.plan,[row])['verdict'],'BLOCKED_INSTABILITY')
+
+    def test_blind_usage_reason_allowlist_rejects_injected_metadata(self):
+        blind=self.blinds(); blind[0]['usage_reason']='not_a_valid_usage_reason'
+        with self.assertRaises(ValueError): diag.finalize(self.plan,self.complete_rows(),blind,{})
+
+    def test_malformed_event_retains_known_billing_then_fails_closed(self):
+        import subprocess
+        events=[[],dict(type='turn.completed',usage=dict(input_tokens=20,output_tokens=8)),
+                dict(type='item.completed',item=dict(type='agent_message',text=json.dumps(
+                    dict(category='clearly_decidable',rationale='No ambiguity.'))))]
+        def runner(cmd,**kwargs): return subprocess.CompletedProcess(cmd,0,'\n'.join(json.dumps(e) for e in events),'')
+        review=diag.call_blind(real.provider_payload(self.cases[2]),runner=runner)
+        self.assertEqual(review['status'],'UNAVAILABLE')
+        self.assertEqual(review['usage']['total_tokens'],28)
+
+    def test_model_mismatch_row_roundtrip_preserves_billing_and_blocks(self):
+        row=diag.observation(self.plan,'ER003','sol',1,1,dict(status='OK',model='gpt-6-sol',
+            reasoning_effort='xhigh',answer=dict(type='choice',choice='no_regression',confidence=.95,
+            probabilities=dict(regression=.01,no_regression=.98,unknown=.01)),
+            usage=dict(input_tokens=20,output_tokens=8,total_tokens=28),elapsed_seconds=.1))
+        report=diag.summarize(self.plan,[row])
+        self.assertEqual(report['verdict'],'BLOCKED_INSTABILITY')
+        self.assertEqual(report['cases']['ER003']['sol']['usage']['total_tokens']['value'],28)
+        self.assertEqual(report['cases']['ER003']['sol']['valid_repeat_count'],0)
 
 
 if __name__ == '__main__': unittest.main()

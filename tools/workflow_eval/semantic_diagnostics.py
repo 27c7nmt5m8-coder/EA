@@ -22,7 +22,6 @@ import uuid
 from . import semantic_real as real
 from .semantic_real_adapters import call_jev, call_sol, safe_payload, INSTRUCTIONS, CRITERIA
 from .semantic_real_cli import exclusive_output
-from .semantic_regression import valid_answer
 from .telemetry import codex_events, usage_numbers
 from .triage import policy, SENSITIVE
 
@@ -74,6 +73,10 @@ def protocol(cases):
 
 def normalize(value, provider):
     result = real.normalize(value, provider)
+    # The historical evaluator's unavailable reason allowlist predates this
+    # diagnostic roundtrip. Preserve mismatch without editing old aggregation.
+    if isinstance(value, dict) and value.get('status') == 'UNAVAILABLE' and value.get('reason') == 'model_effort_mismatch':
+        result['reason'] = 'model_effort_mismatch'
     result.update(probabilities=None, probabilities_reason='unavailable_or_malformed_answer')
     if result['status'] == 'OK':
         result.update(probabilities=dict(value['answer']['probabilities']), probabilities_reason=None)
@@ -164,6 +167,14 @@ def validate_rows(plan, rows):
             reasoning_effort=obs['reasoning_effort'], usage=obs['usage'], elapsed_seconds=obs['elapsed_seconds'],
             reason=obs['reason']), provider)
         if canonical != obs: raise ValueError('invalid_observation')
+    by_slot = {(r['case_id'], r['provider'], r['repeat'], r['retry']): r for r in rows}
+    for row in rows:
+        if row['retry'] == 2:
+            prior = by_slot.get((row['case_id'], row['provider'], row['repeat'], 1))
+            if (row['provider'] != 'sol' or prior is None or
+                    prior['observation']['status'] != 'UNAVAILABLE' or
+                    prior['observation']['reason'] not in ('timeout', 'nonzero_exit')):
+                raise ValueError('orphan_or_unplanned_retry')
 
 
 def summarize(plan, rows):
@@ -183,9 +194,10 @@ def summarize(plan, rows):
     mismatches = sum(n for k, c in cases.items() for s in c.values()
                      for choice, n in (s['choice_distribution'] or {}).items()
                      if choice != 'unknown' and choice != oracles[k])
+    harness_issue = any(r['observation']['reason'] in ('invalid_response', 'model_effort_mismatch') for r in rows)
     # Repetition alone cannot prove a cause; blind/evidence audit is a separate
     # requirement for any positive shadow candidate verdict.
-    verdict = 'BLOCKED_INSTABILITY' if instability or mismatches else 'UNMEASURED'
+    verdict = 'BLOCKED_INSTABILITY' if instability or mismatches or harness_issue else 'UNMEASURED'
     groups = {}
     for group, ids in (('target', TARGETS), ('control', CONTROLS)):
         groups[group] = {}
@@ -214,7 +226,8 @@ def summarize(plan, rows):
                     choice_stability=difference(tg['choice_stability'], cg['choice_stability'])),
                 complete_primary_repeat_coverage=complete, verdict=verdict,
                 binary_oracle_mismatch_observations=mismatches,
-                verdict_reason='instability_or_oracle_mismatch_present' if instability or mismatches else 'blind_and_evidence_audit_required',
+                harness_issue=harness_issue,
+                verdict_reason='instability_or_oracle_mismatch_or_harness_issue' if instability or mismatches or harness_issue else 'blind_and_evidence_audit_required',
                 official_results_modified=False, review_skip_enabled=False, confidence_threshold=.90,
                 cost=dict(value=None, reason='pricing_not_verified', coverage=dict(measured=0, total=len(rows))))
 
@@ -253,6 +266,8 @@ def finalize(plan, rows, blind_rows, source_audit):
         seen.add(identity); slots.add(slot)
         if review['usage'] is not None and usage_numbers(review['usage']) != review['usage']:
             raise ValueError('invalid_blind_usage')
+        if review['usage_reason'] != ('missing_usage' if review['usage'] is None else None):
+            raise ValueError('invalid_blind_usage_reason')
         if (review['elapsed_seconds'] is not None and (type(review['elapsed_seconds']) not in (int, float) or
                 not math.isfinite(review['elapsed_seconds']) or review['elapsed_seconds'] < 0)):
             raise ValueError('invalid_blind_duration')
@@ -264,6 +279,14 @@ def finalize(plan, rows, blind_rows, source_audit):
         elif (review['status'] != 'UNAVAILABLE' or review['category'] is not None or review['rationale'] is not None or
               review['reason'] not in ('invalid_response', 'timeout', 'nonzero_exit')):
             raise ValueError('invalid_blind_failure')
+    by_slot = {(r['case_id'], r['retry']): r for r in blind_rows}
+    for review in blind_rows:
+        if review['retry'] == 2:
+            prior = by_slot.get((review['case_id'], 1))
+            if prior is None or prior['status'] != 'UNAVAILABLE' or prior['reason'] not in ('timeout', 'nonzero_exit'):
+                raise ValueError('orphan_or_unplanned_blind_retry')
+    if any(r['reason'] == 'invalid_response' for r in blind_rows):
+        report.update(verdict='BLOCKED_INSTABILITY', verdict_reason='blind_harness_issue')
     if set(source_audit) - set(TARGETS): raise ValueError('mixed_source_audit')
     if any(v not in ('PRIMARY_EVIDENCE_SUPPORTED', 'GROUND_TRUTH_ISSUE_FOUND') for v in source_audit.values()):
         raise ValueError('invalid_source_audit')
@@ -312,12 +335,12 @@ def call_blind(payload, *, runner=None, timeout=180):
             completed = (runner or subprocess.run)(cmd, input=prompt, text=True, encoding='utf-8', errors='replace',
                                                   capture_output=True, timeout=timeout)
         events = codex_events(completed.stdout)
-        usages = [e.get('usage') for e in events if e.get('type') == 'turn.completed']
+        usages = [e.get('usage') for e in events if isinstance(e, dict) and e.get('type') == 'turn.completed']
         if len(usages) == 1:
             result.update(usage=usage_numbers(usages[0]), usage_reason=None)
         if completed.returncode:
             result['reason'] = 'nonzero_exit'; return result
-        if any(e.get('type') in ('error', 'turn.failed') or
+        if any(not isinstance(e, dict) or e.get('type') in ('error', 'turn.failed') or
                (e.get('type', '').startswith('item.') and e.get('item', {}).get('type') not in ('agent_message', 'reasoning'))
                for e in events): raise ValueError('unexpected_event')
         messages = [e['item']['text'] for e in events if e.get('type') == 'item.completed'
@@ -330,7 +353,7 @@ def call_blind(payload, *, runner=None, timeout=180):
         result.update(status='OK', category=answer['category'], rationale=answer['rationale'], reason=None)
     except subprocess.TimeoutExpired as exc:
         events = codex_events(exc.stdout)
-        usages = [e.get('usage') for e in events if e.get('type') == 'turn.completed']
+        usages = [e.get('usage') for e in events if isinstance(e, dict) and e.get('type') == 'turn.completed']
         if len(usages) == 1:
             try: result.update(usage=usage_numbers(usages[0]), usage_reason=None)
             except (ValueError, TypeError): pass

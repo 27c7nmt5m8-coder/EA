@@ -146,9 +146,18 @@ static safe summary preserve prior unavailable/results history.
 
 ## Verification
 
-New focused offline tests: 25. Full Python discovery: 208, one Windows-specific
+New focused offline tests: 30. Full Python discovery: 213, one Windows-specific
 skip. Local `tests/run_all.py`: gates 3/4/5 PASS, native gates 1/2 blocked by
 Windows Application Control; full and authoritative release INCOMPLETE.
 Linux/Windows CI and final independent xHigh review are recorded in the PR.
+The initial independent review found 4 Important diagnostic-validator/accounting
+issues: blind usage-reason injection, malformed events discarding known usage,
+orphan/unplanned retry and malformed-result escalation, and model-mismatch
+normalization roundtrip. Five focused regression tests plus the existing retry
+billing test reproduce the failures and verify fixes. No original evaluator,
+fixture, provider request, or live observation changed. Earlier derived audited
+reports remain as history; new exclusive reaggregations fix the cost denominator
+and include within-case variance comparison. Primary usage/time/choices and
+combined 144,680 tokens are unchanged. Re-review is recorded in the PR.
 No gate weakened; Draft is retained. Rollback: close this stacked Draft PR or
 remove/revert only its diagnostic module/tests/docs/checksum changes.

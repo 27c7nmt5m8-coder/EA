@@ -65,6 +65,7 @@ is BLOCKED even when other coverage is missing.
 python -m unittest tests.test_workflow_semantic_diagnostics
 python -m tools.workflow_eval.semantic_diagnostics --live
 python -m tools.workflow_eval.semantic_diagnostics --report semantic-confidence-TIMESTAMP
+python -m tools.workflow_eval.semantic_diagnostics --report semantic-confidence-TIMESTAMP --source-audit PATH_TO_INDEPENDENT_AUDIT_JSON
 ```
 
 Outputs use new exclusive `.workflow-eval/semantic-confidence-*` files. Provider
@@ -72,6 +73,14 @@ transcripts, raw trace, prompt text and credentials are never saved. Blind publi
 explanations are explicitly requested and checked before saving. No outputs are
 written to the 30/50 real-task cohort or official PR18/19 records. The runner is
 standalone so the official evaluators/CLI remain unchanged.
+
+The audit JSON is an explicit independent assessment mapping only ER003/ER013
+to PRIMARY_EVIDENCE_SUPPORTED or GROUND_TRUTH_ISSUE_FOUND. It is not an automatic
+oracle verifier. Without completed blind and source audits, repetition alone
+remains UNMEASURED. Orphan/unplanned retries are rejected; malformed or
+model-mismatched attempts block even if subsequent data is valid. Blind metadata
+uses canonical missing-usage reasons; malformed stream events do not erase a
+single completed, validated usage event. Runtime failures remain unavailable.
 
 EA/src, trading, safety, policy and AGENTS remain unchanged. Threshold 0.90,
 review_skip_enabled=false and mandatory Sol xHigh routing remain in force.
