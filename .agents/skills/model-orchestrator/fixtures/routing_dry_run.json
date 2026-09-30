@@ -14,7 +14,7 @@
       "jev": {"attempts": 0, "used": false, "status": "not_needed"}, "evidence": ["git_diff", "related_tests", "native_compile"], "sent_context": null
     },
     {
-      "id": "D", "default_route": "Astra/high", "actual_route": "Astra/high", "shadow_route": null,
+      "id": "D", "default_route": "Sol/high", "actual_route": "Sol/high", "shadow_route": null,
       "jev": {"attempts": 0, "used": false, "status": "not_needed"}, "evidence": ["repository_specs", "risk_controls"], "sent_context": null
     },
     {
@@ -32,7 +32,7 @@
       "sent_context": {"task_type": "candidate_ranking", "risk_level": "low", "candidate_count": 24, "uncertainty_reason": "semantic_priority"}
     },
     {
-      "id": "H", "default_route": "Sol/medium", "actual_route": "Sol/medium", "shadow_route": null,
+      "id": "H", "default_route": "Sol/high", "actual_route": "Sol/high", "shadow_route": null,
       "jev": {"attempts": 0, "used": false, "status": "not_needed"}, "evidence": ["git_diff", "ownership_tests"], "sent_context": null
     },
     {
@@ -48,6 +48,14 @@
     {
       "id": "K", "default_route": "Sol/medium", "actual_route": "Sol/medium", "shadow_route": null,
       "jev": {"attempts": 0, "used": false, "status": "privacy_skip"}, "evidence": ["git_diff"], "sent_context": null
+    },
+    {
+      "id": "L", "default_route": "Sol/xhigh", "actual_route": "Sol/xhigh", "shadow_route": null,
+      "jev": {"attempts": 0, "used": false, "status": "not_needed"}, "evidence": ["repository_specs", "deterministic_checks", "high_review_material_uncertainty"], "sent_context": null
+    },
+    {
+      "id": "M", "default_route": "Astra/high", "actual_route": "Astra/high", "shadow_route": null,
+      "jev": {"attempts": 0, "used": false, "status": "not_needed"}, "evidence": ["repository_specs", "deterministic_checks", "sol_insufficient_capability"], "sent_context": null
     }
   ]
 }
