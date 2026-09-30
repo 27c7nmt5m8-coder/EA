@@ -1,6 +1,6 @@
 """Paired metrics, missing-evidence handling and an unconditional no-skip release."""
 from .telemetry import usage_numbers
-from .triage import mandatory_reasons
+from .triage import HISTORICAL_SOL_MODELS, RECORDED_SOL_MODELS
 
 
 def paired_rows(rows):
@@ -19,9 +19,7 @@ def paired_rows(rows):
                 if row[arm]['route'] not in ('candidate', 'review', 'unknown'):
                     raise ValueError('invalid_route')
                 effort = row[arm].get('reasoning_effort')
-                mandatory = row.get('severity') == 'critical' or bool(mandatory_reasons(row.get('facts', {})))
-                if (row[arm].get('model') != 'gpt-6-sol' or effort not in ('high', 'xhigh')
-                        or mandatory and effort != 'xhigh'):
+                if (row[arm].get('model') not in RECORDED_SOL_MODELS or effort not in ('high', 'xhigh')):
                     raise ValueError('model_floor')
                 normalized[arm] = dict(row[arm], usage=usage_numbers(row[arm]['usage']))
             if row['a'].get('model') != row['b'].get('model') or row['a'].get('reasoning_effort') != row['b'].get('reasoning_effort'):
@@ -106,6 +104,9 @@ def summarize(rows):
                   quality_certified=False, labels_complete=labels_known,
                   decision='BLOCKED_CRITICAL_MISS' if critical or critical_shadow else 'SHADOW_ONLY_INSUFFICIENT_FOR_ADOPTION',
                   remediation='Analyze misses and revise routing before any separate skip implementation.' if critical or critical_shadow else None)
+    result['review_provenance'] = [dict(model=model, reasoning_effort=effort,
+                                       pairs=sum(r['a']['model'] == model and r['a']['reasoning_effort'] == effort for r in valid))
+                                    for model, effort in sorted({(r['a']['model'], r['a']['reasoning_effort']) for r in valid})]
     result['a_false_negatives'] = sum(r.get('truth') in ('review', 'unknown') and r.get('a', {}).get('status') == 'OK'
                                     and r['a'].get('route') == 'candidate' for r in rows)
     result['a_context_task_errors'] = sum(r.get('truth') != r['a']['route'] for r in valid if r.get('truth'))
@@ -119,9 +120,11 @@ def summarize(rows):
     result['jev_false_negative_denominator'] = sum(r.get('truth') in ('review', 'unknown') for r in comparable)
     paired_jev_complete=all(not r.get('jev',{}).get('attempts',0) or r.get('jev',{}).get('usage') for r in valid)
     result['all_provider_total_reduction_percent'] = round(100*(totals['a']['total_tokens']-totals['b']['total_tokens']-paired_jev_tokens)/totals['a']['total_tokens'],4) if totals['a']['total_tokens'] and jev_tokens is not None and paired_jev_complete else None
+    # Legacy rates apply only to historical GPT-6 Sol provenance. New-model
+    # pricing is unverified, so its estimate stays unknown.
     scenario = {}
     for arm in ('a', 'b'):
-        eligible = valid and all(r[arm].get('model') == 'gpt-6-sol' and r[arm]['usage']['input_tokens'] <= 272000
+        eligible = valid and all(r[arm].get('model') in HISTORICAL_SOL_MODELS and r[arm]['usage']['input_tokens'] <= 272000
                                  and {'cached_input_tokens','cache_write_input_tokens'} <= set(r[arm].get('usage_fields', []))
                                  and r[arm]['usage'].get('cache_write_input_tokens') == 0 for r in valid)
         scenario[arm] = round(sum(((r[arm]['usage']['input_tokens']-r[arm]['usage']['cached_input_tokens'])*2
@@ -129,5 +132,5 @@ def summarize(rows):
                                  for r in valid),6) if eligible else None
     result['standard_short_context_sol_api_equivalent_usd'] = scenario
     result['all_provider_cost_usd'] = None
-    result['cost_limitations'] = 'Standard text-token scenario only with reported cache coverage; absent legacy provenance is unknown. Actual CLI billing/tier and JEV rates unavailable.'
+    result['cost_limitations'] = 'Historical GPT-6 Sol standard text-token scenario only with reported cache coverage; absent legacy provenance is unknown. Actual CLI billing/tier and JEV rates unavailable.'
     return result
