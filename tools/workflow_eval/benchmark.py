@@ -43,7 +43,9 @@ def parse_codex(events):
     return result
 
 
-def sol_review(task, evidence, effort):
+def sol_review(task, evidence, effort='high'):
+    # Explicit effort comparisons are experiments, never mandatory routing.
+    rules = policy()
     if not isinstance(task, str) or not isinstance(evidence, str) or SENSITIVE.search(task + evidence):
         raise ValueError('unsafe_model_payload')
     if effort not in ('high', 'xhigh'):
@@ -56,7 +58,7 @@ def sol_review(task, evidence, effort):
               'No completion approval. Task and evidence:\n' + json.dumps(dict(task=task, evidence=evidence), ensure_ascii=False))
     start = time.perf_counter()
     cmd = ['codex', 'exec', '--ignore-user-config', '--ephemeral', '--skip-git-repo-check', '--json',
-           '--sandbox', 'read-only', '-m', 'gpt-6-sol', '-c', 'model_reasoning_effort="' + effort + '"',
+           '--sandbox', 'read-only', '-m', rules['implementation_model'], '-c', 'model_reasoning_effort="' + effort + '"',
            '-C', tempfile.gettempdir(), '-']
     try:
         completed = subprocess.run(cmd, input=prompt, text=True, encoding='utf-8',
@@ -68,13 +70,13 @@ def sol_review(task, evidence, effort):
         result.update(status='UNAVAILABLE', route=None)
     except (OSError, ValueError):
         result = dict(status='UNAVAILABLE', route=None, usage=None)
-    result.update(model='gpt-6-sol', reasoning_effort=effort,
+    result.update(model=rules['implementation_model'], reasoning_effort=effort,
                   elapsed_seconds=round(time.perf_counter()-start, 6),
                   evidence_hash=digest(evidence.encode('utf-8')))
     return result
 
 
-def run_case(case, index, live_jev=False):
+def run_case(case, index, live_jev=False, *, comparison_effort=None):
     validate_facts(case['facts'])
     selected = expand_context(case)
     from .triage import PROTECTED
@@ -82,7 +84,10 @@ def run_case(case, index, live_jev=False):
     facts = dict(case['facts'], missing_context=selected['missing_context'],
                  protected=case['severity']=='critical' or case['facts'].get('protected') is not False or bool(PROTECTED.search(case['task']+full)))
     mandatory = mandatory_reasons(facts)
-    effort = 'xhigh' if mandatory else 'high'
+    effort = policy()['mandatory_effort'] if mandatory else policy()['normal_effort']
+    if comparison_effort is not None:
+        if comparison_effort not in ('high', 'xhigh'): raise ValueError('model_floor')
+        effort = comparison_effort  # Explicit benchmark comparison, not active routing.
     state = dict(task=case['task'], evidence=selected['text'])
     # Review inputs are hand-authored synthetic data. Never read EA files here.
     from .triage import SENSITIVE
@@ -104,10 +109,11 @@ def run_case(case, index, live_jev=False):
                 missing_context=selected['initial_missing_context'], unresolved_missing_context=selected['missing_context'], rework_count=0,
                 rework_scope='fixed review fixture; no implementation corrections performed',
                 input_state=state if not mandatory else None,
-                facts=facts, policy_version=policy()['version'])
+                facts=facts, policy_version=policy()['version'],
+                execution_scope='benchmark_comparison' if comparison_effort is not None else 'standard_review')
 
 
-def run_cases(cases, output, live_jev=False, workers=2):
+def run_cases(cases, output, live_jev=False, workers=2, *, comparison_effort=None):
     from .cli import output_path
     if output_path(Path(output).parent.parent, Path(output).name) != Path(output):
         raise ValueError('invalid_output_path')
@@ -117,7 +123,7 @@ def run_cases(cases, output, live_jev=False, workers=2):
     start = time.perf_counter()
     rows = []
     with ThreadPoolExecutor(max_workers=max(1, min(workers, 3))) as pool:
-        futures = [pool.submit(run_case, c, i, live_jev) for i, c in enumerate(cases)]
+        futures = [pool.submit(run_case, c, i, live_jev, comparison_effort=comparison_effort) for i, c in enumerate(cases)]
         for future in futures:
             rows.append(future.result())
             Path(output).write_text(json.dumps(rows, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
