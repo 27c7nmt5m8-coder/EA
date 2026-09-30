@@ -36,6 +36,9 @@ SOURCE_SECRET = re.compile(
 )
 FORBIDDEN_NAMES = re.compile(r"(?i)(?:\.env|credential|secret|private|account|\.pem|\.key)")
 KINDS = {"semantic_discovery", "exact_lookup"}
+CURRENT_SOL_MODEL = "gpt-6.1-sol"
+HISTORICAL_SOL_MODEL = "gpt-6-sol"
+COMPARISON_SOL_MODELS = (CURRENT_SOL_MODEL, HISTORICAL_SOL_MODEL)
 STATUSES = {"OK", "UNKNOWN", "UNAVAILABLE", "FAIL"}
 REASONS = {None, "completed", "not_measured", "not_reported", "live_flag_required",
            "unsupported_environment", "source_allowlist_required", "missing_jg_binary",
@@ -414,8 +417,11 @@ def evaluate_pair(case: dict, a: dict, b: dict, *, current_base_sha: str,
             reasons.append(field + "_mismatch")
     if a.get("task_id") != case["id"] or a.get("base_sha") != case["base_sha"]:
         reasons.append("case_identity_mismatch")
-    # Every curated EA search case touches protected trading or safety code.
-    if a.get("sol_model") != "gpt-6-sol" or a.get("sol_effort") != "xhigh":
+    # This reader accepts legacy observations without renaming their model.
+    # New live execution is separately restricted to CURRENT_SOL_MODEL.
+    model = a.get("sol_model")
+    known_model = isinstance(model, str) and model in COMPARISON_SOL_MODELS
+    if not known_model or a.get("sol_effort") != "xhigh":
         reasons.append("invalid_sol_comparison")
     if a_score["status"] != "OK" or b_score["status"] != "OK":
         reasons.append("incomplete_arm")
@@ -445,7 +451,14 @@ def evaluate_pair(case: dict, a: dict, b: dict, *, current_base_sha: str,
             reasons.append("b_source_fingerprint_mismatch")
         if b_score["stage_file_count"] is None or b_score["stage_file_count"] < 1:
             reasons.append("b_stage_provenance_missing")
+    models_match = model == b.get("sol_model")
+    provenance = ("mismatched" if not models_match else "unrecognized" if not known_model
+                  else "current" if model == CURRENT_SOL_MODEL else "legacy_historical")
+    # Declared observation identity is metadata, not proof of model execution.
     return {"case_id": case["id"], "kind": case["kind"], "base_sha": case["base_sha"],
+            "sol_model": model if known_model and models_match else None,
+            "sol_effort": "xhigh" if a.get("sol_effort") == b.get("sol_effort") == "xhigh" else None,
+            "model_provenance": provenance,
             "comparison_status": "COMPARABLE" if not reasons else "EXCLUDED",
             "exclusion_reasons": sorted(set(reasons)), "a": a_score, "b": b_score}
 
@@ -456,6 +469,21 @@ def summarize_pairs(rows: list[dict], *, expected_case_ids: list[str] | None = N
     if any(row.get("kind") not in KINDS or row.get("comparison_status") not in ("COMPARABLE", "EXCLUDED")
            or not isinstance(row.get("a"), dict) or not isinstance(row.get("b"), dict) for row in rows):
         raise ValueError("invalid_jevgrep_result")
+    provenance_fields = {"sol_model", "sol_effort", "model_provenance"}
+    provenance_kinds = ("current", "legacy_historical", "mismatched", "unrecognized", "not_recorded")
+    for row in rows:
+        present = provenance_fields.intersection(row)
+        if not present:
+            continue  # Preserve old rows without inferring a new model identity.
+        model, effort, provenance = (row.get(field) for field in
+                                      ("sol_model", "sol_effort", "model_provenance"))
+        recognized = (provenance == "current" and model == CURRENT_SOL_MODEL or
+                      provenance == "legacy_historical" and model == HISTORICAL_SOL_MODEL)
+        rejected = provenance in ("mismatched", "unrecognized") and model is None
+        if (present != provenance_fields or not (recognized or rejected) or
+                effort not in (None, "xhigh") or
+                row["comparison_status"] == "COMPARABLE" and not (recognized and effort == "xhigh")):
+            raise ValueError("invalid_sol_provenance")
     expected = None
     if expected_case_ids is not None:
         if (not isinstance(expected_case_ids, list) or
@@ -514,6 +542,8 @@ def summarize_pairs(rows: list[dict], *, expected_case_ids: list[str] | None = N
                                        if record["jg_version"] is not None}),
             }
         return {"unique_tasks": len(group_rows), "comparable_pairs": len(compared),
+                "model_provenance": {kind: sum(row.get("model_provenance", "not_recorded") == kind
+                                               for row in group_rows) for kind in provenance_kinds},
                 "excluded_pairs": len(group_rows) - len(compared),
                 "excluded_case_reasons": {row["case_id"]: row["exclusion_reasons"] for row in group_rows
                                           if row["comparison_status"] == "EXCLUDED"},
@@ -548,6 +578,7 @@ def summarize_pairs(rows: list[dict], *, expected_case_ids: list[str] | None = N
     else:
         pilot_status = "SHADOW_MEASURED_NOT_ADOPTED"
     return {"experiment": "jevgrep_shadow", "schema_version": 1,
+            "model_provenance": overall["model_provenance"],
             "critical_file_miss_cases": overall["b"]["quality"]["critical_file_miss_cases"],
             "important_file_miss_cases": overall["b"]["quality"]["important_file_miss_cases"],
             "quality": {"a": overall["a"]["quality"], "b": overall["b"]["quality"],

@@ -11,6 +11,7 @@ SHA = re.compile(r'[0-9a-f]{40}\Z')
 
 
 def add_parsers(sub):
+    from .jevgrep_benchmark import CURRENT_SOL_MODEL, HISTORICAL_SOL_MODEL
     trace = sub.add_parser('trace-benchmark')
     trace.add_argument('--cases', default='tests/fixtures/workflow_trace_cases.json')
     trace.add_argument('--base-sha')
@@ -25,6 +26,9 @@ def add_parsers(sub):
     grep = sub.add_parser('jevgrep-benchmark')
     grep.add_argument('--cases', default='tests/fixtures/workflow_jevgrep_cases.json')
     grep.add_argument('--base-sha')
+    grep.add_argument('--sol-model', choices=(CURRENT_SOL_MODEL, HISTORICAL_SOL_MODEL),
+                      default=CURRENT_SOL_MODEL,
+                      help='Current model by default; legacy model is for offline historical observations only')
     grep.add_argument('--a-observations', help='Local A-arm metadata keyed by case id')
     grep.add_argument('--b-observations', help='Local B-arm metadata keyed by case id')
     grep.add_argument('--discovery-rows', help='Earlier live retrieval rows bound to B Sol observations')
@@ -202,7 +206,9 @@ def _semantic(args, root, output):
 
 def _jevgrep(args, root, output):
     from .jevgrep_benchmark import (load_cases, run_discovery, evaluate_pair,
-                                    summarize_pairs, source_fingerprint)
+                                    summarize_pairs, source_fingerprint, CURRENT_SOL_MODEL)
+    if args.live and args.sol_model != CURRENT_SOL_MODEL:
+        raise ValueError('legacy_sol_model_not_live')
     base = _base(args, root)
     if args.live:
         _live_base(base)
@@ -238,7 +244,8 @@ def _jevgrep(args, root, output):
     for case in cases:
         if case['base_sha'] != base:
             raise ValueError('stale_jevgrep_fixture')
-        identity = dict(task_id=case['id'], base_sha=base, sol_model='gpt-6-sol', sol_effort='xhigh')
+        identity = dict(task_id=case['id'], base_sha=base,
+                        sol_model=args.sol_model, sol_effort='xhigh')
         a = dict(identity, **a_observations.get(case['id'], {'status': 'UNAVAILABLE', 'reason': 'observation_unavailable', 'found_files': []}))
         if args.live:
             b = dict(identity, **run_discovery(case, repository_root, live=True,

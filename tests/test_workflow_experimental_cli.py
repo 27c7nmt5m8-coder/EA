@@ -59,6 +59,40 @@ class ExperimentalCliTests(unittest.TestCase):
             self.assertEqual(report['coverage_missing_data']['comparable_pairs'], 0)
             self.assertFalse((directory / 'real-tasks.json').exists())
 
+    def test_jevgrep_defaults_to_current_sol_and_reads_explicit_legacy_history(self):
+        for options, model, provenance in (
+                ((), 'gpt-6.1-sol', 'current'),
+                (('--sol-model', 'gpt-6-sol'), 'gpt-6-sol', 'legacy_historical')):
+            with self.subTest(model=model), tempfile.TemporaryDirectory() as tmp:
+                fixture = ROOT / 'tests/fixtures/workflow_jevgrep_cases.json'
+                run = self.command(tmp, 'jevgrep-benchmark', '--cases', str(fixture),
+                                   '--base-sha', BASE, *options)
+                self.assertEqual(run.returncode, 0, run.stderr)
+                rows_path = next((Path(tmp) / '.workflow-eval').glob('jevgrep-*-rows.json'))
+                rows = json.loads(rows_path.read_text(encoding='utf-8'))
+                self.assertEqual(len(rows), 10)
+                self.assertTrue(all(r['sol_model'] == model and
+                                    r['model_provenance'] == provenance for r in rows))
+                self.assertTrue(all(r['comparison_status'] == 'EXCLUDED' for r in rows))
+                self.assertFalse((Path(tmp) / '.workflow-eval' / 'real-tasks.json').exists())
+
+    def test_jevgrep_rejects_legacy_live_and_unknown_model_before_discovery(self):
+        from types import SimpleNamespace
+        from tools.workflow_eval.experimental_cli import _jevgrep
+        # The guard must run before fixture/source/provider handling.
+        with self.assertRaisesRegex(ValueError, 'legacy_sol_model_not_live'):
+            _jevgrep(SimpleNamespace(live=True, sol_model='gpt-6-sol'), ROOT, None)
+        for options, error in (
+                (('--sol-model', 'gpt-6-sol', '--live'), 'Evaluation failed:'),
+                (('--sol-model', 'gpt-6-astra'), 'invalid choice')):
+            with self.subTest(options=options), tempfile.TemporaryDirectory() as tmp:
+                fixture = ROOT / 'tests/fixtures/workflow_jevgrep_cases.json'
+                run = self.command(tmp, 'jevgrep-benchmark', '--cases', str(fixture),
+                                   '--base-sha', BASE, *options)
+                self.assertNotEqual(run.returncode, 0)
+                self.assertIn(error, run.stderr)
+                self.assertFalse((Path(tmp) / '.workflow-eval').exists())
+
     def test_experimental_report_keeps_eight_sections_and_missing_data(self):
         with tempfile.TemporaryDirectory() as tmp:
             fixture = ROOT / 'tests/fixtures/workflow_semantic_regression_cases.json'

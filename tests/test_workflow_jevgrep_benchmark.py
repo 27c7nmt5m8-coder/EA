@@ -227,6 +227,73 @@ class JevgrepBenchmarkTest(unittest.TestCase):
         self.assertIn("sol_effort_mismatch", row["exclusion_reasons"])
         self.assertIn("stale_base_sha", row["exclusion_reasons"])
 
+    def model_pair(self, a_model, b_model=None, effort="xhigh"):
+        a = self.arm(sol_model=a_model, sol_effort=effort)
+        b = self.arm(sol_model=b_model if b_model is not None else a_model,
+                     sol_effort=effort, cache_bypassed=True,
+                     source_sha256="1" * 64, stage_file_count=1)
+        return benchmark.evaluate_pair(self.case, a, b,
+                    current_base_sha=self.case["base_sha"],
+                    expected_source_sha256="1" * 64,
+                    expected_source_paths=self.case["must_find_files"])
+
+    def test_current_sol61_xhigh_is_comparable_and_identified(self):
+        row = self.model_pair("gpt-6.1-sol")
+        self.assertEqual(row["comparison_status"], "COMPARABLE")
+        self.assertEqual(row["sol_model"], "gpt-6.1-sol")
+        self.assertEqual(row["sol_effort"], "xhigh")
+        self.assertEqual(row["model_provenance"], "current")
+
+    def test_legacy_sol_model_is_preserved_as_history(self):
+        row = self.model_pair("gpt-6-sol")
+        self.assertEqual(row["comparison_status"], "COMPARABLE")
+        self.assertEqual(row["sol_model"], "gpt-6-sol")
+        self.assertEqual(row["model_provenance"], "legacy_historical")
+        # Existing stored rows predate these additive provenance fields.
+        for field in ("sol_model", "sol_effort", "model_provenance"):
+            row.pop(field)
+        original = copy.deepcopy(row)
+        report = benchmark.summarize_pairs([row])
+        self.assertEqual(report["coverage_missing_data"]["comparable_pairs"], 1)
+        self.assertEqual(report["model_provenance"]["not_recorded"], 1)
+        self.assertEqual(row, original)
+
+    def test_scored_model_metadata_cannot_bypass_comparison_validation(self):
+        original = self.model_pair("gpt-6.1-sol")
+        for changes in ({"sol_model": "gpt-6.1-sol-next"},
+                        {"sol_effort": "high"},
+                        {"sol_model": "gpt-6-sol"},
+                        {"model_provenance": "legacy_historical"}):
+            with self.subTest(changes=changes):
+                row = dict(original, **changes)
+                with self.assertRaisesRegex(ValueError, "invalid_sol_provenance"):
+                    benchmark.summarize_pairs([row])
+        partial = dict(original)
+        partial.pop("sol_model")
+        with self.assertRaisesRegex(ValueError, "invalid_sol_provenance"):
+            benchmark.summarize_pairs([partial])
+
+    def test_current_and_legacy_models_cannot_be_paired(self):
+        for a, b in (("gpt-6.1-sol", "gpt-6-sol"),
+                     ("gpt-6-sol", "gpt-6.1-sol")):
+            with self.subTest(a=a, b=b):
+                row = self.model_pair(a, b)
+                self.assertEqual(row["comparison_status"], "EXCLUDED")
+                self.assertIn("sol_model_mismatch", row["exclusion_reasons"])
+
+    def test_unknown_models_and_sub_xhigh_effort_remain_excluded(self):
+        for model in ("gpt-6-astra", "gpt-6.1-sol-next", None):
+            with self.subTest(model=model):
+                row = self.model_pair(model)
+                self.assertEqual(row["comparison_status"], "EXCLUDED")
+                self.assertIn("invalid_sol_comparison", row["exclusion_reasons"])
+        for model in ("gpt-6.1-sol", "gpt-6-sol"):
+            for effort in ("high", "medium"):
+                with self.subTest(model=model, effort=effort):
+                    row = self.model_pair(model, effort=effort)
+                    self.assertEqual(row["comparison_status"], "EXCLUDED")
+                    self.assertIn("invalid_sol_comparison", row["exclusion_reasons"])
+
     def test_duplicate_task_does_not_inflate_summary(self):
         row = benchmark.evaluate_pair(self.case, self.arm(), self.arm(), current_base_sha=self.case["base_sha"])
         with self.assertRaisesRegex(ValueError, "duplicate_jevgrep_task"):
