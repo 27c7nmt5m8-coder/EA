@@ -61,7 +61,7 @@ class RealTaskTests(unittest.TestCase):
         self.assertEqual(got['observed_critical_misses'], 1)
 
     def test_below_floor_provenance_is_rejected(self):
-        row = self.record(); row['b']['reasoning_effort'] = 'high'
+        row = self.record(); row['b']['reasoning_effort'] = 'medium'
         with self.assertRaises(ValueError): self.module('real_tasks').validate_record(row)
 
     def test_unknown_fields_and_credentials_are_not_logged(self):
@@ -155,7 +155,7 @@ class RealTaskTests(unittest.TestCase):
             context_blocks=[dict(id='a',text='Sentence.')],selected_context_ids=['a'],required_context_ids=['a'])
         with patch.object(m,'sol_review',return_value={}) as call:
             got=m.run_case(case,0)
-        self.assertTrue(all(c.args[2]=='xhigh' for c in call.call_args_list))
+        self.assertTrue(all(c.args[2]=='high' for c in call.call_args_list))
         self.assertEqual(got['shadow']['shadow_route'],'review')
 
     def test_missing_attempted_jev_usage_keeps_complete_total_unknown(self):
