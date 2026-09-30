@@ -24,6 +24,7 @@ class JevgrepBenchmarkTest(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.fake_jg = Path(self.temp.name) / "jg.exe"
         self.fake_jg.write_text("fake executable", encoding="utf-8")
+        self.fake_jg.chmod(0o755)
 
     def arm(self, files=None, **changes):
         row = {"task_id": self.case["id"], "base_sha": self.case["base_sha"],
