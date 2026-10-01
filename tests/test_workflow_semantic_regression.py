@@ -105,6 +105,29 @@ class SemanticRegression(unittest.TestCase):
                 row = semantic.run_case(case, base_sha=BASE, dataset_sha256=DATASET)
                 self.assertEqual(row['a']['reasoning_effort'], 'high')
 
+    def test_mixed_current_and_historical_sol_provenance_is_rejected(self):
+        current = self.run_one(self.cases[0], sol=lambda _: observation(), jev=lambda _: observation())
+        historical = self.run_one(self.cases[1], sol=lambda _: observation(), jev=lambda _: observation())
+        historical['a']['model'] = 'gpt-6-sol'
+        historical['a']['reasoning_effort'] = 'xhigh'
+        with self.assertRaisesRegex(ValueError, 'mixed_sol_provenance'):
+            semantic.summarize([current, historical], current_base_sha=BASE,
+                               dataset_sha256=DATASET)
+
+    def test_sol_command_execution_event_is_rejected(self):
+        answer_text = json.dumps(answer('no_regression'))
+        events = [
+            dict(type='item.completed', item=dict(type='command_execution', command='pwd')),
+            dict(type='item.completed', item=dict(type='agent_message', text=answer_text)),
+            dict(type='turn.completed', usage=USAGE),
+        ]
+        output = '\n'.join(json.dumps(event) for event in events)
+        result = semantic.call_sol(
+            self.cases[0],
+            runner=lambda *a, **k: subprocess.CompletedProcess(a, 0, output, ''))
+        self.assertEqual(result['status'], 'UNAVAILABLE')
+        self.assertEqual(result['reason'], 'invalid_response')
+
     def test_missing_usage_is_null_and_does_not_erase_quality_observation(self):
         row = self.run_one(sol=lambda _: observation(),
                            jev=lambda _: dict(status='OK', answer=answer('no_regression'), usage=None))
