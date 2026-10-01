@@ -183,7 +183,11 @@ def call_sol(case, *, effort='high', timeout=120, runner=None):
             return dict(status='UNAVAILABLE', reason='nonzero_exit',
                         elapsed_seconds=round(time.perf_counter()-started, 6))
         events = codex_events(completed.stdout)
-        if any(not isinstance(e, dict) or e.get('type') in ('error', 'turn.failed') for e in events):
+        if any(not isinstance(e, dict) or e.get('type') in ('error', 'turn.failed') or
+               (e.get('type', '').startswith('item.') and
+                (not isinstance(e.get('item'), dict) or
+                 e.get('item', {}).get('type') not in ('agent_message', 'reasoning')))
+               for e in events):
             raise ValueError('invalid_event')
         messages = [e.get('item', {}).get('text') for e in events
                     if e.get('type') == 'item.completed' and isinstance(e.get('item'), dict)
@@ -273,6 +277,22 @@ def summarize(rows, *, current_base_sha, dataset_sha256, expected_case_ids=None)
             current[key].append(row)
         else:
             current[key] = [row]
+    all_current_rows = [row for group in current.values() for row in group]
+    active_pair = (policy()['implementation_model'], policy()['normal_effort'])
+    historical_pair = ('gpt-6-sol', 'xhigh')
+    sol_pairs = set()
+    for row in all_current_rows:
+        observation = row.get('a', {})
+        pair = (observation.get('model'), observation.get('reasoning_effort'))
+        if pair not in (active_pair, historical_pair):
+            raise ValueError('invalid_sol_provenance')
+        sol_pairs.add(pair)
+    if len(sol_pairs) > 1:
+        raise ValueError('mixed_sol_provenance')
+    sol_pair = next(iter(sol_pairs), None)
+    sol_provenance = (dict(model=sol_pair[0], reasoning_effort=sol_pair[1],
+                           scope='current' if sol_pair == active_pair else 'legacy_historical')
+                      if sol_pair else None)
     observed_ids = set(current)
     missing_ids = expected_ids - observed_ids if expected_ids is not None else None
     unexpected_ids = observed_ids - expected_ids if expected_ids is not None else set()
@@ -334,6 +354,7 @@ def summarize(rows, *, current_base_sha, dataset_sha256, expected_case_ids=None)
     return dict(experiment='semantic_regression',
                 verdict='BLOCKED' if critical_jev_miss else 'SHADOW_ONLY' if complete else 'UNMEASURED',
                 shadow_only=True, actual_action='none', case_count=len(unique),
+                sol_provenance=sol_provenance,
                 duplicate_case_count=duplicates, stale_result_count=stale,
                 quality=dict(sol=sol_quality, jev=jev_quality, quality_not_worse=quality_not_worse,
                              critical_jev_miss=critical_jev_miss,
