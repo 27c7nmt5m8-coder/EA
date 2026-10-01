@@ -211,6 +211,16 @@ class RealSemantic(unittest.TestCase):
             jev.assert_not_called(); sol.assert_not_called()
             with self.assertRaises(FileExistsError): exclusive_output(path.parent, path.name, {})
 
+    def test_cli_new_run_accepts_current_integration_base_without_old_stack_dependency(self):
+        from tools.workflow_eval.semantic_real_cli import execute
+        from types import SimpleNamespace
+        args = SimpleNamespace(live=False, rows=None, base_sha='8' * 40, cases=str(FIXTURE))
+        with tempfile.TemporaryDirectory() as directory:
+            path = execute(args, Path(directory))
+            report = json.loads(path.read_text(encoding='utf-8'))
+            self.assertEqual(report['base_sha'], '8' * 40)
+            self.assertEqual(report['verdict'], 'UNMEASURED')
+
     def test_sol_timeout_retains_completed_usage(self):
         def timeout(*args, **kwargs):
             raise subprocess.TimeoutExpired('codex', 1, output=json.dumps(dict(type='turn.completed', usage=USAGE)))
