@@ -46,6 +46,15 @@ class ExperimentalCliTests(unittest.TestCase):
             self.assertNotIn('segments', result)
             self.assertFalse((directory / 'real-tasks.json').exists())
 
+    def test_default_trace_and_jevgrep_use_frozen_fixture_base(self):
+        for command, fixture_name in (
+                ('trace-benchmark', 'workflow_trace_cases.json'),
+                ('jevgrep-benchmark', 'workflow_jevgrep_cases.json')):
+            with self.subTest(command=command), tempfile.TemporaryDirectory() as tmp:
+                fixture = ROOT / 'tests/fixtures' / fixture_name
+                run = self.command(tmp, command, '--cases', str(fixture))
+                self.assertEqual(run.returncode, 0, run.stderr)
+
     def test_jevgrep_offline_never_installs_or_reports_success(self):
         with tempfile.TemporaryDirectory() as tmp:
             fixture = ROOT / 'tests/fixtures/workflow_jevgrep_cases.json'
