@@ -29,9 +29,11 @@ ID、PR番号、severity、expected result、rationale、レビュー結論は�
 全文source・秘密・private traceは送りません。答えを直接指定する表現を拒否します。
 契約そのものを与えるため、未知の要件を発見する能力を測る実験ではありません。
 
-通常offline CIでは未マージPRのGit objectがない場合、commit済みの一次確認manifestを
-検証します。自動fetchはしません。live時は実Git objectのfile hashとanchor照合を必須にし、
-不足時は停止します。source headは歴史的出典であり、最新headに自動置換しません。
+通常offline CIと統合後のlive実行では、commit済みの一次確認manifestとcase fingerprintを
+frozen provenanceとして検証します。自動fetchはしません。source headは歴史的出典であり、
+現在の実行headが旧PR stackの子孫であることや、live時に歴史的Git objectを再取得できることは
+必須条件にしません。新規liveはcurrent origin/mainとその子孫HEADにだけ許可し、fixture／manifestの
+tracked-clean検証とfrozen hash不一致時のfail-closedを維持します。
 
 ## 実行
 
