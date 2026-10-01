@@ -457,10 +457,60 @@ def summarize_trace(rows, expected_task_ids=None):
         expected_set = set(expected)
     else:
         expected_set = None
-    seen = set(); unique = []; duplicates = 0
+    active_pair = (policy()['implementation_model'], policy()['mandatory_effort'])
+    historical_pair = ('gpt-6-sol', 'xhigh')
+    allowed_pairs = {active_pair, historical_pair}
+
+    def recomputed_comparable(row):
+        a = row.get('a', {}); b = row.get('b', {}); jev = row.get('jev', {})
+        a_pair = (a.get('model'), a.get('reasoning_effort'))
+        b_pair = (b.get('model'), b.get('reasoning_effort'))
+        pair_ok = (a.get('status') == b.get('status') == 'OK'
+                   and a_pair == b_pair and a_pair in allowed_pairs)
+        labels = row.get('labels')
+        jev_labels = jev.get('labels')
+        if (jev.get('status') != 'OK' or not isinstance(labels, list)
+                or not isinstance(jev_labels, list)):
+            return False
+        all_ids = {item.get('segment_id') for item in labels if isinstance(item, dict)}
+        if None in all_ids or not all_ids:
+            return False
+        protected = set(row.get('priority', {}).get('critical_segment_ids', []))
+        protected |= set(row.get('priority', {}).get('important_segment_ids', []))
+        threshold = policy()['confidence_threshold']
+        selected = set()
+        try:
+            for item in jev_labels:
+                ident = item['segment_id']
+                if (item['label'] != 'repetition' or item['confidence'] < threshold
+                        or ident in protected):
+                    selected.add(ident)
+            selected.update(evidence_id for item in jev_labels if item['segment_id'] in selected
+                            for evidence_id in item['evidence_segment_ids'])
+        except (KeyError, TypeError):
+            return False
+        inputs_ok = (set(a.get('input_segment_ids') or []) == all_ids
+                     and set(b.get('input_segment_ids') or []) == selected)
+        return bool(pair_ok and inputs_ok)
+
+    # Validate provenance and derived comparability on every supplied row before
+    # duplicate removal so a rerun cannot hide mixed current/historical evidence.
+    sol_pairs = set()
     for row in rows:
         if not isinstance(row, dict) or row.get('experiment') != 'agent_trace_evaluation':
             raise ValueError('invalid_trace_row')
+        a_pair = (row.get('a', {}).get('model'), row.get('a', {}).get('reasoning_effort'))
+        b_pair = (row.get('b', {}).get('model'), row.get('b', {}).get('reasoning_effort'))
+        if a_pair == b_pair and a_pair in allowed_pairs:
+            sol_pairs.add(a_pair)
+        derived = recomputed_comparable(row)
+        if bool(row.get('comparable')) != derived:
+            raise ValueError('trace_comparable_mismatch')
+    if len(sol_pairs) > 1:
+        raise ValueError('mixed_sol_provenance')
+
+    seen = set(); unique = []; duplicates = 0
+    for row in rows:
         identity = _id(row['task_id'])
         if expected_set is not None and identity not in expected_set:
             raise ValueError('unexpected_trace_task_id')
@@ -468,16 +518,6 @@ def summarize_trace(rows, expected_task_ids=None):
             duplicates += 1
             continue
         seen.add(identity); unique.append(row)
-    active_pair = (policy()['implementation_model'], policy()['mandatory_effort'])
-    historical_pair = ('gpt-6-sol', 'xhigh')
-    sol_pairs = set()
-    for row in unique:
-        a_pair = (row.get('a', {}).get('model'), row.get('a', {}).get('reasoning_effort'))
-        b_pair = (row.get('b', {}).get('model'), row.get('b', {}).get('reasoning_effort'))
-        if a_pair == b_pair and a_pair in (active_pair, historical_pair):
-            sol_pairs.add(a_pair)
-    if len(sol_pairs) > 1:
-        raise ValueError('mixed_sol_provenance')
     sol_pair = next(iter(sol_pairs), None)
     sol_provenance = (dict(model=sol_pair[0], reasoning_effort=sol_pair[1],
                            scope='current' if sol_pair == active_pair else 'legacy_historical')
