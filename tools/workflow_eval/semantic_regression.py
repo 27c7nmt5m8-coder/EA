@@ -34,7 +34,8 @@ def digest(value):
 def load_cases(path):
     raw = Path(path).read_bytes()
     dataset = json.loads(raw)
-    if not isinstance(dataset, dict) or set(dataset) != {'version', 'scope', 'cases'} or dataset['version'] != 1:
+    if (not isinstance(dataset, dict) or set(dataset) != {'version', 'scope', 'cases'}
+            or type(dataset['version']) is not int or dataset['version'] != 1):
         raise ValueError('invalid_semantic_dataset')
     validate_cases(dataset['cases'])
     return dataset['cases'], digest(raw)
@@ -68,7 +69,8 @@ def validate_cases(cases):
 
 
 def valid_answer(answer):
-    if not isinstance(answer, dict) or answer.get('type') != 'choice' or answer.get('choice') not in CHOICES:
+    if (not isinstance(answer, dict) or answer.get('type') != 'choice'
+            or not isinstance(answer.get('choice'), str) or answer['choice'] not in CHOICES):
         return False
     confidence, probabilities = answer.get('confidence'), answer.get('probabilities')
     if type(confidence) not in (int, float) or not math.isfinite(confidence) or not 0 <= confidence <= 1:
@@ -99,7 +101,7 @@ def normalize_observation(value, model, effort=None):
     if type(duration) in (int, float) and math.isfinite(duration) and duration >= 0:
         result['elapsed_seconds'] = duration
     if value.get('status') != 'OK':
-        result['reason'] = value.get('reason') if value.get('reason') in {
+        result['reason'] = value.get('reason') if isinstance(value.get('reason'), str) and value['reason'] in {
             'timeout', 'missing_credentials', 'nonzero_exit', 'network_unavailable',
             'invalid_response', 'missing_usage', 'not_run'} else 'unavailable'
         return result
@@ -247,6 +249,40 @@ def run_cases(cases, *, base_sha, dataset_sha256, sol_evaluator=None,
                      live=live, sol_effort=sol_effort) for c in cases]
 
 
+def validate_observation(observation, arm):
+    """Validate persisted normalized metadata without trusting provider status."""
+    if not isinstance(observation, dict) or set(observation) != {
+            'status', 'choice', 'confidence', 'usage', 'elapsed_seconds', 'reason', 'model', 'reasoning_effort'}:
+        raise ValueError('invalid_semantic_observation')
+    model, effort = observation['model'], observation['reasoning_effort']
+    if arm == 'a':
+        if (model, effort) not in ((policy()['implementation_model'], policy()['normal_effort']), ('gpt-6-sol', 'xhigh')):
+            raise ValueError('invalid_sol_provenance')
+    elif model != 'jev' or effort is not None:
+        raise ValueError('invalid_jev_provenance')
+    status, choice, confidence = (observation[k] for k in ('status', 'choice', 'confidence'))
+    if status not in ('OK', 'UNAVAILABLE'):
+        raise ValueError('invalid_semantic_observation')
+    if choice is not None:
+        if (not isinstance(choice, str) or choice not in CHOICES or type(confidence) not in (int, float)
+                or not math.isfinite(confidence) or not 0 <= confidence <= 1):
+            raise ValueError('invalid_semantic_observation')
+    elif confidence is not None or status == 'OK':
+        raise ValueError('invalid_semantic_observation')
+    reason = observation['reason']
+    if (status == 'OK' and reason is not None or status == 'UNAVAILABLE' and reason not in (
+            'timeout', 'missing_credentials', 'nonzero_exit', 'network_unavailable', 'invalid_response',
+            'missing_usage', 'not_run', 'unavailable', 'model_effort_mismatch_or_missing')
+            or status == 'UNAVAILABLE' and choice is not None and reason != 'missing_usage'):
+        raise ValueError('invalid_semantic_observation')
+    usage = observation['usage']
+    if usage is not None and usage_numbers(usage) != usage:
+        raise ValueError('invalid_semantic_usage')
+    duration = observation['elapsed_seconds']
+    if duration is not None and (type(duration) not in (int, float) or not math.isfinite(duration) or duration < 0):
+        raise ValueError('invalid_semantic_duration')
+
+
 def summarize(rows, *, current_base_sha, dataset_sha256, expected_case_ids=None):
     """Unique current cases only; a complete verdict requires a fixed denominator."""
     if not isinstance(rows, list):
@@ -264,6 +300,15 @@ def summarize(rows, *, current_base_sha, dataset_sha256, expected_case_ids=None)
     for row in rows:
         if not isinstance(row, dict) or row.get('experiment') != 'semantic_regression':
             raise ValueError('invalid_semantic_row')
+        if (not isinstance(row.get('id'), str) or not re.fullmatch(r'SR[0-9]{2,3}', row['id'])
+                or type(row.get('expected_regression')) is not bool
+                or not isinstance(row.get('mutation'), str) or row['mutation'] not in MUTATIONS
+                or not isinstance(row.get('severity'), str) or row['severity'] not in SEVERITIES
+                or row.get('split') not in ('calibration', 'holdout')
+                or row.get('shadow_only') is not True or row.get('actual_action') != 'none'):
+            raise ValueError('invalid_semantic_row')
+        for arm in ('a', 'b'):
+            validate_observation(row.get(arm), arm)
         if row.get('base_sha') != current_base_sha or row.get('dataset_sha256') != dataset_sha256:
             stale += 1
             continue

@@ -216,8 +216,14 @@ class ExperimentalCliTests(unittest.TestCase):
             self.assertEqual(run.returncode, 0, run.stderr)
             original = next((Path(tmp) / '.workflow-eval').glob('trace-eval-*-rows.json'))
             rows = json.loads(original.read_text(encoding='utf-8'))
-            critical = next(r for r in rows if r['priority']['critical_segment_ids'])
-            critical['a']['critical_miss_segment_ids'] = critical['priority']['critical_segment_ids']
+            from tools.workflow_eval.trace_eval import run_trace_case, case_fingerprint
+            case = next(c for c in json.loads(fixture.read_bytes())['cases'] if c['critical_segment_ids'])
+            critical = run_trace_case(case, dict(status='OK', task_id=case['task_id'], base_sha=case['base_sha'],
+                case_fingerprint=case_fingerprint(case), model='gpt-6.1-sol', reasoning_effort='high',
+                detected_segment_ids=[], input_segment_ids=[s['id'] for s in case['segments']]),
+                dict(status='NOT_RUN'), dict(status='NOT_RUN'))
+            critical['dataset_sha256'] = rows[0]['dataset_sha256']
+            rows = [critical if r['task_id'] == case['task_id'] else r for r in rows]
             changed = Path(tmp) / 'observed-critical.json'
             changed.write_text(json.dumps(rows), encoding='utf-8')
             report = self.command(tmp, 'experimental-report', '--trace-rows', str(changed),
@@ -340,7 +346,14 @@ class ExperimentalCliTests(unittest.TestCase):
             self.assertEqual(run.returncode, 0, run.stderr)
             original = next((Path(tmp) / '.workflow-eval').glob('jevgrep-*-rows.json'))
             rows = json.loads(original.read_text(encoding='utf-8'))
-            rows[0]['b']['critical_file_misses'] = ['src/MT3SymbolState.mqh']
+            from tools.workflow_eval.jevgrep_benchmark import evaluate_pair
+            case = next(c for c in json.loads(fixture.read_bytes())['cases'] if c['critical_files'])
+            identity = dict(task_id=case['id'], base_sha=BASE, sol_model='gpt-6.1-sol', sol_effort='high')
+            critical = evaluate_pair(case, dict(identity, status='UNAVAILABLE', reason='observation_unavailable', found_files=[]),
+                                     dict(identity, status='OK', found_files=[]), current_base_sha=BASE)
+            critical['dataset_sha256'] = rows[0]['dataset_sha256']
+            critical['retrieval_only'] = False
+            rows = [critical if r['case_id'] == case['id'] else r for r in rows]
             changed = Path(tmp) / 'critical-jevgrep.json'
             changed.write_text(json.dumps(rows), encoding='utf-8')
             report = self.command(tmp, 'experimental-report', '--jevgrep-rows', str(changed),

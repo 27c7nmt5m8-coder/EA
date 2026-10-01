@@ -55,7 +55,7 @@ def make_protocol(activated_at,tooling_pr,completion_sha):
 def validate_protocol(value):
     fields(value,{'schema_version','cohort','cohort_id','repository','activated_at','tooling_pr','completion_sha',
         'confidence_threshold','review_skip_enabled','sol_model','sol_effort','jev_model','checkpoint','primary_goal','shadow_only'})
-    if (value['schema_version']!=1 or value['cohort']!='semantic_prospective_v1' or value['repository']!=REPO or
+    if (type(value['schema_version']) is not int or value['schema_version']!=1 or value['cohort']!='semantic_prospective_v1' or value['repository']!=REPO or
         value['confidence_threshold']!=.90 or value['review_skip_enabled'] is not False or
         value['sol_model']!=MODEL or value['sol_effort']!=EFFORT or value['jev_model']!=policy()['jev_model'] or
         value['checkpoint']!=10 or value['primary_goal']!=20 or value['shadow_only'] is not True or
@@ -72,7 +72,7 @@ def validate_snapshot(protocol,s):
     fields(s,{'schema_version','repository','pr_number','task_id','base_sha','head_sha','merge_base_sha',
         'diff_digest','source_fingerprint','changed_files','items','known_requirements','known_protected_areas',
         'test_evidence','created_at','observed_at','snapshot_at','prior_review_known','github_reviews','kind'})
-    if (s['schema_version']!=1 or s['repository']!=REPO or type(s['pr_number']) is not int or
+    if (type(s['schema_version']) is not int or s['schema_version']!=1 or s['repository']!=REPO or type(s['pr_number']) is not int or
         s['pr_number']<=protocol['tooling_pr'] or s['task_id']!=task_id(protocol,s['pr_number']) or
         s['kind']!='ea_development' or s['prior_review_known'] is not False or
         type(s['github_reviews']) is not int or s['github_reviews']!=0):

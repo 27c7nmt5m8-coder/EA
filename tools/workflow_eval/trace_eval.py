@@ -401,6 +401,10 @@ def trace_sol_review(case, segments, effort, *, runner=None, timeout=120):
                 continue
             if event.get('type') in ('error', 'turn.failed'):
                 invalid = True
+            elif (str(event.get('type', '')).startswith('item.') and
+                  (not isinstance(event.get('item'), dict) or
+                   event['item'].get('type') not in ('agent_message', 'reasoning'))):
+                invalid = True
             elif event.get('type') == 'turn.completed':
                 usages.append(event.get('usage'))
             elif event.get('type') == 'item.completed':
@@ -438,6 +442,101 @@ def trace_sol_review(case, segments, effort, *, runner=None, timeout=120):
 def _sum_or_null(rows, getter):
     values = [getter(row) for row in rows]
     return sum(values) if values and all(value is not None for value in values) else None
+
+
+def _validate_trace_metadata(row):
+    """Recheck imported measurements and derived quality before report persistence."""
+    if (row.get('review_skip_enabled') is not False or type(row.get('actual_reviews_skipped')) is not int
+            or row['actual_reviews_skipped'] != 0 or type(row.get('comparable')) is not bool):
+        raise ValueError('invalid_trace_shadow_policy')
+    labels, priority = row.get('labels'), row.get('priority')
+    if not isinstance(labels, list) or not labels or not isinstance(priority, dict) or set(priority) != {
+            'critical_segment_ids', 'important_segment_ids'}:
+        raise ValueError('invalid_trace_jev_contract')
+    by_id = {}
+    for item in labels:
+        if (not isinstance(item, dict) or set(item) != {'segment_id', 'expected_label', 'predicted_label', 'pass_label'}
+                or not isinstance(item['segment_id'], str) or not SAFE_ID.fullmatch(item['segment_id'])
+                or item['segment_id'] in by_id or not isinstance(item['expected_label'], str)
+                or item['expected_label'] not in LABELS):
+            raise ValueError('invalid_trace_jev_contract')
+        by_id[item['segment_id']] = item
+    all_ids = set(by_id)
+    for values in priority.values():
+        if (not isinstance(values, list) or any(not isinstance(v, str) for v in values)
+                or len(values) != len(set(values)) or not set(values) <= all_ids):
+            raise ValueError('invalid_trace_jev_contract')
+    if set(priority['critical_segment_ids']) & set(priority['important_segment_ids']):
+        raise ValueError('invalid_trace_jev_contract')
+    expected_attention = {k for k, item in by_id.items() if item['expected_label'] in ATTENTION_LABELS}
+    review_fields = set(_review(None, {}, None))
+    jev_fields = set(_jev(None, {}, None))
+    for source in ('a', 'b', 'jev'):
+        obs = row.get(source)
+        if not isinstance(obs, dict) or set(obs) != (jev_fields if source == 'jev' else review_fields):
+            raise ValueError('invalid_trace_observation')
+        if obs['status'] not in ('OK', 'INVALID', 'UNAVAILABLE', 'TIMEOUT', 'NOT_RUN'):
+            raise ValueError('invalid_trace_observation')
+        if obs['reason'] not in (None, 'malformed_review', 'review_not_completed', 'stale_or_mismatched_case',
+                'invalid_detected_segments', 'invalid_model_or_effort', 'malformed_jev_response',
+                'jev_not_completed', 'stale_jev_result') or (obs['status'] == 'OK') != (obs['reason'] is None):
+            raise ValueError('invalid_trace_observation')
+        usage, reason = _usage(obs['usage'])
+        if (usage != obs['usage'] or obs['usage_missing_reason'] not in (
+                None, 'not_measured', 'missing_usage', 'invalid_usage', 'inconsistent_usage')
+                or usage is not None and obs['usage_missing_reason'] is not None
+                or usage is None and obs['usage_missing_reason'] is None):
+            raise ValueError('invalid_trace_usage')
+        duration = obs['elapsed_seconds']
+        if duration is not None:
+            _nonnegative(duration)
+        if (obs['elapsed_missing_reason'] not in (None, 'not_measured', 'missing_or_invalid_duration')
+                or (duration is not None) != (obs['elapsed_missing_reason'] is None)):
+            raise ValueError('invalid_trace_duration')
+        if source == 'jev':
+            model = obs['model']
+            if model is not None and (not isinstance(model, str) or not re.fullmatch(r'jev-[A-Za-z0-9_.-]+', model)):
+                raise ValueError('invalid_trace_jev_contract')
+            if obs['status'] != 'OK' and (obs['labels'] != [] or any(
+                    item['predicted_label'] is not None or item['pass_label'] is not None for item in labels)):
+                raise ValueError('invalid_trace_jev_contract')
+            continue
+        if obs['model'] not in (None, policy()['implementation_model'], 'gpt-6-sol') or obs['reasoning_effort'] not in (None, 'high', 'xhigh'):
+            raise ValueError('invalid_trace_provenance')
+        missing = obs['measurement_missing_reasons']
+        if not isinstance(missing, dict) or set(missing) - {
+                'additional_context_retrieval_count', 'rework_count', 'test_failed_runs'}:
+            raise ValueError('invalid_trace_measurements')
+        for metric in ('additional_context_retrieval_count', 'rework_count', 'test_failed_runs'):
+            value = obs[metric]
+            if value is not None:
+                _nonnegative(value, integer=True)
+            if metric in missing and (value is not None or missing[metric] != 'missing_or_invalid_metric'):
+                raise ValueError('invalid_trace_measurements')
+            if obs['status'] == 'OK' and value is None and metric not in missing:
+                raise ValueError('invalid_trace_measurements')
+        for field in ('input_segment_ids', 'detected_segment_ids', 'critical_miss_segment_ids',
+                      'important_miss_segment_ids', 'false_positive_segment_ids', 'false_negative_segment_ids'):
+            values = obs[field]
+            if values is None and field in ('input_segment_ids', 'detected_segment_ids') and obs['status'] != 'OK':
+                continue
+            if (not isinstance(values, list) or any(not isinstance(v, str) for v in values)
+                    or len(values) != len(set(values)) or not set(values) <= all_ids):
+                raise ValueError('invalid_trace_segments')
+        if obs['detected_segment_ids'] is not None:
+            detected = set(obs['detected_segment_ids'])
+            if obs['input_segment_ids'] is None or not detected <= set(obs['input_segment_ids']):
+                raise ValueError('invalid_trace_segments')
+            expected = dict(false_positive_segment_ids=sorted(detected - expected_attention),
+                            false_negative_segment_ids=sorted(expected_attention - detected),
+                            critical_miss_segment_ids=sorted(set(priority['critical_segment_ids']) - detected),
+                            important_miss_segment_ids=sorted(set(priority['important_segment_ids']) - detected))
+            if (any(obs[k] != v for k, v in expected.items()) or type(obs['task_success']) is not bool
+                    or obs['task_success'] != (detected == expected_attention)):
+                raise ValueError('trace_quality_mismatch')
+        elif obs['task_success'] is not None or any(obs[k] for k in (
+                'false_positive_segment_ids', 'false_negative_segment_ids', 'critical_miss_segment_ids', 'important_miss_segment_ids')):
+            raise ValueError('trace_quality_mismatch')
 
 
 def summarize_trace(rows, expected_task_ids=None):
@@ -478,8 +577,8 @@ def summarize_trace(rows, expected_task_ids=None):
             expected = item.get('expected_label')
             predicted = item.get('predicted_label')
             passed = item.get('pass_label')
-            if (not isinstance(ident, str) or ident in by_id or expected not in LABELS
-                    or predicted not in LABELS or type(passed) is not bool
+            if (not isinstance(ident, str) or ident in by_id or not isinstance(expected, str) or expected not in LABELS
+                    or not isinstance(predicted, str) or predicted not in LABELS or type(passed) is not bool
                     or passed != (predicted == expected)):
                 raise ValueError('invalid_trace_jev_contract')
             by_id[ident] = item
@@ -499,11 +598,12 @@ def summarize_trace(rows, expected_task_ids=None):
             label = item.get('label')
             confidence = item.get('confidence')
             evidence = item.get('evidence_segment_ids')
-            if (ident not in all_ids or ident in seen_jev or label not in LABELS
+            if (not isinstance(ident, str) or ident not in all_ids or ident in seen_jev
+                    or not isinstance(label, str) or label not in LABELS
                     or type(confidence) not in (int, float) or not math.isfinite(confidence)
                     or not 0 <= confidence <= 1 or not isinstance(evidence, list)
-                    or not evidence or len(evidence) != len(set(evidence))
-                    or any(not isinstance(value, str) for value in evidence)
+                    or not evidence or any(not isinstance(value, str) for value in evidence)
+                    or len(evidence) != len(set(evidence))
                     or not set(evidence) <= all_ids
                     or by_id[ident]['predicted_label'] != label):
                 raise ValueError('invalid_trace_jev_contract')
@@ -536,6 +636,7 @@ def summarize_trace(rows, expected_task_ids=None):
     for row in rows:
         if not isinstance(row, dict) or row.get('experiment') != 'agent_trace_evaluation':
             raise ValueError('invalid_trace_row')
+        _validate_trace_metadata(row)
         a_pair = (row.get('a', {}).get('model'), row.get('a', {}).get('reasoning_effort'))
         b_pair = (row.get('b', {}).get('model'), row.get('b', {}).get('reasoning_effort'))
         if a_pair == b_pair and a_pair in allowed_pairs:
@@ -543,6 +644,12 @@ def summarize_trace(rows, expected_task_ids=None):
         derived = recomputed_comparable(row)
         if bool(row.get('comparable')) != derived:
             raise ValueError('trace_comparable_mismatch')
+        a, b, jev = (row[k] for k in ('a', 'b', 'jev'))
+        models_match = a['status'] == b['status'] == 'OK' and a_pair == b_pair and a_pair in allowed_pairs
+        exclusion = (None if derived else 'invalid_jev_result' if jev['status'] != 'OK'
+                     else 'model_effort_or_review_mismatch' if not models_match else 'review_input_mismatch')
+        if row.get('exclusion_reason') != exclusion:
+            raise ValueError('trace_exclusion_reason_mismatch')
     if len(sol_pairs) > 1:
         raise ValueError('mixed_sol_provenance')
 

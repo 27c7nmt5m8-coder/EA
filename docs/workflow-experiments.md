@@ -12,7 +12,7 @@
 
 ## 実行方法
 
-Repository rootからPython 3.11以上で実行する。通常実行はofflineで、fixtureと分離した結果ファイルを作るだけである。`--live` は追跡済み・未変更の専用fixtureに限り、現在の `origin/main` とfixtureのbase SHAが一致した場合だけ外部呼出しを許す。プロバイダー料金が発生し得るため、pilotのlive実行は個別に明示して行う。
+Repository rootからPython 3.11以上で実行する。通常実行はofflineで、fixtureと分離した結果ファイルを作るだけである。`--live` は追跡済み・未変更の専用fixtureに限り、fixtureの凍結baseが現在の `origin/main` の祖先であり、実行HEADがその `origin/main` の子孫である場合だけ外部呼出しを許す。凍結baseは再ラベルせず保持する。プロバイダー料金が発生し得るため、pilotのlive実行は個別に明示して行う。
 
 ```powershell
 python -m tools.workflow_eval.cli trace-benchmark
@@ -52,5 +52,7 @@ Jevgrepは検索対象sourceを外部providerへ送信する。既存ignoreを�
 `experimental-report` は必ず、(1)品質、(2)token、(3)費用、(4)時間、(5)context retrieval、(6)rework/test failure、(7)coverage / missing data、(8)limitationsを分けて出力する。各実験のpilot statusを別々に示す。critical missが0件でも、品質coverageが欠ける場合は品質維持を認定しない。
 
 固定fixtureのID全体を分母にし、未実行・比較不能ケースをcoverageへ示す。fixtureのdigestが変わった古い結果は現在の結果として集計しない。Jevgrep検索後のSolが失敗・未実行でも他ケースの集計は継続する。そのケースはA/B比較から除外し、検索自体のstatusとSolのstatusを別に記録する。取得済みのusage・file漏れは残し、critical file漏れのBLOCKEDを消さない。
+
+再集計では保存済み行の観測値・欠測理由・品質計算・fixtureのラベルとpriorityを再検証する。Jevgrepの新規行は比較に使ったarm identity、base、source digestとallowlistを `comparison_binding` に保持し、比較可否を再計算する。旧行にこの根拠がない場合も測定値・miss・歴史的model/effortは読めるが、ペア比較は `comparison_binding_not_recorded` として明示的に除外する。元の行や履歴を再ラベルしない。
 
 停止するにはlive flagを使わず実行を止める。実装を撤回する場合は本PRの開発補助コード・fixture・文書をrevertしてchecksumを更新する。既存EA、CI、30/50 cohortには移行処理はない。

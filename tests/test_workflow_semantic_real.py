@@ -121,8 +121,7 @@ class RealSemantic(unittest.TestCase):
 
     def test_critical_miss_survives_retry_invalid_pair_and_sol_recovery(self):
         row = self.row(b=observation('no_regression', 'jev-1.13.0', None))
-        retry = self.row()
-        retry['a']['model'] = 'unknown'
+        retry = self.row(a=observation(model='unknown'))
         report = self.report([row, retry])
         self.assertEqual(report['verdict'], 'BLOCKED_CRITICAL_MISS')
         self.assertEqual(report['critical_miss']['count'], 1)
@@ -136,8 +135,7 @@ class RealSemantic(unittest.TestCase):
         self.assertEqual(report['quality']['jev']['scored'], 0)
 
     def test_model_mismatch_excluded_from_agreement_not_safety(self):
-        row = self.row(b=observation('no_regression', 'jev-1.13.0', None))
-        row['a']['reasoning_effort'] = 'medium'
+        row = self.row(a=observation(effort='medium'), b=observation('no_regression', 'jev-1.13.0', None))
         report = self.report([row])
         self.assertEqual(report['agreement']['compared'], 0)
         self.assertEqual(report['critical_miss']['count'], 1)
@@ -196,6 +194,8 @@ class RealSemantic(unittest.TestCase):
         row = self.row(); row['a']['private_trace'] = 'private raw trace'
         with self.assertRaises(ValueError): self.report([row])
         row = self.row(); row['a']['status'] = 'UNAVAILABLE'; row['a']['reason'] = 'password=supersecret'
+        with self.assertRaises(ValueError): self.report([row])
+        row = self.row(a=dict(status='UNAVAILABLE', reason='password=supersecret'))
         self.assertNotIn('supersecret', json.dumps(self.report([row])))
 
     def test_cli_offline_separate_and_exclusive_without_calls(self):

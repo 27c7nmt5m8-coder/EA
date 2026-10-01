@@ -58,6 +58,7 @@ METRICS = ("sol_input_tokens", "sol_output_tokens", "sol_total_tokens",
            "elapsed_seconds", "additional_searches", "context_retrievals",
            "rework_count", "test_failures", "source_bytes", "context_bytes",
            "unnecessary_files_opened", "source_universe_coverage")
+VERSION = re.compile(r'(?:(?:@dzhng/jevgrep|jevgrep|jg) )?v?\d+\.\d+\.\d+(?:-[A-Za-z0-9.-]+)?\Z')
 
 
 def _safe_path(value: str) -> str:
@@ -112,7 +113,8 @@ def validate_case(case: dict, repository_root: Path | None = None) -> dict:
 
 def load_cases(path: str | Path, repository_root: str | Path | None = None) -> list[dict]:
     data = json.loads(Path(path).read_text(encoding="utf-8"))
-    if not isinstance(data, dict) or set(data) != {"schema_version", "cases"} or data["schema_version"] != 1:
+    if (not isinstance(data, dict) or set(data) != {"schema_version", "cases"}
+            or type(data['schema_version']) is not int or data["schema_version"] != 1):
         raise ValueError("invalid_jevgrep_fixture")
     cases = data["cases"]
     if not isinstance(cases, list) or len({c.get("id") for c in cases if isinstance(c, dict)}) != len(cases):
@@ -289,7 +291,7 @@ def run_discovery(case: dict, repository_root: str | Path, *, live: bool = False
             if version_run.returncode != 0:
                 return _result("UNAVAILABLE", "jg_version_failure", time.perf_counter() - start)
             version = version_run.stdout.strip().splitlines()[0][:80]
-            if not re.fullmatch(r"[A-Za-z0-9@/._ +()-]{1,80}", version):
+            if len(version) > 80 or not VERSION.fullmatch(version):
                 return _result("UNAVAILABLE", "invalid_jg_version", time.perf_counter() - start)
             # Official CLI `--no-cache` bypasses previously validated scores;
             # old responses must never be credited as this run's discovery.
@@ -323,10 +325,12 @@ def _metric(value, *, integer: bool = True) -> dict:
         item = _known(value)
     number = item["value"]
     if number is None:
-        if item["reason"] not in METRIC_REASONS - {None} or item["coverage"] != 0:
+        if (not isinstance(item['reason'], str) or item["reason"] not in METRIC_REASONS - {None}
+                or type(item['coverage']) is not int or item["coverage"] != 0):
             raise ValueError("missing_metric_requires_reason")
     elif (type(number) not in ((int,) if integer else (int, float)) or
-          not math.isfinite(number) or number < 0 or item["reason"] is not None or item["coverage"] != 1):
+          not math.isfinite(number) or number < 0 or item["reason"] is not None
+          or type(item['coverage']) is not int or item["coverage"] != 1):
         raise ValueError("invalid_jevgrep_metric")
     return item
 
@@ -350,8 +354,8 @@ def score_arm(case: dict, arm: dict) -> dict:
     if count is not None and (type(count) is not int or count < 0):
         raise ValueError("invalid_stage_file_count")
     jg_version = arm.get("jg_version")
-    if jg_version is not None and (not isinstance(jg_version, str) or
-                                   not re.fullmatch(r"[A-Za-z0-9@/._ +()-]{1,80}", jg_version)):
+    if jg_version is not None and (not isinstance(jg_version, str) or len(jg_version) > 80 or
+                                   not VERSION.fullmatch(jg_version)):
         raise ValueError("invalid_jg_version")
     files = arm.get("found_files")
     if not isinstance(files, list) or len(files) != len(set(files)):
@@ -411,6 +415,16 @@ def evaluate_pair(case: dict, a: dict, b: dict, *, current_base_sha: str,
                   expected_source_paths: list[str] | None = None) -> dict:
     validate_case(case)
     a_score, b_score = score_arm(case, a), score_arm(case, b)
+    def identity(arm):
+        values = {key: arm.get(key) for key in ('task_id', 'base_sha', 'sol_model', 'sol_effort')}
+        for key, pattern in (('task_id', SAFE_ID), ('base_sha', SHA)):
+            if not isinstance(values[key], str) or not pattern.fullmatch(values[key]): values[key] = None
+        if values['sol_model'] not in COMPARISON_SOL_MODELS: values['sol_model'] = None
+        if values['sol_effort'] not in (None, 'high', 'xhigh', 'medium', 'low'): values['sol_effort'] = None
+        return values
+    # Persist only approved identifiers and derive fixed reasons from that same
+    # sanitized identity, so invalid provider text cannot survive in binding.
+    a, b = dict(a, **identity(a)), dict(b, **identity(b))
     reasons = []
     if current_base_sha != case["base_sha"]:
         reasons.append("stale_base_sha")
@@ -459,16 +473,49 @@ def evaluate_pair(case: dict, a: dict, b: dict, *, current_base_sha: str,
     models_match = model == b.get("sol_model")
     provenance = ("mismatched" if not models_match else "unrecognized" if not known_model
                   else "current" if model == CURRENT_SOL_MODEL else "legacy_historical")
+    binding = dict(current_base_sha=current_base_sha, expected_source_sha256=expected_source_sha256,
+                   expected_source_paths=expected_source_paths, a_identity=identity(a), b_identity=identity(b))
+    _validate_comparison_binding(binding)
     # Declared observation identity is metadata, not proof of model execution.
     return {"case_id": case["id"], "kind": case["kind"], "base_sha": case["base_sha"],
             "sol_model": model if known_model and models_match else None,
             "sol_effort": effort if known_effort and a.get("sol_effort") == b.get("sol_effort") else None,
             "model_provenance": provenance,
+            "comparison_binding": binding,
             "comparison_status": "COMPARABLE" if not reasons else "EXCLUDED",
             "exclusion_reasons": sorted(set(reasons)), "a": a_score, "b": b_score}
 
 
-def summarize_pairs(rows: list[dict], *, expected_case_ids: list[str] | None = None) -> dict:
+def _validate_comparison_binding(binding):
+    if not isinstance(binding, dict) or set(binding) != {
+            'current_base_sha', 'expected_source_sha256', 'expected_source_paths', 'a_identity', 'b_identity'}:
+        raise ValueError('invalid_jevgrep_comparison_binding')
+    if not isinstance(binding['current_base_sha'], str) or not SHA.fullmatch(binding['current_base_sha']):
+        raise ValueError('invalid_jevgrep_comparison_binding')
+    fingerprint = binding['expected_source_sha256']
+    if fingerprint is not None and (not isinstance(fingerprint, str) or not re.fullmatch(r'[0-9a-f]{64}', fingerprint)):
+        raise ValueError('invalid_jevgrep_comparison_binding')
+    paths = binding['expected_source_paths']
+    if paths is not None:
+        if not isinstance(paths, list) or any(not isinstance(path, str) for path in paths) or len(paths) != len(set(paths)):
+            raise ValueError('invalid_jevgrep_comparison_binding')
+        for path in paths: _safe_path(path)
+    for arm in ('a_identity', 'b_identity'):
+        identity = binding[arm]
+        if not isinstance(identity, dict) or set(identity) != {'task_id', 'base_sha', 'sol_model', 'sol_effort'}:
+            raise ValueError('invalid_jevgrep_comparison_binding')
+        for key, pattern in (('task_id', SAFE_ID), ('base_sha', SHA)):
+            value = identity[key]
+            if value is not None and (not isinstance(value, str) or not pattern.fullmatch(value)):
+                raise ValueError('invalid_jevgrep_comparison_binding')
+        if identity['sol_model'] is not None and (not isinstance(identity['sol_model'], str)
+                or identity['sol_model'] not in COMPARISON_SOL_MODELS):
+            raise ValueError('invalid_jevgrep_comparison_binding')
+        if identity['sol_effort'] not in (None, 'high', 'xhigh', 'medium', 'low'):
+            raise ValueError('invalid_jevgrep_comparison_binding')
+
+
+def summarize_pairs(rows: list[dict], *, expected_case_ids: list[str] | None = None, cases=None) -> dict:
     if not isinstance(rows, list) or len({row["case_id"] for row in rows}) != len(rows):
         raise ValueError("duplicate_jevgrep_task")
     if any(row.get("kind") not in KINDS or row.get("comparison_status") not in ("COMPARABLE", "EXCLUDED")
@@ -476,7 +523,90 @@ def summarize_pairs(rows: list[dict], *, expected_case_ids: list[str] | None = N
         raise ValueError("invalid_jevgrep_result")
     provenance_fields = {"sol_model", "sol_effort", "model_provenance"}
     provenance_kinds = ("current", "legacy_historical", "mismatched", "unrecognized", "not_recorded")
+    if cases is None:
+        cases = load_cases(Path(__file__).resolve().parents[2] / 'tests/fixtures/workflow_jevgrep_cases.json')
+    by_id = {case['id']: validate_case(case) for case in cases}
+    # Old metadata remains readable and retains measured values; absent binding
+    # is explicitly excluded from paired comparison rather than silently trusted.
+    rows = [dict(row, comparison_status='EXCLUDED', exclusion_reasons=['comparison_binding_not_recorded'])
+            if 'comparison_binding' not in row else row for row in rows]
+    observed_pairs = set()
     for row in rows:
+        if not isinstance(row.get('exclusion_reasons'), list) or any(
+                not isinstance(reason, str) or reason not in {
+                    'stale_base_sha', 'task_id_mismatch', 'base_sha_mismatch', 'sol_model_mismatch',
+                    'sol_effort_mismatch', 'case_identity_mismatch', 'invalid_sol_comparison', 'incomplete_arm',
+                    'a_sol_not_successful', 'b_sol_not_successful', 'a_sol_evidence_missing', 'b_sol_evidence_missing',
+                    'expected_source_paths_missing', 'b_files_outside_source_allowlist', 'must_find_outside_source_allowlist',
+                    'b_cache_not_bypassed', 'expected_source_fingerprint_missing', 'b_source_fingerprint_mismatch',
+                    'b_stage_provenance_missing', 'comparison_binding_not_recorded'} for reason in row['exclusion_reasons']):
+            raise ValueError('invalid_jevgrep_exclusions')
+        if (row['comparison_status'] == 'COMPARABLE') != (not row['exclusion_reasons']):
+            raise ValueError('jevgrep_comparison_mismatch')
+        for arm in ('a', 'b'):
+            record = row[arm]
+            version = record.get('jg_version')
+            if version is not None and (not isinstance(version, str) or len(version) > 80 or not VERSION.fullmatch(version)):
+                raise ValueError('invalid_jg_version')
+            metrics = record.get('metrics')
+            if not isinstance(metrics, dict) or set(metrics) != set(METRICS):
+                raise ValueError('invalid_jevgrep_metrics')
+            checked = {name: _metric(value, integer=name not in (
+                'elapsed_seconds', 'combined_cost', 'source_universe_coverage')) for name, value in metrics.items()}
+            for field in ('task_success', 'must_find_recall', 'relevant_file_precision', 'relevant_file_recall'):
+                item = _metric(record.get(field), integer=field == 'task_success')
+                if item['value'] is not None and item['value'] > 1:
+                    raise ValueError('invalid_jevgrep_quality')
+            numbers = {key: checked[key]['value'] for key in METRICS}
+            if (numbers['source_universe_coverage'] is not None and numbers['source_universe_coverage'] > 1 or
+                    numbers['sol_input_tokens'] is not None and numbers['sol_output_tokens'] is not None and
+                    numbers['sol_total_tokens'] != numbers['sol_input_tokens'] + numbers['sol_output_tokens'] or
+                    numbers['sol_total_tokens'] is not None and numbers['jevgrep_tokens'] is not None and
+                    numbers['combined_total_tokens'] != numbers['sol_total_tokens'] + numbers['jevgrep_tokens'] or
+                    (numbers['sol_total_tokens'] is None or numbers['jevgrep_tokens'] is None) and
+                    numbers['combined_total_tokens'] is not None):
+                raise ValueError('inconsistent_jevgrep_usage')
+            # Reuse the producer's allowlists for provenance and path metadata.
+            imported = {key: record.get(key) for key in ('status', 'reason', 'sol_status', 'cache_bypassed',
+                         'source_sha256', 'stage_file_count', 'jg_version', 'found_files', 'task_success')}
+            imported.update(metrics)
+            # Cost provenance is intentionally not persisted; already-scored costs
+            # remain numeric metadata, not a new provider price assertion.
+            imported.pop('combined_cost')
+            if row['case_id'] not in by_id or row['kind'] != by_id[row['case_id']]['kind']:
+                raise ValueError('jevgrep_fixture_contract_mismatch')
+            canonical = score_arm(by_id[row['case_id']], imported)
+            for field in ('found_files', 'must_find_misses', 'important_file_misses', 'critical_file_misses',
+                          'must_find_recall', 'relevant_file_precision', 'relevant_file_recall', 'task_success'):
+                if canonical[field] != record.get(field):
+                    raise ValueError('jevgrep_fixture_contract_mismatch')
+            if row['comparison_status'] == 'COMPARABLE' and (record['status'] != 'OK'
+                    or record.get('sol_status') not in (None, 'OK') or numbers['sol_input_tokens'] is None
+                    or numbers['sol_output_tokens'] is None or record['task_success']['value'] is None):
+                raise ValueError('jevgrep_comparison_mismatch')
+        if row['comparison_status'] == 'COMPARABLE' and (row['b'].get('cache_bypassed') is not True
+                or not isinstance(row['b'].get('source_sha256'), str)
+                or not re.fullmatch(r'[0-9a-f]{64}', row['b']['source_sha256'])
+                or type(row['b'].get('stage_file_count')) is not int or row['b']['stage_file_count'] < 1):
+            raise ValueError('jevgrep_comparison_mismatch')
+        if 'comparison_binding' in row:
+            binding = row['comparison_binding']
+            _validate_comparison_binding(binding)
+            imported = {}
+            for arm in ('a', 'b'):
+                record = row[arm]
+                imported[arm] = dict(record, **record['metrics'], **binding[arm+'_identity'])
+                imported[arm].pop('combined_cost')
+            canonical = evaluate_pair(by_id[row['case_id']], imported['a'], imported['b'],
+                                      current_base_sha=binding['current_base_sha'],
+                                      expected_source_sha256=binding['expected_source_sha256'],
+                                      expected_source_paths=binding['expected_source_paths'])
+            if any(row.get(field) != canonical[field] for field in ('base_sha', 'comparison_status', 'exclusion_reasons')):
+                raise ValueError('jevgrep_comparison_mismatch')
+            if provenance_fields.issubset(row) and any(row[field] != canonical[field] for field in provenance_fields):
+                raise ValueError('invalid_sol_provenance')
+            if canonical['model_provenance'] in ('current', 'legacy_historical'):
+                observed_pairs.add((canonical['sol_model'], canonical['sol_effort']))
         present = provenance_fields.intersection(row)
         if not present:
             continue  # Preserve old rows without inferring a new model identity.
@@ -489,6 +619,9 @@ def summarize_pairs(rows: list[dict], *, expected_case_ids: list[str] | None = N
                 effort not in (None, "high", "xhigh") or
                 row["comparison_status"] == "COMPARABLE" and not recognized):
             raise ValueError("invalid_sol_provenance")
+        if recognized: observed_pairs.add((model, effort))
+    if len(observed_pairs) > 1:
+        raise ValueError('mixed_sol_provenance')
     expected = None
     if expected_case_ids is not None:
         if (not isinstance(expected_case_ids, list) or

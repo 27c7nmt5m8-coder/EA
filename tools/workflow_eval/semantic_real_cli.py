@@ -94,4 +94,3 @@ def execute(args, root):
     if args.live and not live_available:
         report.update(verdict='UNAVAILABLE', live_reason='missing_credentials')
     return exclusive_output(directory, prefix+'-report.json', report)
-

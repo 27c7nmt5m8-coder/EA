@@ -106,7 +106,7 @@ def load_cases(path, root=ROOT, *, require_source_objects=False):
     raw = Path(path).read_bytes()
     dataset = json.loads(raw)
     if (not isinstance(dataset, dict) or set(dataset) != {'version', 'cohort', 'cases'} or
-            dataset['version'] != 1 or dataset['cohort'] != COHORT):
+            type(dataset['version']) is not int or dataset['version'] != 1 or dataset['cohort'] != COHORT):
         raise ValueError('synthetic_or_unknown_cohort')
     cases = validate_cases(dataset['cases'], root, require_source_objects=require_source_objects)
     manifest = json.loads(MANIFEST.read_text(encoding='utf-8'))
@@ -136,8 +136,8 @@ def normalize(value, arm, *, expected_effort=SOL_EFFORT):
         result.update(model=model, reasoning_effort=effort if arm == 'sol' else None)
     if value.get('status') != 'OK':
         reasons = {'timeout', 'missing_credentials', 'nonzero_exit', 'network_unavailable',
-                   'invalid_response', 'not_run', 'model_unavailable'}
-        result['reason'] = value.get('reason') if value.get('reason') in reasons else 'invalid_response'
+                   'invalid_response', 'not_run', 'model_unavailable', 'model_effort_mismatch'}
+        result['reason'] = value.get('reason') if isinstance(value.get('reason'), str) and value['reason'] in reasons else 'invalid_response'
         return result
     if not valid_model:
         result['reason'] = 'model_effort_mismatch'
@@ -192,6 +192,15 @@ def summarize(rows, cases, *, base_sha, dataset_sha256):
                     set(observation['usage']) - {'input_tokens', 'output_tokens', 'total_tokens',
                     'cached_input_tokens', 'cache_write_input_tokens', 'reasoning_output_tokens'}):
                 raise ValueError('unsafe_usage_fields')
+            choice = observation['choice']
+            answer = dict(type='choice', choice=choice, confidence=observation['confidence'],
+                          probabilities={k: 1 if k == choice else 0 for k in CHOICES})
+            effort = observation['reasoning_effort'] if arm == 'a' and observation['reasoning_effort'] in RECORDED_SOL_EFFORTS else SOL_EFFORT
+            canonical = normalize(dict(observation, answer=answer), 'sol' if arm == 'a' else 'jev', expected_effort=effort)
+            if canonical != observation:
+                raise ValueError('invalid_semantic_real_observation')
+        if row['shadow_only'] is not True or row['actual_action'] != 'none':
+            raise ValueError('unsafe_shadow_action')
         case = expected[row['id']]
         if (row.get('base_sha') != base_sha or row.get('dataset_sha256') != dataset_sha256 or
                 row.get('case_fingerprint') != fingerprint(case) or

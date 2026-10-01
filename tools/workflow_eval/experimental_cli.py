@@ -167,7 +167,8 @@ def _trace(args, root, output):
     raw_dataset = Path(args.cases).read_bytes()
     dataset_sha = hashlib.sha256(raw_dataset).hexdigest()
     dataset = json.loads(raw_dataset)
-    if not isinstance(dataset, dict) or dataset.get('schema_version') != 1 or not isinstance(dataset.get('cases'), list):
+    if (not isinstance(dataset, dict) or type(dataset.get('schema_version')) is not int
+            or dataset['schema_version'] != 1 or not isinstance(dataset.get('cases'), list)):
         raise ValueError('invalid_trace_dataset')
     cases = dataset['cases']
     base = _base(args, root, fixture_base=_fixture_base(cases))
@@ -289,7 +290,7 @@ def _jevgrep(args, root, output):
         rows.append(row)
     name = _run_name('jevgrep')
     output(root, name + '-rows.json', rows)
-    report = summarize_pairs(rows, expected_case_ids=[case['id'] for case in cases])
+    report = summarize_pairs(rows, expected_case_ids=[case['id'] for case in cases], cases=cases)
     if args.live and not report['coverage_missing_data']['comparable_pairs']:
         unavailable_os = all(row['b']['status'] == 'UNAVAILABLE' and
                              row['b']['reason'] == 'unsupported_environment' for row in rows)
@@ -338,9 +339,21 @@ def _report(args, root, output):
         trace_dataset_sha = hashlib.sha256(trace_raw).hexdigest()
         expected_trace = {case['task_id']: case_fingerprint(case)
                           for case in trace_fixture['cases']}
+        trace_by_id = {case['task_id']: case for case in trace_fixture['cases']}
         fixture_trace_base = _fixture_base(trace_fixture['cases'])
         if trace_base != fixture_trace_base:
             raise ValueError('stale_trace_rows')
+        for row in trace_rows:
+            case = trace_by_id[row['task_id']]
+            expected_labels = {segment['id']: segment['expected_label'] for segment in case['segments']}
+            labels = row.get('labels')
+            if (row.get('trace_id') != case['trace_id'] or row.get('priority') != dict(
+                    critical_segment_ids=sorted(case.get('critical_segment_ids', [])),
+                    important_segment_ids=sorted(case.get('important_segment_ids', [])))
+                    or not isinstance(labels, list) or len(labels) != len(expected_labels)
+                    or any(not isinstance(item, dict) or not isinstance(item.get('segment_id'), str)
+                           or item.get('expected_label') != expected_labels.get(item['segment_id']) for item in labels)):
+                raise ValueError('trace_fixture_contract_mismatch')
         if len(expected_trace) != len(trace_fixture['cases']) or any(
                 r.get('base_sha') != trace_base or
                 r.get('dataset_sha256') != trace_dataset_sha or
@@ -348,7 +361,9 @@ def _report(args, root, output):
                 for r in trace_rows):
             raise ValueError('stale_trace_rows')
     if grep_rows is not None:
-        grep_fixture = json.loads(Path(args.jevgrep_cases).read_text(encoding='utf-8'))
+        from .jevgrep_benchmark import load_cases as load_grep_cases
+        grep_cases = load_grep_cases(args.jevgrep_cases)
+        grep_fixture = dict(cases=grep_cases)
         expected_grep_ids = {case['id'] for case in grep_fixture['cases']}
         grep_dataset_sha = hashlib.sha256(Path(args.jevgrep_cases).read_bytes()).hexdigest()
         fixture_grep_base = _fixture_base(grep_fixture['cases'])
@@ -362,10 +377,15 @@ def _report(args, root, output):
     semantic = None
     if semantic_rows is not None:
         semantic_cases, dataset_sha = load_cases(args.semantic_cases)
+        by_id = {case['id']: case for case in semantic_cases}
+        if any(not isinstance(row, dict) or row.get('id') not in by_id or
+               any(row.get(field) != by_id[row['id']][field] for field in
+                   ('mutation', 'split', 'expected_regression', 'severity')) for row in semantic_rows):
+            raise ValueError('semantic_fixture_contract_mismatch')
         semantic = summarize_semantic(semantic_rows, current_base_sha=semantic_base,
                                       dataset_sha256=dataset_sha,
                                       expected_case_ids=[case['id'] for case in semantic_cases])
-    grep = summarize_pairs(grep_rows, expected_case_ids=list(expected_grep_ids)) if grep_rows is not None else None
+    grep = summarize_pairs(grep_rows, expected_case_ids=list(expected_grep_ids), cases=grep_cases) if grep_rows is not None else None
     missing = dict(value=None, reason='experiment_rows_not_provided', coverage=0)
     trace_blocked = bool(trace and trace['decision'] == 'BLOCKED_CRITICAL_MISS')
     grep_blocked = bool(grep and (grep.get('critical_file_miss_cases') or
