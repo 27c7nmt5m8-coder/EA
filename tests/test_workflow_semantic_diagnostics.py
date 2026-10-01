@@ -91,6 +91,12 @@ class Diagnostics(unittest.TestCase):
         self.assertEqual(real.SOL_EFFORT, 'high')
         self.assertFalse(diag.summarize(self.plan, [])['official_results_modified'])
 
+    def test_current_high_protocol_can_bind_post_integration_dependency(self):
+        dependency = '8' * 40
+        plan = diag.protocol(self.cases, dependency_sha=dependency)
+        self.assertEqual(plan['dependency_sha'], dependency)
+        self.assertEqual(plan['sol_effort'], 'high')
+
     def test_historical_xhigh_plan_and_blind_rows_remain_reportable(self):
         historical_plan = diag.protocol(self.cases, sol_effort=real.HISTORICAL_SOL_EFFORT)
         row = self.row(provider='sol')
