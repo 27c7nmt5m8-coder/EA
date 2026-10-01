@@ -272,7 +272,7 @@ def _jevgrep(args, root, output):
                                                source_paths=source_paths))
         elif discovery_rows is not None:
             prior = discovery_rows.get(case['id'])
-            if (not isinstance(prior, dict) or prior.get('base_sha') != trace_base or
+            if (not isinstance(prior, dict) or prior.get('base_sha') != base or
                     prior.get('dataset_sha256') != dataset_sha or
                     prior.get('retrieval_only') is not True):
                 raise ValueError('stale_or_missing_discovery')
@@ -338,6 +338,9 @@ def _report(args, root, output):
         trace_dataset_sha = hashlib.sha256(trace_raw).hexdigest()
         expected_trace = {case['task_id']: case_fingerprint(case)
                           for case in trace_fixture['cases']}
+        fixture_trace_base = _fixture_base(trace_fixture['cases'])
+        if trace_base != fixture_trace_base:
+            raise ValueError('stale_trace_rows')
         if len(expected_trace) != len(trace_fixture['cases']) or any(
                 r.get('base_sha') != trace_base or
                 r.get('dataset_sha256') != trace_dataset_sha or
@@ -348,6 +351,9 @@ def _report(args, root, output):
         grep_fixture = json.loads(Path(args.jevgrep_cases).read_text(encoding='utf-8'))
         expected_grep_ids = {case['id'] for case in grep_fixture['cases']}
         grep_dataset_sha = hashlib.sha256(Path(args.jevgrep_cases).read_bytes()).hexdigest()
+        fixture_grep_base = _fixture_base(grep_fixture['cases'])
+        if grep_base != fixture_grep_base:
+            raise ValueError('stale_jevgrep_rows')
         if len(expected_grep_ids) != len(grep_fixture['cases']) or any(
                 r.get('base_sha') != grep_base or r.get('case_id') not in expected_grep_ids or
                 r.get('dataset_sha256') != grep_dataset_sha for r in grep_rows):
