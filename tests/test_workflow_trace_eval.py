@@ -109,6 +109,25 @@ class TraceEvaluationTests(unittest.TestCase):
             m.summarize_trace([current, historical],
                               expected_task_ids=[current['task_id'], historical['task_id']])
 
+    def test_duplicate_task_cannot_hide_mixed_sol_provenance(self):
+        current = m.run_trace_case(*self.observations(self.cases[0]))
+        case, a, b, jev = self.observations(self.cases[0])
+        a['model'] = b['model'] = 'gpt-6-sol'
+        a['reasoning_effort'] = b['reasoning_effort'] = 'xhigh'
+        historical = m.run_trace_case(case, a, b, jev)
+        with self.assertRaisesRegex(ValueError, 'mixed_sol_provenance'):
+            m.summarize_trace([current, historical], expected_task_ids=[current['task_id']])
+
+    def test_summary_recomputes_and_rejects_forged_comparable_flag(self):
+        case, a, b, jev = self.observations(self.cases[0])
+        b['model'] = 'gpt-6-sol'
+        b['reasoning_effort'] = 'xhigh'
+        row = m.run_trace_case(case, a, b, jev)
+        self.assertFalse(row['comparable'])
+        row['comparable'] = True
+        with self.assertRaisesRegex(ValueError, 'trace_comparable_mismatch'):
+            m.summarize_trace([row], expected_task_ids=[row['task_id']])
+
     def test_critical_cases_use_sol_high(self):
         case, a, b, jev = self.observations(self.cases[4])
         a['reasoning_effort'] = b['reasoning_effort'] = 'high'
