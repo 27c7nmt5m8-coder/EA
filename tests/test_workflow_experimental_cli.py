@@ -127,6 +127,34 @@ class ExperimentalCliTests(unittest.TestCase):
             self.assertEqual(report['cost']['trace']['value'], None)
             self.assertFalse(report['real_task_cohort_included'])
 
+    def test_experimental_report_accepts_each_experiments_own_valid_base(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            directory = Path(tmp) / '.workflow-eval'
+            trace_fixture = ROOT / 'tests/fixtures/workflow_trace_cases.json'
+            semantic_fixture = ROOT / 'tests/fixtures/workflow_semantic_regression_cases.json'
+            grep_fixture = ROOT / 'tests/fixtures/workflow_jevgrep_cases.json'
+
+            trace = self.command(tmp, 'trace-benchmark', '--cases', str(trace_fixture))
+            semantic = self.command(tmp, 'semantic-regression', '--cases', str(semantic_fixture))
+            grep = self.command(tmp, 'jevgrep-benchmark', '--cases', str(grep_fixture))
+            self.assertEqual(trace.returncode, 0, trace.stderr)
+            self.assertEqual(semantic.returncode, 0, semantic.stderr)
+            self.assertEqual(grep.returncode, 0, grep.stderr)
+
+            trace_rows = next(directory.glob('trace-eval-*-rows.json'))
+            semantic_rows = next(directory.glob('semantic-regression-*-rows.json'))
+            grep_rows = next(directory.glob('jevgrep-*-rows.json'))
+            combined = self.command(
+                tmp, 'experimental-report',
+                '--trace-rows', str(trace_rows), '--trace-cases', str(trace_fixture),
+                '--semantic-rows', str(semantic_rows), '--semantic-cases', str(semantic_fixture),
+                '--jevgrep-rows', str(grep_rows), '--jevgrep-cases', str(grep_fixture))
+            self.assertEqual(combined.returncode, 0, combined.stderr)
+            report = json.loads((directory / 'experimental-summary.json').read_text(encoding='utf-8'))
+            self.assertEqual(set(report['base_sha_by_experiment']), {'trace', 'semantic', 'jevgrep'})
+            self.assertNotEqual(report['base_sha_by_experiment']['trace'],
+                                report['base_sha_by_experiment']['semantic'])
+
     def test_stale_trace_fixture_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
             fixture = ROOT / 'tests/fixtures/workflow_trace_cases.json'
