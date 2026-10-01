@@ -163,6 +163,38 @@ class ExperimentalCliTests(unittest.TestCase):
             self.assertNotEqual(run.returncode, 0)
             self.assertFalse((Path(tmp) / '.workflow-eval' / 'real-tasks.json').exists())
 
+    def test_report_rejects_trace_rows_rebased_away_from_fixture(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            fixture = ROOT / 'tests/fixtures/workflow_trace_cases.json'
+            run = self.command(tmp, 'trace-benchmark', '--cases', str(fixture))
+            self.assertEqual(run.returncode, 0, run.stderr)
+            original = next((Path(tmp) / '.workflow-eval').glob('trace-eval-*-rows.json'))
+            rows = json.loads(original.read_text(encoding='utf-8'))
+            for row in rows:
+                row['base_sha'] = 'f' * 40
+                row['a']['base_sha'] = 'f' * 40
+                row['b']['base_sha'] = 'f' * 40
+            changed = Path(tmp) / 'rebased-trace.json'
+            changed.write_text(json.dumps(rows), encoding='utf-8')
+            report = self.command(tmp, 'experimental-report', '--trace-rows', str(changed),
+                                  '--trace-cases', str(fixture))
+            self.assertNotEqual(report.returncode, 0)
+
+    def test_report_rejects_jevgrep_rows_rebased_away_from_fixture(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            fixture = ROOT / 'tests/fixtures/workflow_jevgrep_cases.json'
+            run = self.command(tmp, 'jevgrep-benchmark', '--cases', str(fixture))
+            self.assertEqual(run.returncode, 0, run.stderr)
+            original = next((Path(tmp) / '.workflow-eval').glob('jevgrep-*-rows.json'))
+            rows = json.loads(original.read_text(encoding='utf-8'))
+            for row in rows:
+                row['base_sha'] = 'f' * 40
+            changed = Path(tmp) / 'rebased-jevgrep.json'
+            changed.write_text(json.dumps(rows), encoding='utf-8')
+            report = self.command(tmp, 'experimental-report', '--jevgrep-rows', str(changed),
+                                  '--jevgrep-cases', str(fixture))
+            self.assertNotEqual(report.returncode, 0)
+
     def test_report_rejects_same_base_rows_after_trace_fixture_edit(self):
         with tempfile.TemporaryDirectory() as tmp:
             fixture = ROOT / 'tests/fixtures/workflow_trace_cases.json'
@@ -208,6 +240,33 @@ class ExperimentalCliTests(unittest.TestCase):
             result = self.command(tmp, 'experimental-report', '--trace-rows', str(rows),
                                   '--trace-cases', str(changed), '--base-sha', BASE)
             self.assertNotEqual(result.returncode, 0)
+
+    def test_jevgrep_discovery_rows_merge_path_is_executable(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            fixture = ROOT / 'tests/fixtures/workflow_jevgrep_cases.json'
+            cases = json.loads(fixture.read_text(encoding='utf-8'))['cases']
+            dataset_sha = __import__('hashlib').sha256(fixture.read_bytes()).hexdigest()
+            discovery = []
+            observations = {}
+            for case in cases:
+                discovery.append(dict(
+                    case_id=case['id'], base_sha=BASE, dataset_sha256=dataset_sha,
+                    retrieval_only=True,
+                    b=dict(status='UNAVAILABLE', reason='unsupported_environment',
+                           found_files=[])))
+                observations[case['id']] = {}
+            discovery_path = Path(tmp) / 'discovery.json'
+            observations_path = Path(tmp) / 'b-observations.json'
+            allowlist_path = Path(tmp) / 'allowlist.json'
+            discovery_path.write_text(json.dumps(discovery), encoding='utf-8')
+            observations_path.write_text(json.dumps(observations), encoding='utf-8')
+            allowlist_path.write_text(json.dumps(['src/MT3SymbolState.mqh']), encoding='utf-8')
+            run = self.command(
+                tmp, 'jevgrep-benchmark', '--cases', str(fixture), '--base-sha', BASE,
+                '--discovery-rows', str(discovery_path),
+                '--b-observations', str(observations_path),
+                '--source-allowlist', str(allowlist_path))
+            self.assertEqual(run.returncode, 0, run.stderr)
 
     def test_discovery_merge_binds_sol_observation_and_preserves_retrieval(self):
         from tools.workflow_eval.experimental_cli import merge_discovery
