@@ -272,7 +272,7 @@ def _jevgrep(args, root, output):
                                                source_paths=source_paths))
         elif discovery_rows is not None:
             prior = discovery_rows.get(case['id'])
-            if (not isinstance(prior, dict) or prior.get('base_sha') != base or
+            if (not isinstance(prior, dict) or prior.get('base_sha') != trace_base or
                     prior.get('dataset_sha256') != dataset_sha or
                     prior.get('retrieval_only') is not True):
                 raise ValueError('stale_or_missing_discovery')
@@ -304,7 +304,9 @@ def _report(args, root, output):
     from .trace_eval import summarize_trace
     from .semantic_regression import load_cases, summarize as summarize_semantic
     from .jevgrep_benchmark import summarize_pairs
-    base = _base(args, root)
+    requested_base = args.base_sha
+    if requested_base is not None and (not isinstance(requested_base, str) or not SHA.fullmatch(requested_base)):
+        raise ValueError('invalid_base_sha')
     def read(path):
         if path is None:
             return None
@@ -314,6 +316,21 @@ def _report(args, root, output):
         return value
     trace_rows, semantic_rows, grep_rows = (read(args.trace_rows), read(args.semantic_rows),
                                             read(args.jevgrep_rows))
+    def row_base(rows, label):
+        if rows is None:
+            return None
+        values = {row.get('base_sha') for row in rows if isinstance(row, dict)}
+        if len(values) != 1:
+            raise ValueError('mixed_' + label + '_base')
+        value = next(iter(values))
+        if not isinstance(value, str) or not SHA.fullmatch(value):
+            raise ValueError('invalid_' + label + '_base')
+        if requested_base is not None and value != requested_base:
+            raise ValueError('stale_' + label + '_rows')
+        return value
+    trace_base = row_base(trace_rows, 'trace')
+    semantic_base = row_base(semantic_rows, 'semantic')
+    grep_base = row_base(grep_rows, 'jevgrep')
     if trace_rows is not None:
         from .trace_eval import case_fingerprint
         trace_raw = Path(args.trace_cases).read_bytes()
@@ -332,14 +349,14 @@ def _report(args, root, output):
         expected_grep_ids = {case['id'] for case in grep_fixture['cases']}
         grep_dataset_sha = hashlib.sha256(Path(args.jevgrep_cases).read_bytes()).hexdigest()
         if len(expected_grep_ids) != len(grep_fixture['cases']) or any(
-                r.get('base_sha') != base or r.get('case_id') not in expected_grep_ids or
+                r.get('base_sha') != grep_base or r.get('case_id') not in expected_grep_ids or
                 r.get('dataset_sha256') != grep_dataset_sha for r in grep_rows):
             raise ValueError('stale_jevgrep_rows')
     trace = summarize_trace(trace_rows, expected_task_ids=list(expected_trace)) if trace_rows is not None else None
     semantic = None
     if semantic_rows is not None:
         semantic_cases, dataset_sha = load_cases(args.semantic_cases)
-        semantic = summarize_semantic(semantic_rows, current_base_sha=base,
+        semantic = summarize_semantic(semantic_rows, current_base_sha=semantic_base,
                                       dataset_sha256=dataset_sha,
                                       expected_case_ids=[case['id'] for case in semantic_cases])
     grep = summarize_pairs(grep_rows, expected_case_ids=list(expected_grep_ids)) if grep_rows is not None else None
@@ -350,7 +367,11 @@ def _report(args, root, output):
     grep_unavailable_os = bool(grep_rows and all(
         r['b']['status'] == 'UNAVAILABLE' and r['b']['reason'] == 'unsupported_environment'
         for r in grep_rows))
-    report = dict(scope='shadow_experiments_only', base_sha=base,
+    bases = dict(trace=trace_base, semantic=semantic_base, jevgrep=grep_base)
+    provided_bases = {value for value in bases.values() if value is not None}
+    shared_base = next(iter(provided_bases)) if len(provided_bases) == 1 else None
+    report = dict(scope='shadow_experiments_only', base_sha=shared_base,
+                  base_sha_by_experiment=bases,
                   pilot_status={'trace': 'BLOCKED_CRITICAL_MISS' if trace_blocked else 'UNMEASURED' if trace is None or not trace['comparable_pairs'] else trace['decision'],
                                 'semantic': 'UNMEASURED' if semantic is None else semantic['verdict'],
                                 'jevgrep': 'BLOCKED_CRITICAL_FILE_MISS' if grep_blocked else 'UNAVAILABLE' if grep_unavailable_os else
