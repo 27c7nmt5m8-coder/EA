@@ -97,6 +97,18 @@ class TraceEvaluationTests(unittest.TestCase):
             self.assertFalse(row['comparable'])
             self.assertEqual(m.summarize_trace([row])['comparable_pairs'], 0)
 
+    def test_mixed_current_and_historical_sol_provenance_is_rejected(self):
+        current = m.run_trace_case(*self.observations(self.cases[0]))
+        case, a, b, jev = self.observations(self.cases[1])
+        a['model'] = b['model'] = 'gpt-6-sol'
+        a['reasoning_effort'] = b['reasoning_effort'] = 'xhigh'
+        historical = m.run_trace_case(case, a, b, jev)
+        self.assertTrue(current['comparable'])
+        self.assertTrue(historical['comparable'])
+        with self.assertRaisesRegex(ValueError, 'mixed_sol_provenance'):
+            m.summarize_trace([current, historical],
+                              expected_task_ids=[current['task_id'], historical['task_id']])
+
     def test_critical_cases_use_sol_high(self):
         case, a, b, jev = self.observations(self.cases[4])
         a['reasoning_effort'] = b['reasoning_effort'] = 'high'
