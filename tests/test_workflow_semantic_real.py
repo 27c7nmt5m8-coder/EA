@@ -136,7 +136,7 @@ class RealSemantic(unittest.TestCase):
 
     def test_model_mismatch_excluded_from_agreement_not_safety(self):
         row = self.row(b=observation('no_regression', 'jev-1.13.0', None))
-        row['a']['reasoning_effort'] = 'xhigh'
+        row['a']['reasoning_effort'] = 'medium'
         report = self.report([row])
         self.assertEqual(report['agreement']['compared'], 0)
         self.assertEqual(report['critical_miss']['count'], 1)
