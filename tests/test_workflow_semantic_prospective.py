@@ -159,8 +159,8 @@ class Prospective(unittest.TestCase):
 
     def test_routing_priority_and_threshold_boundary(self):
         item=self.s['items'][0]
-        for value,expected in ((attempt(confidence=.9),'SHADOW_HIGH_CONF'),(attempt(confidence=.89),'LOW_CONF_ESCALATE'),
-                               (attempt(choice='unknown'),'UNKNOWN_ESCALATE'),(None,'PROVIDER_ESCALATE')):
+        for value,expected in ((attempt(confidence=.9),'SHADOW_HIGH_CONF'),(attempt(confidence=.89),'LOW_CONF_REVIEW'),
+                               (attempt(choice='unknown'),'UNKNOWN_REVIEW'),(None,'PROVIDER_REVIEW')):
             self.assertEqual(p.route(self.s,item,value),expected)
         item['dependency']='unknown'; self.assertEqual(p.route(self.s,item,attempt()),'MANDATORY_HIGH')
         item['dependency']='known'; item['critical_dependency']=True

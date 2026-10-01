@@ -54,7 +54,7 @@ cannot be recovered retrospectively. Blind explanations diagnose possible input
 ambiguity; they are not the original model's private reasoning. Source audit
 checks the complete primary contract separately from summary completeness.
 If the oracle is unsupported, report `GROUND_TRUTH_ISSUE_FOUND`, stop and never
-rewrite the fixture. Low confidence always requires Sol High; no PASS/approval.
+rewrite the fixture. Low confidence requires Sol High review; no PASS/approval.
 Only the requested shadow verdicts are allowed. Repeatability alone yields
 UNMEASURED until separate blind/source audits are assessed; observed instability
 is BLOCKED even when other coverage is missing.

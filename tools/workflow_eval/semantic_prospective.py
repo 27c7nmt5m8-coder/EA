@@ -122,9 +122,9 @@ def mandatory(s,item):
 
 def route(s,item,attempt):
     if mandatory(s,item): return 'MANDATORY_HIGH'
-    if attempt is None or attempt['status']!='OK': return 'PROVIDER_ESCALATE'
-    if attempt['choice']=='unknown': return 'UNKNOWN_ESCALATE'
-    if attempt['confidence']<.90: return 'LOW_CONF_ESCALATE'
+    if attempt is None or attempt['status']!='OK': return 'PROVIDER_REVIEW'
+    if attempt['choice']=='unknown': return 'UNKNOWN_REVIEW'
+    if attempt['confidence']<.90: return 'LOW_CONF_REVIEW'
     return 'SHADOW_HIGH_CONF'
 
 

@@ -3,7 +3,7 @@ import statistics
 
 from . import semantic_prospective as p
 
-ROUTES=('SHADOW_HIGH_CONF','LOW_CONF_ESCALATE','PROVIDER_ESCALATE','UNKNOWN_ESCALATE','MANDATORY_HIGH')
+ROUTES=('SHADOW_HIGH_CONF','LOW_CONF_REVIEW','PROVIDER_REVIEW','UNKNOWN_REVIEW','MANDATORY_HIGH')
 BANDS=('<0.50','0.50-0.69','0.70-0.89','>=0.90')
 
 
@@ -77,7 +77,7 @@ def report(protocol,events):
                     'important':'IMPORTANT_MISS','minor':'MINOR_MISS'}[severity],
                     frozen_head_sha=s['head_sha'],recovered_or_fixed_does_not_erase=True))
         # Mandatory always wins; otherwise prefer any failure/unknown/low input.
-        task_route=next(k for k in ('MANDATORY_HIGH','PROVIDER_ESCALATE','UNKNOWN_ESCALATE','LOW_CONF_ESCALATE','SHADOW_HIGH_CONF') if k in comparison)
+        task_route=next(k for k in ('MANDATORY_HIGH','PROVIDER_REVIEW','UNKNOWN_REVIEW','LOW_CONF_REVIEW','SHADOW_HIGH_CONF') if k in comparison)
         routes[task_route]+=1; comparisons[tid]=task_route
         if valid and all(r['jev'] in ('regression','no_regression') and r['sol'] in ('regression','no_regression') for r in records if r['task_id']==tid):
             complete.append(tid)
@@ -105,7 +105,7 @@ def report(protocol,events):
             safety_audit_item_count=len({(tid,a['item_id']) for tid,t in tasks.items() for a in t['jev']
                                         if a['status']=='OK' and confidence_band(a['confidence'])==band}),
             safety_audit_scope='All valid attempts in their observed confidence band; unique PR/item per band, nonadditive across bands.',
-            escalation_rate=ratio(sum(r['routing']!='SHADOW_HIGH_CONF' for r in members),len(members)))
+            review_required_rate=ratio(sum(r['routing']!='SHADOW_HIGH_CONF' for r in members),len(members)))
     tokens={}
     for provider in ('jev','sol','combined'):
         subset=[a for arm,a in all_attempts if provider=='combined' or arm==provider]
@@ -151,13 +151,13 @@ def report(protocol,events):
         items=dict(counts,semantic_item_denominator=len(records)),confidence_bands=bands,
         calibration_claim=False,misses=misses,verdict=verdict,tokens=tokens,
         low_confidence_rate=ratio(sum(c<.90 for c in confidences),len(confidences)),
-        low_confidence_escalation_precision=ratio(sum(r['truth']=='regression' for r in records
+        low_confidence_review_precision=ratio(sum(r['truth']=='regression' for r in records
             if r['eligible'] and r['truth'] is not None and r['confidence'] is not None and r['confidence']<.90),
             sum(r['eligible'] and r['truth'] is not None and r['confidence'] is not None and r['confidence']<.90 for r in records)),
         provider_reliability=ratio(sum(a['status']=='OK' for t in tasks.values() for a in t['jev']),
                                   sum(len(t['jev']) for t in tasks.values())),
         provider_unavailable_attempts=provider_errors,pending_jev_requests=sum(len(t['pending_jev']) for t in tasks.values()),instability_items=instability,
-        failure_action='PROVIDER_UNAVAILABLE_ESCALATE' if provider_errors else None,
+        failure_action='PROVIDER_UNAVAILABLE_REVIEW' if provider_errors else None,
         processing_seconds=processing,retry_seconds=measured(retry_times),
         billing_scope='Jev attempts and normal reviews of the first frozen head, including retries/failures/contamination.',
         complete_development_billing=dict(tokens=None,processing_seconds=None,

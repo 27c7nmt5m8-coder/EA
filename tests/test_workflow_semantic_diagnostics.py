@@ -181,7 +181,7 @@ class Diagnostics(unittest.TestCase):
         rows=self.complete_rows(); blind=self.blinds()
         audit={k:'PRIMARY_EVIDENCE_SUPPORTED' for k in diag.TARGETS}
         report=diag.finalize(self.plan,rows,blind,audit)
-        self.assertEqual(report['verdict'],'SHADOW_CONTINUE_WITH_LOW_CONF_ESCALATION')
+        self.assertEqual(report['verdict'],'SHADOW_CONTINUE_WITH_LOW_CONF_REVIEW')
         self.assertEqual(report['combined_tokens']['value'],38*12)
         self.assertEqual(diag.finalize(self.plan,rows,[],audit)['verdict'],'UNMEASURED')
 

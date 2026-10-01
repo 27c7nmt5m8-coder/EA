@@ -315,7 +315,7 @@ def finalize(plan, rows, blind_rows, source_audit):
     elif report['verdict'] != 'BLOCKED_INSTABILITY':
         if report['complete_primary_repeat_coverage'] and len(selected) == len(source_audit) == 2:
             low = any(report['cases'][k]['jev']['low_confidence_count'] for k in TARGETS)
-            report.update(verdict='SHADOW_CONTINUE_WITH_LOW_CONF_ESCALATION' if low else 'SHADOW_CONTINUE_CANDIDATE',
+            report.update(verdict='SHADOW_CONTINUE_WITH_LOW_CONF_REVIEW' if low else 'SHADOW_CONTINUE_CANDIDATE',
                           verdict_reason='Stable choices; source oracles supported; any low confidence requires Sol High. '
                           'Sol unknown remains unknown and requires further context before a decision.')
     return report
@@ -331,7 +331,7 @@ def call_blind(payload, *, runner=None, timeout=180):
     try:
         with tempfile.TemporaryDirectory(prefix='ea-blind-diagnostic-') as directory:
             cmd = ['codex', 'exec', '--ignore-user-config', '--ephemeral', '--skip-git-repo-check', '--json',
-                   '--sandbox', 'read-only', '-m', real.SOL_MODEL, '-c', 'model_reasoning_effort="high"', '-C', directory, '-']
+                   '--sandbox', 'read-only', '-m', real.SOL_MODEL, '-c', f'model_reasoning_effort="{real.SOL_EFFORT}"', '-C', directory, '-']
             completed = (runner or subprocess.run)(cmd, input=prompt, text=True, encoding='utf-8', errors='replace',
                                                   capture_output=True, timeout=timeout)
         events = codex_events(completed.stdout)

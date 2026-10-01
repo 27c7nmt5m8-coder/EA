@@ -9,7 +9,7 @@ Sibling of PR20, based on PR19 head
 `41684723a380a27525482ed6fe290f26795aa56c` is verified to branch from that
 PR19 head. No diagnostic module from PR20 is a code dependency.
 [PR20](https://github.com/27c7nmt5m8-coder/EA/pull/20) supports preserving the
-0.90 threshold, escalating low confidence, and explicitly handling insufficient
+0.90 threshold, requiring review for low confidence, and explicitly handling insufficient
 input evidence. It does not establish calibration or permit skipping reviews.
 
 ## Implementation plan and trust boundary
@@ -65,8 +65,8 @@ unavailable or unknown results never become binary no_regression.
 Mandatory xHigh takes precedence for src/protected/critical/unknown dependency,
 including Entry, SL/TP, BE, Trailing, Risk, Monte Carlo, Fintokei, portfolio,
 Worker failures, orders/ownership/mutex/persistence, routing and safety policy.
-Otherwise routing metadata distinguishes PROVIDER_ESCALATE, UNKNOWN_ESCALATE,
-LOW_CONF_ESCALATE (<0.90), SHADOW_HIGH_CONF (valid binary >=0.90). These are
+Otherwise routing metadata distinguishes PROVIDER_REVIEW, UNKNOWN_REVIEW,
+LOW_CONF_REVIEW (<0.90), SHADOW_HIGH_CONF (valid binary >=0.90). These are
 counterfactual recommendations; Jev cannot approve product behavior or merge.
 
 ## Evaluation
@@ -82,7 +82,7 @@ IMPORTANT_MISS. Contamination/Important misses/instability require shadow
 remediation; incomplete evidence/count yields SHADOW_CONTINUE. A 20-case
 proposal requires complete coverage and no Critical/Important/high-confidence
 FN/provider/blinding problems. Confidence bands <.50, [.50,.70), [.70,.90),
->=.90 report counts, accuracy, misses/FP, agreement and escalation separately;
+>=.90 report counts, accuracy, misses/FP, agreement and review-required routing separately;
 neither 20 PRs nor small per-band samples establish calibration.
 
 Primary-head billing sums every uniquely identified Jev and normal-review
@@ -168,7 +168,7 @@ stays pending with missing usage and blocks the experiment review ticket.
 Recover only with its actual response/verified failure metadata through the
 typed ledger; never fabricate zero usage. This recorder cannot block the normal
 EA development review or GitHub merge. An unavailable completed attempt allows
-normal review while the experiment records incomplete/provider escalation.
+normal review while the experiment records incomplete/provider-unavailable review.
 
 ## Typed metadata reference
 
