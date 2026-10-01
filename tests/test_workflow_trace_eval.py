@@ -128,6 +128,20 @@ class TraceEvaluationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'trace_comparable_mismatch'):
             m.summarize_trace([row], expected_task_ids=[row['task_id']])
 
+    def test_summary_rejects_invalid_persisted_jev_contract(self):
+        for mutate in (
+                lambda row: row['jev']['labels'][0].__setitem__('confidence', 1.5),
+                lambda row: row['jev']['labels'][0].__setitem__('label', 'invented'),
+                lambda row: row['jev']['labels'][0].__setitem__('segment_id', 'other'),
+                lambda row: row['jev']['labels'][0].__setitem__('evidence_segment_ids', ['other']),
+        ):
+            with self.subTest(mutate=mutate):
+                row = m.run_trace_case(*self.observations(self.cases[0]))
+                self.assertTrue(row['comparable'])
+                mutate(row)
+                with self.assertRaisesRegex(ValueError, 'invalid_trace_jev_contract'):
+                    m.summarize_trace([row], expected_task_ids=[row['task_id']])
+
     def test_critical_cases_use_sol_high(self):
         case, a, b, jev = self.observations(self.cases[4])
         a['reasoning_effort'] = b['reasoning_effort'] = 'high'
