@@ -339,7 +339,7 @@ def _report(args, root, output):
         expected_trace = {case['task_id']: case_fingerprint(case)
                           for case in trace_fixture['cases']}
         if len(expected_trace) != len(trace_fixture['cases']) or any(
-                r.get('base_sha') != base or
+                r.get('base_sha') != trace_base or
                 r.get('dataset_sha256') != trace_dataset_sha or
                 r.get('case_fingerprint') != expected_trace.get(r.get('task_id'))
                 for r in trace_rows):
