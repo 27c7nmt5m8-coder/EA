@@ -461,34 +461,71 @@ def summarize_trace(rows, expected_task_ids=None):
     historical_pair = ('gpt-6-sol', 'xhigh')
     allowed_pairs = {active_pair, historical_pair}
 
+    def validated_jev_selection(row):
+        jev = row.get('jev', {})
+        if jev.get('status') != 'OK':
+            return None
+        labels = row.get('labels')
+        jev_labels = jev.get('labels')
+        if not isinstance(labels, list) or not isinstance(jev_labels, list) or not labels:
+            raise ValueError('invalid_trace_jev_contract')
+        by_id = {}
+        for item in labels:
+            if (not isinstance(item, dict) or
+                    set(item) != {'segment_id', 'expected_label', 'predicted_label', 'pass_label'}):
+                raise ValueError('invalid_trace_jev_contract')
+            ident = item.get('segment_id')
+            expected = item.get('expected_label')
+            predicted = item.get('predicted_label')
+            passed = item.get('pass_label')
+            if (not isinstance(ident, str) or ident in by_id or expected not in LABELS
+                    or predicted not in LABELS or type(passed) is not bool
+                    or passed != (predicted == expected)):
+                raise ValueError('invalid_trace_jev_contract')
+            by_id[ident] = item
+        all_ids = set(by_id)
+        seen_jev = set()
+        threshold = policy()['confidence_threshold']
+        protected = set(row.get('priority', {}).get('critical_segment_ids', []))
+        protected |= set(row.get('priority', {}).get('important_segment_ids', []))
+        if not protected <= all_ids:
+            raise ValueError('invalid_trace_jev_contract')
+        selected = set()
+        for item in jev_labels:
+            if (not isinstance(item, dict) or
+                    set(item) != {'segment_id', 'label', 'confidence', 'evidence_segment_ids'}):
+                raise ValueError('invalid_trace_jev_contract')
+            ident = item.get('segment_id')
+            label = item.get('label')
+            confidence = item.get('confidence')
+            evidence = item.get('evidence_segment_ids')
+            if (ident not in all_ids or ident in seen_jev or label not in LABELS
+                    or type(confidence) not in (int, float) or not math.isfinite(confidence)
+                    or not 0 <= confidence <= 1 or not isinstance(evidence, list)
+                    or not evidence or len(evidence) != len(set(evidence))
+                    or any(not isinstance(value, str) for value in evidence)
+                    or not set(evidence) <= all_ids
+                    or by_id[ident]['predicted_label'] != label):
+                raise ValueError('invalid_trace_jev_contract')
+            seen_jev.add(ident)
+            if label != 'repetition' or confidence < threshold or ident in protected:
+                selected.add(ident)
+        if seen_jev != all_ids:
+            raise ValueError('invalid_trace_jev_contract')
+        selected.update(evidence_id for item in jev_labels if item['segment_id'] in selected
+                        for evidence_id in item['evidence_segment_ids'])
+        return all_ids, selected
+
     def recomputed_comparable(row):
-        a = row.get('a', {}); b = row.get('b', {}); jev = row.get('jev', {})
+        a = row.get('a', {}); b = row.get('b', {})
         a_pair = (a.get('model'), a.get('reasoning_effort'))
         b_pair = (b.get('model'), b.get('reasoning_effort'))
         pair_ok = (a.get('status') == b.get('status') == 'OK'
                    and a_pair == b_pair and a_pair in allowed_pairs)
-        labels = row.get('labels')
-        jev_labels = jev.get('labels')
-        if (jev.get('status') != 'OK' or not isinstance(labels, list)
-                or not isinstance(jev_labels, list)):
+        validated = validated_jev_selection(row)
+        if validated is None:
             return False
-        all_ids = {item.get('segment_id') for item in labels if isinstance(item, dict)}
-        if None in all_ids or not all_ids:
-            return False
-        protected = set(row.get('priority', {}).get('critical_segment_ids', []))
-        protected |= set(row.get('priority', {}).get('important_segment_ids', []))
-        threshold = policy()['confidence_threshold']
-        selected = set()
-        try:
-            for item in jev_labels:
-                ident = item['segment_id']
-                if (item['label'] != 'repetition' or item['confidence'] < threshold
-                        or ident in protected):
-                    selected.add(ident)
-            selected.update(evidence_id for item in jev_labels if item['segment_id'] in selected
-                            for evidence_id in item['evidence_segment_ids'])
-        except (KeyError, TypeError):
-            return False
+        all_ids, selected = validated
         inputs_ok = (set(a.get('input_segment_ids') or []) == all_ids
                      and set(b.get('input_segment_ids') or []) == selected)
         return bool(pair_ok and inputs_ok)
