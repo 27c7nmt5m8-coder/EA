@@ -24,6 +24,16 @@ MTFAutoTraderのMQL5配布物。`src/` の本体・Worker・全ヘッダーを�
 
 ## 開発・Git・レビュー
 
+### モデルと役割
+
+- root / orchestrator / integrate / verifyは `gpt-6.1-sol / high`。単純な作業は直接処理し、並列化・独立調査/レビュー・専門分担に具体的な利点がある場合だけ委任する。統合時は実diff・依存関係・テスト・CI・モデル割当を確認する。
+- workerは通常 `gpt-6.1-sol / medium`。複数モジュール、注文・資金・lot・SL/TP/BE/trailing・Monte Carlo・Risk/Safety、並行性・状態管理、原因不明のbug、architecture、orchestration・JEV/JEVGrep連携ではHighを選ぶ。
+- explorer / researcherは通常 `gpt-6-luna / high`、read-only。複雑な依存調査・保護領域の深い探索・複数仕様の比較では `gpt-6.1-sol / medium`。既存の適切なagentを再利用し、同じ役割を重複作成しない。
+- reviewerは独立contextの `gpt-6.1-sol / high`、read-only。mandatory reviewは省略不可という意味で、protected / high-riskだけでxHighへ上げない。deterministic verification後にHighを実施し、未解決のmaterial uncertainty・重大なレビュー不一致・未解明のroot cause・説明不能な検証挙動・明示的project ruleがある場合のみ、理由と証拠を付けて追加xHighへ昇格する。
+- AstraはSolで能力不足が実証された非常に難しい独立レビューだけ。必要性・確認範囲・コスト増の理由を先に報告し、明示承認後に使用する。自動routing・fallbackは禁止。
+- [.codex/config.toml](.codex/config.toml)はrootと未指定subagentのSol High既定値。役割別のmodel / effortは対応するspawn指定で明示する。`fork_turns`はcontext伝播の制御でありモデル切替ではない。全履歴forkでは親設定を継承する。指定が利用不能なら停止して報告し、旧Solや別モデル・effortへsilent fallbackしない。
+- 新規Sol実行は `gpt-6.1-sol` のみ。旧IDは履歴・provenance・過去料金・互換/negative testに限定する。Jev confidence `0.90`、review skip禁止、EA保護、既存deterministic verificationを維持する。
+
 1. 最新GitHub main・git status・適用指示・関連履歴を確認し、mainを直接変更せず専用branchで作業する。既存の作業変更を保全する。関連open PRの変更・競合を確認して重複実装を避ける。ZIP等でmainとの対応が不明なら反映の制約を明記する。
 2. 無関係な機能削除・大規模リファクタリングを混ぜない。バグは根本原因を調べ、可能なら修正前に再現・回帰テストを追加する。既存テストは削除・弱体化しない。
 3. 差分と保護への副作用をセルフレビューし、branchにコミットしてmain向けPRを作り、CI・レビュー結果を確認する。ユーザーの明示許可なしにmainへマージしない。許可時もCI・レビュー・必要な実機確認を満たす。PR作成はマージ・実口座導入の許可ではない。
