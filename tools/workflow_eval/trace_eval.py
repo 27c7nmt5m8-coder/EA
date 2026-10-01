@@ -468,6 +468,20 @@ def summarize_trace(rows, expected_task_ids=None):
             duplicates += 1
             continue
         seen.add(identity); unique.append(row)
+    active_pair = (policy()['implementation_model'], policy()['mandatory_effort'])
+    historical_pair = ('gpt-6-sol', 'xhigh')
+    sol_pairs = set()
+    for row in unique:
+        a_pair = (row.get('a', {}).get('model'), row.get('a', {}).get('reasoning_effort'))
+        b_pair = (row.get('b', {}).get('model'), row.get('b', {}).get('reasoning_effort'))
+        if a_pair == b_pair and a_pair in (active_pair, historical_pair):
+            sol_pairs.add(a_pair)
+    if len(sol_pairs) > 1:
+        raise ValueError('mixed_sol_provenance')
+    sol_pair = next(iter(sol_pairs), None)
+    sol_provenance = (dict(model=sol_pair[0], reasoning_effort=sol_pair[1],
+                           scope='current' if sol_pair == active_pair else 'legacy_historical')
+                      if sol_pair else None)
     paired = [r for r in unique if r['comparable']]
     paired_ids = {r['task_id'] for r in paired}
     missing_ids = sorted(expected_set - seen) if expected_set is not None else None
@@ -510,6 +524,7 @@ def summarize_trace(rows, expected_task_ids=None):
                       for arm in ('a', 'b')}
     return dict(scope='synthetic_or_redacted_shadow_trace; no EA review approval',
                 tasks=len(unique), duplicate_tasks_excluded=duplicates, comparable_pairs=len(paired),
+                sol_provenance=sol_provenance,
                 excluded_pairs=len(unique)-len(paired),
                 quality=dict(label_accuracy=sum(i['pass_label'] for i in classified)/len(classified) if classified else None,
                              false_positive=false_positive, false_negative=false_negative,
