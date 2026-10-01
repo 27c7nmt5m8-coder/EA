@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "purpose": "Synthetic developer-workflow traces for shadow-only trace classification. No real agent or trading logs.",
+  "cases": [
+    {
+      "task_id": "trace-01", "task": "Update a sample documentation heading.", "trace_id": "synthetic-01", "base_sha": "75cbae92b19274305e7299b930c694e439b5d8a2", "dependency": "known", "protected": false,
+      "critical_segment_ids": [], "important_segment_ids": [],
+      "segments": [
+        {"id": "s1", "text": "Read the sample note and identified the heading.", "expected_label": "progress"},
+        {"id": "s2", "text": "Updated the heading and confirmed the sample check passed.", "expected_label": "completed"}
+      ]
+    },
+    {
+      "task_id": "trace-02", "task": "Find a missing sample specification.", "trace_id": "synthetic-02", "base_sha": "75cbae92b19274305e7299b930c694e439b5d8a2", "dependency": "known", "protected": false,
+      "critical_segment_ids": [], "important_segment_ids": ["s2"],
+      "segments": [
+        {"id": "s1", "text": "Read the sample implementation file.", "expected_label": "progress"},
+        {"id": "s2", "text": "The expected behavior is not defined in the supplied context; retrieve the sample specification.", "expected_label": "context_missing"}
+      ]
+    },
+    {
+      "task_id": "trace-03", "task": "Locate a sample parser test.", "trace_id": "synthetic-03", "base_sha": "75cbae92b19274305e7299b930c694e439b5d8a2", "dependency": "known", "protected": false,
+      "critical_segment_ids": [], "important_segment_ids": [],
+      "segments": [
+        {"id": "s1", "text": "Searched the same file list for parser tests.", "expected_label": "progress"},
+        {"id": "s2", "text": "Repeated the identical file list search with no new filter or evidence.", "expected_label": "repetition"}
+      ]
+    },
+    {
+      "task_id": "trace-04", "task": "Repair a synthetic format check.", "trace_id": "synthetic-04", "base_sha": "75cbae92b19274305e7299b930c694e439b5d8a2", "dependency": "known", "protected": false,
+      "critical_segment_ids": [], "important_segment_ids": ["s2"],
+      "segments": [
+        {"id": "s1", "text": "Ran the sample format check and observed a formatting failure.", "expected_label": "progress"},
+        {"id": "s2", "text": "Corrected the prior formatting edit and reran the sample check.", "expected_label": "rework"}
+      ]
+    },
+    {
+      "task_id": "trace-05", "task": "Resolve a synthetic access dependency.", "trace_id": "synthetic-05", "base_sha": "75cbae92b19274305e7299b930c694e439b5d8a2", "dependency": "unknown", "protected": false,
+      "critical_segment_ids": ["s2"], "important_segment_ids": [],
+      "segments": [
+        {"id": "s1", "text": "Located the sample input schema.", "expected_label": "progress"},
+        {"id": "s2", "text": "The required external approval is unavailable, so the sample task cannot proceed.", "expected_label": "blocked"}
+      ]
+    },
+    {
+      "task_id": "trace-06", "task": "Inspect a synthetic protected boundary.", "trace_id": "synthetic-06", "base_sha": "75cbae92b19274305e7299b930c694e439b5d8a2", "dependency": "known", "protected": true,
+      "critical_segment_ids": ["s2"], "important_segment_ids": [],
+      "segments": [
+        {"id": "s1", "text": "Read the sample boundary policy.", "expected_label": "progress"},
+        {"id": "s2", "text": "The proposed wording conflicts with the protected boundary and requires a qualified reviewer.", "expected_label": "blocked"}
+      ]
+    },
+    {
+      "task_id": "trace-07", "task": "Review a sample result with ambiguous evidence.", "trace_id": "synthetic-07", "base_sha": "75cbae92b19274305e7299b930c694e439b5d8a2", "dependency": "known", "protected": false,
+      "critical_segment_ids": [], "important_segment_ids": ["s2"],
+      "segments": [
+        {"id": "s1", "text": "The sample check returned an ambiguous summary.", "expected_label": "unknown"},
+        {"id": "s2", "text": "The detailed output required to interpret the summary is absent.", "expected_label": "context_missing"}
+      ]
+    },
+    {
+      "task_id": "trace-08", "task": "Complete a synthetic code note.", "trace_id": "synthetic-08", "base_sha": "75cbae92b19274305e7299b930c694e439b5d8a2", "dependency": "known", "protected": false,
+      "critical_segment_ids": [], "important_segment_ids": [],
+      "segments": [
+        {"id": "s1", "text": "Edited the sample note and recorded a local check.", "expected_label": "progress"},
+        {"id": "s2", "text": "The sample note now matches its fixed expected text and the check passed.", "expected_label": "completed"}
+      ]
+    },
+    {
+      "task_id": "trace-09", "task": "Diagnose a synthetic failing check.", "trace_id": "synthetic-09", "base_sha": "75cbae92b19274305e7299b930c694e439b5d8a2", "dependency": "known", "protected": false,
+      "critical_segment_ids": [], "important_segment_ids": ["s2"],
+      "segments": [
+        {"id": "s1", "text": "The sample check failed after the draft change.", "expected_label": "progress"},
+        {"id": "s2", "text": "Reverted the faulty draft and applied a corrected edit.", "expected_label": "rework"},
+        {"id": "s3", "text": "The corrected sample check passed.", "expected_label": "completed"}
+      ]
+    },
+    {
+      "task_id": "trace-10", "task": "Inspect a synthetic review dependency.", "trace_id": "synthetic-10", "base_sha": "75cbae92b19274305e7299b930c694e439b5d8a2", "dependency": "unknown", "protected": false,
+      "critical_segment_ids": ["s3"], "important_segment_ids": ["s2"],
+      "segments": [
+        {"id": "s1", "text": "Listed the available sample files.", "expected_label": "progress"},
+        {"id": "s2", "text": "The current sample contract is missing from the supplied files.", "expected_label": "context_missing"},
+        {"id": "s3", "text": "The task is blocked until that contract is supplied and reviewed.", "expected_label": "blocked"}
+      ]
+    }
+  ]
+}

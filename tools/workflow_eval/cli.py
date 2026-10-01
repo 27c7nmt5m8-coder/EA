@@ -10,6 +10,7 @@ from .context import build_bundle, is_current, digest
 from .telemetry import capture, validate_event, summarize_events
 from .triage import route, call_jev, mandatory_reasons, policy
 from .report import summarize
+from .experimental_cli import add_parsers as add_experimental_parsers, execute as execute_experiment
 
 
 def load(path):
@@ -57,6 +58,9 @@ def main(argv=None):
     p = sub.add_parser('cohort-record'); p.add_argument('record'); p.add_argument('--update-audit', action='store_true')
     p = sub.add_parser('cohort-report')
     p = sub.add_parser('benchmark'); p.add_argument('--cases', default='tests/fixtures/workflow_eval_cases.json'); p.add_argument('--split', choices=['calibration', 'holdout'], required=True); p.add_argument('--live-jev', action='store_true'); p.add_argument('--workers', type=int, default=2)
+    add_experimental_parsers(sub)
+    from .semantic_real_cli import add_parser as add_real_parser
+    add_real_parser(sub)
     args = parser.parse_args(argv)
     root = Path.cwd()
     rules = policy()
@@ -115,6 +119,11 @@ def main(argv=None):
         from .real_tasks import summarize as real_summary
         target = output_path(root, 'real-tasks.json')
         path = output(root, 'real-cohort-report.json', real_summary(load(target) if target.is_file() else []))
+    elif args.command == 'semantic-real':
+        from .semantic_real_cli import execute as execute_real
+        path = execute_real(args, root)
+    elif args.command in ('trace-benchmark', 'semantic-regression', 'jevgrep-benchmark', 'experimental-report'):
+        path = execute_experiment(args, root, output)
     else:
         from .benchmark import run_cases
         dataset = load(args.cases)
