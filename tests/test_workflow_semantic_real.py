@@ -100,7 +100,8 @@ class RealSemantic(unittest.TestCase):
             self.assertEqual(got['usage'], USAGE)
 
     def test_historical_xhigh_rows_remain_reportable_but_mixed_efforts_are_rejected(self):
-        historical = self.row(a=observation(effort=real.HISTORICAL_SOL_EFFORT))
+        historical = self.row()
+        historical['a']['reasoning_effort'] = real.HISTORICAL_SOL_EFFORT
         report = self.report([historical])
         self.assertEqual(report['sol_effort_provenance'], real.HISTORICAL_SOL_EFFORT)
         self.assertEqual(report['quality']['sol']['unmeasured'], len(self.cases)-1)
