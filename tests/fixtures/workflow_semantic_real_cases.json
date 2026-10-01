@@ -1,0 +1,455 @@
+{
+  "version": 1,
+  "cohort": "semantic_real_derived",
+  "cases": [
+    {
+      "id": "ER001",
+      "source_pr": 11,
+      "source_commit": "56f4805e57c48cc611a87174ea2abecc5950a044",
+      "semantic_contract": "Status transition counts and final candidate rejection counts must describe their own populations.",
+      "severity": "important",
+      "expected_result": "regression",
+      "mutation": "denominator_conflation",
+      "original_evidence": "Status changes count changed status text, including score-text changes. Candidate rejections count the first final rejection of each candidate evaluation.",
+      "mutated_evidence": "The report presents all status transitions as candidate rejections and divides reason totals by that transition population.",
+      "rationale": "Observational denominator contract; different from the once-per-candidate identity contract below.",
+      "provenance": {
+        "path": "ENTRY_DIAGNOSTICS_JA.md",
+        "source_sha256": "f8cde7a52e8393451e72943497e85eab8b17fa3700cbdf60632d5cff0237275d",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/56f4805e57c48cc611a87174ea2abecc5950a044/ENTRY_DIAGNOSTICS_JA.md",
+        "additional_evidence": []
+      },
+      "deterministic_ground_truth": {
+        "kind": "specification",
+        "anchor": "status transition count",
+        "facts": "Repeated text changes can occur without a new candidate. Pre-candidate failures have a separate bucket."
+      }
+    },
+    {
+      "id": "ER002",
+      "source_pr": 11,
+      "source_commit": "56f4805e57c48cc611a87174ea2abecc5950a044",
+      "semantic_contract": "A structural stop failure recovered by the generic fallback must not be counted as a final candidate rejection.",
+      "severity": "important",
+      "expected_result": "regression",
+      "mutation": "intermediate_as_final",
+      "original_evidence": "After structural stop construction fails, generic fallback succeeds. The accepted candidate has no final rejection reason.",
+      "mutated_evidence": "The accepted candidate still contributes one structural-stop rejection because the first construction attempt failed.",
+      "rationale": "Tests final outcome versus intermediate evidence, independent of rejection-count deduplication.",
+      "provenance": {
+        "path": "tests/entry_diagnostic_scenarios.cpp",
+        "source_sha256": "dacd5c425a32473b81d8a7fe1ac2a7d165f27e63a9dbeeced70a5b23cc9be060",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/56f4805e57c48cc611a87174ea2abecc5950a044/tests/entry_diagnostic_scenarios.cpp",
+        "additional_evidence": []
+      },
+      "deterministic_ground_truth": {
+        "kind": "test",
+        "anchor": "successful fallback does not retain an intermediate rejection",
+        "facts": "The fallback success test accepts the evaluation without retaining its intermediate reason."
+      }
+    },
+    {
+      "id": "ER003",
+      "source_pr": 11,
+      "source_commit": "56f4805e57c48cc611a87174ea2abecc5950a044",
+      "semantic_contract": "Diagnostic instrumentation must preserve existing entry decisions and order parameters, and run only in Tester AUTO.",
+      "severity": "critical",
+      "expected_result": "no_regression",
+      "mutation": "observation_only_control",
+      "original_evidence": "Without diagnostics, the same candidate produces its established lot, price, SL, TP, score and pattern.",
+      "mutated_evidence": "Diagnostics wrap existing booleans without changing values or short-circuit order; enabled and disabled executions produce equal parameters, and live mode emits no diagnostic output.",
+      "rationale": "Faithful conforming instrumentation control, not an invented trading change.",
+      "provenance": {
+        "path": "tests/entry_diagnostic_scenarios.cpp",
+        "source_sha256": "dacd5c425a32473b81d8a7fe1ac2a7d165f27e63a9dbeeced70a5b23cc9be060",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/56f4805e57c48cc611a87174ea2abecc5950a044/tests/entry_diagnostic_scenarios.cpp",
+        "additional_evidence": []
+      },
+      "deterministic_ground_truth": {
+        "kind": "test",
+        "anchor": "diagnostic ON and OFF produce identical lot price SL TP score and pattern",
+        "facts": "The fixture compares diagnostic ON/OFF order parameters and also checks live-mode silence."
+      }
+    },
+    {
+      "id": "ER004",
+      "source_pr": 11,
+      "source_commit": "56f4805e57c48cc611a87174ea2abecc5950a044",
+      "semantic_contract": "Each candidate evaluation records its first final rejection once; later checks must not overwrite or recount it.",
+      "severity": "important",
+      "expected_result": "regression",
+      "mutation": "duplicate_final_reason",
+      "original_evidence": "One candidate fails spread then receives a later stop-related check; its first spread rejection remains and the total is one.",
+      "mutated_evidence": "Each check increments the candidate rejection total, and the later stop-related reason replaces the spread reason.",
+      "rationale": "Identity and first-reason preservation, distinct from status-count denominators.",
+      "provenance": {
+        "path": "tests/entry_diagnostic_scenarios.cpp",
+        "source_sha256": "dacd5c425a32473b81d8a7fe1ac2a7d165f27e63a9dbeeced70a5b23cc9be060",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/56f4805e57c48cc611a87174ea2abecc5950a044/tests/entry_diagnostic_scenarios.cpp",
+        "additional_evidence": []
+      },
+      "deterministic_ground_truth": {
+        "kind": "test",
+        "anchor": "first rejection retained and counted once",
+        "facts": "The test invokes repeated rejection recording and confirms the first reason and one count."
+      }
+    },
+    {
+      "id": "ER005",
+      "source_pr": 12,
+      "source_commit": "2f8e6e6bd1290873b0bfcec027363488760684f2",
+      "semantic_contract": "MANUAL Ready describes the current order preview; clicks still execute the existing latest-price, order-check and mutex checks.",
+      "severity": "critical",
+      "expected_result": "regression",
+      "mutation": "preview_as_approval",
+      "original_evidence": "A panel shows Ready after its preview. The click enters the normal order path and rechecks the current conditions.",
+      "mutated_evidence": "A Ready panel caches authorization; the click uses that authorization instead of rechecking the latest price, order check and mutex.",
+      "rationale": "Preview meaning versus final execution authority; separate from read-only side effects.",
+      "provenance": {
+        "path": "README_JA.md",
+        "source_sha256": "281899f3da2e13cb3f2a4481b24a43734195878916a3d0169d6227d2041c522a",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/2f8e6e6bd1290873b0bfcec027363488760684f2/README_JA.md",
+        "additional_evidence": []
+      },
+      "deterministic_ground_truth": {
+        "kind": "specification",
+        "anchor": "注文プレビュー",
+        "facts": "The written UI contract says Ready is an order preview and does not guarantee execution."
+      }
+    },
+    {
+      "id": "ER006",
+      "source_pr": 12,
+      "source_commit": "2f8e6e6bd1290873b0bfcec027363488760684f2",
+      "semantic_contract": "A MANUAL panel refresh must inspect Fintokei risk without persisting protection or closing exposure; normal maintenance must still execute protection.",
+      "severity": "critical",
+      "expected_result": "regression",
+      "mutation": "ui_read_mutates_protection",
+      "original_evidence": "With stale quotes, unavailable ATR and missing SL, refreshing the panel preserves stored state and open exposure. Normal maintenance later performs the DD protection.",
+      "mutated_evidence": "With stale quotes and missing SL, refreshing the panel invokes the normal protection refresh, persists a latch and closes the open exposure before maintenance.",
+      "rationale": "Actual independently recorded review correction, Red then Green; this oracle is backed by tests and fix, not a fetched review submission.",
+      "provenance": {
+        "path": "tests/v245_scenarios.cpp",
+        "source_sha256": "869ac6ee0bee1622a6253ff20743d96e8c9bfb71a03e0895f2ac77794729fd89",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/2f8e6e6bd1290873b0bfcec027363488760684f2/tests/v245_scenarios.cpp",
+        "additional_evidence": [
+          "https://github.com/27c7nmt5m8-coder/EA/commit/aa5a4a1327d6d7e5be435abecc9eedcfb6a1db1e",
+          "https://github.com/27c7nmt5m8-coder/EA/commit/f19614d3a78259f27ee05ca1334c4ae9115a63d9",
+          "https://github.com/27c7nmt5m8-coder/EA/actions/runs/35557235588",
+          "https://github.com/27c7nmt5m8-coder/EA/actions/runs/35557319841"
+        ]
+      },
+      "deterministic_ground_truth": {
+        "kind": "test",
+        "anchor": "Fintokei stale/missing-SL preview cannot persist protection or close exposure",
+        "facts": "The stale/missing-SL panel test checks stored state, close-call count and exposure; a separate normal-maintenance assertion checks the protection still runs."
+      }
+    },
+    {
+      "id": "ER007",
+      "source_pr": 12,
+      "source_commit": "2f8e6e6bd1290873b0bfcec027363488760684f2",
+      "semantic_contract": "ShowAutoTrendLines controls drawing only; virtual trend geometry, LineScore and order decisions must survive hiding the automatic lines.",
+      "severity": "important",
+      "expected_result": "no_regression",
+      "mutation": "display_only_control",
+      "original_evidence": "The automatic line is drawn after its virtual geometry is saved, and scoring uses that geometry.",
+      "mutated_evidence": "When the display flag is false the automatic object is removed after the same virtual geometry is saved. Scoring and order eligibility still use the unchanged geometry.",
+      "rationale": "Conforming real display separation control; distinct from order-preview authority.",
+      "provenance": {
+        "path": "tests/v245_scenarios.cpp",
+        "source_sha256": "869ac6ee0bee1622a6253ff20743d96e8c9bfb71a03e0895f2ac77794729fd89",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/2f8e6e6bd1290873b0bfcec027363488760684f2/tests/v245_scenarios.cpp",
+        "additional_evidence": []
+      },
+      "deterministic_ground_truth": {
+        "kind": "test",
+        "anchor": "hidden trend preserves virtual geometry and LineScore",
+        "facts": "The hidden-trend test checks geometry and LineScore; the AUTO fixture trades with either visibility setting."
+      }
+    },
+    {
+      "id": "ER008",
+      "source_pr": 12,
+      "source_commit": "2f8e6e6bd1290873b0bfcec027363488760684f2",
+      "semantic_contract": "MANUAL WAIT reasons must distinguish the condition that failed, including ATR readiness, spread, SL geometry, lot and margin.",
+      "severity": "important",
+      "expected_result": "regression",
+      "mutation": "failure_reason_collapse",
+      "original_evidence": "Unavailable ATR displays ATR waiting; a spread limit displays spread waiting; stop geometry has its own SL reason.",
+      "mutated_evidence": "All false results from ATR, spread, stop geometry, lot or margin are displayed as SL error.",
+      "rationale": "Meaning of failure classification; different from keeping the panel visible while waiting.",
+      "provenance": {
+        "path": "tests/v245_scenarios.cpp",
+        "source_sha256": "869ac6ee0bee1622a6253ff20743d96e8c9bfb71a03e0895f2ac77794729fd89",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/2f8e6e6bd1290873b0bfcec027363488760684f2/tests/v245_scenarios.cpp",
+        "additional_evidence": []
+      },
+      "deterministic_ground_truth": {
+        "kind": "test",
+        "anchor": "specific wait reason",
+        "facts": "Specific-wait tests exercise ATR and spread independently while retaining original spread and sizing decisions."
+      }
+    },
+    {
+      "id": "ER009",
+      "source_pr": 12,
+      "source_commit": "2f8e6e6bd1290873b0bfcec027363488760684f2",
+      "semantic_contract": "The MANUAL panel must remain visible while M1 ATR is pending, showing BUY/SELL WAIT and later refreshing normally.",
+      "severity": "important",
+      "expected_result": "regression",
+      "mutation": "pending_erases_panel",
+      "original_evidence": "The panel exists with pending ATR; its BUY/SELL buttons show WAIT and later update when ATR arrives.",
+      "mutated_evidence": "Panel initialization returns early until ATR arrives, so all MANUAL controls disappear while ATR is pending.",
+      "rationale": "Visibility during asynchronous availability, independent of wording of the failure reason.",
+      "provenance": {
+        "path": "tests/v245_scenarios.cpp",
+        "source_sha256": "869ac6ee0bee1622a6253ff20743d96e8c9bfb71a03e0895f2ac77794729fd89",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/2f8e6e6bd1290873b0bfcec027363488760684f2/tests/v245_scenarios.cpp",
+        "additional_evidence": []
+      },
+      "deterministic_ground_truth": {
+        "kind": "test",
+        "anchor": "MANUAL panel exists before ATR readiness",
+        "facts": "The pending-ATR test explicitly checks that BUY and SELL objects exist before ATR readiness."
+      }
+    },
+    {
+      "id": "ER010",
+      "source_pr": 17,
+      "source_commit": "c5ecf7683ba0d61c83974270d86d5287fb65fb4e",
+      "semantic_contract": "Missing review usage must remain unavailable with a reason and coverage; measured subtotals must not become complete totals.",
+      "severity": "important",
+      "expected_result": "regression",
+      "mutation": "missing_usage_as_zero",
+      "original_evidence": "One review has valid usage and another lacks usage. The subtotal is retained, full totals are null, and missing-attempt coverage is shown.",
+      "mutated_evidence": "The missing review is normalized to zero tokens; full totals are the subtotal and usage coverage is reported complete.",
+      "rationale": "Missing-field semantics, distinct from retaining usage after a failed judgment.",
+      "provenance": {
+        "path": "tests/test_workflow_real_tasks.py",
+        "source_sha256": "54905d2b3a18df3e6640e530ef64e809202f9f3ed822c02ec80a0286c2ddcba3",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/c5ecf7683ba0d61c83974270d86d5287fb65fb4e/tests/test_workflow_real_tasks.py",
+        "additional_evidence": []
+      },
+      "deterministic_ground_truth": {
+        "kind": "test",
+        "anchor": "test_partial_reviews_keep_known_usage_and_unknown_attempts_separate",
+        "facts": "Partial-review tests preserve known consumption separately from unknown attempts."
+      }
+    },
+    {
+      "id": "ER011",
+      "source_pr": 17,
+      "source_commit": "c5ecf7683ba0d61c83974270d86d5287fb65fb4e",
+      "semantic_contract": "A malformed or failed review must retain any valid completed usage while its quality status remains failed or unknown.",
+      "severity": "important",
+      "expected_result": "regression",
+      "mutation": "failed_run_drops_usage",
+      "original_evidence": "The judgment JSON is invalid, but the completed-turn usage is valid; status is unknown and numeric usage remains recorded.",
+      "mutated_evidence": "Because judgment JSON is invalid, the measurement discards the otherwise valid completed-turn usage.",
+      "rationale": "Billing evidence and quality evidence have different availability.",
+      "provenance": {
+        "path": "tests/test_workflow_review_boundaries.py",
+        "source_sha256": "914d2a5a7ae2cf4d090d4ea0df21eb4618d8b1f6ebc05be6f1e254eb1589c55b",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/c5ecf7683ba0d61c83974270d86d5287fb65fb4e/tests/test_workflow_review_boundaries.py",
+        "additional_evidence": []
+      },
+      "deterministic_ground_truth": {
+        "kind": "test",
+        "anchor": "test_invalid_sol_judgment_retains_completed_usage",
+        "facts": "The invalid-judgment test checks that completed usage remains even when the judgment cannot be accepted."
+      }
+    },
+    {
+      "id": "ER012",
+      "source_pr": 17,
+      "source_commit": "c5ecf7683ba0d61c83974270d86d5287fb65fb4e",
+      "semantic_contract": "A pair with failed status or different reasoning efforts must not contribute a token reduction percentage.",
+      "severity": "important",
+      "expected_result": "regression",
+      "mutation": "invalid_pair_savings",
+      "original_evidence": "The pair has different reasoning efforts, so reduction is null and the observed consumption remains an observation.",
+      "mutated_evidence": "The pair has different reasoning efforts, but its observed consumption is used to publish a reduction percentage.",
+      "rationale": "Comparison eligibility, distinct from missing provider usage in a valid provenance pair.",
+      "provenance": {
+        "path": "tests/test_workflow_review_boundaries.py",
+        "source_sha256": "914d2a5a7ae2cf4d090d4ea0df21eb4618d8b1f6ebc05be6f1e254eb1589c55b",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/c5ecf7683ba0d61c83974270d86d5287fb65fb4e/tests/test_workflow_review_boundaries.py",
+        "additional_evidence": []
+      },
+      "deterministic_ground_truth": {
+        "kind": "test",
+        "anchor": "test_decomposition_uses_report_pair_eligibility",
+        "facts": "Report and decomposition must share pair eligibility and exclude mismatching pairs."
+      }
+    },
+    {
+      "id": "ER013",
+      "source_pr": 17,
+      "source_commit": "c5ecf7683ba0d61c83974270d86d5287fb65fb4e",
+      "semantic_contract": "A repository request remains one real task across updated heads, retries and A/B arms; fixture runs are not real tasks.",
+      "severity": "important",
+      "expected_result": "no_regression",
+      "mutation": "retry_identity_control",
+      "original_evidence": "A request is identified by repository and request number; its audit includes both arms.",
+      "mutated_evidence": "The same request receives a head update and retry audit. Its identity stays fixed, arms remain observations, and unique real-task count stays one.",
+      "rationale": "Conforming identity control; no second duplicate-count mutation is added from PR18.",
+      "provenance": {
+        "path": "tests/test_workflow_real_tasks.py",
+        "source_sha256": "54905d2b3a18df3e6640e530ef64e809202f9f3ed822c02ec80a0286c2ddcba3",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/c5ecf7683ba0d61c83974270d86d5287fb65fb4e/tests/test_workflow_real_tasks.py",
+        "additional_evidence": []
+      },
+      "deterministic_ground_truth": {
+        "kind": "test",
+        "anchor": "test_duplicate_pr_cannot_inflate_sample_count",
+        "facts": "The duplicate-PR test rejects sample inflation from another head of the same request."
+      }
+    },
+    {
+      "id": "ER014",
+      "source_pr": 17,
+      "source_commit": "c5ecf7683ba0d61c83974270d86d5287fb65fb4e",
+      "semantic_contract": "An observed miss must remain in the safety audit even when a failed partner excludes the pair from usage comparisons.",
+      "severity": "critical",
+      "expected_result": "regression",
+      "mutation": "pair_exclusion_drops_miss",
+      "original_evidence": "One arm contains an observed miss and the partner fails. The usage comparison is excluded; the safety observation remains recorded.",
+      "mutated_evidence": "One arm contains an observed miss and the partner fails. Excluding the pair also removes its safety observation, leaving no miss.",
+      "rationale": "Safety audit membership is independent of eligible numerical comparisons; separate from staged retrieval provenance.",
+      "provenance": {
+        "path": "tests/test_workflow_evaluation.py",
+        "source_sha256": "76c6f2470f064eb6375c553f587eb698d9c7bbc47a60b137737267fd520efe1d",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/c5ecf7683ba0d61c83974270d86d5287fb65fb4e/tests/test_workflow_evaluation.py",
+        "additional_evidence": []
+      },
+      "deterministic_ground_truth": {
+        "kind": "test",
+        "anchor": "test_critical_observation_blocks_even_when_partner_measurement_failed",
+        "facts": "The failed-partner test checks that the observed issue remains recorded outside eligible comparisons."
+      }
+    },
+    {
+      "id": "ER015",
+      "source_pr": 17,
+      "source_commit": "c5ecf7683ba0d61c83974270d86d5287fb65fb4e",
+      "semantic_contract": "Protected EA work and unknown dependencies require Sol xhigh review regardless of low-risk flags or a candidate recommendation.",
+      "severity": "critical",
+      "expected_result": "regression",
+      "mutation": "protected_floor_demotion",
+      "original_evidence": "EA work with protected or unresolved dependencies is forced to xhigh before the provider is called.",
+      "mutated_evidence": "The same protected or unresolved work is labeled ordinary candidate; false mandatory and low-risk flags permit a lower-effort review.",
+      "rationale": "Mandatory routing floor, not a request for the provider to decide EA safety.",
+      "provenance": {
+        "path": "tests/test_workflow_real_tasks.py",
+        "source_sha256": "54905d2b3a18df3e6640e530ef64e809202f9f3ed822c02ec80a0286c2ddcba3",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/c5ecf7683ba0d61c83974270d86d5287fb65fb4e/tests/test_workflow_real_tasks.py",
+        "additional_evidence": []
+      },
+      "deterministic_ground_truth": {
+        "kind": "test",
+        "anchor": "test_ea_kind_cannot_bypass_floor_using_false_mandatory_flag",
+        "facts": "The EA-kind test rejects bypassing the floor with a false mandatory flag; routing also handles unresolved dependencies."
+      }
+    },
+    {
+      "id": "ER016",
+      "source_pr": 18,
+      "source_commit": "ca2f7da9d65cf68433fd7d791e6dafe16ea3c1f1",
+      "semantic_contract": "An unavailable initial discovery observation must remain unavailable when later Sol metadata is merged; later success cannot rewrite that discovery history.",
+      "severity": "important",
+      "expected_result": "no_regression",
+      "mutation": "unavailable_history_control",
+      "original_evidence": "Initial discovery is unavailable. Its status and reason are stored independently of later solver measurements.",
+      "mutated_evidence": "Later solver metadata reports success, but merging it preserves the original unavailable discovery and leaves that case excluded.",
+      "rationale": "Conforming history control. The narrower merge invariant has deterministic evidence; filesystem history preservation is verified separately.",
+      "provenance": {
+        "path": "tests/test_workflow_experimental_cli.py",
+        "source_sha256": "83e2d51617327449752d74d1863feafedf0de5caca0585976debb47bbce11fd2",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/ca2f7da9d65cf68433fd7d791e6dafe16ea3c1f1/tests/test_workflow_experimental_cli.py",
+        "additional_evidence": [
+          "https://github.com/27c7nmt5m8-coder/EA/pull/18#issuecomment-5912165021"
+        ]
+      },
+      "deterministic_ground_truth": {
+        "kind": "test",
+        "anchor": "test_discovery_merge_preserves_unavailable_cases",
+        "facts": "The unavailable-discovery merge test retains UNAVAILABLE and its reason instead of manufacturing successful retrieval."
+      }
+    },
+    {
+      "id": "ER017",
+      "source_pr": 18,
+      "source_commit": "ca2f7da9d65cf68433fd7d791e6dafe16ea3c1f1",
+      "semantic_contract": "When Jevgrep provider usage is missing, Sol-only consumption cannot yield a full combined token total or reduction.",
+      "severity": "important",
+      "expected_result": "regression",
+      "mutation": "provider_missing_combined",
+      "original_evidence": "Sol consumption is measured, provider consumption is unavailable. Combined total and reduction are null with usage coverage.",
+      "mutated_evidence": "Provider consumption is set to zero because it is unavailable; Sol-only consumption is reported as the full combined total and reduction.",
+      "rationale": "Combined cross-provider accounting, distinct from missing review fields in PR17.",
+      "provenance": {
+        "path": "tests/test_workflow_jevgrep_benchmark.py",
+        "source_sha256": "bce05e0ee1bc12e26029d7659c4ad17f3fb30933479b38841fc9550b33138cd0",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/ca2f7da9d65cf68433fd7d791e6dafe16ea3c1f1/tests/test_workflow_jevgrep_benchmark.py",
+        "additional_evidence": [
+          "https://github.com/27c7nmt5m8-coder/EA/pull/18#issuecomment-5912165021"
+        ]
+      },
+      "deterministic_ground_truth": {
+        "kind": "test",
+        "anchor": "test_missing_usage_stays_null_with_reason_and_coverage",
+        "facts": "Missing-usage tests keep absent values null with reason and coverage; the live pilot reported partial provider coverage."
+      }
+    },
+    {
+      "id": "ER018",
+      "source_pr": 18,
+      "source_commit": "ca2f7da9d65cf68433fd7d791e6dafe16ea3c1f1",
+      "semantic_contract": "A same-condition Sol comparison requires matching recognized model and effort metadata; historical parsing does not permit mixing execution models.",
+      "severity": "important",
+      "expected_result": "regression",
+      "mutation": "model_provenance_mixed",
+      "original_evidence": "Current and historical Sol observations remain labeled with their actual models and are excluded when the models differ.",
+      "mutated_evidence": "The reader accepts both models, relabels the older observation as current, and treats the mixed-model pair as comparable.",
+      "rationale": "Recognized historical parsing differs from active comparable execution; unknown models are excluded by the adjacent floor test.",
+      "provenance": {
+        "path": "tests/test_workflow_jevgrep_benchmark.py",
+        "source_sha256": "bce05e0ee1bc12e26029d7659c4ad17f3fb30933479b38841fc9550b33138cd0",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/ca2f7da9d65cf68433fd7d791e6dafe16ea3c1f1/tests/test_workflow_jevgrep_benchmark.py",
+        "additional_evidence": []
+      },
+      "deterministic_ground_truth": {
+        "kind": "test",
+        "anchor": "test_current_and_legacy_models_cannot_be_paired",
+        "facts": "The current-versus-legacy test explicitly excludes mixed-model comparisons while preserving historical model labels."
+      }
+    },
+    {
+      "id": "ER019",
+      "source_pr": 18,
+      "source_commit": "ca2f7da9d65cf68433fd7d791e6dafe16ea3c1f1",
+      "semantic_contract": "A must-find file missed by initial discovery remains a discovery miss even if the later solver obtains that file.",
+      "severity": "critical",
+      "expected_result": "regression",
+      "mutation": "solver_recovery_erases_initial_miss",
+      "original_evidence": "Initial discovery omits a required worker boundary file. Later Sol reads it, but original found-files and the initial miss remain unchanged.",
+      "mutated_evidence": "Later Sol obtains the required file, so its path is inserted into initial discovery found-files and the initial miss is removed.",
+      "rationale": "Initial-stage provenance versus eventual recovery, distinct from excluded-pair safety audits.",
+      "provenance": {
+        "path": "tests/test_workflow_experimental_cli.py",
+        "source_sha256": "83e2d51617327449752d74d1863feafedf0de5caca0585976debb47bbce11fd2",
+        "url": "https://github.com/27c7nmt5m8-coder/EA/blob/ca2f7da9d65cf68433fd7d791e6dafe16ea3c1f1/tests/test_workflow_experimental_cli.py",
+        "additional_evidence": [
+          "https://github.com/27c7nmt5m8-coder/EA/pull/18#issuecomment-5912165021",
+          "https://github.com/27c7nmt5m8-coder/EA/blob/ca2f7da9d65cf68433fd7d791e6dafe16ea3c1f1/tests/fixtures/workflow_jevgrep_cases.json"
+        ]
+      },
+      "deterministic_ground_truth": {
+        "kind": "test",
+        "anchor": "test_discovery_merge_binds_sol_observation_and_preserves_retrieval",
+        "facts": "The merge binds Sol observations to prior discovery and preserves retrieved files; the live pilot retains the initial worker-boundary miss after recovery."
+      }
+    }
+  ]
+}

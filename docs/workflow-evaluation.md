@@ -80,3 +80,12 @@ confidence: https://docs.typesafe.ai/confidence
 ## Active policyと履歴
 
 policy version 5の今後の実行は `gpt-6.1-sol` / Highです。旧モデルや過去のxHigh測定・PRレビュー・provenanceは書き換えません。旧policyでの計画・測定結果は実施時の履歴です。履歴価格は `historical_sol_standard_short_context_rates` としてのみ残し、新モデルの料金は未検証のため集計でunknownを維持します。詳細と明示追加レビューのAPIは [High-first policy](workflow-high-first.md) を参照してください。
+
+
+## Integrated shadow experiment tooling
+
+Draft PRs #18, #19, #20, and #22 are consolidated from the post-#21 main instead of merging the obsolete stacked branch chain. Historical measurements and provider provenance remain historical and are not relabeled.
+
+New provider execution in the integrated tooling uses `gpt-6.1-sol / high` as the standard review lane. Protected, critical, EA, financial, order, safety, and unknown-dependency cases remain mandatory review and cannot use review skip or Jev final approval. xHigh is not selected merely by category; evidence-based xHigh escalation remains governed by the active High-first workflow policy.
+
+The semantic-real and confidence-diagnostic result documents retain the model/effort actually used when those historical measurements were collected. The future-only prospective protocol starts from zero and uses High as its normal complete Sol review. `review_skip_enabled=false` and `confidence_threshold=0.90` remain unchanged.

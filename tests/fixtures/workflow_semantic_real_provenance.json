@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "cohort": "semantic_real_derived",
+  "source_heads": {
+    "11": "56f4805e57c48cc611a87174ea2abecc5950a044",
+    "12": "2f8e6e6bd1290873b0bfcec027363488760684f2",
+    "17": "c5ecf7683ba0d61c83974270d86d5287fb65fb4e",
+    "18": "ca2f7da9d65cf68433fd7d791e6dafe16ea3c1f1"
+  },
+  "case_fingerprints": {
+    "ER001": "5866b443ae15c710fa34e4c868098760211c7892068543af331f6f90b1a18f14",
+    "ER002": "7c1add3994a5e2dde282cd4676301b304d11315386ff04a25b90b57396007939",
+    "ER003": "b5c578f89384748d6af3793b68847139a6be9ace37f3c36d73fc2b8980cefa4a",
+    "ER004": "6f28b47de90371a735c9d2955dc6ffb12f618a24441421efcc1f540277b2e885",
+    "ER005": "c3194f5bf4fb78d17de1136515083f7ee2fab3945f2383c1fef90e64afe8db79",
+    "ER006": "e410ec498b2b947754dd7e6385f49c1560d17d3f5fceb6391bc9a39ebb773aa1",
+    "ER007": "0f55a212f767d2896da3227a13b81edc4cbe9d87ba8ff72863f5db8d03d424c7",
+    "ER008": "0f1fd4ba74e1093d095ca0cf09d0e2f0046a86ec89982af37669bc51e81af155",
+    "ER009": "999143adfbcc4aa117a984f165c568452e705809f6d0f28745037846afa57b1a",
+    "ER010": "5c389b625151dbb887b26d16d44d234375b27c1c2e76cbc04595913fbe141aa6",
+    "ER011": "6c3edafa0e3b5fef916c7090b736e5ea08318579d690cf62c422ad57970b99f8",
+    "ER012": "abced2ccd110faab4edee65165df350814682916a845bd937c23978785136b17",
+    "ER013": "27256390016738daa9fea628d11be2c5d914bae5e1b509453e9030d642592ed7",
+    "ER014": "85c93cac84e8be34984513e84ab09e7b63c880c8c554e62e3e805e07d9287b41",
+    "ER015": "ffa47fdf7c37cf2ba490b2de88c9812fa72fc1ebaa7e71d1c3ff608c0cf3ac37",
+    "ER016": "dfdfc9b3d59757d0c79144fabdad3a968dffa6f3c3d118990558297d13ebd233",
+    "ER017": "d02d8c7a81c4e6dcf1d623972aab3edd852b581784b9ec05745a8af762d37ce0",
+    "ER018": "aaa93487a8c6e25c990eeba4094ff2c57209d9549fc10f16d28918d440696dc5",
+    "ER019": "71c5ba45340190aed585c74079da0a54299ac0560238e139ded7891e125725d6"
+  },
+  "oracle_basis": "fixed_primary_evidence_contracts_not_new_human_labels",
+  "source_artifacts": {
+    "56f4805e57c48cc611a87174ea2abecc5950a044:ENTRY_DIAGNOSTICS_JA.md": {
+      "sha256": "f8cde7a52e8393451e72943497e85eab8b17fa3700cbdf60632d5cff0237275d",
+      "anchors": [
+        "status transition count"
+      ]
+    },
+    "56f4805e57c48cc611a87174ea2abecc5950a044:tests/entry_diagnostic_scenarios.cpp": {
+      "sha256": "dacd5c425a32473b81d8a7fe1ac2a7d165f27e63a9dbeeced70a5b23cc9be060",
+      "anchors": [
+        "successful fallback does not retain an intermediate rejection",
+        "diagnostic ON and OFF produce identical lot price SL TP score and pattern",
+        "first rejection retained and counted once"
+      ]
+    },
+    "2f8e6e6bd1290873b0bfcec027363488760684f2:README_JA.md": {
+      "sha256": "281899f3da2e13cb3f2a4481b24a43734195878916a3d0169d6227d2041c522a",
+      "anchors": [
+        "注文プレビュー"
+      ]
+    },
+    "2f8e6e6bd1290873b0bfcec027363488760684f2:tests/v245_scenarios.cpp": {
+      "sha256": "869ac6ee0bee1622a6253ff20743d96e8c9bfb71a03e0895f2ac77794729fd89",
+      "anchors": [
+        "Fintokei stale/missing-SL preview cannot persist protection or close exposure",
+        "hidden trend preserves virtual geometry and LineScore",
+        "specific wait reason",
+        "MANUAL panel exists before ATR readiness"
+      ]
+    },
+    "c5ecf7683ba0d61c83974270d86d5287fb65fb4e:tests/test_workflow_real_tasks.py": {
+      "sha256": "54905d2b3a18df3e6640e530ef64e809202f9f3ed822c02ec80a0286c2ddcba3",
+      "anchors": [
+        "test_partial_reviews_keep_known_usage_and_unknown_attempts_separate",
+        "test_duplicate_pr_cannot_inflate_sample_count",
+        "test_ea_kind_cannot_bypass_floor_using_false_mandatory_flag"
+      ]
+    },
+    "c5ecf7683ba0d61c83974270d86d5287fb65fb4e:tests/test_workflow_review_boundaries.py": {
+      "sha256": "914d2a5a7ae2cf4d090d4ea0df21eb4618d8b1f6ebc05be6f1e254eb1589c55b",
+      "anchors": [
+        "test_invalid_sol_judgment_retains_completed_usage",
+        "test_decomposition_uses_report_pair_eligibility"
+      ]
+    },
+    "c5ecf7683ba0d61c83974270d86d5287fb65fb4e:tests/test_workflow_evaluation.py": {
+      "sha256": "76c6f2470f064eb6375c553f587eb698d9c7bbc47a60b137737267fd520efe1d",
+      "anchors": [
+        "test_critical_observation_blocks_even_when_partner_measurement_failed"
+      ]
+    },
+    "ca2f7da9d65cf68433fd7d791e6dafe16ea3c1f1:tests/test_workflow_experimental_cli.py": {
+      "sha256": "83e2d51617327449752d74d1863feafedf0de5caca0585976debb47bbce11fd2",
+      "anchors": [
+        "test_discovery_merge_preserves_unavailable_cases",
+        "test_discovery_merge_binds_sol_observation_and_preserves_retrieval"
+      ]
+    },
+    "ca2f7da9d65cf68433fd7d791e6dafe16ea3c1f1:tests/test_workflow_jevgrep_benchmark.py": {
+      "sha256": "bce05e0ee1bc12e26029d7659c4ad17f3fb30933479b38841fc9550b33138cd0",
+      "anchors": [
+        "test_missing_usage_stays_null_with_reason_and_coverage",
+        "test_current_and_legacy_models_cannot_be_paired"
+      ]
+    }
+  }
+}
