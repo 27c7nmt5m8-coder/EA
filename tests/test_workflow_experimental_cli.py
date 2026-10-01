@@ -51,7 +51,9 @@ class ExperimentalCliTests(unittest.TestCase):
         from tools.workflow_eval.experimental_cli import _base, _live_base
         self.assertEqual(_base(SimpleNamespace(base_sha=None), ROOT, fixture_base=BASE), BASE)
         current = _live_base(BASE)
-        self.assertRegex(current, r'^[0-9a-f]{40}    def test_jevgrep_offline_never_installs_or_reports_success(self):
+        self.assertRegex(current, r"^[0-9a-f]{40}$")
+
+    def test_jevgrep_offline_never_installs_or_reports_success(self):
         with tempfile.TemporaryDirectory() as tmp:
             fixture = ROOT / 'tests/fixtures/workflow_jevgrep_cases.json'
             run = self.command(tmp, 'jevgrep-benchmark', '--cases', str(fixture),
