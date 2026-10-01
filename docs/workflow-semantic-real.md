@@ -1,7 +1,8 @@
 # 実EA開発由来 Semantic Regression shadow pilot
 
-PR #18の未マージbranch `feat/jev-experimental-benchmarks`、head
-`ca2f7da9d65cf68433fd7d791e6dafe16ea3c1f1` を基点にした独立stacked PRです。
+この文書の実測履歴は当初、PR #18の未マージbranch `feat/jev-experimental-benchmarks`、
+head `ca2f7da9d65cf68433fd7d791e6dafe16ea3c1f1` を基点にしたstacked PRで取得しました。
+PR #23でtoolingをpost-#21 mainへ統合した後は、その旧branch祖先関係を新規実行条件にはしません。
 製品の変更ではなく、既存のtyped choice検証・numeric telemetryを再利用します。
 
 ## 固定fixtureと一次資料
@@ -40,8 +41,11 @@ python -m tools.workflow_eval.cli semantic-real --live
 python -m tools.workflow_eval.cli semantic-real --rows .workflow-eval/semantic-real-<run>-rows.json
 ```
 
-live前にtrackedでcleanなfixture／manifestを要求します。
-新規Aは `gpt-6.1-sol / xhigh`、BはpolicyのJev modelによる直接typed choice評価。
+live前にtrackedでcleanなfixture／manifestを要求します。fixture内のsource PR SHAは
+歴史provenanceであり、現在の実行headがその旧stackの子孫であることは要求しません。
+新規runのbaseは現在のorigin/mainを使い、historical rowsの再集計ではrowに記録済みのbaseを保持します。
+統合後の新規Aは `gpt-6.1-sol / high`、BはpolicyのJev modelによる直接typed choice評価。
+xHighはHighレビュー後に具体的な未解決証拠が残った場合だけ追加レビューとして使用します。
 A/Bは同一case・payload・base・fixture fingerprintを共有します。
 これはSol対Jevの分類比較であり、Bで後段Solを実行するtrace/retrieval pipelineではありません。
 Sol model/effortはCLI要求値を確認しますが、CLI JSONがbackendのeffective model/effortを
@@ -84,7 +88,7 @@ synthetic20件、Trace、Jevgrep、過去UNAVAILABLE、policy、30/50 real-task 
 EA本体／src／売買・Risk・安全・Workerの変更はありません。
 review_skip_enabled=false、confidence_threshold=0.90を維持。2026-09-30の実測は当時のxHigh policyによる履歴であり、統合後の新規live実行はHigh-firstに従う。
 shadow-onlyでありEA品質保証、レビュー代替、Jev最終承認、CI必須gate、常用化、merge制御に
-使いません。pilot成功だけで採用しません。rollbackはこのstacked PRを閉じる／評価差分をrevert。
+使いません。pilot成功だけで採用しません。rollbackは統合PR #23を閉じる／評価差分をrevert。旧stacked PR群はhistorical provenanceとして保持します。
 
 実測結果と独立レビューはPR本文にも記載します。MetaEditorは今回のsemantic検証の必須条件に
 追加しませんが、製品release gateの未実行状態は正確に区別します。
