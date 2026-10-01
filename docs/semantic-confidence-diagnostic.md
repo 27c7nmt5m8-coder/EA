@@ -11,7 +11,7 @@ It neither reruns the official 19-case cohort nor modifies its results/oracles.
 - Targets: ER003 / ER013, **2 unique cases, 3 historical anomaly observations**.
 - Jev: 5 identical-input repeats each for targets and 4 controls (30 planned).
 - Sol: 3 identical-input repeats each for both targets (6 planned),
-  `gpt-6.1-sol` / `high`, no model fallback.
+  `gpt-6.1-sol` / `xhigh`, no model fallback.
 - Controls: first all remaining same-label `no_regression` controls with original
   Jev confidence >=0.90 (ER007, ER016); then lowest-ID high-confidence Important
   cases from the missing PR11/17 sources (ER001, ER010). All four are Important;
@@ -54,7 +54,7 @@ cannot be recovered retrospectively. Blind explanations diagnose possible input
 ambiguity; they are not the original model's private reasoning. Source audit
 checks the complete primary contract separately from summary completeness.
 If the oracle is unsupported, report `GROUND_TRUTH_ISSUE_FOUND`, stop and never
-rewrite the fixture. Low confidence requires Sol High review; no PASS/approval.
+rewrite the fixture. Low confidence always requires Sol xHigh; no PASS/approval.
 Only the requested shadow verdicts are allowed. Repeatability alone yields
 UNMEASURED until separate blind/source audits are assessed; observed instability
 is BLOCKED even when other coverage is missing.
@@ -83,7 +83,14 @@ uses canonical missing-usage reasons; malformed stream events do not erase a
 single completed, validated usage event. Runtime failures remain unavailable.
 
 EA/src, trading, safety, policy and AGENTS remain unchanged. Threshold 0.90,
-review_skip_enabled=false and mandatory Sol High routing remain in force.
+review_skip_enabled=false and mandatory Sol xHigh routing remain in force.
 This is not EA quality assurance, a release gate, review skip or permanent Jev
 adoption. No Trace/Jevgrep calls. Rollback: close this Draft stacked PR/remove its
 diagnostic files; ignored local diagnostic records may be archived separately.
+
+
+## Post-PR #21 integration note
+
+The protocol above documents the historical PR #20 measurement as it actually ran, including GPT-6.1 Sol xHigh. Those historical rows and blind-review records are never relabeled.
+
+In the consolidated post-PR #21 tooling, new live diagnostic replay uses GPT-6.1 Sol High. The report path remains backward-compatible with the frozen historical xHigh protocol and is read-only for that historical plan. High and xHigh provenance are not mixed in one semantic-real report.

@@ -99,6 +99,15 @@ class RealSemantic(unittest.TestCase):
             self.assertIsNone(got['choice'])
             self.assertEqual(got['usage'], USAGE)
 
+    def test_historical_xhigh_rows_remain_reportable_but_mixed_efforts_are_rejected(self):
+        historical = self.row(a=observation(effort=real.HISTORICAL_SOL_EFFORT))
+        report = self.report([historical])
+        self.assertEqual(report['sol_effort_provenance'], real.HISTORICAL_SOL_EFFORT)
+        self.assertEqual(report['quality']['sol']['unmeasured'], len(self.cases)-1)
+        current = self.row()
+        with self.assertRaisesRegex(ValueError, 'mixed_sol_effort_provenance'):
+            self.report([historical, current])
+
     def test_missing_usage_is_null_but_quality_survives(self):
         value = observation(); value['usage'] = None
         got = real.normalize(value, 'sol')

@@ -52,8 +52,11 @@ def history_snapshot(prefix):
             for p in paths if not p.name.startswith(prefix)}
 
 
-def protocol(cases):
+def protocol(cases, *, sol_effort=None):
     verify_frozen()
+    sol_effort = real.SOL_EFFORT if sol_effort is None else sol_effort
+    if sol_effort not in real.RECORDED_SOL_EFFORTS:
+        raise ValueError('unsupported_sol_effort_provenance')
     by_id = {c['id']: c for c in cases}
     selected = TARGETS + CONTROLS
     body = lambda payload: dict(model=policy()['jev_model'], state=payload,
@@ -64,15 +67,15 @@ def protocol(cases):
                 control_rule='Prefer all remaining no_regression controls with historical Jev confidence >=0.90; '
                 'then cover missing source PR11/17 with lowest-ID high-confidence Important case. '
                 'Frozen before diagnostic calls; label matched 2/4, all Important, four source PRs.',
-                jev_repeats=5, sol_repeats=3, sol_model=real.SOL_MODEL, sol_effort=real.SOL_EFFORT,
+                jev_repeats=5, sol_repeats=3, sol_model=real.SOL_MODEL, sol_effort=sol_effort,
                 jev_model=policy()['jev_model'], jev_provider='TypeSafe', threshold=.90,
                 review_skip_enabled=False, shadow_only=True, significant_range=.20, significant_stddev=.10,
                 payload_digests={k: real.fingerprint(real.provider_payload(by_id[k])) for k in selected},
                 request_digests={k: real.fingerprint(body(real.provider_payload(by_id[k]))) for k in selected})
 
 
-def normalize(value, provider):
-    result = real.normalize(value, provider)
+def normalize(value, provider, *, expected_effort=None):
+    result = real.normalize(value, provider, expected_effort=expected_effort or real.SOL_EFFORT)
     # The historical evaluator's unavailable reason allowlist predates this
     # diagnostic roundtrip. Preserve mismatch without editing old aggregation.
     if isinstance(value, dict) and value.get('status') == 'UNAVAILABLE' and value.get('reason') == 'model_effort_mismatch':
@@ -87,7 +90,7 @@ def observation(plan, case_id, provider, repeat, retry, value):
     return dict(experiment=EXPERIMENT, protocol_sha256=real.fingerprint(plan),
                 attempt_id=uuid.uuid4().hex, case_id=case_id, group='target' if case_id in TARGETS else 'control',
                 provider=provider, repeat=repeat, retry=retry, payload_sha256=plan['payload_digests'][case_id],
-                observation=normalize(value, provider))
+                observation=normalize(value, provider, expected_effort=plan['sol_effort']))
 
 
 def measured(values, total):
@@ -137,7 +140,7 @@ def stats(rows, planned):
 
 
 def validate_rows(plan, rows):
-    expected_plan = protocol(real.load_cases(FIXTURE)[0])
+    expected_plan = protocol(real.load_cases(FIXTURE)[0], sol_effort=plan.get('sol_effort'))
     if plan != expected_plan: raise ValueError('changed_diagnostic_protocol')
     seen, slots = set(), set()
     fields = set(observation(plan, 'ER003', 'jev', 1, 1, {}))
@@ -165,7 +168,7 @@ def validate_rows(plan, rows):
         answer = dict(type='choice', choice=obs['choice'], confidence=obs['confidence'], probabilities=obs['probabilities'])
         canonical = normalize(dict(status=obs['status'], answer=answer, model=obs['model'],
             reasoning_effort=obs['reasoning_effort'], usage=obs['usage'], elapsed_seconds=obs['elapsed_seconds'],
-            reason=obs['reason']), provider)
+            reason=obs['reason']), provider, expected_effort=plan['sol_effort'])
         if canonical != obs: raise ValueError('invalid_observation')
     by_slot = {(r['case_id'], r['provider'], r['repeat'], r['retry']): r for r in rows}
     for row in rows:
@@ -255,7 +258,7 @@ def finalize(plan, rows, blind_rows, source_audit):
         if (k not in TARGETS or review['protocol_sha256'] != real.fingerprint(plan) or
                 review['payload_sha256'] != plan['payload_digests'][k] or
                 review['prompt_sha256'] != real.fingerprint(blind_prompt(payloads[k])) or
-                review['model'] != real.SOL_MODEL or review['reasoning_effort'] != real.SOL_EFFORT or
+                review['model'] != real.SOL_MODEL or review['reasoning_effort'] != plan['sol_effort'] or
                 review['input_scope'] != 'four_original_fields_only_no_repo_history_or_oracle' or
                 type(review['retry']) is not int or review['retry'] not in (1, 2)):
             raise ValueError('stale_or_leaking_blind_review')
@@ -364,6 +367,8 @@ def call_blind(payload, *, runner=None, timeout=180):
 
 
 def run_live(cases, plan, prefix):
+    if plan.get('sol_effort') != real.SOL_EFFORT:
+        raise ValueError('historical_plan_is_report_only')
     directory = real.ROOT / '.workflow-eval'
     present = bool(os.environ.get('TYPESAFE_API_KEY'))
     original_history = history_snapshot(prefix)

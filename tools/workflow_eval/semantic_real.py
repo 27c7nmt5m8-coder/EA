@@ -18,6 +18,8 @@ from .triage import SENSITIVE
 
 SOL_MODEL = 'gpt-6.1-sol'
 SOL_EFFORT = 'high'
+HISTORICAL_SOL_EFFORT = 'xhigh'
+RECORDED_SOL_EFFORTS = {SOL_EFFORT, HISTORICAL_SOL_EFFORT}
 COHORT = 'semantic_real_derived'
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = ROOT / 'tests/fixtures/workflow_semantic_real_provenance.json'
@@ -113,7 +115,7 @@ def load_cases(path, root=ROOT, *, require_source_objects=False):
     return cases, hashlib.sha256(raw).hexdigest()
 
 
-def normalize(value, arm):
+def normalize(value, arm, *, expected_effort=SOL_EFFORT):
     from .triage import policy
     result = dict(status='UNAVAILABLE', choice=None, confidence=None, usage=None,
                   usage_reason='missing_usage', elapsed_seconds=None, reason='invalid_response',
@@ -126,7 +128,9 @@ def normalize(value, arm):
     if type(duration) in (int, float) and math.isfinite(duration) and duration >= 0:
         result['elapsed_seconds'] = duration
     model, effort = value.get('model'), value.get('reasoning_effort')
-    valid_model = (model == SOL_MODEL and effort == SOL_EFFORT if arm == 'sol'
+    if arm == 'sol' and expected_effort not in RECORDED_SOL_EFFORTS:
+        raise ValueError('unsupported_sol_effort_provenance')
+    valid_model = (model == SOL_MODEL and effort == expected_effort if arm == 'sol'
                    else model == policy()['jev_model'])
     if valid_model:
         result.update(model=model, reasoning_effort=effort if arm == 'sol' else None)
@@ -213,10 +217,16 @@ def summarize(rows, cases, *, base_sha, dataset_sha256):
         groups.setdefault(row['id'], []).append(row)
     first = {identity: group[0] for identity, group in groups.items()}
     attempts = [r for group in groups.values() for r in group]
+    sol_efforts = {r.get('a', {}).get('reasoning_effort') for r in attempts
+                   if r.get('a', {}).get('model') == SOL_MODEL
+                   and r.get('a', {}).get('reasoning_effort') in RECORDED_SOL_EFFORTS}
+    if len(sol_efforts) > 1:
+        raise ValueError('mixed_sol_effort_provenance')
+    report_sol_effort = next(iter(sol_efforts), None)
     def accepted(row, arm):
         from .triage import policy
         observation = row.get(arm, {})
-        model_ok = (observation.get('model') == SOL_MODEL and observation.get('reasoning_effort') == SOL_EFFORT
+        model_ok = (observation.get('model') == SOL_MODEL and observation.get('reasoning_effort') == report_sol_effort
                     if arm == 'a' else observation.get('model') == policy()['jev_model'])
         confidence = observation.get('confidence')
         return (observation.get('status') == 'OK' and model_ok and observation.get('choice') in CHOICES
@@ -284,7 +294,7 @@ def summarize(rows, cases, *, base_sha, dataset_sha256):
                 shadow_only=True, actual_action='none', review_skip_enabled=False, confidence_threshold=.90,
                 real_task_cohort_included=False, expected_cases=len(cases), unique_observed_cases=len(first),
                 retry_rows=len(attempts)-len(first), stale_rows=stale, duplicate_rows=duplicates,
-                legacy_identity_rows=legacy,
+                legacy_identity_rows=legacy, sol_effort_provenance=report_sol_effort,
                 case_counts=dict(source_pr=dict(Counter(str(c['source_pr']) for c in cases)),
                                  severity=dict(Counter(c['severity'] for c in cases)),
                                  expected_result=dict(Counter(c['expected_result'] for c in cases))),

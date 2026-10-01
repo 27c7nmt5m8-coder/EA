@@ -91,6 +91,15 @@ class Diagnostics(unittest.TestCase):
         self.assertEqual(real.SOL_EFFORT, 'high')
         self.assertFalse(diag.summarize(self.plan, [])['official_results_modified'])
 
+    def test_historical_xhigh_plan_and_blind_rows_remain_reportable(self):
+        historical_plan = diag.protocol(self.cases, sol_effort=real.HISTORICAL_SOL_EFFORT)
+        row = self.row(provider='sol')
+        row['protocol_sha256'] = real.fingerprint(historical_plan)
+        row['observation']['reasoning_effort'] = real.HISTORICAL_SOL_EFFORT
+        diag.validate_rows(historical_plan, [row])
+        with self.assertRaisesRegex(ValueError, 'historical_plan_is_report_only'):
+            diag.run_live(self.cases, historical_plan, 'semantic-confidence-historical-readonly')
+
     def test_probability_margin_not_confidence_and_population_variance(self):
         rows = [self.row(repeat=1, confidence=.5), self.row(repeat=2, confidence=.7)]
         stats = diag.summarize(self.plan, rows)['cases']['ER003']['jev']
