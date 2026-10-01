@@ -46,13 +46,26 @@ def add_parsers(sub):
     report.add_argument('--base-sha')
 
 
-def _base(args, root):
+def _base(args, root, *, fixture_base=None):
     value = args.base_sha
     if value is None:
-        value = subprocess.check_output(['git', 'rev-parse', 'origin/main'], cwd=root,
+        value = fixture_base
+    if value is None:
+        repository_root = Path(__file__).resolve().parents[2]
+        value = subprocess.check_output(['git', 'rev-parse', 'origin/main'], cwd=repository_root,
                                         text=True, encoding='utf-8').strip()
     if not isinstance(value, str) or not SHA.fullmatch(value):
         raise ValueError('invalid_base_sha')
+    return value
+
+
+def _fixture_base(cases):
+    values = {case.get('base_sha') for case in cases if isinstance(case, dict)}
+    if len(values) != 1:
+        raise ValueError('mixed_or_missing_fixture_base')
+    value = next(iter(values))
+    if not isinstance(value, str) or not SHA.fullmatch(value):
+        raise ValueError('invalid_fixture_base')
     return value
 
 
@@ -60,8 +73,14 @@ def _live_base(base):
     repository_root = Path(__file__).resolve().parents[2]
     current = subprocess.check_output(['git', 'rev-parse', 'origin/main'], cwd=repository_root,
                                       text=True, encoding='utf-8').strip()
-    if current != base:
+    if subprocess.run(['git', 'merge-base', '--is-ancestor', base, current],
+                      cwd=repository_root, capture_output=True).returncode:
         raise ValueError('stale_live_base_sha')
+    head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=repository_root,
+                                   text=True, encoding='utf-8').strip()
+    if subprocess.run(['git', 'merge-base', '--is-ancestor', current, head],
+                      cwd=repository_root, capture_output=True).returncode:
+        raise ValueError('live_head_not_descendant_of_main')
     return current
 
 
@@ -145,16 +164,16 @@ def merge_discovery(discovery, sol, discovery_rows_sha256, identity):
 def _trace(args, root, output):
     from .trace_eval import (case_fingerprint, run_trace_case, summarize_trace,
                              execute_trace_case, trace_sol_review, call_trace_jev)
-    base = _base(args, root)
-    if args.live:
-        _live_base(base)
-        _live_fixture(args.cases)
     raw_dataset = Path(args.cases).read_bytes()
     dataset_sha = hashlib.sha256(raw_dataset).hexdigest()
     dataset = json.loads(raw_dataset)
     if not isinstance(dataset, dict) or dataset.get('schema_version') != 1 or not isinstance(dataset.get('cases'), list):
         raise ValueError('invalid_trace_dataset')
     cases = dataset['cases']
+    base = _base(args, root, fixture_base=_fixture_base(cases))
+    if args.live:
+        _live_base(base)
+        _live_fixture(args.cases)
     identities = [c.get('task_id') for c in cases]
     if not cases or len(set(identities)) != len(identities):
         raise ValueError('duplicate_or_empty_trace_dataset')
@@ -209,12 +228,12 @@ def _jevgrep(args, root, output):
                                     summarize_pairs, source_fingerprint, CURRENT_SOL_MODEL)
     if args.live and args.sol_model != CURRENT_SOL_MODEL:
         raise ValueError('legacy_sol_model_not_live')
-    base = _base(args, root)
+    repository_root = Path(__file__).resolve().parents[2]
+    cases = load_cases(args.cases, repository_root)
+    base = _base(args, root, fixture_base=_fixture_base(cases))
     if args.live:
         _live_base(base)
         _live_fixture(args.cases)
-    repository_root = Path(__file__).resolve().parents[2]
-    cases = load_cases(args.cases, repository_root)
     dataset_sha = hashlib.sha256(Path(args.cases).read_bytes()).hexdigest()
     if args.live and (args.b_observations or args.discovery_rows):
         raise ValueError('choose_live_or_b_observations')
