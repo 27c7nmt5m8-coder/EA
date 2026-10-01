@@ -2,7 +2,7 @@
 
 ## Scope and dependency
 
-Sibling of PR20, based on PR19 head
+Historical origin: sibling of PR20, based on PR19 head
 `766343e1f52411c8bb49a6d7fcfd0e65a64e343a`, branch
 `feat/semantic-regression-real-cases` (base of PR19:
 `feat/jev-experimental-benchmarks`). PR20 head
@@ -62,9 +62,13 @@ Actual reviews always use gpt-6.1-sol/high. Requested model/effort and effective
 metadata are separate; unavailable backend identity stays null. Wrong model,
 unavailable or unknown results never become binary no_regression.
 
-Mandatory xHigh takes precedence for src/protected/critical/unknown dependency,
+Mandatory GPT-6.1 Sol High review takes precedence for src/protected/critical/unknown dependency,
 including Entry, SL/TP, BE, Trailing, Risk, Monte Carlo, Fintokei, portfolio,
 Worker failures, orders/ownership/mutex/persistence, routing and safety policy.
+xHigh is not selected by category alone; it is an additional review only when the
+completed High review leaves concrete material uncertainty, independent High reviews
+materially disagree, deterministic behavior remains unexplained, root cause remains
+unresolved after appropriate investigation, or an explicit project rule requires it.
 Otherwise routing metadata distinguishes PROVIDER_REVIEW, UNKNOWN_REVIEW,
 LOW_CONF_REVIEW (<0.90), SHADOW_HIGH_CONF (valid binary >=0.90). These are
 counterfactual recommendations; Jev cannot approve product behavior or merge.
@@ -197,10 +201,11 @@ absent by the API. Unknown attestation must exclude the case.
 
 Product eligibility is conservatively limited to PRs touching src/, C++ EA tests,
 README_JA.md or VALIDATION_JA.md; Python/tooling-only PRs are excluded. Every src/
-change is mandatory xHigh even when an item summary fails to name a protected
-area. This conservative filter can reduce the nonmandatory candidate sample.
+change is mandatory High even when an item summary fails to name a protected
+area. This conservative filter can reduce the nonmandatory candidate sample; it
+does not itself authorize xHigh escalation.
 
-This remains a shadow experiment, not assurance of EA product quality. MetaEditor
+After consolidation in PR #23 this remains a shadow experiment, not assurance of EA product quality. MetaEditor
 is not required for this product-unchanged tooling validation; authoritative
 release status is reported separately. PR verification results are recorded in
 the Draft PR, not substituted for future prospective case evidence.
