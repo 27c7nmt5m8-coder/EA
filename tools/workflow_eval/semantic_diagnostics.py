@@ -52,16 +52,20 @@ def history_snapshot(prefix):
             for p in paths if not p.name.startswith(prefix)}
 
 
-def protocol(cases, *, sol_effort=None):
+def protocol(cases, *, sol_effort=None, dependency_sha=None):
     verify_frozen()
     sol_effort = real.SOL_EFFORT if sol_effort is None else sol_effort
     if sol_effort not in real.RECORDED_SOL_EFFORTS:
         raise ValueError('unsupported_sol_effort_provenance')
+    dependency_sha = BASE_SHA if dependency_sha is None else dependency_sha
+    if (not isinstance(dependency_sha, str) or len(dependency_sha) != 40 or
+            any(c not in '0123456789abcdef' for c in dependency_sha)):
+        raise ValueError('invalid_dependency_sha')
     by_id = {c['id']: c for c in cases}
     selected = TARGETS + CONTROLS
     body = lambda payload: dict(model=policy()['jev_model'], state=payload,
         questions=dict(semantic_regression=dict(type='choice', instructions=INSTRUCTIONS, criteria=CRITERIA)))
-    return dict(version=1, experiment=EXPERIMENT, dependency_sha=BASE_SHA,
+    return dict(version=1, experiment=EXPERIMENT, dependency_sha=dependency_sha,
                 fixture_sha256=FIXTURE_SHA, provenance_sha256=PROVENANCE_SHA,
                 target_cases=TARGETS, control_cases=CONTROLS, anomaly_observations=3,
                 control_rule='Prefer all remaining no_regression controls with historical Jev confidence >=0.90; '
@@ -140,7 +144,7 @@ def stats(rows, planned):
 
 
 def validate_rows(plan, rows):
-    expected_plan = protocol(real.load_cases(FIXTURE)[0], sol_effort=plan.get('sol_effort'))
+    expected_plan = protocol(real.load_cases(FIXTURE)[0], sol_effort=plan.get('sol_effort'), dependency_sha=plan.get('dependency_sha'))
     if plan != expected_plan: raise ValueError('changed_diagnostic_protocol')
     seen, slots = set(), set()
     fields = set(observation(plan, 'ER003', 'jev', 1, 1, {}))
@@ -429,11 +433,14 @@ def main(argv=None):
     parser.add_argument('--source-audit', help='Explicit independent source audit: case ID to supported/issue status')
     args = parser.parse_args(argv)
     if args.live == bool(args.report): parser.error('choose --live or --report PREFIX')
-    cases, _ = real.load_cases(FIXTURE, require_source_objects=args.live)
-    plan = protocol(cases)
+    cases, _ = real.load_cases(FIXTURE, require_source_objects=False)
     if args.live:
-        if subprocess.run(['git', 'merge-base', '--is-ancestor', BASE_SHA, 'HEAD']).returncode:
-            raise ValueError('not_stacked_on_pr19')
+        current_main = subprocess.check_output(
+            ['git', 'rev-parse', 'origin/main'], cwd=real.ROOT, text=True, encoding='utf-8').strip()
+        if subprocess.run(['git', 'merge-base', '--is-ancestor', current_main, 'HEAD'],
+                          cwd=real.ROOT, capture_output=True).returncode:
+            raise ValueError('live_head_not_descendant_of_main')
+        plan = protocol(cases, dependency_sha=current_main)
         prefix = 'semantic-confidence-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%f')
         # Publish selection/protocol before the first provider call.
         exclusive_output(real.ROOT / '.workflow-eval', prefix+'-protocol.json', plan)
