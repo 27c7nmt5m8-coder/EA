@@ -601,6 +601,8 @@ def summarize_pairs(rows: list[dict], *, expected_case_ids: list[str] | None = N
                                       current_base_sha=binding['current_base_sha'],
                                       expected_source_sha256=binding['expected_source_sha256'],
                                       expected_source_paths=binding['expected_source_paths'])
+            if row['b']['metrics']['source_universe_coverage'] != canonical['b']['metrics']['source_universe_coverage']:
+                raise ValueError('jevgrep_derived_metric_mismatch')
             if any(row.get(field) != canonical[field] for field in ('base_sha', 'comparison_status', 'exclusion_reasons')):
                 raise ValueError('jevgrep_comparison_mismatch')
             if provenance_fields.issubset(row) and any(row[field] != canonical[field] for field in provenance_fields):

@@ -137,6 +137,92 @@ class ContractHardening(unittest.TestCase):
             else: row['comparison_status'] = 'EXCLUDED'; row['exclusion_reasons'] = []
             with self.subTest(field=field), self.assertRaises(ValueError): grep.summarize_pairs([row])
 
+    def narrow_grep_row(self):
+        c = self.grep_cases[0]
+        a = dict(task_id=c['id'], base_sha=c['base_sha'], sol_model='gpt-6.1-sol', sol_effort='high',
+                 status='OK', found_files=c['must_find_files'], sol_input_tokens=100, sol_output_tokens=20, task_success=1)
+        b = dict(a, cache_bypassed=True, source_sha256='c'*64, stage_file_count=len(c['must_find_files']))
+        return grep.evaluate_pair(c, a, b, current_base_sha=c['base_sha'], expected_source_sha256='c'*64,
+                                  expected_source_paths=c['must_find_files'])
+
+    def test_jevgrep_import_binds_source_universe_coverage_to_allowlist(self):
+        row = self.narrow_grep_row()
+        original = copy.deepcopy(row)
+        report = grep.summarize_pairs([row], cases=[self.grep_cases[0]])
+        self.assertEqual(report['context_retrieval']['b']['source_universe_coverage']['value'], 1/3)
+        self.assertEqual(row, original)
+        historical = copy.deepcopy(row); historical.pop('comparison_binding')
+        old_report = grep.summarize_pairs([historical], cases=[self.grep_cases[0]])
+        self.assertEqual(old_report['context_retrieval']['b']['source_universe_coverage']['value'], 1/3)
+        self.assertEqual(old_report['token']['a']['sol_total_tokens']['value'], 120)
+        self.assertEqual(old_report['coverage_missing_data']['comparable_pairs'], 0)
+        for value in (1, 0, None):
+            altered = copy.deepcopy(row)
+            altered['b']['metrics']['source_universe_coverage'] = dict(value=value, coverage=int(value is not None),
+                reason=None if value is not None else 'not_measured')
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, 'jevgrep_derived_metric_mismatch'):
+                grep.summarize_pairs([altered], cases=[self.grep_cases[0]])
+
+    def test_combined_report_rejects_forged_jevgrep_source_universe_coverage(self):
+        from tools.workflow_eval.experimental_cli import _report
+        from types import SimpleNamespace
+        import hashlib
+        fixture = ROOT / 'tests/fixtures/workflow_jevgrep_cases.json'
+        row = self.narrow_grep_row()
+        row['dataset_sha256'] = hashlib.sha256(fixture.read_bytes()).hexdigest()
+        row['b']['metrics']['source_universe_coverage']['value'] = 1
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'rows.json'; path.write_text(json.dumps([row]), encoding='utf-8')
+            args = SimpleNamespace(base_sha=None, trace_rows=None, semantic_rows=None,
+                                   jevgrep_rows=str(path), jevgrep_cases=str(fixture))
+            outputs = []
+            with self.assertRaisesRegex(ValueError, 'jevgrep_derived_metric_mismatch'):
+                _report(args, Path(tmp), lambda *values: outputs.append(values))
+            self.assertEqual(outputs, [])
+
+    def test_trace_sol_rejects_substituted_or_duplicate_selected_segments_before_runner(self):
+        case = self.trace_case
+        segment = case['segments'][0]
+        selections = [[dict(segment, text='different synthetic trace')],
+                      [dict(segment, text='password=fictional-value')],
+                      [dict(segment), dict(segment)], [dict(segment, extra='synthetic')],
+                      [dict(segment, expected_label='unknown')], [dict(segment, id=[])],
+                      [dict(id=segment['id'])], {'segments': [segment]}]
+        for selection in selections:
+            seen = []
+            def runner(*args, **kwargs):
+                seen.append(kwargs['input'])
+                events = [dict(type='item.completed', item=dict(type='agent_message', text='{"detected_segment_ids":[]}')),
+                          dict(type='turn.completed', usage=dict(input_tokens=1, output_tokens=1))]
+                return subprocess.CompletedProcess(args[0], 0, '\n'.join(json.dumps(e) for e in events), '')
+            with self.subTest(selection=selection):
+                with self.assertRaisesRegex(ValueError, '^invalid_selected_segments$'):
+                    trace.trace_sol_review(case, selection, 'high', runner=runner)
+                self.assertEqual(seen, [])
+
+    def test_trace_sol_canonical_unique_subsets_preserve_prompt_and_fingerprint(self):
+        case = self.trace_case
+        for selected in ([], [copy.deepcopy(case['segments'][-1]), copy.deepcopy(case['segments'][0])]):
+            seen = []
+            def runner(*args, **kwargs):
+                seen.append(kwargs['input'])
+                events = [dict(type='item.completed', item=dict(type='agent_message', text='{"detected_segment_ids":[]}')),
+                          dict(type='turn.completed', usage=dict(input_tokens=1, output_tokens=1))]
+                return subprocess.CompletedProcess(args[0], 0, '\n'.join(json.dumps(e) for e in events), '')
+            result = trace.trace_sol_review(case, selected, 'high', runner=runner)
+            self.assertEqual(result['status'], 'OK')
+            self.assertEqual(result['case_fingerprint'], trace.case_fingerprint(case))
+            self.assertEqual(result['input_segment_ids'], [s['id'] for s in selected])
+            sent = json.loads(seen[0].split('Task and selected segments: ', 1)[1])
+            self.assertEqual(sent, dict(task=case['task'], segments=[dict(id=s['id'], text=s['text']) for s in selected]))
+            self.assertEqual(result['usage']['total_tokens'], 2)
+        unsafe = copy.deepcopy(case)
+        unsafe['segments'][0]['text'] = 'password=fictional-value'
+        seen = []
+        with self.assertRaisesRegex(ValueError, '^unsafe_trace$'):
+            trace.trace_sol_review(unsafe, unsafe['segments'], 'high', runner=lambda *args, **kwargs: seen.append(kwargs['input']))
+        self.assertEqual(seen, [])
+
     def test_jevgrep_import_rejects_mixed_high_and_historical_xhigh(self):
         with self.assertRaisesRegex(ValueError, 'mixed_sol_provenance'):
             grep.summarize_pairs([self.grep_row(), self.grep_row(self.grep_cases[1], historical=True)])

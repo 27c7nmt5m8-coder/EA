@@ -360,10 +360,16 @@ def call_trace_jev(case, *, live=False, key=None, opener=None):
 def trace_sol_review(case, segments, effort, *, runner=None, timeout=120):
     """Read-only Sol review adapter; injectable runner supports offline tests."""
     fingerprint = case_fingerprint(case)
-    allowed_ids = {s['id'] for s in case['segments']}
-    if not isinstance(segments, list) or any(not isinstance(s, dict) or s.get('id') not in allowed_ids
-                                              for s in segments):
+    canonical = {s['id']: dict(s) for s in case['segments']}
+    if not isinstance(segments, list) or any(
+            not isinstance(s, dict) or not isinstance(s.get('id'), str)
+            or s['id'] not in canonical or s != canonical[s['id']] for s in segments):
         raise ValueError('invalid_selected_segments')
+    selected_ids = [s['id'] for s in segments]
+    if len(selected_ids) != len(set(selected_ids)):
+        raise ValueError('invalid_selected_segments')
+    # Use the fingerprinted, safety-validated fixture content for provider input.
+    segments = [canonical[ident] for ident in selected_ids]
     required_effort = policy()['mandatory_effort']
     if effort != required_effort:
         raise ValueError('sol_effort_below_floor')
