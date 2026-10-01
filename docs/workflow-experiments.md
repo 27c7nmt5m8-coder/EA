@@ -49,6 +49,8 @@ Jevgrepは検索対象sourceを外部providerへ送信する。既存ignoreを�
 
 ## 結果の読み方とrollback
 
+Synthetic / real-task review reportには、任意のrequest単位の料金ledgerから `observed_text_token_api_equivalent` を追加できる。実効tier・context長・cache read/write・regional processingとreview usageの整合が必要で、不足時は合計を `null` とし、既知subtotalとcoverageを分ける。CLIの実請求額やJev料金とは混同しない。旧historical scenario fieldは維持し、既存Trace / semantic / JEVGrepのreport contractは変更しない。詳細は [Sol移行と料金の境界](sol61-migration.md#request-based-pricing) を参照する。
+
 `experimental-report` は必ず、(1)品質、(2)token、(3)費用、(4)時間、(5)context retrieval、(6)rework/test failure、(7)coverage / missing data、(8)limitationsを分けて出力する。各実験のpilot statusを別々に示す。critical missが0件でも、品質coverageが欠ける場合は品質維持を認定しない。
 
 固定fixtureのID全体を分母にし、未実行・比較不能ケースをcoverageへ示す。fixtureのdigestが変わった古い結果は現在の結果として集計しない。Jevgrep検索後のSolが失敗・未実行でも他ケースの集計は継続する。そのケースはA/B比較から除外し、検索自体のstatusとSolのstatusを別に記録する。取得済みのusage・file漏れは残し、critical file漏れのBLOCKEDを消さない。

@@ -63,7 +63,7 @@
     },
     {
       "id": "M",
-      "task": "Exceptionally difficult EA-wide redesign after Sol High and independent xHigh reviews demonstrate insufficient capability to resolve a system-wide contradiction",
+      "task": "User-approved independent review of an exceptionally difficult EA-wide redesign after Sol High and independent xHigh reviews demonstrate insufficient capability to resolve a system-wide contradiction; scope and increased cost explained before approval",
       "expected": {"routes": ["Astra/high"], "jev_attempts": 0, "jev_used": false, "jev_status": "not_needed", "first_evidence": "repository_specs", "shadow": "none"}
     }
   ]

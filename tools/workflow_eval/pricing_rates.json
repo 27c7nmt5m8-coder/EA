@@ -1,0 +1,15 @@
+{
+  "as_of": "2026-10-02",
+  "currency": "USD",
+  "unit_tokens": 1000000,
+  "sources": ["https://developers.openai.com/api/docs/models/gpt-6.1-sol", "https://developers.openai.com/api/docs/guides/prompt-caching"],
+  "estimate_kind": "offline_text_token_api_equivalent",
+  "historical_rates_note": "gpt-6-sol rates are retained historical scenario inputs, not verified current billing.",
+  "models": {
+    "gpt-6.1-sol": {"input": 2, "cached_input": 0.1, "cache_write_input": 2.5, "output": 10, "basis": "current_standard_text"},
+    "gpt-6-sol": {"input": 2, "cached_input": 0.2, "cache_write_input": 2.5, "output": 10, "basis": "historical_standard_text_scenario"}
+  },
+  "long_context": {"threshold_input_tokens": 272000, "input_multiplier": 2, "output_multiplier": 1.5},
+  "effective_tier_multipliers": {"default": 1, "priority": 2, "fast": 2, "flex": 0.5, "batch": 0.5},
+  "regional_multiplier": 1.1
+}

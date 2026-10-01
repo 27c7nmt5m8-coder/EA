@@ -1,6 +1,7 @@
 """Paired metrics, missing-evidence handling and an unconditional no-skip release."""
 from .telemetry import usage_numbers
 from .triage import HISTORICAL_SOL_MODELS, RECORDED_SOL_MODELS
+from .pricing import summarize_review_costs
 
 
 def paired_rows(rows):
@@ -131,6 +132,8 @@ def summarize(rows):
                                   +r[arm]['usage']['cached_input_tokens']*.2+r[arm]['usage']['output_tokens']*10)/1e6
                                  for r in valid),6) if eligible else None
     result['standard_short_context_sol_api_equivalent_usd'] = scenario
+    result['observed_text_token_api_equivalent'] = {
+        arm: summarize_review_costs([r.get(arm) for r in rows]) for arm in ('a', 'b')}
     result['all_provider_cost_usd'] = None
-    result['cost_limitations'] = 'Historical GPT-6 Sol standard text-token scenario only with reported cache coverage; absent legacy provenance is unknown. Actual CLI billing/tier and JEV rates unavailable.'
+    result['cost_limitations'] = 'The legacy scenario field remains historical GPT-6 Sol only. Observed request text-token API equivalents require reconciled model/tier/cache/context/region evidence; missing evidence stays unknown. Actual CLI billing and JEV rates unavailable.'
     return result

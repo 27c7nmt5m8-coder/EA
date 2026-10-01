@@ -27,6 +27,12 @@ Check the actual host's available models, reasoning levels, and switching mechan
 
 Higher reasoning effort is not assumed to be always better. Route high-volume aggregation to Luna, routine implementation to GPT-6.1 Sol Medium, and complex diagnosis, architecture-sensitive work, mandatory review and independent review to GPT-6.1 Sol High. A stronger model's availability alone is not evidence for escalation. The model lane never replaces deterministic validation.
 
+### Project roles and configuration
+
+The project's [.codex/config.toml](../../../.codex/config.toml) sets GPT-6.1 Sol High for root/orchestrator/integrate/verify and unspecified subagents. Choose a worker's model and effort explicitly: Sol Medium for routine implementation, High for complex multi-module, protected, concurrent, architectural or orchestration work. Explorer/researcher use Luna High for bounded read-only scans and research, or Sol Medium for deep protected dependency analysis and complex specification comparisons. Reviewers use independent Sol High contexts and remain read-only. Reuse suitable existing agents; delegate only for concrete parallelism, specialization or independence benefits. Explicit supported spawn selections override defaults. `fork_turns` controls context propagation, not model choice; a full-history fork inherits its parent's settings. These defaults do not silently reconfigure an already running chat or CLI adapters that explicitly select a model in an isolated directory.
+
+Astra requires demonstrated Sol insufficiency plus advance explicit user approval after explaining the limitation, review scope and increased cost. It is never an automatic route or fallback. An offline fixture that includes Astra must include this approval as an intended precondition, not claim a live execution occurred.
+
 ### Minimum routing floor
 
 Set a capability floor before optimizing speed or cost. Treat authentication, authorization, secrets/credentials, destructive operations or deletion, migrations, concurrency, cryptography, payments, security boundaries, and production-critical architecture as high-risk. In this EA, also treat live trading, order execution/ownership/duplicate prevention, Magic/Symbol ownership, SL/TP/BE/trailing, lot sizing, risk percentage/modes/Monte Carlo/portfolio/Fintokei, spread/cost safety, FailOpen, Worker protocol, price drift, unresolved orders, and other safety mechanisms as high-risk.

@@ -55,7 +55,7 @@
     },
     {
       "id": "M", "default_route": "Astra/high", "actual_route": "Astra/high", "shadow_route": null,
-      "jev": {"attempts": 0, "used": false, "status": "not_needed"}, "evidence": ["repository_specs", "deterministic_checks", "sol_insufficient_capability"], "sent_context": null
+      "jev": {"attempts": 0, "used": false, "status": "not_needed"}, "evidence": ["repository_specs", "deterministic_checks", "sol_insufficient_capability", "user_approved_astra_review"], "sent_context": null
     }
   ]
 }

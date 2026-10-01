@@ -11,6 +11,7 @@ import time
 from .context import digest
 from .telemetry import usage_numbers, USAGE_KEYS, codex_events
 from .triage import SENSITIVE, valid_answer, policy, review_effort, ACTIVE_SOL_MODEL, RECORDED_SOL_MODELS
+from .pricing import summarize_review_costs, validate_pricing_requests
 
 FIELDS = {'schema_version', 'repository', 'request_id', 'origin', 'kind', 'head', 'base',
           'started_at', 'completed_at', 'mandatory', 'a', 'b', 'jev', 'shadow_route',
@@ -18,7 +19,7 @@ FIELDS = {'schema_version', 'repository', 'request_id', 'origin', 'kind', 'head'
           'audit', 'task_total_usage', 'task_elapsed_seconds'}
 REVIEW_FIELDS = {'status', 'model', 'reasoning_effort', 'usage', 'elapsed_seconds', 'judgment',
                  'observed_completed_turns', 'exact_backend_calls', 'usage_fields',
-                 'reported_reasoning_output_tokens', 'visible_answer_characters', 'evidence_sha256', 'diagnostic_code', 'escalation'}
+                 'reported_reasoning_output_tokens', 'visible_answer_characters', 'evidence_sha256', 'diagnostic_code', 'escalation', 'pricing_requests'}
 AUDIT_METRICS = ('false_negatives','critical_misses','a_false_negatives','b_false_negatives','a_critical_misses','b_critical_misses')
 
 
@@ -79,6 +80,7 @@ def validate_record(row):
         # Historical records may lack metadata; never infer or backfill it.
         if review['model'] == ACTIVE_SOL_MODEL or review.get('escalation') is not None:
             review_effort(review['reasoning_effort'], review.get('escalation'))
+        validate_pricing_requests(review.get('pricing_requests'))
         if review.get('status') not in ('OK', 'UNKNOWN', 'UNAVAILABLE'): raise ValueError('invalid_review_status')
         nonnegative(review.get('elapsed_seconds'))
         if review.get('usage') is not None: strict_usage(review['usage'])
@@ -191,6 +193,10 @@ def summarize(rows):
     result['review_provenance'] = [dict(model=model, reasoning_effort=effort,
                                        pairs=sum(r['a']['model'] == model and r['a']['reasoning_effort'] == effort for r in pairs))
                                     for model, effort in sorted({(r['a']['model'], r['a']['reasoning_effort']) for r in pairs})]
+    result['observed_text_token_api_equivalent'] = {
+        arm: summarize_review_costs([r[arm] for r in real]) for arm in ('a', 'b')}
+    result['all_provider_cost_usd'] = None
+    result['cost_limitations'] = 'Reconciled observed request text-token API equivalents only; not actual Codex billing. Missing request/tier/cache/context/region evidence stays unknown; JEV rates unavailable.'
     for field in ('rework_count','test_failed_runs','context_reacquisitions','missing_context_items','task_elapsed_seconds'):
         known=[r[field] for r in real if r[field] is not None]
         result[field] = sum(known) if real and len(known)==len(real) else None
