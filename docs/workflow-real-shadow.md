@@ -1,6 +1,6 @@
 # 実タスクshadow計測
 
-省略OFF、confidence 0.90、Sol High/xHighを維持する。初期実コホートのEAレビュー/実装は保守的にxHigh必須とする。JEVは重要群を判断せず、売買・安全性・最終承認を任せない。ユーザー設定、既存CI、EAは変更しない。
+省略OFF、confidence 0.90を維持する。今後の通常・mandatory reviewはGPT-6.1 Sol Highを標準とし、xHighは具体的証拠に基づく追加レビューのみとする。初期コホートの旧xHigh必須policyで実施済みの測定・レビュー・provenanceと旧計画は履歴として維持する。現行手順は [High-first policy](workflow-high-first.md) を参照する。JEVは重要群を判断せず、売買・安全性・最終承認を任せない。ユーザー設定、既存CI、EAは変更しない。
 
 ## 独立タスクと欠測
 
@@ -31,7 +31,7 @@ python -m tools.workflow_eval.cli cohort-report
 
 既存capture/event/events-reportで全タスクの数値usage、test/rework phaseを収集し、対象taskのrecordへ対応付ける。数値の出所とSHAの一致は担当者が検証する。typed schemaは真偽の証明・署名ではない。
 
-実レビューの呼出関数は `tools.workflow_eval.real_tasks.perform_review(task, evidence, effort='xhigh')`。入力は秘密・実口座ログを除いた文字列で、出力は判定と数値usageのみ。Codex CLIのread-only/ephemeral実行でユーザー設定を変更しない。JSON schemaはfinding数やreason長に上限を付けず、重要指摘や推論の切断を狙わない。初回計測後にstructured outputと900秒の待機上限、診断コードを追加した。schema表現・parserはoffline検証済みだが、この改訂wrapperの実API再計測はまだ行っていない。上限変更は推論レベルの変更ではない。
+実レビューの呼出関数は `tools.workflow_eval.real_tasks.perform_review(task, evidence, effort='high')`。入力は秘密・実口座ログを除いた文字列で、出力は判定と数値usageのみ。Codex CLIのread-only/ephemeral実行でユーザー設定を変更しない。JSON schemaはfinding数やreason長に上限を付けず、重要指摘や推論の切断を狙わない。初回計測後にstructured outputと900秒の待機上限、診断コードを追加した。schema表現・parserはoffline検証済みだが、この改訂wrapperの実API再計測はまだ行っていない。上限変更は推論レベルの変更ではない。
 
 ## 継続と採用条件
 

@@ -37,6 +37,29 @@ class RealTaskTests(unittest.TestCase):
         row = self.record()
         with self.assertRaises(ValueError): m.summarize([row, dict(row, head='c'*40)])
 
+    def test_cohort_preserves_historical_and_active_review_provenance(self):
+        m = self.module('real_tasks')
+        rows = [self.record(11), self.record(12), self.record(13)]
+        for arm in ('a', 'b'):
+            rows[1][arm].update(model='gpt-6.1-sol', reasoning_effort='high', escalation=None)
+            rows[2][arm].update(model='gpt-6.1-sol', reasoning_effort='xhigh',
+                              escalation=dict(reason='high_review_material_uncertainty',
+                                              evidence='High review R1: unresolved interface contract.'))
+        original = copy.deepcopy(rows)
+        got = m.summarize(rows)
+        self.assertEqual(got['valid_review_pairs'], 3)
+        self.assertCountEqual(got['review_provenance'], [
+            dict(model='gpt-6-sol', reasoning_effort='xhigh', pairs=1),
+            dict(model='gpt-6.1-sol', reasoning_effort='high', pairs=1),
+            dict(model='gpt-6.1-sol', reasoning_effort='xhigh', pairs=1)])
+        self.assertEqual(rows, original)
+
+    def test_cohort_summary_rejects_active_xhigh_without_escalation(self):
+        row = self.record()
+        row['b'].update(model='gpt-6.1-sol', reasoning_effort='xhigh')
+        with self.assertRaisesRegex(ValueError, 'explicit_escalation_evidence_required'):
+            self.module('real_tasks').summarize([row])
+
     def test_fixture_and_retrospective_records_do_not_count_toward_real_target(self):
         rows = [self.record(), dict(self.record(12), origin='synthetic'), dict(self.record(13), origin='retrospective')]
         got = self.module('real_tasks').summarize(rows)
@@ -61,7 +84,7 @@ class RealTaskTests(unittest.TestCase):
         self.assertEqual(got['observed_critical_misses'], 1)
 
     def test_below_floor_provenance_is_rejected(self):
-        row = self.record(); row['b']['reasoning_effort'] = 'high'
+        row = self.record(); row['b']['reasoning_effort'] = 'medium'
         with self.assertRaises(ValueError): self.module('real_tasks').validate_record(row)
 
     def test_unknown_fields_and_credentials_are_not_logged(self):
@@ -155,7 +178,7 @@ class RealTaskTests(unittest.TestCase):
             context_blocks=[dict(id='a',text='Sentence.')],selected_context_ids=['a'],required_context_ids=['a'])
         with patch.object(m,'sol_review',return_value={}) as call:
             got=m.run_case(case,0)
-        self.assertTrue(all(c.args[2]=='xhigh' for c in call.call_args_list))
+        self.assertTrue(all(c.args[2]=='high' for c in call.call_args_list))
         self.assertEqual(got['shadow']['shadow_route'],'review')
 
     def test_missing_attempted_jev_usage_keeps_complete_total_unknown(self):

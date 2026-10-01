@@ -14,12 +14,12 @@
     {
       "id": "C",
       "task": "Complex MQL5 runtime bug",
-      "expected": {"routes": ["Sol/high", "Sol/xhigh"], "jev_attempts": 0, "jev_used": false, "jev_status": "not_needed", "first_evidence": "git_diff", "shadow": "none"}
+      "expected": {"routes": ["Sol/high"], "jev_attempts": 0, "jev_used": false, "jev_status": "not_needed", "first_evidence": "git_diff", "shadow": "none"}
     },
     {
       "id": "D",
       "task": "EA-wide Risk architecture redesign",
-      "expected": {"routes": ["Astra/medium", "Astra/high", "Astra/xhigh", "Astra/max", "Astra/ultra"], "jev_attempts": 0, "jev_used": false, "jev_status": "not_needed", "first_evidence": "repository_specs", "shadow": "none"}
+      "expected": {"routes": ["Sol/high"], "jev_attempts": 0, "jev_used": false, "jev_status": "not_needed", "first_evidence": "repository_specs", "shadow": "none"}
     },
     {
       "id": "E",
@@ -39,7 +39,7 @@
     {
       "id": "H",
       "task": "Simple change to high-risk order ownership protection",
-      "expected": {"routes": ["Sol/medium", "Sol/high", "Sol/xhigh", "Astra/medium", "Astra/high"], "jev_attempts": 0, "jev_used": false, "jev_status": "not_needed", "first_evidence": "git_diff", "shadow": "none"}
+      "expected": {"routes": ["Sol/high"], "jev_attempts": 0, "jev_used": false, "jev_status": "not_needed", "first_evidence": "git_diff", "shadow": "none"}
     },
     {
       "id": "I",
@@ -55,6 +55,16 @@
       "id": "K",
       "task": "Sensitive task summary cannot be safely minimized",
       "expected": {"routes": ["Sol/medium", "Sol/high"], "jev_attempts": 0, "jev_used": false, "jev_status": "privacy_skip", "first_evidence": "git_diff", "shadow": "none"}
+    },
+    {
+      "id": "L",
+      "task": "Additional review after Sol High review R1 leaves material uncertainty about the interface contract",
+      "expected": {"routes": ["Sol/xhigh"], "jev_attempts": 0, "jev_used": false, "jev_status": "not_needed", "first_evidence": "repository_specs", "shadow": "none"}
+    },
+    {
+      "id": "M",
+      "task": "Exceptionally difficult EA-wide redesign after Sol High and independent xHigh reviews demonstrate insufficient capability to resolve a system-wide contradiction",
+      "expected": {"routes": ["Astra/high"], "jev_attempts": 0, "jev_used": false, "jev_status": "not_needed", "first_evidence": "repository_specs", "shadow": "none"}
     }
   ]
 }

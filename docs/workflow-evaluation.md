@@ -37,7 +37,7 @@ python -m tools.workflow_eval.cli benchmark --split calibration --live-jev --wor
 python -m tools.workflow_eval.cli benchmark --split holdout --live-jev --workers 3
 ```
 
-benchmarkは明示実行時だけCodex CLIを起動します。Codexの既存認証を使い、ユーザーconfigを読み込まず、各子プロセスでSol High/xHighを指定します。設定ファイルは書き換えません。read-only/ephemeralで架空の固定レビュー課題だけを渡します。回答でtool実行や複数completed turnを検出した場合は無効とします。120秒timeout、同時実行は最大3件です。毎回fresh contextを使用し、A/B順序を入れ替えます。
+benchmarkは明示実行時だけCodex CLIを起動します。Codexの既存認証を使い、ユーザーconfigを読み込まず、各子プロセスでGPT-6.1 Sol Highを標準指定します。明示的なbenchmark比較のみxHighを指定できます。設定ファイルは書き換えません。read-only/ephemeralで架空の固定レビュー課題だけを渡します。回答でtool実行や複数completed turnを検出した場合は無効とします。120秒timeout、同時実行は最大3件です。毎回fresh contextを使用し、A/B順序を入れ替えます。
 
 Aは課題に供給されたcontext、Bは関連contextです。Aを「現行運用が毎回全リポジトリを読む」と仮定していません。fixtureには無関係な文書contextも含まれており、これを除ける場合の制御実験です。実際のEA開発の平均削減率へ一般化できません。
 
@@ -45,7 +45,7 @@ calibration10組、holdout20組は手ラベル付きの架空レビュー課題�
 
 両armでSolレビューを実行します。JEVのcandidateは反実仮想の省略候補であり、actual_routeは常にreview、actual_review_skippedは常にfalseです。最初の実装・セルフレビュー、安全レビュー、テスト、PR運用を省略しません。modeはoffまたはshadowのみです。
 
-重要ロジック、資金管理、注文、SL/TP/BE/Trailing、安全装置、複数module、未知依存を含め、src全変更、既存CI、テスト基準やmock変更等はxHighを要求します。通常はHighです。初期candidate範囲はdocs/dev-*.mdの既知低リスク変更だけです。閾値0.90は分布由来confidenceへの条件であり、安全性・正解率保証ではありません。判定者は必要なcontext不足や重要な意味がないか別途確認します。
+重要ロジック、資金管理、注文、SL/TP/BE/Trailing、安全装置、複数module、未知依存を含め、src全変更、既存CI、テスト基準やmock変更等はレビューと決定論的検証が必須です。通常・mandatoryともGPT-6.1 Sol Highが標準で、重要群だけを理由にxHighへ自動昇格しません。Jevによる最終承認・レビュー省略はできません。xHigh追加レビューはHigh後のmaterial uncertainty、独立High間の重大不一致、適切な調査後の未解明原因、説明不能な決定論的挙動、明示project ruleの具体的証拠がある場合に限ります。初期candidate範囲はdocs/dev-*.mdの既知低リスク変更だけです。閾値0.90は分布由来confidenceへの条件であり、安全性・正解率保証ではありません。判定者は必要なcontext不足や重要な意味がないか別途確認します。
 
 fingerprintはworking filesとindexのmode/blob/stageを含みます。削除・rename元など現在の全文を取得できないpathはexpansion_requiredとUNKNOWN依存にし、必須Solへ戻します。triageのevidenceにはdiffも含めます。benchmarkではfactsのschemaと、実際に送信する全payloadを呼び出し前に検査します。
 
@@ -56,7 +56,7 @@ fingerprintはworking filesとindexのmode/blob/stageを含みます。削除・
 - JEVとSolの一致率は有効JEV回答と同じ課題のB判定の比較。coverage/分母を必ず示します。
 - raw JEV false negative、閾値・mandatory適用後のshadow false negative、Sol false negativeを分けます。criticalは件数と評価範囲を示します。
 - criticalなSol/shadow見逃しが1件でもあればBLOCKED_CRITICAL_MISS。原因分析・条件修正が必要です。このreleaseには省略を有効にする経路がありません。
-- critical観測はA/B両側、raw JEV、shadowを検査し、相手armの通信失敗やusage欠損で消しません。削減率の有効pairにはSolモデルとHigh以上、mandatoryのxHigh証跡を要求します。
+- critical観測はA/B両側、raw JEV、shadowを検査し、相手armの通信失敗やusage欠損で消しません。削減率の有効pairには同一Solモデル・同一HighまたはxHigh effortを要求します。mandatory Highも正規ルートです。model/effort別のreview_provenanceを保持し、旧モデル読込互換を実行fallbackにしません。
 - 固定レビューfixtureのrework=0はコード修正を行わなかったことだけを表します。実開発の再修正はphaseイベントで計測します。
 - usageが取れない通信の費用を0とみなしません。JEV/actual tier価格不明時の全費用は未計測です。cached内訳を無視して総tokensだけから費用を推定しません。
 - JEV試行のusageが欠損した場合、completeなJEV総tokens・全provider合計・削減率はnullです。既知分はjev_known_token_subtotal、欠損件数はjev_usage_missing_attemptsとして分けます。
@@ -76,3 +76,7 @@ rollbackはpolicy.modeをoffにするかCLIを使わないだけで現行運用�
 
 API契約: https://docs.typesafe.ai/api
 confidence: https://docs.typesafe.ai/confidence
+
+## Active policyと履歴
+
+policy version 5の今後の実行は `gpt-6.1-sol` / Highです。旧モデルや過去のxHigh測定・PRレビュー・provenanceは書き換えません。旧policyでの計画・測定結果は実施時の履歴です。履歴価格は `historical_sol_standard_short_context_rates` としてのみ残し、新モデルの料金は未検証のため集計でunknownを維持します。詳細と明示追加レビューのAPIは [High-first policy](workflow-high-first.md) を参照してください。

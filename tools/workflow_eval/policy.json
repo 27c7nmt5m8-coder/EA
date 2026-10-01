@@ -1,20 +1,23 @@
 {
-  "version": 4,
+  "version": 5,
   "mode": "shadow",
   "review_skip_enabled": false,
   "confidence_threshold": 0.9,
   "max_changed_lines": 80,
-  "implementation_model": "gpt-6-sol",
+  "implementation_model": "gpt-6.1-sol",
   "normal_effort": "high",
-  "mandatory_effort": "xhigh",
+  "mandatory_effort": "high",
   "jev_model": "jev-1.13.0",
   "api_timeout_seconds": 10,
-  "sol_standard_short_context_rates": {
+  "jev_rates": null,
+  "escalation_effort": "xhigh",
+  "historical_sol_standard_short_context_rates": {
+    "model": "gpt-6-sol",
+    "scope": "historical_reference_only",
     "input": 2.0,
     "cached_input": 0.2,
     "output": 10.0,
     "source": "https://developers.openai.com/api/docs/models/gpt-6-sol",
     "retrieved_date": "2026-09-28"
-  },
-  "jev_rates": null
+  }
 }

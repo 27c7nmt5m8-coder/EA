@@ -59,7 +59,7 @@ class WorkflowEvaluation(unittest.TestCase):
                 got = m.route(self.facts(**updates), self.answer())
                 self.assertEqual(got['shadow_route'], 'review')
                 self.assertFalse(got['actual_review_skipped'])
-                self.assertEqual(got['sol_effort'], 'xhigh')
+                self.assertEqual(got['sol_effort'], 'high')
 
     def test_low_risk_candidate_is_shadow_only_and_low_confidence_escalates(self):
         m = self.module('triage')
@@ -274,7 +274,7 @@ class WorkflowEvaluation(unittest.TestCase):
         self.assertEqual(self.module('report').summarize([row])['decision'], 'BLOCKED_CRITICAL_MISS')
 
     def test_report_rejects_missing_or_below_floor_model_provenance(self):
-        for model, effort in [('gpt-6-luna', 'low'), (None, None), ('gpt-6-sol', 'high')]:
+        for model, effort in [('gpt-6-luna', 'low'), (None, None), ('gpt-6.1-sol', 'medium')]:
             row = self.review_row()
             for arm in ('a', 'b'): row[arm].update(model=model, reasoning_effort=effort)
             self.assertEqual(self.module('report').summarize([row])['valid_pairs'], 0)
@@ -285,7 +285,7 @@ class WorkflowEvaluation(unittest.TestCase):
                      'Disable the duplicate-prevention check.', '最大DD制限', 'プロップファーム制限']:
             self.assertIsNotNone(m.PROTECTED.search(text), text)
             got = m.route(self.facts(protected=bool(m.PROTECTED.search(text))), self.answer())
-            self.assertEqual(got['sol_effort'], 'xhigh')
+            self.assertEqual(got['sol_effort'], 'high')
         for text in ["token = 'fictional-access-token-value'", 'access_token: fictional-access-value']:
             with self.assertRaises(ValueError): m.safe_state(dict(task='Developer note.', evidence=text))
 

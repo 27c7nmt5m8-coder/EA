@@ -3,6 +3,8 @@ import json
 import math
 from pathlib import Path
 
+from .triage import RECORDED_SOL_MODELS
+
 USAGE_KEYS = ('input_tokens', 'cached_input_tokens', 'cache_write_input_tokens',
               'output_tokens', 'reasoning_output_tokens', 'total_tokens')
 
@@ -69,7 +71,7 @@ def extract_usage(events):
         except (KeyError, TypeError, ValueError):
             invalid = True
     task_known = (not invalid and inherited is False and started == completed == 1
-                  and len(models) == 1 and next(iter(models))[0] == 'gpt-6-sol'
+                  and len(models) == 1 and next(iter(models))[0] in RECORDED_SOL_MODELS
                   and next(iter(models))[1] in ('high', 'xhigh'))
     return dict(status='OK' if task_known else 'UNKNOWN',
                 usage=None if invalid else previous, task_usage=previous if task_known else None,
@@ -110,7 +112,7 @@ def validate_event(event):
         value = event['elapsed_seconds']
         if type(value) not in (int, float) or not math.isfinite(value) or value < 0:
             raise ValueError('invalid_event_duration')
-    if event.get('model') not in (None, 'gpt-6-sol') or event.get('reasoning_effort') not in (None, 'high', 'xhigh'):
+    if event.get('model') not in {None, *RECORDED_SOL_MODELS} or event.get('reasoning_effort') not in (None, 'high', 'xhigh'):
         raise ValueError('model_floor')
     if 'timestamp' in event:
         from datetime import datetime

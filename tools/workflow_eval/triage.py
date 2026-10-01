@@ -8,6 +8,13 @@ import time
 from urllib import request, error
 
 CHOICES = {'candidate', 'review', 'unknown'}
+ACTIVE_SOL_MODEL = 'gpt-6.1-sol'
+# Read-only provenance compatibility; never a provider execution fallback.
+HISTORICAL_SOL_MODELS = {'gpt-6-sol'}
+RECORDED_SOL_MODELS = {ACTIVE_SOL_MODEL, *HISTORICAL_SOL_MODELS}
+ESCALATION_REASONS = {'high_review_material_uncertainty', 'independent_high_review_disagreement',
+                      'unresolved_root_cause', 'unexplained_deterministic_behavior',
+                      'explicit_project_xhigh_rule'}
 SENSITIVE = re.compile(r'(?i)(password\s*[:=]|bearer\s+|-----BEGIN|[\w.+-]+@[\w.-]+|'
                        r'(?:sk-proj-|gh[pousr]_)[A-Za-z0-9_-]+|'
                        r'(?:api[_ -]?key|secret|credential|access[_ -]?token|token)[\"\x27]?\s*[:=]\s*[\"\x27]?[A-Za-z0-9_-]{6,}|'
@@ -42,9 +49,9 @@ def validate_facts(facts):
 def policy():
     value = json.loads(Path(__file__).with_name('policy.json').read_text(encoding='utf-8'))
     if (value['mode'] not in ('off', 'shadow') or value['review_skip_enabled'] is not False
-            or value['implementation_model'] != 'gpt-6-sol' or value['normal_effort'] != 'high'
-            or value['mandatory_effort'] != 'xhigh'
-            or not .90 <= value['confidence_threshold'] <= 1):
+            or value['implementation_model'] != ACTIVE_SOL_MODEL or value['normal_effort'] != 'high'
+            or value['mandatory_effort'] != 'high' or value['escalation_effort'] != 'xhigh'
+            or type(value['confidence_threshold']) not in (float, int) or value['confidence_threshold'] != .90):
         raise ValueError('unsafe_policy')
     return value
 
@@ -85,14 +92,36 @@ def valid_answer(answer):
     return abs(sum(probs.values()) - 1) < .0001 and probs[answer['choice']] == max(probs.values())
 
 
-def route(facts, answer=None):
+def review_effort(effort, escalation=None):
+    """Validate explicit additional-review evidence; risk categories are not evidence.
+
+    Reasons refer to completed High reviews/investigation/checks or an exact
+    project rule. The caller must supply their concrete public evidence; this
+    validates metadata, not the truth of a review or a deterministic result.
+    """
+    if effort not in ('high', 'xhigh'):
+        raise ValueError('model_floor')
+    if effort == 'high':
+        if escalation is not None: raise ValueError('escalation_effort_mismatch')
+        return effort
+    if (not isinstance(escalation, dict) or set(escalation) != {'reason', 'evidence'}
+            or not isinstance(escalation['reason'], str) or escalation['reason'] not in ESCALATION_REASONS
+            or not isinstance(escalation['evidence'], str) or not 1 <= len(escalation['evidence'].strip()) <= 1500
+            or SENSITIVE.search(escalation['evidence'])):
+        raise ValueError('explicit_escalation_evidence_required')
+    return effort
+
+
+def route(facts, answer=None, *, escalation=None):
     rules = policy()
     reasons = mandatory_reasons(facts)
-    candidate = (not reasons and rules['mode'] == 'shadow' and valid_answer(answer)
+    effort = review_effort(rules['escalation_effort'] if escalation is not None else
+                           rules['mandatory_effort'] if reasons else rules['normal_effort'], escalation)
+    candidate = (not reasons and escalation is None and rules['mode'] == 'shadow' and valid_answer(answer)
                  and answer['confidence'] >= rules['confidence_threshold'] and answer['choice'] == 'candidate')
     return dict(actual_route='review', actual_review_skipped=False,
                 shadow_route='candidate' if candidate else 'review',
-                sol_model='gpt-6-sol', sol_effort='xhigh' if reasons else 'high',
+                sol_model=rules['implementation_model'], sol_effort=effort, escalation=escalation,
                 mandatory_reasons=reasons, confidence=answer['confidence'] if valid_answer(answer) else None,
                 policy_version=rules['version'])
 
