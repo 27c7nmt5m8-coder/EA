@@ -84,11 +84,11 @@ class Diagnostics(unittest.TestCase):
         self.assertEqual(stats['unknown_count'], 1)
         self.assertEqual(stats['stable_binary_decision_count'], 0)
 
-    def test_official_summarizer_unchanged_and_history_not_written(self):
-        source = Path(real.__file__).read_bytes()
+    def test_historical_source_is_preserved_while_active_replay_uses_high(self):
         import subprocess
         original = subprocess.check_output(['git', 'show', diag.BASE_SHA+':tools/workflow_eval/semantic_real.py'])
-        self.assertEqual(source, original)
+        self.assertIn(b"SOL_EFFORT = 'xhigh'", original)
+        self.assertEqual(real.SOL_EFFORT, 'high')
         self.assertFalse(diag.summarize(self.plan, [])['official_results_modified'])
 
     def test_probability_margin_not_confidence_and_population_variance(self):

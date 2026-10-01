@@ -93,7 +93,7 @@ class RealSemantic(unittest.TestCase):
     def test_malformed_confidence_and_model_fail_closed_keep_usage(self):
         bad = observation(); bad['answer'] = {}
         invalid_conf = observation(); invalid_conf['answer']['confidence'] = 1.1
-        for value in (bad, invalid_conf, observation(model='unknown'), observation(effort='high')):
+        for value in (bad, invalid_conf, observation(model='unknown'), observation(effort='xhigh')):
             got = real.normalize(value, 'sol')
             self.assertNotEqual(got['status'], 'OK')
             self.assertIsNone(got['choice'])

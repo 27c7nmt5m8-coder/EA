@@ -245,7 +245,7 @@ def _jevgrep(args, root, output):
         if case['base_sha'] != base:
             raise ValueError('stale_jevgrep_fixture')
         identity = dict(task_id=case['id'], base_sha=base,
-                        sol_model=args.sol_model, sol_effort='high')
+                        sol_model=args.sol_model, sol_effort='high' if args.sol_model == CURRENT_SOL_MODEL else 'xhigh')
         a = dict(identity, **a_observations.get(case['id'], {'status': 'UNAVAILABLE', 'reason': 'observation_unavailable', 'found_files': []}))
         if args.live:
             b = dict(identity, **run_discovery(case, repository_root, live=True,

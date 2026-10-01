@@ -221,7 +221,7 @@ class JevgrepBenchmarkTest(unittest.TestCase):
         self.assertEqual(report["cost"]["b"]["combined_cost"]["coverage"], 0)
 
     def test_pair_model_effort_mismatch_and_stale_base_excluded(self):
-        b = self.arm(sol_effort="high")
+        b = self.arm(sol_effort="xhigh")
         row = benchmark.evaluate_pair(self.case, self.arm(), b, current_base_sha="0" * 40)
         self.assertEqual(row["comparison_status"], "EXCLUDED")
         self.assertIn("sol_effort_mismatch", row["exclusion_reasons"])

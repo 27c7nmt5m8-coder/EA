@@ -248,9 +248,9 @@ class Prospective(unittest.TestCase):
         s=copy.deepcopy(self.s); s['changed_files']=['tests/test_developer_tooling.py']
         with self.assertRaises(ValueError): p.validate_snapshot(self.protocol,s)
 
-    def test_partial_effective_identity_cannot_downgrade_effort(self):
+    def test_partial_effective_identity_cannot_change_effort(self):
         self.freeze(); self.jev(); self.ticket()
-        a=attempt('sol'); a['effective_effort']='high'
+        a=attempt('sol'); a['effective_effort']='xhigh'
         with self.assertRaises(ValueError): self.sol(a)
         a.update(status='UNAVAILABLE',reason='model_effort_mismatch',findings=None,
                  effective_identity_reason='model_effort_mismatch')
