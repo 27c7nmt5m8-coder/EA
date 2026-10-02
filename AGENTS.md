@@ -28,7 +28,7 @@ MTFAutoTraderのMQL5配布物。`src/` の本体・Worker・全ヘッダーを�
 ### モデルと役割
 
 - root / orchestrator / integrate / verifyは `gpt-6.1-sol / high`。単純な作業は直接処理し、並列化・独立調査/レビュー・専門分担に具体的な利点がある場合だけ委任する。統合時は実diff・依存関係・テスト・CI・モデル割当を確認する。
-- subagentを使う場合は、正確性に必要な履歴がない限りfull-history forkを既定にしない。task、実diff、関連する変更本文、必要な仕様、verification digest、未解決事項を小さいpacketとして渡し、未変更の既知文脈はexact-hash handleで参照する。必要情報の追加取得は許可し、context節約を理由に調査範囲やmandatory reviewを狭めない。
+- subagentを使う場合は、正確性に必要な履歴がない限りfull-history forkを既定にしない。task、実diff、関連する変更本文、必要な仕様、verification digest、未解決事項を小さいpacketとして渡し、未変更の既知文脈はexact-hash handleで参照する。新しい独立contextのagent / reviewerがhandleの元本文を保持していない場合は、そのhandleを送信前に必ず展開する。必要情報の追加取得は許可し、context節約を理由に調査範囲やmandatory reviewを狭めない。
 - workerは通常 `gpt-6.1-sol / medium`。複数モジュール、注文・資金・lot・SL/TP/BE/trailing・Monte Carlo・Risk/Safety、並行性・状態管理、原因不明のbug、architecture、orchestration・JEV/JEVGrep連携ではHighを選ぶ。
 - explorer / researcherは通常 `gpt-6-luna / high`、read-only。複雑な依存調査・保護領域の深い探索・複数仕様の比較では `gpt-6.1-sol / medium`。既存の適切なagentを再利用し、同じ役割を重複作成しない。
 - reviewerは独立contextの `gpt-6.1-sol / high`、read-only。mandatory reviewは省略不可という意味で、protected / high-riskだけでxHighへ上げない。deterministic verification後にHighを実施し、未解決のmaterial uncertainty・重大なレビュー不一致・未解明のroot cause・説明不能な検証挙動・明示的project ruleがある場合のみ、理由と証拠を付けて追加xHighへ昇格する。
