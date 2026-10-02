@@ -328,5 +328,76 @@ class WorkflowEvaluation(unittest.TestCase):
         self.assertEqual(got['status'], 'UNKNOWN')
 
 
+    def test_context_selection_deduplicates_identical_text_without_losing_requirements(self):
+        m = self.module('context')
+        task = dict(context_blocks=[dict(id='a', text='same evidence'),
+                                    dict(id='b', text='same evidence')],
+                    selected_context_ids=['a', 'b'], required_context_ids=['a', 'b'])
+        got = m.select_context(task)
+        self.assertEqual(got['text'], 'same evidence')
+        self.assertEqual(got['missing_context'], [])
+
+    def test_context_packet_reuses_only_exact_unchanged_low_risk_related_text(self):
+        m = self.module('context')
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); (root/'docs').mkdir()
+            def git(*args): return subprocess.check_output(['git', *args], cwd=root)
+            git('init', '-q'); git('config', 'user.email', 'fixture@example.invalid')
+            git('config', 'user.name', 'Fixture')
+            changed = root/'docs/dev-note.md'; related = root/'docs/reference.md'
+            changed.write_text('before\n', encoding='utf-8')
+            related.write_text('stable reference\n', encoding='utf-8')
+            git('add', '.'); git('commit', '-qm', 'fixture')
+            prior_bundle = m.build_bundle(root, 'HEAD', ['docs/reference.md'], 'Update developer note')
+            prior = m.build_context_packet(prior_bundle)
+            changed.write_text('after\n', encoding='utf-8')
+            bundle = m.build_bundle(root, 'HEAD', ['docs/reference.md'], 'Update developer note')
+            packet = m.build_context_packet(bundle, prior=prior)
+            modes = {b['path']: b['content_mode'] for b in packet['blocks']}
+            self.assertEqual(modes['docs/dev-note.md'], 'full')
+            self.assertEqual(modes['docs/reference.md'], 'reused_exact')
+            reused = next(b for b in packet['blocks'] if b['path'] == 'docs/reference.md')
+            self.assertNotIn('text', reused)
+            self.assertEqual(packet['reused_paths'], ['docs/reference.md'])
+            expanded = m.expand_context_packet(packet, bundle, ['docs/reference.md'])
+            restored = next(b for b in expanded['blocks'] if b['path'] == 'docs/reference.md')
+            self.assertEqual(restored['text'], 'stable reference\n')
+            self.assertEqual(expanded['reused_paths'], [])
+
+    def test_context_packet_disables_reuse_for_unknown_or_protected_scope(self):
+        m = self.module('context')
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); (root/'docs').mkdir(); (root/'src').mkdir()
+            def git(*args): return subprocess.check_output(['git', *args], cwd=root)
+            git('init', '-q'); git('config', 'user.email', 'fixture@example.invalid')
+            git('config', 'user.name', 'Fixture')
+            related = root/'docs/reference.md'; source = root/'src/module.mqh'
+            related.write_text('stable reference\n', encoding='utf-8')
+            source.write_text('int Value(){ return 1; }\n', encoding='utf-8')
+            git('add', '.'); git('commit', '-qm', 'fixture')
+            prior = m.build_context_packet(m.build_bundle(
+                root, 'HEAD', ['docs/reference.md'], 'Update developer note'))
+            source.write_text('int Value(){ return 2; }\n', encoding='utf-8')
+            bundle = m.build_bundle(root, 'HEAD', ['docs/reference.md'], 'Update module')
+            self.assertEqual(bundle['dependency'], 'unknown')
+            packet = m.build_context_packet(bundle, prior=prior)
+            self.assertEqual(packet['reused_paths'], [])
+            self.assertTrue(all(b['content_mode'] == 'full' for b in packet['blocks']))
+
+    def test_context_packet_verification_keeps_digest_and_small_allowlisted_summary(self):
+        m = self.module('context')
+        bundle = dict(schema_version=3, base='a'*40, head='b'*40, fingerprint='c'*64,
+                      index_sha256='d'*64, changed_paths=[], changed_lines=0, patch='',
+                      blocks=[], task='Developer note.', dependency='known',
+                      expansion_required=[], protected=False, status_porcelain='')
+        verification = dict(full_gate='PASS', authoritative_release='INCOMPLETE',
+                            commit='b'*40, branch='topic', gates=['PASS']*5,
+                            verbose={'large': 'detail that should not be copied'})
+        packet = m.build_context_packet(bundle, verification=verification)
+        self.assertRegex(packet['verification']['sha256'], r'^[0-9a-f]{64})
+        self.assertEqual(packet['verification']['summary']['full_gate'], 'PASS')
+        self.assertNotIn('verbose', packet['verification']['summary'])
+
+
 if __name__ == '__main__':
     unittest.main()
