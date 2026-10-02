@@ -187,7 +187,7 @@ def build_context_packet(bundle, prior=None, verification=None):
                 status_porcelain=bundle['status_porcelain'],
                 expansion_required=list(bundle['expansion_required']),
                 reuse_policy='exact_sha_unchanged_related_known_unprotected_only',
-                reused_paths=sorted(reused), blocks=blocks,
+                reused_paths=sorted(reused), fresh_context_requires_expansion=bool(reused), blocks=blocks,
                 verification=_verification_digest(verification))
 
 
@@ -215,6 +215,7 @@ def expand_context_packet(packet, bundle, paths=None):
             record.update(content_mode='full', text=source['text'])
         result['blocks'].append(record)
     result['reused_paths'] = sorted(reused - targets)
+    result['fresh_context_requires_expansion'] = bool(result['reused_paths'])
     return result
 
 
