@@ -361,7 +361,7 @@ class WorkflowEvaluation(unittest.TestCase):
             self.assertEqual(packet['reused_paths'], ['docs/reference.md'])
             expanded = m.expand_context_packet(packet, bundle, ['docs/reference.md'])
             restored = next(b for b in expanded['blocks'] if b['path'] == 'docs/reference.md')
-            self.assertEqual(restored['text'], 'stable reference\n')
+            self.assertEqual(restored['text'], related.read_bytes().decode('utf-8'))
             self.assertEqual(expanded['reused_paths'], [])
 
     def test_context_packet_disables_reuse_for_unknown_or_protected_scope(self):
