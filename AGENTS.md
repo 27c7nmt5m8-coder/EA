@@ -7,6 +7,7 @@ MTFAutoTraderのMQL5配布物。`src/` の本体・Worker・全ヘッダーを�
 - システム・開発者指示と実行権限の範囲内で「現在の明示依頼 → EA固有の安全・品質ルール → Skill等の一般手順」を優先する。依頼範囲や安全機構の変更許可を推測しない。軽微な不明点は証拠に基づく最小変更で進め、仮定を報告する。許可済み作業の再確認は不要。
 - 未承認の売買仕様変更、破壊的変更、重大な結果を分ける未解決の選択は確認し、独立した調査は続ける。範囲外の重大不具合は勝手に直さず報告する。指示による停止・確認・逸脱はファイルパスと該当ルールを引用し、環境・権限不足と区別する。
 - 調査順序は「変更対象 → git diff / 検索 → 関連関数・節 → 関連履歴 → 必要な依存先」。毎回のRepository全文・全docs・全Skill・全履歴の読み直しは禁止。必要な時だけ広げ、必要な確認は省略しない。
+- 非自明な作業で同じ文脈をsubagent / reviewerへ渡す場合は、可能なら `tools.workflow_eval.context` のcontent-addressed packetを使う。変更ファイルは本文を保持し、exact SHAが一致する未変更の関連文脈だけをhandle化する。protected、unknown dependency、未解決のexpansionでは再利用を無効化し、handleの中身が判断に必要・不確実なら必ず展開する。これはcontext転送の圧縮だけであり、レビュー・検証・モデル能力を置き換えない。
 - 現在のRepository / Git状態を正本とし、古いPR番号・SHA・過去チャットのversionを基準にしない。一時的なPR・SHA・診断状況は本書へ残さない。重複・古い指示は既存表現へ統合し、安全ルールは削らない。
 
 ## EA固有の保護
@@ -27,6 +28,7 @@ MTFAutoTraderのMQL5配布物。`src/` の本体・Worker・全ヘッダーを�
 ### モデルと役割
 
 - root / orchestrator / integrate / verifyは `gpt-6.1-sol / high`。単純な作業は直接処理し、並列化・独立調査/レビュー・専門分担に具体的な利点がある場合だけ委任する。統合時は実diff・依存関係・テスト・CI・モデル割当を確認する。
+- subagentを使う場合は、正確性に必要な履歴がない限りfull-history forkを既定にしない。task、実diff、関連する変更本文、必要な仕様、verification digest、未解決事項を小さいpacketとして渡し、未変更の既知文脈はexact-hash handleで参照する。必要情報の追加取得は許可し、context節約を理由に調査範囲やmandatory reviewを狭めない。
 - workerは通常 `gpt-6.1-sol / medium`。複数モジュール、注文・資金・lot・SL/TP/BE/trailing・Monte Carlo・Risk/Safety、並行性・状態管理、原因不明のbug、architecture、orchestration・JEV/JEVGrep連携ではHighを選ぶ。
 - explorer / researcherは通常 `gpt-6-luna / high`、read-only。複雑な依存調査・保護領域の深い探索・複数仕様の比較では `gpt-6.1-sol / medium`。既存の適切なagentを再利用し、同じ役割を重複作成しない。
 - reviewerは独立contextの `gpt-6.1-sol / high`、read-only。mandatory reviewは省略不可という意味で、protected / high-riskだけでxHighへ上げない。deterministic verification後にHighを実施し、未解決のmaterial uncertainty・重大なレビュー不一致・未解明のroot cause・説明不能な検証挙動・明示的project ruleがある場合のみ、理由と証拠を付けて追加xHighへ昇格する。
