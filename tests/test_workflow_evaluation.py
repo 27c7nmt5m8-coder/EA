@@ -394,7 +394,7 @@ class WorkflowEvaluation(unittest.TestCase):
                             commit='b'*40, branch='topic', gates=['PASS']*5,
                             verbose={'large': 'detail that should not be copied'})
         packet = m.build_context_packet(bundle, verification=verification)
-        self.assertRegex(packet['verification']['sha256'], r'^[0-9a-f]{64})
+        self.assertRegex(packet['verification']['sha256'], r'^[0-9a-f]{64}$')
         self.assertEqual(packet['verification']['summary']['full_gate'], 'PASS')
         self.assertNotIn('verbose', packet['verification']['summary'])
 
