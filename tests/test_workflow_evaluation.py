@@ -359,10 +359,12 @@ class WorkflowEvaluation(unittest.TestCase):
             reused = next(b for b in packet['blocks'] if b['path'] == 'docs/reference.md')
             self.assertNotIn('text', reused)
             self.assertEqual(packet['reused_paths'], ['docs/reference.md'])
+            self.assertTrue(packet['fresh_context_requires_expansion'])
             expanded = m.expand_context_packet(packet, bundle, ['docs/reference.md'])
             restored = next(b for b in expanded['blocks'] if b['path'] == 'docs/reference.md')
             self.assertEqual(restored['text'], related.read_bytes().decode('utf-8'))
             self.assertEqual(expanded['reused_paths'], [])
+            self.assertFalse(expanded['fresh_context_requires_expansion'])
 
     def test_context_packet_disables_reuse_for_unknown_or_protected_scope(self):
         m = self.module('context')
@@ -382,6 +384,7 @@ class WorkflowEvaluation(unittest.TestCase):
             self.assertEqual(bundle['dependency'], 'unknown')
             packet = m.build_context_packet(bundle, prior=prior)
             self.assertEqual(packet['reused_paths'], [])
+            self.assertFalse(packet['fresh_context_requires_expansion'])
             self.assertTrue(all(b['content_mode'] == 'full' for b in packet['blocks']))
 
     def test_context_packet_verification_keeps_digest_and_small_allowlisted_summary(self):
