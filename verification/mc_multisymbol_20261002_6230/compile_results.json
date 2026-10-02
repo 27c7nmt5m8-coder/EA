@@ -1,0 +1,16 @@
+[
+  {
+    "mode": 0,
+    "exit_code": 1,
+    "errors": 0,
+    "warnings": 0,
+    "binary_sha256": "0fd862185c72ed7023c3afb73ee938e7c59281c456b10833730761f37c9b3b51"
+  },
+  {
+    "mode": 2,
+    "exit_code": 1,
+    "errors": 0,
+    "warnings": 0,
+    "binary_sha256": "5f0f79ae3002b2f0e4b200cd196a50090c0246380c421bcb59b6b5d3a6aae185"
+  }
+]

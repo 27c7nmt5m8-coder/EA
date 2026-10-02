@@ -1,0 +1,15 @@
+{
+  "build": 6230,
+  "engine_sha256": {
+    "C:\\Program Files\\HFM Metatrader 5\\terminal64.exe": "800efc58e49079d8969aa8aed24e89eb53f3ee95a4e551373759d45d12d69fd2",
+    "C:\\Program Files\\HFM Metatrader 5\\metaeditor64.exe": "cf2750bde55d98a1f3b4e56bcdd4f59300d0cff5caa6760985f7ef2c2cc12229",
+    "C:\\Program Files\\HFM Metatrader 5\\metatester64.exe": "5033d9d45d669cebd735e8a6be20b54d74b75274f885c9a0e48e52d872104efb"
+  },
+  "same_source_and_selected_set_as_6182": false,
+  "total_conditions": 12,
+  "benchmark_head": "9f9c55379eb9298035b90d210d0158ac02cbe058",
+  "observed_origin_main": "4cd1ced09c57118bae3c4578a50db326d404d050",
+  "product_diff_to_observed_origin_main": [],
+  "duration_capacity_change": "4-symbol generated diagnostics only: 3m to 12m; paired group comparisons, not uniform binaries",
+  "original_set_unchanged": true
+}

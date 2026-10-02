@@ -1,0 +1,3338 @@
+[
+  {
+    "path": ".superpowers/sdd/mc-multisymbol-validation/progress.md",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6927,
+    "sha256": "0ce94df380c3a7d59119d0294b6f7ae101f37640f99593ed183f9f46c162b45f"
+  },
+  {
+    "path": "docs/superpowers/plans/2026-09-28-mc-multisymbol-validation.md",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fixed diagnostic design",
+    "bytes": 7369,
+    "sha256": "c5ac4bf6e5ea3698c6da4064c5dbcd70aacb74e59f919ddaf39ccc26d7cf3fba"
+  },
+  {
+    "path": "tests/test_mc_multisymbol_instrument.py",
+    "classification": "VALIDATION_INFRA",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 3991,
+    "sha256": "b67992a2e9202754992887d3059323649c1f6689beb96cf1f422ff1724cb77de"
+  },
+  {
+    "path": "tests/test_mc_multisymbol_port.py",
+    "classification": "VALIDATION_INFRA",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 1484,
+    "sha256": "d3988347615a6dd852612b217489ab7d6085b505a31428c0addad4f1d689baa0"
+  },
+  {
+    "path": "tests/test_mc_multisymbol_runner.py",
+    "classification": "VALIDATION_INFRA",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 11089,
+    "sha256": "49144047fa153ccfb275b034282988b6e18fcacd038acd31a518c0788bb0ae88"
+  },
+  {
+    "path": "tests/test_mc_validation.py",
+    "classification": "VALIDATION_INFRA",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 13263,
+    "sha256": "4be7a2c6ea2e1c8564d7074a10c60795c9671e2c46eb37b337a3d0950646c33b"
+  },
+  {
+    "path": "tools/TesterBottleneckDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 6343,
+    "sha256": "994c360a87f7e7d24f284606e2118a589b785fdfd95b50e0c4a52a58cb467856"
+  },
+  {
+    "path": "tools/TesterBottleneckMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 2992,
+    "sha256": "c995f9df4c06a33c4333664d07b2d670b2b5f096967c368cab391cb7fc872c4c"
+  },
+  {
+    "path": "tools/TesterMCMultiDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 6994,
+    "sha256": "e3c818faa351b82a4bddb5176e3a323924f8c37837922c07c9c9d226d4eaff31"
+  },
+  {
+    "path": "tools/TesterMCSchedulerDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 8945,
+    "sha256": "2900923a69749b7c4710eddf7e8fdb17f6d03715fae3cfad5c95a04ea55ed1d6"
+  },
+  {
+    "path": "tools/TesterMCSchedulerValidation.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 12907,
+    "sha256": "82c6227c689c10107a242d662d27e0d4661043cea718f33556a81391266be90c"
+  },
+  {
+    "path": "tools/TesterMCSchedulerValidationMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 2285,
+    "sha256": "04bfdb32ae9970784ba3d02999e24f92feb3bb5509b93834a6c05a240b1327c5"
+  },
+  {
+    "path": "tools/TesterMCTimelineDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 2948,
+    "sha256": "835c12edb0f9eb956e3b0e0cab3b3019cd24e8d6e6e77da55a068e8b26090da3"
+  },
+  {
+    "path": "tools/TesterMCTimelineMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 5071,
+    "sha256": "691d465938f9fbeff0a4b211adbd3ea12162d6ea1abc1247cdab12e2bf7aff0f"
+  },
+  {
+    "path": "tools/TesterOpportunityDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 9011,
+    "sha256": "04bd8d23076b773696c9f65cf29236710b1caf0add9f57d11a9be23ebc51717f"
+  },
+  {
+    "path": "tools/TesterOpportunityMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 2590,
+    "sha256": "e75cf4b48a9391ce111e2be0fcbe082968c024a306b62249ee547fdc0c5ad434"
+  },
+  {
+    "path": "tools/TesterPipelineDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 9450,
+    "sha256": "273d7929072692c152022d512fa869f4cc306ac99a8d11347eb49796f9ae63f4"
+  },
+  {
+    "path": "tools/TesterSignalDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 12198,
+    "sha256": "8d9006101e1adc834a29a2c719ae566fbec5ab6e56fc3e5fb19821a711df946a"
+  },
+  {
+    "path": "tools/analyze_mc_multisymbol.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 7292,
+    "sha256": "a2f3abef58af9d544e06cc59bb2b826daed6751aaa15b2df8c071b92e90916a3"
+  },
+  {
+    "path": "tools/analyze_mc_timeline.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 8528,
+    "sha256": "92c250450080a6b27fa7774b7495b8ca725fea98d210af762099f7a8dd865e6a"
+  },
+  {
+    "path": "tools/analyze_tester_bottlenecks.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 8626,
+    "sha256": "e0f7577835faae1083f869ba2ab288cf7f163c686c3b9b8f517e8ab3433792c0"
+  },
+  {
+    "path": "tools/build_tester_bottlenecks.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 6215,
+    "sha256": "68f66463c712d9836eebe922707714a318c205f81b97efbcedd5bd0cad5998bf"
+  },
+  {
+    "path": "tools/build_tester_mc_multisymbol.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 10488,
+    "sha256": "57f3d85ebf61c71367e65213d2ef22a7a62e2791f466125d8d2610df187e9638"
+  },
+  {
+    "path": "tools/build_tester_mc_scheduler.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 6885,
+    "sha256": "000f1146e1d2b9a5f7f1afa0807777994996e6291c5bd9f0c7c2b91ae5e0db3f"
+  },
+  {
+    "path": "tools/build_tester_mc_timeline.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 7583,
+    "sha256": "196fcfe0342d6172ce93c16e7d31a0e517c7c3ac379ccaba11b0900290e79440"
+  },
+  {
+    "path": "tools/build_tester_mc_validation.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 11985,
+    "sha256": "de065b279f20d4febd613978ae149a00f571f2eaa3f1d0fb768eac6d62a65882"
+  },
+  {
+    "path": "tools/build_tester_pipeline.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 24533,
+    "sha256": "f0e958b81c5419b27eac15dedbe276a4a85833a9cd76052d89d269e9aa5c79ba"
+  },
+  {
+    "path": "tools/mc500k_batch.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 22203,
+    "sha256": "a1103c46983211cab93b9acc6bb762c4e12298cb1f04c490c8e179e6f171ea88"
+  },
+  {
+    "path": "tools/mc500k_stress.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 25157,
+    "sha256": "6953bff889cbec14abaf163efe6cfbb0997d0c7469a271678b220d7e61de5810"
+  },
+  {
+    "path": "tools/mc_multisymbol_runner.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "diagnostic generator/analysis/collection dependency or regression",
+    "bytes": 25914,
+    "sha256": "36a2b35ace31b2372fd960b45fcc26a0401ad61d31451e2a5c8681846fc4625d"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/REPORT_JA.md",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6061,
+    "sha256": "19b53ed60e7d8ed0262405261dad686982a1b861945fd1fd89f9536af628b2fa"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/compile_0.log",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 21070,
+    "sha256": "48eaa073788cabe15b09bb63716a132bdd26a39555348528b981eb785c56bb7e"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/compile_2.log",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 21266,
+    "sha256": "a63932ee79958b5b9c26b7a08367ab03f15fbd2234c15002dde9efe50e2d05c0"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/compile_evidence.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 375,
+    "sha256": "98561861aa9b0c4f6894b58f13b3808c412128407fa9ca7e60d52850a8bfb243"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/MT3AIProtocol.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 3944,
+    "sha256": "25340f89525ddaa7ffd425fddad0b22919864e0f8ce3db9961775eb299db24de"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/MT3Config.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 7077,
+    "sha256": "f75363429a3b1abc1759140910773c2e1a0f58278e83ca757d6a09d1ad117fd7"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/MT3Json.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 7784,
+    "sha256": "b392a69a399f8759d725e2ab7c6b30abd4c20656e227a90373ef1304b8b7c429"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/MT3PatternStops.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5678,
+    "sha256": "6755b1ee021a83645184ffbac7198b332f0320adec415c16aefadb2eaccb23ca"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/MT3PortfolioRisk.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2864,
+    "sha256": "3904bd36f35cecd6c14c5ea0874ee7a9daf76a00eaa2ebe5ba9fe22d21de0787"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/MT3ReversalPatterns.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 11556,
+    "sha256": "ff72ebecae9d61d8f178fcc7031ac7cd7f9032aaf63575aa30f1ac5a1bdad174"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/MT3Scoring.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5221,
+    "sha256": "f57d1e185752e0676a08682c70e76cfd8441fb29c35d9c1c05975cf3eea4aa4d"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/MT3SymbolState.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 129816,
+    "sha256": "ab289d9bfbd2f834b215dc19b4c0d1e3386287618a9b622b3c47906f93b12355"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/MT3TradeJournal.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 15417,
+    "sha256": "df5e19223effd33b1a609bae1927dddae344f598f912912f96d02292ab186f2c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/MT3TradeLog.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 16146,
+    "sha256": "d9cc3a1c190cc453d1ceff089a2e093c015301be0ace7cf440d25da39afc9fbd"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/MT3Types.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2547,
+    "sha256": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/MTFAutoTrader_3Mode_AI_v2_44.ex5",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 458066,
+    "sha256": "975db7673234503dab6f772c24d972c57d707ba8067453f18e2cdeb27450fb12"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/MTFAutoTrader_3Mode_AI_v2_44.mq5",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 16691,
+    "sha256": "989d73ccc6bd3fb73ada57753b7948f4a63066c0b6fa20c7a1a0461c702dbe64"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/MTFAutoTrader_AI_Worker.mq5",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6863,
+    "sha256": "2d068d5046ec3d616568227d6e9f6be0d9166af814f48076ac8a000d4922e12c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/TesterBottleneckDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6417,
+    "sha256": "1289d76cadae7b5613162f48100fc4ab9ef1fa4879555e20bb025f8c30e4f7ae"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/TesterBottleneckMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2992,
+    "sha256": "c995f9df4c06a33c4333664d07b2d670b2b5f096967c368cab391cb7fc872c4c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/TesterMCSchedulerCore.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2585,
+    "sha256": "23777184dfa1de19c1076c209a6704e298f73723f6795f45176d7a66397cef74"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/TesterMCSchedulerDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 10266,
+    "sha256": "5c5e6e64b38af2fb6f6d4b2a9e914fa655ca26b6d8d5bdd295ea3244276da4f1"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/TesterMCSchedulerValidation.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 12907,
+    "sha256": "82c6227c689c10107a242d662d27e0d4661043cea718f33556a81391266be90c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/TesterMCSchedulerValidationMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2285,
+    "sha256": "04bfdb32ae9970784ba3d02999e24f92feb3bb5509b93834a6c05a240b1327c5"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/TesterMCTimelineDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2980,
+    "sha256": "fce87ac106e91a72d677882e84aee72e98b59e16f014ed7edd220c7ae02f7b9c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/TesterMCTimelineMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5300,
+    "sha256": "e27f547c5326edb881725a5bc0086d2420df1026b0f31c0eaba559f15aa17031"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/TesterOpportunityDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 9103,
+    "sha256": "c488692c36cd1e6c7fc20ec56107c4ea6832d77a5a92cf4652df17098090a926"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/TesterOpportunityMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2869,
+    "sha256": "81274b8fcad8c235bd0c2e1b1618c1be9f388707f3c811b308fdb25af15e8437"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/TesterPipelineDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 9735,
+    "sha256": "9751eea25ce55d151d069671c0fec63adf068c6c6a23c915ed79ae4b1e9b1afe"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/current/TesterSignalDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 12198,
+    "sha256": "8d9006101e1adc834a29a2c719ae566fbec5ab6e56fc3e5fb19821a711df946a"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/MT3AIProtocol.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 3944,
+    "sha256": "25340f89525ddaa7ffd425fddad0b22919864e0f8ce3db9961775eb299db24de"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/MT3Config.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 7077,
+    "sha256": "f75363429a3b1abc1759140910773c2e1a0f58278e83ca757d6a09d1ad117fd7"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/MT3Json.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 7784,
+    "sha256": "b392a69a399f8759d725e2ab7c6b30abd4c20656e227a90373ef1304b8b7c429"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/MT3PatternStops.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5678,
+    "sha256": "6755b1ee021a83645184ffbac7198b332f0320adec415c16aefadb2eaccb23ca"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/MT3PortfolioRisk.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2864,
+    "sha256": "3904bd36f35cecd6c14c5ea0874ee7a9daf76a00eaa2ebe5ba9fe22d21de0787"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/MT3ReversalPatterns.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 11556,
+    "sha256": "ff72ebecae9d61d8f178fcc7031ac7cd7f9032aaf63575aa30f1ac5a1bdad174"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/MT3Scoring.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5221,
+    "sha256": "f57d1e185752e0676a08682c70e76cfd8441fb29c35d9c1c05975cf3eea4aa4d"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/MT3SymbolState.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 129817,
+    "sha256": "63bffc5f5ba7a6afbe57942b41f0fdc21e150b61851660dde8dc3f5f666d1446"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/MT3TradeJournal.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 15417,
+    "sha256": "df5e19223effd33b1a609bae1927dddae344f598f912912f96d02292ab186f2c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/MT3TradeLog.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 16146,
+    "sha256": "e4065e02ac21b040f47a7b902036d6373ae09076204bd712280d0876173d5b3c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/MT3Types.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2547,
+    "sha256": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/MTFAutoTrader_3Mode_AI_v2_44.ex5",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 457612,
+    "sha256": "f1c3afdb0e1683c721f1d2585d912566dcaed0de6ffda7df6a238affdcf28932"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/MTFAutoTrader_3Mode_AI_v2_44.mq5",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 16691,
+    "sha256": "989d73ccc6bd3fb73ada57753b7948f4a63066c0b6fa20c7a1a0461c702dbe64"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/MTFAutoTrader_AI_Worker.mq5",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6863,
+    "sha256": "2d068d5046ec3d616568227d6e9f6be0d9166af814f48076ac8a000d4922e12c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/TesterBottleneckDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6417,
+    "sha256": "490fc1ca3faff03dc1b1598e47b586ddf565b2377ac9eb685c05aa54ea7b275a"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/TesterBottleneckMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2992,
+    "sha256": "c995f9df4c06a33c4333664d07b2d670b2b5f096967c368cab391cb7fc872c4c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/TesterMCSchedulerCore.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2585,
+    "sha256": "23777184dfa1de19c1076c209a6704e298f73723f6795f45176d7a66397cef74"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/TesterMCSchedulerDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 10266,
+    "sha256": "176985b599737d1367752cbf14ea9a0b4335559ded81f1786524f9795680a79d"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/TesterMCSchedulerValidation.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 12907,
+    "sha256": "82c6227c689c10107a242d662d27e0d4661043cea718f33556a81391266be90c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/TesterMCSchedulerValidationMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2285,
+    "sha256": "04bfdb32ae9970784ba3d02999e24f92feb3bb5509b93834a6c05a240b1327c5"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/TesterMCTimelineDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2980,
+    "sha256": "3b8ddc1a440e7092d78744972cacf64b0aecafbad9a154e51ac6838d44b8c2d6"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/TesterMCTimelineMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5300,
+    "sha256": "e27f547c5326edb881725a5bc0086d2420df1026b0f31c0eaba559f15aa17031"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/TesterOpportunityDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 9103,
+    "sha256": "c3d2be73171281170262a272689613746675b9b85033ea74c6e11de6b9561940"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/TesterOpportunityMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2869,
+    "sha256": "81274b8fcad8c235bd0c2e1b1618c1be9f388707f3c811b308fdb25af15e8437"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/TesterPipelineDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 9735,
+    "sha256": "9751eea25ce55d151d069671c0fec63adf068c6c6a23c915ed79ae4b1e9b1afe"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/bootstrap/fixed500k/TesterSignalDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 12198,
+    "sha256": "8d9006101e1adc834a29a2c719ae566fbec5ab6e56fc3e5fb19821a711df946a"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/matrix/manifest.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 45797,
+    "sha256": "74806f036f6962db4cc734575b9d73f6c6943f063a626e8aae4eda25b7147351"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/native/CodexMCMulti20260928_N2_M0_CPU_CONTENTION/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 558,
+    "sha256": "85cb9a684c5436153deb7c0714ca39596af08ef8f62734536b5db80715c6bd15"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/native/CodexMCMulti20260928_N2_M0_NORMAL/CodexMCV0_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 32096,
+    "sha256": "b2f71b54701923817ecbad698ea6dc3bb57207206d0ef729f0b16f1582e9bcd8"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/native/CodexMCMulti20260928_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 504221,
+    "sha256": "95d4360cd719c5bd1f3b6ad1d5519c932d40f5fc521153f33edd24f9b7f09e57"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/native/CodexMCMulti20260928_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2412323,
+    "sha256": "617c8042b12b54126becd16335a99e0d081f90d1a8b972dc97471946c78dca9e"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/native/CodexMCMulti20260928_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 229,
+    "sha256": "f63a32befe37c35aa1d4aec114e0206500d38ccf65cf5b68522f74133a7cb9ae"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/native/CodexMCMulti20260928_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 10990,
+    "sha256": "912db1ed2ddd32cc061f526c7bd27a852724207a6cac5b31f5243906db97ccf7"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/native/CodexMCMulti20260928_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 826,
+    "sha256": "c4c7844df45e3427e264b4df19ad3f6516894d5c6cb4f8d2399ed6111e6e0a14"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/native/CodexMCMulti20260928_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 8868,
+    "sha256": "ebd8820c10f1fef0c9bd42b392af7211bc8ac8520dde16a957e3a6b6fcf4c3bf"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/native/CodexMCMulti20260928_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 64440,
+    "sha256": "0aa1cf12b378fac767ba526cb9cb3636e8da669251446f992104d8ffc92fa4e1"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/native/CodexMCMulti20260928_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 3006,
+    "sha256": "a1e6ca49e0302c01f969d619ad513550e798a3586455b0f48704898ea2b4706e"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/native/CodexMCMulti20260928_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 593,
+    "sha256": "5ded8b64b914ab2a581a83799aab0051d994d85c75d9c3e787df2f63fa860832"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/native/CodexMCMulti20260928_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5267,
+    "sha256": "d4b0ab2662b34b60c3ef879a03c97d8c365813919f51f8528d477f67338230be"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/native/CodexMCMulti20260928_N2_M0_NORMAL/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 557,
+    "sha256": "7e747d29171545fccc4a415440e63c791d8e4e51c6ddfc575bf3b57a6a44f529"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/native/CodexMCMulti20260928_N2_M0_NORMAL/result.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 3595,
+    "sha256": "bbfc01d5ed50bb35fb6d6c56ecb379c5e5d56151e34a7211d28879a695c985d7"
+  },
+  {
+    "path": "verification/mc_multisymbol_20260928/pilot_analysis.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 9459,
+    "sha256": "90cdd495f7dbf73e6589c956cf3953a0a3a2e1509dac5a4e86178efe20dd3f50"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/REPORT_JA.md",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical measurement provenance and report support",
+    "bytes": 31090,
+    "sha256": "a8004d74c8a735a603f3b0bcf13001c4cf772ee23cc2d2dedc7165da58b9c337"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/analyze_evidence.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical measurement provenance and report support",
+    "bytes": 10619,
+    "sha256": "a697be5875a1ff9abb17fc6ef93099dd5b8c65f18a70993a0d63ff7286bf9db8"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/baseline_inputs.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical measurement provenance and report support",
+    "bytes": 7448,
+    "sha256": "2de21971daa06acb192d29db46ff37fa2baa0dc71490c023afc5c18230cee5b3"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compile_cap4_results.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical measurement provenance and report support",
+    "bytes": 503,
+    "sha256": "76ecb1d57a7ca922a42277d7cc33ed1348d78a174c19cea0d58f79240cb18280"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compile_results.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical measurement provenance and report support",
+    "bytes": 355,
+    "sha256": "92bffeff20e1296d8658901066c5fba7083259ceb4c673c722411f86d190dce0"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/MT3AIProtocol.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 3944,
+    "sha256": "25340f89525ddaa7ffd425fddad0b22919864e0f8ce3db9961775eb299db24de"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/MT3Config.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 7077,
+    "sha256": "f75363429a3b1abc1759140910773c2e1a0f58278e83ca757d6a09d1ad117fd7"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/MT3Json.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 7784,
+    "sha256": "b392a69a399f8759d725e2ab7c6b30abd4c20656e227a90373ef1304b8b7c429"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/MT3PatternStops.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5678,
+    "sha256": "6755b1ee021a83645184ffbac7198b332f0320adec415c16aefadb2eaccb23ca"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/MT3PortfolioRisk.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2864,
+    "sha256": "3904bd36f35cecd6c14c5ea0874ee7a9daf76a00eaa2ebe5ba9fe22d21de0787"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/MT3ReversalPatterns.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 11556,
+    "sha256": "ff72ebecae9d61d8f178fcc7031ac7cd7f9032aaf63575aa30f1ac5a1bdad174"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/MT3Scoring.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5221,
+    "sha256": "f57d1e185752e0676a08682c70e76cfd8441fb29c35d9c1c05975cf3eea4aa4d"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/MT3SymbolState.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 129892,
+    "sha256": "088d2b07f17ba0de12752c218955423af3d32219c378d4184b1a8799f23a4d88"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/MT3TradeJournal.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 15417,
+    "sha256": "df5e19223effd33b1a609bae1927dddae344f598f912912f96d02292ab186f2c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/MT3TradeLog.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 16146,
+    "sha256": "d9cc3a1c190cc453d1ceff089a2e093c015301be0ace7cf440d25da39afc9fbd"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/MT3Types.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2547,
+    "sha256": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/MTFAutoTrader_3Mode_AI_v2_44.ex5",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 473680,
+    "sha256": "7c0cd2da36c8d0a2de63ddb0d961a6b5ad87f1ba0a6db9ca6d7023f6ebb856ba"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/MTFAutoTrader_3Mode_AI_v2_44.mq5",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 16978,
+    "sha256": "043077c747a161cf9b7441f2f1cd53e482c32dcb0ea18d808f66e0e5c7986931"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/MTFAutoTrader_AI_Worker.mq5",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6863,
+    "sha256": "2d068d5046ec3d616568227d6e9f6be0d9166af814f48076ac8a000d4922e12c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/TesterBottleneckDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6417,
+    "sha256": "1289d76cadae7b5613162f48100fc4ab9ef1fa4879555e20bb025f8c30e4f7ae"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/TesterBottleneckMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2992,
+    "sha256": "c995f9df4c06a33c4333664d07b2d670b2b5f096967c368cab391cb7fc872c4c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/TesterMCMultiDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6994,
+    "sha256": "e3c818faa351b82a4bddb5176e3a323924f8c37837922c07c9c9d226d4eaff31"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/TesterMCSchedulerCore.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2585,
+    "sha256": "23777184dfa1de19c1076c209a6704e298f73723f6795f45176d7a66397cef74"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/TesterMCSchedulerDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 12933,
+    "sha256": "06809888fd8ccf1d311be32d48e82cd1db67d42d195ca447699dd2521441d588"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/TesterMCSchedulerValidation.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 12908,
+    "sha256": "76c0a8eeb19c6f2358aad402328821a6ecfec60641dcb66ba2111a5e13614dbe"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/TesterMCSchedulerValidationMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2285,
+    "sha256": "04bfdb32ae9970784ba3d02999e24f92feb3bb5509b93834a6c05a240b1327c5"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/TesterMCTimelineDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2980,
+    "sha256": "fce87ac106e91a72d677882e84aee72e98b59e16f014ed7edd220c7ae02f7b9c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/TesterMCTimelineMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5396,
+    "sha256": "36e6ac02f1fbcaf922f73869227d23ba962d98d014c3d7e9bdde871dc7316bec"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/TesterOpportunityDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 9103,
+    "sha256": "c488692c36cd1e6c7fc20ec56107c4ea6832d77a5a92cf4652df17098090a926"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/TesterOpportunityMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2869,
+    "sha256": "81274b8fcad8c235bd0c2e1b1618c1be9f388707f3c811b308fdb25af15e8437"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/TesterPipelineDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 9735,
+    "sha256": "9751eea25ce55d151d069671c0fec63adf068c6c6a23c915ed79ae4b1e9b1afe"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/TesterSignalDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 12198,
+    "sha256": "8d9006101e1adc834a29a2c719ae566fbec5ab6e56fc3e5fb19821a711df946a"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m0/compile.log",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 22092,
+    "sha256": "6db7c34473886c01d6791040af95aa389cd94e5922a26a50f88a73141ea4f8b8"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/MT3AIProtocol.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 3944,
+    "sha256": "25340f89525ddaa7ffd425fddad0b22919864e0f8ce3db9961775eb299db24de"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/MT3Config.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 7077,
+    "sha256": "f75363429a3b1abc1759140910773c2e1a0f58278e83ca757d6a09d1ad117fd7"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/MT3Json.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 7784,
+    "sha256": "b392a69a399f8759d725e2ab7c6b30abd4c20656e227a90373ef1304b8b7c429"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/MT3PatternStops.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5678,
+    "sha256": "6755b1ee021a83645184ffbac7198b332f0320adec415c16aefadb2eaccb23ca"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/MT3PortfolioRisk.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2864,
+    "sha256": "3904bd36f35cecd6c14c5ea0874ee7a9daf76a00eaa2ebe5ba9fe22d21de0787"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/MT3ReversalPatterns.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 11556,
+    "sha256": "ff72ebecae9d61d8f178fcc7031ac7cd7f9032aaf63575aa30f1ac5a1bdad174"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/MT3Scoring.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5221,
+    "sha256": "f57d1e185752e0676a08682c70e76cfd8441fb29c35d9c1c05975cf3eea4aa4d"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/MT3SymbolState.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 129893,
+    "sha256": "ee40d3c0c89369a3610d9a48b1efcc29b07f91afe0fe012b8a34f608f6b8ebc0"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/MT3TradeJournal.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 15417,
+    "sha256": "df5e19223effd33b1a609bae1927dddae344f598f912912f96d02292ab186f2c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/MT3TradeLog.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 16146,
+    "sha256": "e4065e02ac21b040f47a7b902036d6373ae09076204bd712280d0876173d5b3c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/MT3Types.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2547,
+    "sha256": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/MTFAutoTrader_3Mode_AI_v2_44.ex5",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 473482,
+    "sha256": "113c542ca5267061aad7c0a9701c8ef719456a63a3b425111ddc6e07fec720d0"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/MTFAutoTrader_3Mode_AI_v2_44.mq5",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 16978,
+    "sha256": "043077c747a161cf9b7441f2f1cd53e482c32dcb0ea18d808f66e0e5c7986931"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/MTFAutoTrader_AI_Worker.mq5",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6863,
+    "sha256": "2d068d5046ec3d616568227d6e9f6be0d9166af814f48076ac8a000d4922e12c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/TesterBottleneckDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6417,
+    "sha256": "490fc1ca3faff03dc1b1598e47b586ddf565b2377ac9eb685c05aa54ea7b275a"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/TesterBottleneckMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2992,
+    "sha256": "c995f9df4c06a33c4333664d07b2d670b2b5f096967c368cab391cb7fc872c4c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/TesterMCMultiDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6994,
+    "sha256": "e3c818faa351b82a4bddb5176e3a323924f8c37837922c07c9c9d226d4eaff31"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/TesterMCSchedulerCore.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2585,
+    "sha256": "23777184dfa1de19c1076c209a6704e298f73723f6795f45176d7a66397cef74"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/TesterMCSchedulerDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 12933,
+    "sha256": "2e61ec9b9d83f65f942bfc663ab8d633dbb0a65d30ccbb16ea51096204df9853"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/TesterMCSchedulerValidation.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 12908,
+    "sha256": "76c0a8eeb19c6f2358aad402328821a6ecfec60641dcb66ba2111a5e13614dbe"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/TesterMCSchedulerValidationMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2285,
+    "sha256": "04bfdb32ae9970784ba3d02999e24f92feb3bb5509b93834a6c05a240b1327c5"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/TesterMCTimelineDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2980,
+    "sha256": "3b8ddc1a440e7092d78744972cacf64b0aecafbad9a154e51ac6838d44b8c2d6"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/TesterMCTimelineMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5396,
+    "sha256": "36e6ac02f1fbcaf922f73869227d23ba962d98d014c3d7e9bdde871dc7316bec"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/TesterOpportunityDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 9103,
+    "sha256": "c3d2be73171281170262a272689613746675b9b85033ea74c6e11de6b9561940"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/TesterOpportunityMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2869,
+    "sha256": "81274b8fcad8c235bd0c2e1b1618c1be9f388707f3c811b308fdb25af15e8437"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/TesterPipelineDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 9735,
+    "sha256": "9751eea25ce55d151d069671c0fec63adf068c6c6a23c915ed79ae4b1e9b1afe"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/TesterSignalDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 12198,
+    "sha256": "8d9006101e1adc834a29a2c719ae566fbec5ab6e56fc3e5fb19821a711df946a"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_cap4_m2/compile.log",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 22092,
+    "sha256": "5773222f48a0f4c0249806d1183fc62b7abd80439b9cc6e50ccb2669da42974d"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/MT3AIProtocol.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 3944,
+    "sha256": "25340f89525ddaa7ffd425fddad0b22919864e0f8ce3db9961775eb299db24de"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/MT3Config.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 7077,
+    "sha256": "f75363429a3b1abc1759140910773c2e1a0f58278e83ca757d6a09d1ad117fd7"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/MT3Json.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 7784,
+    "sha256": "b392a69a399f8759d725e2ab7c6b30abd4c20656e227a90373ef1304b8b7c429"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/MT3PatternStops.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5678,
+    "sha256": "6755b1ee021a83645184ffbac7198b332f0320adec415c16aefadb2eaccb23ca"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/MT3PortfolioRisk.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2864,
+    "sha256": "3904bd36f35cecd6c14c5ea0874ee7a9daf76a00eaa2ebe5ba9fe22d21de0787"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/MT3ReversalPatterns.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 11556,
+    "sha256": "ff72ebecae9d61d8f178fcc7031ac7cd7f9032aaf63575aa30f1ac5a1bdad174"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/MT3Scoring.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5221,
+    "sha256": "f57d1e185752e0676a08682c70e76cfd8441fb29c35d9c1c05975cf3eea4aa4d"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/MT3SymbolState.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 129892,
+    "sha256": "088d2b07f17ba0de12752c218955423af3d32219c378d4184b1a8799f23a4d88"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/MT3TradeJournal.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 15417,
+    "sha256": "df5e19223effd33b1a609bae1927dddae344f598f912912f96d02292ab186f2c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/MT3TradeLog.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 16146,
+    "sha256": "d9cc3a1c190cc453d1ceff089a2e093c015301be0ace7cf440d25da39afc9fbd"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/MT3Types.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2547,
+    "sha256": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/MTFAutoTrader_3Mode_AI_v2_44.ex5",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 473072,
+    "sha256": "0fd862185c72ed7023c3afb73ee938e7c59281c456b10833730761f37c9b3b51"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/MTFAutoTrader_3Mode_AI_v2_44.mq5",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 16978,
+    "sha256": "043077c747a161cf9b7441f2f1cd53e482c32dcb0ea18d808f66e0e5c7986931"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/MTFAutoTrader_AI_Worker.mq5",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6863,
+    "sha256": "2d068d5046ec3d616568227d6e9f6be0d9166af814f48076ac8a000d4922e12c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/TesterBottleneckDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6417,
+    "sha256": "1289d76cadae7b5613162f48100fc4ab9ef1fa4879555e20bb025f8c30e4f7ae"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/TesterBottleneckMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2992,
+    "sha256": "c995f9df4c06a33c4333664d07b2d670b2b5f096967c368cab391cb7fc872c4c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/TesterMCMultiDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6994,
+    "sha256": "e3c818faa351b82a4bddb5176e3a323924f8c37837922c07c9c9d226d4eaff31"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/TesterMCSchedulerCore.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2585,
+    "sha256": "23777184dfa1de19c1076c209a6704e298f73723f6795f45176d7a66397cef74"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/TesterMCSchedulerDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 12933,
+    "sha256": "06809888fd8ccf1d311be32d48e82cd1db67d42d195ca447699dd2521441d588"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/TesterMCSchedulerValidation.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 12907,
+    "sha256": "82c6227c689c10107a242d662d27e0d4661043cea718f33556a81391266be90c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/TesterMCSchedulerValidationMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2285,
+    "sha256": "04bfdb32ae9970784ba3d02999e24f92feb3bb5509b93834a6c05a240b1327c5"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/TesterMCTimelineDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2980,
+    "sha256": "fce87ac106e91a72d677882e84aee72e98b59e16f014ed7edd220c7ae02f7b9c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/TesterMCTimelineMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5396,
+    "sha256": "36e6ac02f1fbcaf922f73869227d23ba962d98d014c3d7e9bdde871dc7316bec"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/TesterOpportunityDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 9103,
+    "sha256": "c488692c36cd1e6c7fc20ec56107c4ea6832d77a5a92cf4652df17098090a926"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/TesterOpportunityMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2869,
+    "sha256": "81274b8fcad8c235bd0c2e1b1618c1be9f388707f3c811b308fdb25af15e8437"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/TesterPipelineDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 9735,
+    "sha256": "9751eea25ce55d151d069671c0fec63adf068c6c6a23c915ed79ae4b1e9b1afe"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/TesterSignalDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 12198,
+    "sha256": "8d9006101e1adc834a29a2c719ae566fbec5ab6e56fc3e5fb19821a711df946a"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m0/compile.log",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 21582,
+    "sha256": "c6b83a06e3313596645469f9d2806e2afec93072bfeab6eb698815e7cb597c4b"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/MT3AIProtocol.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 3944,
+    "sha256": "25340f89525ddaa7ffd425fddad0b22919864e0f8ce3db9961775eb299db24de"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/MT3Config.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 7077,
+    "sha256": "f75363429a3b1abc1759140910773c2e1a0f58278e83ca757d6a09d1ad117fd7"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/MT3Json.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 7784,
+    "sha256": "b392a69a399f8759d725e2ab7c6b30abd4c20656e227a90373ef1304b8b7c429"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/MT3PatternStops.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5678,
+    "sha256": "6755b1ee021a83645184ffbac7198b332f0320adec415c16aefadb2eaccb23ca"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/MT3PortfolioRisk.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2864,
+    "sha256": "3904bd36f35cecd6c14c5ea0874ee7a9daf76a00eaa2ebe5ba9fe22d21de0787"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/MT3ReversalPatterns.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 11556,
+    "sha256": "ff72ebecae9d61d8f178fcc7031ac7cd7f9032aaf63575aa30f1ac5a1bdad174"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/MT3Scoring.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5221,
+    "sha256": "f57d1e185752e0676a08682c70e76cfd8441fb29c35d9c1c05975cf3eea4aa4d"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/MT3SymbolState.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 129893,
+    "sha256": "ee40d3c0c89369a3610d9a48b1efcc29b07f91afe0fe012b8a34f608f6b8ebc0"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/MT3TradeJournal.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 15417,
+    "sha256": "df5e19223effd33b1a609bae1927dddae344f598f912912f96d02292ab186f2c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/MT3TradeLog.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 16146,
+    "sha256": "e4065e02ac21b040f47a7b902036d6373ae09076204bd712280d0876173d5b3c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/MT3Types.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2547,
+    "sha256": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/MTFAutoTrader_3Mode_AI_v2_44.ex5",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 472692,
+    "sha256": "5f0f79ae3002b2f0e4b200cd196a50090c0246380c421bcb59b6b5d3a6aae185"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/MTFAutoTrader_3Mode_AI_v2_44.mq5",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 16978,
+    "sha256": "043077c747a161cf9b7441f2f1cd53e482c32dcb0ea18d808f66e0e5c7986931"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/MTFAutoTrader_AI_Worker.mq5",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6863,
+    "sha256": "2d068d5046ec3d616568227d6e9f6be0d9166af814f48076ac8a000d4922e12c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/TesterBottleneckDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6417,
+    "sha256": "490fc1ca3faff03dc1b1598e47b586ddf565b2377ac9eb685c05aa54ea7b275a"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/TesterBottleneckMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2992,
+    "sha256": "c995f9df4c06a33c4333664d07b2d670b2b5f096967c368cab391cb7fc872c4c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/TesterMCMultiDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6994,
+    "sha256": "e3c818faa351b82a4bddb5176e3a323924f8c37837922c07c9c9d226d4eaff31"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/TesterMCSchedulerCore.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2585,
+    "sha256": "23777184dfa1de19c1076c209a6704e298f73723f6795f45176d7a66397cef74"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/TesterMCSchedulerDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 12933,
+    "sha256": "2e61ec9b9d83f65f942bfc663ab8d633dbb0a65d30ccbb16ea51096204df9853"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/TesterMCSchedulerValidation.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 12907,
+    "sha256": "82c6227c689c10107a242d662d27e0d4661043cea718f33556a81391266be90c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/TesterMCSchedulerValidationMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2285,
+    "sha256": "04bfdb32ae9970784ba3d02999e24f92feb3bb5509b93834a6c05a240b1327c5"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/TesterMCTimelineDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2980,
+    "sha256": "3b8ddc1a440e7092d78744972cacf64b0aecafbad9a154e51ac6838d44b8c2d6"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/TesterMCTimelineMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5396,
+    "sha256": "36e6ac02f1fbcaf922f73869227d23ba962d98d014c3d7e9bdde871dc7316bec"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/TesterOpportunityDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 9103,
+    "sha256": "c3d2be73171281170262a272689613746675b9b85033ea74c6e11de6b9561940"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/TesterOpportunityMethods.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2869,
+    "sha256": "81274b8fcad8c235bd0c2e1b1618c1be9f388707f3c811b308fdb25af15e8437"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/TesterPipelineDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 9735,
+    "sha256": "9751eea25ce55d151d069671c0fec63adf068c6c6a23c915ed79ae4b1e9b1afe"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/TesterSignalDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 12198,
+    "sha256": "8d9006101e1adc834a29a2c719ae566fbec5ab6e56fc3e5fb19821a711df946a"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/compiled_m2/compile.log",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 21582,
+    "sha256": "e54fcaab78530e725d610344df12775502128734a87500dde345969fdfe76a62"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/environment.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical measurement provenance and report support",
+    "bytes": 862,
+    "sha256": "51a9660476febaf6947d578519da49ed0d7a0ea3f9bbd4e3a4ec418f8d5a2844"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/finish_validation.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical measurement provenance and report support",
+    "bytes": 2367,
+    "sha256": "672484f3243e2919ca3432c12b5516befcf728260ef8fc39786d1a65b653270e"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/full_gate_output.log",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 408,
+    "sha256": "31a523d611fe46c4f54df53cea83a4661f47f0ab5e1f6ed0f4e27bdcdb7f6467"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/gate_result.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical measurement provenance and report support",
+    "bytes": 2742,
+    "sha256": "1bd9c4caa779b3b711deefea5dad498843a7330fcab74b778a7190d5e33e2607"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/gate_result_missing_path.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2386,
+    "sha256": "e3511e6be495fd30a62b2918e547d1addc10b95a659286af710eb268d26785be"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/matrix/manifest.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 51197,
+    "sha256": "835f5e6f251d8a74348820055ad4822feb7773ca00ee863a300e1f0f5cd25350"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/matrix/manifest_before_capacity.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 51206,
+    "sha256": "85f1fd5fa21fe718234da4a2e9e3a9ec110278fe04652fa63933e53ff17380e2"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/matrix/manifest_before_second_startup_retry.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 51842,
+    "sha256": "98dd857fc0942add083a94a92dad6be33aa17b1e6c4dbf19fbd07f5a51c54dc0"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/matrix/manifest_final.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "effective fixed twelve-case hash manifest",
+    "bytes": 51851,
+    "sha256": "da7f88b62883a403a646cfe132ce8a4e6cc18963ebbdd181325bbf1dca25db55"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/matrix_cap4/manifest.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 17217,
+    "sha256": "60233c364df98c051967f4deff0039671fe6af1a9d03a6ad15344878555b22f4"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_CPU_CONTENTION/affinity.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1101,
+    "sha256": "58d75b8e236ce6d10217521ea376090c1773d4b13bea3b2864db4f5b74ceba68"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_CPU_CONTENTION/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 403,
+    "sha256": "cbc1a8e600bd3d449ca16e0bce29b88ad84b6786c8ba59a80f410bbb1b0b0973"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_CPU_CONTENTION_R1/CodexMCV0_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 66566,
+    "sha256": "8b2f927613c19ef2da14ed356d660ba21bcc2c76e842dba91e6c8c09b8d3b3db"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1116736,
+    "sha256": "874df10299a8b28acb564f42a4d3717158062394f770676f0b02a0fe3867d013"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 4526369,
+    "sha256": "0fbcd6892bb041b3f5245ce8d2e92787f8a743dc109ac7b22382be120d0b178c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 254,
+    "sha256": "627ab4b6f17c37f18d5785c3ba4a8a8bee636b8c65ae073177cfcd99c7fb37ff"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 25247,
+    "sha256": "06ad883a56eacdfe4847d3cb05fad1f336c1d27275642b453bf5f4b1566e3720"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1288,
+    "sha256": "9b0a0ec63fd45a35c5f10eca007d67143f82130f384aa4401ae92de97c327268"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 33220,
+    "sha256": "460e169a461648e43eb10ed012d4007b390215468c9920ba22b27417562c7e72"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 133204,
+    "sha256": "d3cf0f31009012055a63ed438dbca837a73ec3450adc0005fa9bfc207ec0824b"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 11923,
+    "sha256": "e2c230418de566b689903a0f52337d5330c9a8f8dcb77c3f40c6e82b09dd7eeb"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 603,
+    "sha256": "73f8874ab8ac620bac194d33f3fcc73f56fae2416cff07afbd0552ddd2b94b3b"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 13140,
+    "sha256": "b465a65126d952ff85cce7b712604801c49ac04ce76cc7716a75a5fb2d359b94"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_CPU_CONTENTION_R1/affinity.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1180,
+    "sha256": "980689ac032ef78b84bc30c13c5b0504d7b9bde923f72adc9b04595f3364f4e2"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_CPU_CONTENTION_R1/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 436,
+    "sha256": "6fd1abb80e56db8effffd287b4aa34f4a44e8ca0f00e7f1f32caa238e594d014"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_CPU_CONTENTION_R1/result.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 4168,
+    "sha256": "47be2ae082a3b5874f53a126e6e7fb1e65be5bc1a0830673688e57d57e54d52e"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_NORMAL/CodexMCV0_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 66566,
+    "sha256": "8b2f927613c19ef2da14ed356d660ba21bcc2c76e842dba91e6c8c09b8d3b3db"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1116706,
+    "sha256": "39720f3e41624e2f3ab23147942cbe6749a4cb6630e52b0a1ad9471418c2800c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 4526046,
+    "sha256": "236ad6b3330594a28cc139528b3fbf92a027a800c946ab425b82a2a9463b4bef"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 232,
+    "sha256": "117182a1c5dba417f2823ec244d841f8074c7c02a5d79656b8993a4183aa46ce"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 25247,
+    "sha256": "06ad883a56eacdfe4847d3cb05fad1f336c1d27275642b453bf5f4b1566e3720"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1280,
+    "sha256": "dcd8d44f384aa1bb77d5f0dfd594412256db4adcac757049c5efdd93dff099a5"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 32981,
+    "sha256": "fb8fe9a408b8de9ecb9edbbb342512aa008d0fbddb5fe8bed2d8729703e7fd04"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 133211,
+    "sha256": "62049011e2b000af880d2e1a97881bf52d4686be147b6f3a71697c30801f6027"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 11913,
+    "sha256": "9a871610409192795173eff91cdf2dba036397825d6a2697df4c706ded7fda38"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 598,
+    "sha256": "815e49493229394fe0985ad37c50ae495b6de4de2718c05c4264f137cda9e646"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 13138,
+    "sha256": "6bc1bee3871dfad0b4b7b3ba10a8f3fbb7487db4d123f19d1b44418587a7d0e6"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_NORMAL/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 416,
+    "sha256": "15304b7c39279fdcd9f8747931247ff139af77e01a927204d7ebfccd48455d31"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M0_NORMAL/result.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 4149,
+    "sha256": "4694d47728f0c4928530b9d03332df28068d7939fe13c7d1b52d85848a7d2a96"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_CPU_CONTENTION/CodexMCV2_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 66291,
+    "sha256": "e52d7d166a7c5e3abd1be91053fff2572fc2232465e97ae46c9a7630bc227b71"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1147787,
+    "sha256": "dcde1fc0aac4025df6c4e8928ed8dec7f5937d534be647916b2f7cf935b20403"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 287628,
+    "sha256": "3f32c9821cae86ef383ef88efc0a4a7c5d3d5a6442a0f4cfb696dce1c7cff9be"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 222,
+    "sha256": "a80ccf148bb42d8d09ebd11d538b9150667a444e529396eb68746f228ad10875"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 25739,
+    "sha256": "b127959e9e27915ea206aeeb62aaab0e92d20f615e8988f36cf98037136429af"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1280,
+    "sha256": "9c44e233f56ddca19dcfeafbbf3f6f003076dd47d87b33b313502d03a869d21b"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 43182,
+    "sha256": "7e5283047a352502ec1f683fd04245b7082141fad616dd227c7bc121187cc944"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 136517,
+    "sha256": "f3352e7e546e2ac18acedf8b32ffdb53d61dbbcecaa778f1327814aa25e6fd57"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 15822,
+    "sha256": "ce64d7a3494ecb912a6e0ed4bfe4c1be4d6595f7ef819ad6ee31de1f849994a6"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 604,
+    "sha256": "ac015046a7935ce2b5fb04cf1bf6bf55f09904d111e3131c8e84964ccf023904"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 13363,
+    "sha256": "e7bfed4c9cb7af9a27ee6bb45070435eb6cbe0df39d836b8e4a19c1906db0d42"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_CPU_CONTENTION/affinity.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1175,
+    "sha256": "510743b98eecceab0ea434598cbfea682491c489b3e6e36b1068bea472cb437a"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_CPU_CONTENTION/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 433,
+    "sha256": "c4ebb1221a1d3405a707bdde00dbacaef8d46d7063b01ba7b8f7ff86409393bb"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_CPU_CONTENTION/result.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 4121,
+    "sha256": "1a8153597b56b86f4b52acd5add97316e2ba3167fbd1b887f15eb24b67c78a49"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_NORMAL/CodexMCV2_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 66291,
+    "sha256": "e52d7d166a7c5e3abd1be91053fff2572fc2232465e97ae46c9a7630bc227b71"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1147735,
+    "sha256": "4b6e330f542394c28514dcfc8588303b3a31d86fd567a3d865e5f1be0af5ec78"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 287388,
+    "sha256": "a6c99571937cffcf29691a8d567ca5e8ce4aa1892b875b20f4cb3dedc4b91223"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 221,
+    "sha256": "b82ce972cfe21aaf2f0be4865185908b9731d1c4aab3f08da8ff0a99db4490f9"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 25739,
+    "sha256": "b127959e9e27915ea206aeeb62aaab0e92d20f615e8988f36cf98037136429af"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1276,
+    "sha256": "b06df8b64c31513ce20ec3564689d4bc69642115cefe7d36cada506fa7e413af"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 42776,
+    "sha256": "e7e49d7add05718d7f5d5ad93822dd22764311de59f816eacbe3df975a21f393"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 136511,
+    "sha256": "d90edf1bf2c382821f4a6ff227c1387ca8fbeca2805d21cd2854629d3d3c45f0"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 15818,
+    "sha256": "4d6ef1fb3c1eb2af04112df05cd537edea3b4bf1ac6917df30e5ed3a8cf0daf2"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 597,
+    "sha256": "575be34c78e59d82ccfd8f31628ffedbf3e27041a7a2d61db5657434c580f754"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 13362,
+    "sha256": "c4406274c534623576527e7358556e5c91bb53e2fe0d4bfc7208ed7ce60831ee"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_NORMAL/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 416,
+    "sha256": "a0a824fb42bff165076389648b911a52cb4c26f94dc5b6f6f2e02df71aeb495b"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230Cap4_N4_M2_NORMAL/result.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 4105,
+    "sha256": "5dc841e19aa4244e83a795efcff70f9b7f145770a0385c81f11fe2bca8e7449d"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_CPU_CONTENTION/CodexMCV0_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 32096,
+    "sha256": "b2f71b54701923817ecbad698ea6dc3bb57207206d0ef729f0b16f1582e9bcd8"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_CPU_CONTENTION/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 504241,
+    "sha256": "07beeb44c41e0294e5e034a8e8011707901471abdd31d263c003ffbdaf5e6950"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_CPU_CONTENTION/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2408947,
+    "sha256": "b651ce9d6e306a8d9bcd1b8143628c73d074c9590ce8d7411eecc79867ac8555"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_CPU_CONTENTION/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 218,
+    "sha256": "23ec6dc48592a9e47c0b6fbd95b3137a91b55d664275bf54ca24f50d9b16338e"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_CPU_CONTENTION/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 10990,
+    "sha256": "912db1ed2ddd32cc061f526c7bd27a852724207a6cac5b31f5243906db97ccf7"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_CPU_CONTENTION/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 826,
+    "sha256": "78cc4ea5c58918848c6f5715ed08a24591bc0bc93588b711f5ebf2ca4c8df76e"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_CPU_CONTENTION/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 8943,
+    "sha256": "8c7a2267d2454bb166b8ca600be7a321d5a156882aefdf52fbc6ec83a0e9be0a"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_CPU_CONTENTION/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 64445,
+    "sha256": "70bf9535fee86318f5fd4769753d7134fa80ada9d2f91a563e7e915dfdd4f958"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_CPU_CONTENTION/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 3004,
+    "sha256": "6c510c976bcdc33021bd7062927496c5229a941935163ca0170aded42a308f2d"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_CPU_CONTENTION/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 593,
+    "sha256": "cbdb4e8349e1efa80156c7a52d5c959f8d27c3cd7f2ea915531803301ce15dca"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_CPU_CONTENTION/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5270,
+    "sha256": "accd87db7d8342203c989cc265e450cfcc504e0ca3aa943ddf184172ef00a548"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_CPU_CONTENTION/affinity.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1745,
+    "sha256": "e64c02dad301d47328acfa3a84908ba9adf14a8391e188bbe4fb628c259300b0"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_CPU_CONTENTION/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 428,
+    "sha256": "f67491b8fb53b59fbfd6c302183ef1eff51b9ee0a8a9be66cb07459a3b2e5bef"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_CPU_CONTENTION/result.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 3616,
+    "sha256": "3fcfd2efda9423cf41daa2b42eceb7fcde3e4e73af28628ff7690e149d7c562d"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_NORMAL/CodexMCV0_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 32096,
+    "sha256": "b2f71b54701923817ecbad698ea6dc3bb57207206d0ef729f0b16f1582e9bcd8"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 504388,
+    "sha256": "287b97cfae2cec523ab1aaf131b77cee854f5f9bf1322104cc542de2ee7e1e9f"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2414980,
+    "sha256": "7d220cb68682b84f9a74db58536b1e5fcfcd4cc1407c00a9d73ca8f607a1ea82"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 219,
+    "sha256": "6b05e874cc6e22db9756060098642c838e805bb55881f3e264b639ce27080b51"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 10990,
+    "sha256": "912db1ed2ddd32cc061f526c7bd27a852724207a6cac5b31f5243906db97ccf7"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 826,
+    "sha256": "2720dc90c3e40747f760e8304f6b7c7ff62c35168752331698c061ecc9ed2808"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 8879,
+    "sha256": "359d34783b76cc2b40f5122f80633a22484d8a82add91da24cc42dfea7344241"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 64489,
+    "sha256": "73bf0b37dae7a11c0c57451aea396889ab49a3f7d4f9a54c524c5570a785e6d1"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 3005,
+    "sha256": "3433782f13779f2412bc02c2a2cb167b5a82b8733a4ea5f5ed56b8c63482cbad"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 592,
+    "sha256": "ed283d27973bf93af50afcca09e9590fe4f79c1dbfe4ff19eb30acf52cd4072e"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5273,
+    "sha256": "b8ef2ad284afdb842e6366ffa86d4793c5720a551a68c2391dc934901a8e388e"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_NORMAL/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 562,
+    "sha256": "affcf8094674683cf6b21acef602088c0a26670af5d66a98a4ca222f25e60ea0"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M0_NORMAL/result.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 3600,
+    "sha256": "37c3bcd4dcd840d9bb0b8f8792005fb2e6d3bdf0f9aa95abb1b54765ae27e6d6"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_CPU_CONTENTION/CodexMCV2_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 31835,
+    "sha256": "fb76c983c19a08b24afdb9f24ed238fa8111af818b3a3f64b5dcb43d2a1c7e3c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 521633,
+    "sha256": "c73ee5c10c62e02ce0cc00971486bcf12256dfc2d04f96395a7b2793b50314a7"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 167584,
+    "sha256": "76a51fd06c99b9271ba6fbaf81287baf0144ba4e9d7f853795e366598107ccf4"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 219,
+    "sha256": "2741a2439901a08d44af078f5e57804af0b92d659e2217baf631c0ed0b02e79e"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 11317,
+    "sha256": "ea33b64fb49ba6d8984b710e880c2c4188a60373c78d6a443ba2abbf23b02a4d"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 822,
+    "sha256": "66df581ea464f15fd36db0de83118c52bc6957fe93667ee4d56219017d57ff90"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 14728,
+    "sha256": "e5f0dc48eb9e488063b8accd62951f90722ac1e7eeda88ce1d8f22a651ddb5e1"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 66401,
+    "sha256": "cd4b69f59ff7d869078dfc08b3828e9da041d3d36da7b15e49364605a6fa3928"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5273,
+    "sha256": "23f39307b42bcecb0f3a77d89d70845c081b5fb722b011841adc0a0e1d87d3c5"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 594,
+    "sha256": "d5d8da44ebc0714bfad972c579e48b73471178fc079aada97afd4dc1ab6f87c5"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5381,
+    "sha256": "2cb500f6735405077d5e5f20d485c0293d8fdb02883cac21d8a98b70a698efe2"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_CPU_CONTENTION/affinity.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1165,
+    "sha256": "398453da4aba6c64e9ea74c52de72d2b5fcdf91cfff78af5ed573e81a655bd36"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_CPU_CONTENTION/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 429,
+    "sha256": "eda00d1017dddf62012f6e4f84d50184ca1958d4403a6bd27fd1eaf84e900d38"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_CPU_CONTENTION/result.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 3611,
+    "sha256": "fff54d0f5927ce3a5b29573158746ea054999e8481f7fbb22d4c5910282d695d"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_NORMAL/CodexMCV2_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 31835,
+    "sha256": "fb76c983c19a08b24afdb9f24ed238fa8111af818b3a3f64b5dcb43d2a1c7e3c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 521641,
+    "sha256": "5b3086ef575d4547157e17dcb143ca0f51c06127780e46ba75ada3903ae8971a"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 167468,
+    "sha256": "5a4c4ec399035ff2e00d2a355db7ad3ceb9fecf6f62d15f6f960767a7e56ce9c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 219,
+    "sha256": "02143f5285ea9a38555e89ebdd02892dff5ddab6691d0dc2dfaaf22b1b699f5b"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 11317,
+    "sha256": "ea33b64fb49ba6d8984b710e880c2c4188a60373c78d6a443ba2abbf23b02a4d"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 822,
+    "sha256": "100fd38228e98ea4563d22f93b953dae93bc13ea9f77be3fb69a31b2c4ef7587"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 14922,
+    "sha256": "69bae22cdcda6decc050b9dc280b7cdc8af2210ad3f32fa7ff06904d65836d9e"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 66406,
+    "sha256": "882567458c9e80414512575e593202e43cb373d59fd0d31c1eb1a3ece7d414fb"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5273,
+    "sha256": "14801ce871535ad56b95b4af52e2fd7283d68c8aedfb1f2f1cdc8e1667bc6953"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 592,
+    "sha256": "cdfea175ac88b17f78a6ef0e16fa1570e5370977b1478afe15aa2110bbce68bc"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5380,
+    "sha256": "a488fe1e2c115fc63240966fe35e8483f22892af2144ab785d714edf69cd797f"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_NORMAL/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 411,
+    "sha256": "96c0689009c82234941f9dccf8549026ef2b7a6ccd9cf3d161f7573e73162c11"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N2_M2_NORMAL/result.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 3595,
+    "sha256": "1e0b7c3563702c1612524fd1ca64209795da09039e2835e7b75d23ea8f199535"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_CPU_CONTENTION/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 397,
+    "sha256": "6940c1ad5f66cc30f5ea18f75fb62f2ae067018728f27f080fb7f305a8e57ff4"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_CPU_CONTENTION_R1/CodexMCV0_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 49639,
+    "sha256": "ae71ed9c5f6769c4d0b56b4c0e69862b51b439919a9d591f968f744ada0ca016"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 787348,
+    "sha256": "a640f9562ad61ed3500b62315b86d62791836dbcba29d60716a981f9803b939b"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2483457,
+    "sha256": "18033cfa5517ece2a55f58eda3086701876d367d52e39f265a429ef92ed1547d"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 231,
+    "sha256": "f6b8197672c3854addab6a99c9e779e63fec3638435316eef69a2f33976a3a46"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 16825,
+    "sha256": "728ce1e0158e003321a77ce2c89c6844c049d4abe17364794a1db306ea077b86"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1051,
+    "sha256": "7b3266f97530b9340e8a8cbc11ef9551dc699a9640adf1a24a9127add59e2bc8"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 9322,
+    "sha256": "9e3a3e529a467369e09b9e58bfa94fe09236fb7ae5b9a7cc16040643eb9daf6a"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 98923,
+    "sha256": "2bd6e9c1639c30c5a6764b773917412d8b1f66b5461af70a368c28893d9abb92"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 3142,
+    "sha256": "f094244aab805170a306e4c052c19cbdf9322b26974f1f9bb87060c6c0293749"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 598,
+    "sha256": "73416508a2301f3b2e34cfceb168e2262c46ef14019c39cbb2b4f95e0515171f"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_CPU_CONTENTION_R1/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 8595,
+    "sha256": "475b664b1f1df772a95150b667a0d1294253d8e889a16cca3d410d3cd1b5c8a5"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_CPU_CONTENTION_R1/affinity.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1473,
+    "sha256": "15ba11e3549ae7880bdb8463d6a5640ac6e52c0c0bcfa3dbed236740997215db"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_CPU_CONTENTION_R1/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 432,
+    "sha256": "94bf6b5e9a820b75add9e8880436627443e7f981907ec87bddce525ce5157881"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_CPU_CONTENTION_R1/result.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 3857,
+    "sha256": "208d6cc2672490ed11cc0825d42eed706478274614f1f933c02424692dfdf855"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_NORMAL/CodexMCV0_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 49639,
+    "sha256": "ae71ed9c5f6769c4d0b56b4c0e69862b51b439919a9d591f968f744ada0ca016"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 787711,
+    "sha256": "18c48735cfc548ead17bb06d34c36fa235705629c53429f44cb88b5806a3923e"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 2494871,
+    "sha256": "85fe76fc90e8f6bdc325efc263ed910495267545b3b6379832cecc9df7e4da70"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 229,
+    "sha256": "97f27d00241ceb54c7a32b248751a0706339a9a51480da49445a1d3eaae001f7"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 16825,
+    "sha256": "728ce1e0158e003321a77ce2c89c6844c049d4abe17364794a1db306ea077b86"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1057,
+    "sha256": "c8606cb801771c2cec7d3a695968b05661baa3f2a1de99755d95701b775ad32b"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 9273,
+    "sha256": "daa9bc5d779aae8aabb7dc26e8df96cdaad537322116074e93a6fa9a79f108e5"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 99007,
+    "sha256": "a7941071d5662ac373b67b9bda63cc0874cc9ffda5400151fff95f2cd166bce9"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 3148,
+    "sha256": "408ad3bb4189071a0687d72e057d841e4818ebe00c2cc88a75575f1ba399d363"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 598,
+    "sha256": "54b1f6b2e080b2b4a72e684d381175441a99d4e0fa84d9081b7ed7a5c0a4ecea"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_NORMAL/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 8616,
+    "sha256": "5c99403f462cf3184ff663f7e4b17ad236fcc7e147f53858d071333bdeb897b9"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_NORMAL/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 413,
+    "sha256": "431bc4db4fb9752e8d730264ee4ae9ecd1e187bb3849d6a4b2cc9a354015fa5c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M0_NORMAL/result.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 3839,
+    "sha256": "0845d510d812e98ae0adcf0cc3442dd89c95d4d9319260e041780ad4232791cf"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_CPU_CONTENTION/CodexMCV2_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 49378,
+    "sha256": "fffa98eaca62a35394807f4b87d73a70eaa2120f1d18eb5fb34b074ae3d8514e"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 804160,
+    "sha256": "4ab055333784d06fc8125e618a6996c3d46a3789ad612fdfe9dec9cd56f0c8f9"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 171002,
+    "sha256": "9593e4113a79b4386769f4b709b8d9ca7000e876d23f7b9acb9fa1b41b5d9bc4"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 231,
+    "sha256": "fe3416e020e7100eeab503cb232de273b7c35657b0a091c3d7d995f7f9645d62"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 17152,
+    "sha256": "3459f283ba5dbe6201c72adc5f6a960ef9cb3295e72ae875b281e624eff1f62f"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1045,
+    "sha256": "8862286622a456177eb97f7d0fa4d05940241eb27dc8a22a98e0ef3f8aa4d324"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 15233,
+    "sha256": "d0e0e484bb658f3341d2b1cfb21a68381e4717202f2d87778e2384bf6b69f9a9"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 100874,
+    "sha256": "332a7bf12852c284066a383e7b2be2146622ad8fce6bb18b9d9d6636cfdd3d22"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5409,
+    "sha256": "cea171ab8aca99a79fb71d3caa64eea260791d6ab95187401b92e255f1ff23f0"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 599,
+    "sha256": "2eead935260cd548850b51d9c7c92fba7c7fd0ea0fcd9716b4599bdfcb26dd02"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 8705,
+    "sha256": "7d8060467c51aa83132e055d0e9ad80fbdebab06deb69b67b96a1ed99dc62c04"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_CPU_CONTENTION/affinity.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1168,
+    "sha256": "bf4a23e81b0c1fa4e6cb31608d78470185cee71c0b179e1745abc25b208f8356"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_CPU_CONTENTION/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 429,
+    "sha256": "15ba722e5d34fa2ab898a1d56305c2a7c6511cc352f7da83d00f339ca404fb24"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_CPU_CONTENTION/result.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 3848,
+    "sha256": "d3657f0a228e485be9198da0bfb65202b11d65e6f2cf19d526e8767d6cbe78b1"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_NORMAL/CodexMCV2_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 49378,
+    "sha256": "fffa98eaca62a35394807f4b87d73a70eaa2120f1d18eb5fb34b074ae3d8514e"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 804237,
+    "sha256": "38407b35dd7465df878b34e787e405bd59bea88f1a1374f08495356c346cc339"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 170780,
+    "sha256": "97e7fea05870a8abca5629b07a2a368efb86b3b536ab509c4d0e6a3a68648348"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 231,
+    "sha256": "6940fd299081948c72495181bf7d0b3a06f1f98e12b28623ed53ac85c1c3ddac"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 17152,
+    "sha256": "3459f283ba5dbe6201c72adc5f6a960ef9cb3295e72ae875b281e624eff1f62f"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1048,
+    "sha256": "15634fd24c4ce5df80164ca9891d5315d012a1c3df774eabd57651447908537e"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 15137,
+    "sha256": "2a1812d52f3e88eefe5d0296fca2dbc814fdd3704df88e9242a327c18db8020c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 100882,
+    "sha256": "df44fb4bbea7de49e529e5c1adb34980b7330ae99656968059cf5d4da1662b98"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 5409,
+    "sha256": "f6a34f67270c16d259017c0c23a30eca75681eef6757f37b73bf35efe9528a7f"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 596,
+    "sha256": "f9e7eadd1439b150cbe7fb4f3cc653b8eb8719582eb621166d83b1400ab5ef75"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 8709,
+    "sha256": "e100eb9a3114c6bf57d068b9a17035158b93632542712d48fb2f2236a514c74b"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_NORMAL/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 402,
+    "sha256": "deba233e6b12aca68bfddedcb11b29ff9e0b414aedbcdd6f8809d996a85406d1"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N3_M2_NORMAL/result.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result/export hashes and execution identity",
+    "bytes": 3833,
+    "sha256": "405b4b0b8b721a8ca1500f7276f89909abce28ceb9ecce348677078a0d1602a6"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N4_M0_NORMAL/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 412,
+    "sha256": "8bd26eac68ff9f47f697a7735cd5b484ede983e8367999213c92310e4d762ff0"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N4_M0_NORMAL/diagnostic_failure.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1924,
+    "sha256": "b84defff0a4724b510c389530979f14f40c1aa0ad6d48687065e92137e135307"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N4_M0_NORMAL/partial_diagnostic/CodexMCV0_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 66566,
+    "sha256": "8b2f927613c19ef2da14ed356d660ba21bcc2c76e842dba91e6c8c09b8d3b3db"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N4_M0_NORMAL/partial_diagnostic/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1117069,
+    "sha256": "986b1f8a5f08fb91a263083425bfc01ef44d19621c3ac360dc4b10cca9f5bda1"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N4_M0_NORMAL/partial_diagnostic/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 4536608,
+    "sha256": "fed60814c108fc9f442dfb0c36c4bba63af0b22c63ba4c7dfdac949ad198fe7c"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N4_M0_NORMAL/partial_diagnostic/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 221,
+    "sha256": "4f0aa40502dfabacff07e9b9b5e88753421cdf441a863b6a7446ce3d8de2e35d"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N4_M0_NORMAL/partial_diagnostic/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 25247,
+    "sha256": "06ad883a56eacdfe4847d3cb05fad1f336c1d27275642b453bf5f4b1566e3720"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N4_M0_NORMAL/partial_diagnostic/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 1288,
+    "sha256": "20534d059ddfef8afd24ff173bb6d5449358eee0f6882894b7df249ae2b5d355"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N4_M0_NORMAL/partial_diagnostic/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 32963,
+    "sha256": "ddbdbff0098b382a1f5f436e083b0fb907e5057a7315ed73de0ea74887a9f63a"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N4_M0_NORMAL/partial_diagnostic/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 133288,
+    "sha256": "83123f5200ee7fe943833c573908ec669b05a61a2eb238e134e96604aa4eba3b"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N4_M0_NORMAL/partial_diagnostic/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 11925,
+    "sha256": "f96b584aec6c578a776e26fde4f92d0e78384316078762d01e9787eb268d8f7b"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N4_M0_NORMAL/partial_diagnostic/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 600,
+    "sha256": "4c2a4b87858b96b8efea54e809d34d61c54308f92835b977e7cf3d3641baaafa"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/native/CodexMCMulti20261002B6230_N4_M0_NORMAL/partial_diagnostic/CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 13153,
+    "sha256": "3cdd22708be61aa9ee04a3551fdc90d8e4b83606e5e39ad0b3b312be0bffbc72"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/observations.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical measurement provenance and report support",
+    "bytes": 207584,
+    "sha256": "05e4f3584711d53d47caf344d21ebd8dc82badc9d29bb0cfd4f2fedacbe68ae2"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/render_report.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical measurement provenance and report support",
+    "bytes": 22022,
+    "sha256": "f6ab88dc5d26c3bbfb44601bbf44eb231172754435fdf9423aecc1f238ee9d78"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/retry_evidence.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical measurement provenance and report support",
+    "bytes": 338,
+    "sha256": "48160964c5a9c6ecdf3a876a4f3d1834b0fa62ea0f778699e91044df3b0abacc"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/summarize.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical measurement provenance and report support",
+    "bytes": 6804,
+    "sha256": "df508083bd5b043a6ea067549100857678e213d02b84f799fd563fb83ca0bf6e"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/summary.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical measurement provenance and report support",
+    "bytes": 404319,
+    "sha256": "8d9a10cc476e8f14ee3e1ae16f685deb71e0407a99b9326ab4310caaf1bc43a0"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/verify_finish.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "local generated or historical evidence; retained without distribution",
+    "bytes": 6501,
+    "sha256": "255dcb074a5cf68c05e38f0ad925ebc7e05441f04ded8b9ad87a3875cea29b01"
+  },
+  {
+    "path": "tests/test_mc_multisymbol_frozen.py",
+    "classification": "VALIDATION_INFRA",
+    "include": true,
+    "reason": "fixed reproduction contract or allowlisted numerical evidence",
+    "bytes": 4089,
+    "sha256": "176fa72e817846b50df2ba755353d00ca1b6f9c5b1a5f06ac2afe2e74432a9ba"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/REPRODUCE_JA.md",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fixed reproduction contract or allowlisted numerical evidence",
+    "bytes": 4069,
+    "sha256": "12b20b624c89fd746993161182b803e3f18200b64ec9137cd649a5a062822d43"
+  },
+  {
+    "path": "verification/mc_multisymbol_20261002_6230/frozen_configs.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fixed reproduction contract or allowlisted numerical evidence",
+    "bytes": 6105,
+    "sha256": "2e0be940259036bf1e1f74aa6c1dcbe0d69951e02c773a2dc5a8d28ac2de7b09"
+  },
+  {
+    "path": "SHA256SUMS.txt",
+    "classification": "VALIDATION_INFRA",
+    "include": true,
+    "reason": "AGENTS distribution checksum; metadata self-references are excluded",
+    "bytes": null,
+    "sha256": null
+  }
+]

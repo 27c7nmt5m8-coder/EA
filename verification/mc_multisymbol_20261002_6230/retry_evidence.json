@@ -1,0 +1,8 @@
+{
+  "original_attempt": "CodexMCMulti20261002B6230_N3_M0_CPU_CONTENTION",
+  "status": "BLOCKED",
+  "reason": "observed affinity drift in owned_terminal path",
+  "drift_mask": "UNKNOWN: original exception did not persist monitor details",
+  "retry": "CodexMCMulti20261002B6230_N3_M0_CPU_CONTENTION_R1",
+  "condition_changes": []
+}

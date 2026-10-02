@@ -1,0 +1,13 @@
+{
+  "case": "CodexMCMulti20261002B6230Cap4_N4_M2_CPU_CONTENTION",
+  "mode": 2,
+  "load": "CPU_CONTENTION",
+  "started": 1790900793.5538619,
+  "offsets": {
+    "C:\\Users\\jamp1\\AppData\\Roaming\\MetaQuotes\\Tester\\E3E3B02889D32F38295D39BF94B6AD4A\\Agent-127.0.0.1-3000\\logs\\20261002.log": 9437688
+  },
+  "status": "COLLECTABLE",
+  "timeout_seconds": 1800,
+  "exit_code": 0,
+  "elapsed_seconds": 340.34399999998277
+}

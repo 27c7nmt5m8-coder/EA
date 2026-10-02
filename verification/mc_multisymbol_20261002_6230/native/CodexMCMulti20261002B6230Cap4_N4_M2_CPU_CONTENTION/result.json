@@ -1,0 +1,114 @@
+{
+  "status": "PASS",
+  "case": "CodexMCMulti20261002B6230Cap4_N4_M2_CPU_CONTENTION",
+  "mode": 2,
+  "load": "CPU_CONTENTION",
+  "symbols": [
+    "USDJPY",
+    "EURUSD",
+    "EURJPY",
+    "XAUUSD"
+  ],
+  "deinit_reason": 1,
+  "shadow_overlap_s": 1.913915,
+  "natural_shadow_overlap": "UNKNOWN",
+  "report_metrics": {
+    "trades": 119,
+    "history_quality": 100.0,
+    "ticks": 584990
+  },
+  "symbol_rows": {
+    "USDJPY": {
+      "shadow_callbacks": 40,
+      "quote_samples": 431998,
+      "quote_advances": 261721,
+      "bar_samples": 431998,
+      "operations": 20000000,
+      "duration_us": 1899164
+    },
+    "EURUSD": {
+      "shadow_callbacks": 40,
+      "quote_samples": 431998,
+      "quote_advances": 236154,
+      "bar_samples": 431998,
+      "operations": 20000000,
+      "duration_us": 1902735
+    },
+    "EURJPY": {
+      "shadow_callbacks": 43,
+      "quote_samples": 431998,
+      "quote_advances": 291874,
+      "bar_samples": 431998,
+      "operations": 20000000,
+      "duration_us": 1919855
+    },
+    "XAUUSD": {
+      "shadow_callbacks": 40,
+      "quote_samples": 431998,
+      "quote_advances": 386425,
+      "bar_samples": 431998,
+      "operations": 20000000,
+      "duration_us": 1911310
+    }
+  },
+  "replay_rows": 230,
+  "actual_replay_rows": 224,
+  "runtime_errors": 0,
+  "warnings": 0,
+  "scheduler": {
+    "mode": "2",
+    "snapshots": "113",
+    "comparisons": "230",
+    "mismatch": "0",
+    "unknown": "0",
+    "prefix": "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40"
+  },
+  "validation": {
+    "requests": "1094",
+    "no_requests": "1727006",
+    "guards": "157",
+    "order_timings": "120",
+    "unknown": "0",
+    "prior_unknown": "0"
+  },
+  "pipeline": {
+    "deinit_reason": "1",
+    "ticks": "584990",
+    "new_bars": "28483",
+    "market_ready": "1727980",
+    "indicator_ready": "1373745",
+    "pattern_reached": "1373745",
+    "signal_buy": "3008",
+    "signal_sell": "3782",
+    "entry_candidate": "240",
+    "risk_reached": "120",
+    "risk_failed": "0",
+    "order_validation": "120",
+    "order_requests": "120",
+    "orders_sent": "119",
+    "orders_failed": "1",
+    "cooldown_reject": "59",
+    "entry_blocked_pattern_none": "1366955",
+    "entry_blocked_score": "5094",
+    "entry_blocked_quote": "247",
+    "entry_blocked_stops": "129",
+    "spread_reject": "1080",
+    "position_exists_reject": "328772",
+    "safety_blocked_monte_carlo": "25524",
+    "trading_hours_reject": "0",
+    "trading_hours_filter": "absent"
+  },
+  "exports": {
+    "CodexMCV2_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv": "e52d7d166a7c5e3abd1be91053fff2572fc2232465e97ae46c9a7630bc227b71",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv": "dcde1fc0aac4025df6c4e8928ed8dec7f5937d534be647916b2f7cf935b20403",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv": "3f32c9821cae86ef383ef88efc0a4a7c5d3d5a6442a0f4cfb696dce1c7cff9be",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv": "a80ccf148bb42d8d09ebd11d538b9150667a444e529396eb68746f228ad10875",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv": "b127959e9e27915ea206aeeb62aaab0e92d20f615e8988f36cf98037136429af",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv": "9c44e233f56ddca19dcfeafbbf3f6f003076dd47d87b33b313502d03a869d21b",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv": "7e5283047a352502ec1f683fd04245b7082141fad616dd227c7bc121187cc944",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv": "f3352e7e546e2ac18acedf8b32ffdb53d61dbbcecaa778f1327814aa25e6fd57",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv": "ce64d7a3494ecb912a6e0ed4bfe4c1be4d6595f7ef819ad6ee31de1f849994a6",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv": "ac015046a7935ce2b5fb04cf1bf6bf55f09904d111e3131c8e84964ccf023904",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv": "e7bfed4c9cb7af9a27ee6bb45070435eb6cbe0df39d836b8e4a19c1906db0d42"
+  }
+}

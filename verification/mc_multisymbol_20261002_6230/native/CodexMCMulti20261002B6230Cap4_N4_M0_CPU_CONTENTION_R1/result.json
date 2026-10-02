@@ -1,0 +1,115 @@
+{
+  "status": "PASS",
+  "case": "CodexMCMulti20261002B6230Cap4_N4_M0_CPU_CONTENTION_R1",
+  "mode": 0,
+  "load": "CPU_CONTENTION",
+  "symbols": [
+    "USDJPY",
+    "EURUSD",
+    "EURJPY",
+    "XAUUSD"
+  ],
+  "deinit_reason": 1,
+  "shadow_overlap_s": 2.183143,
+  "natural_shadow_overlap": "UNKNOWN",
+  "report_metrics": {
+    "trades": 117,
+    "history_quality": 100.0,
+    "ticks": 584990
+  },
+  "symbol_rows": {
+    "USDJPY": {
+      "shadow_callbacks": 1000,
+      "quote_samples": 431998,
+      "quote_advances": 261721,
+      "bar_samples": 431998,
+      "operations": 20000000,
+      "duration_us": 2180124
+    },
+    "EURUSD": {
+      "shadow_callbacks": 1000,
+      "quote_samples": 431998,
+      "quote_advances": 236154,
+      "bar_samples": 431998,
+      "operations": 20000000,
+      "duration_us": 2181134
+    },
+    "EURJPY": {
+      "shadow_callbacks": 1000,
+      "quote_samples": 431998,
+      "quote_advances": 291874,
+      "bar_samples": 431998,
+      "operations": 20000000,
+      "duration_us": 2182141
+    },
+    "XAUUSD": {
+      "shadow_callbacks": 1000,
+      "quote_samples": 431998,
+      "quote_advances": 386425,
+      "bar_samples": 431998,
+      "operations": 20000000,
+      "duration_us": 2183146
+    }
+  },
+  "replay_rows": 176,
+  "actual_replay_rows": 162,
+  "runtime_errors": 0,
+  "warnings": 0,
+  "scheduler": {
+    "mode": "0",
+    "snapshots": "86",
+    "comparisons": "176",
+    "mismatch": "0",
+    "unknown": "0",
+    "prefix": "CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40"
+  },
+  "validation": {
+    "requests": "1067",
+    "no_requests": "1727031",
+    "guards": "154",
+    "order_timings": "118",
+    "unknown": "0",
+    "prior_unknown": "0"
+  },
+  "pipeline": {
+    "deinit_reason": "1",
+    "ticks": "584990",
+    "new_bars": "28483",
+    "market_ready": "1727980",
+    "indicator_ready": "1344021",
+    "pattern_reached": "1344021",
+    "signal_buy": "2971",
+    "signal_sell": "3782",
+    "entry_candidate": "236",
+    "risk_reached": "118",
+    "risk_failed": "0",
+    "order_validation": "118",
+    "order_requests": "118",
+    "orders_sent": "117",
+    "orders_failed": "1",
+    "cooldown_reject": "59",
+    "entry_blocked_pattern_none": "1337268",
+    "entry_blocked_score": "5037",
+    "entry_blocked_quote": "247",
+    "entry_blocked_stops": "129",
+    "spread_reject": "1087",
+    "entry_blocked_location": "17",
+    "position_exists_reject": "320251",
+    "safety_blocked_monte_carlo": "63767",
+    "trading_hours_reject": "0",
+    "trading_hours_filter": "absent"
+  },
+  "exports": {
+    "CodexMCV0_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv": "8b2f927613c19ef2da14ed356d660ba21bcc2c76e842dba91e6c8c09b8d3b3db",
+    "CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv": "874df10299a8b28acb564f42a4d3717158062394f770676f0b02a0fe3867d013",
+    "CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv": "0fbcd6892bb041b3f5245ce8d2e92787f8a743dc109ac7b22382be120d0b178c",
+    "CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv": "627ab4b6f17c37f18d5785c3ba4a8a8bee636b8c65ae073177cfcd99c7fb37ff",
+    "CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv": "06ad883a56eacdfe4847d3cb05fad1f336c1d27275642b453bf5f4b1566e3720",
+    "CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv": "9b0a0ec63fd45a35c5f10eca007d67143f82130f384aa4401ae92de97c327268",
+    "CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv": "460e169a461648e43eb10ed012d4007b390215468c9920ba22b27417562c7e72",
+    "CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv": "d3cf0f31009012055a63ed438dbca837a73ec3450adc0005fa9bfc207ec0824b",
+    "CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv": "e2c230418de566b689903a0f52337d5330c9a8f8dcb77c3f40c6e82b09dd7eeb",
+    "CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv": "73f8874ab8ac620bac194d33f3fcc73f56fae2416cff07afbd0552ddd2b94b3b",
+    "CodexMCV0_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv": "b465a65126d952ff85cce7b712604801c49ac04ce76cc7716a75a5fb2d359b94"
+  }
+}

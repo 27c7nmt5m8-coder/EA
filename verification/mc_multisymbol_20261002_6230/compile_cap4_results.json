@@ -1,0 +1,22 @@
+[
+  {
+    "mode": 0,
+    "errors": 0,
+    "warnings": 0,
+    "exit_code": 1,
+    "source_changes": [
+      "TesterMCSchedulerValidation.mqh"
+    ],
+    "binary_sha256": "7c0cd2da36c8d0a2de63ddb0d961a6b5ad87f1ba0a6db9ca6d7023f6ebb856ba"
+  },
+  {
+    "mode": 2,
+    "errors": 0,
+    "warnings": 0,
+    "exit_code": 1,
+    "source_changes": [
+      "TesterMCSchedulerValidation.mqh"
+    ],
+    "binary_sha256": "113c542ca5267061aad7c0a9701c8ef719456a63a3b425111ddc6e07fec720d0"
+  }
+]

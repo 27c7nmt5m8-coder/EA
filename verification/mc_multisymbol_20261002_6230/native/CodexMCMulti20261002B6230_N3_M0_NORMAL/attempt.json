@@ -1,0 +1,13 @@
+{
+  "case": "CodexMCMulti20261002B6230_N3_M0_NORMAL",
+  "mode": 0,
+  "load": "NORMAL",
+  "started": 1790897195.4677722,
+  "offsets": {
+    "C:\\Users\\jamp1\\AppData\\Roaming\\MetaQuotes\\Tester\\E3E3B02889D32F38295D39BF94B6AD4A\\Agent-127.0.0.1-3000\\logs\\20261002.log": 1975080
+  },
+  "status": "COLLECTABLE",
+  "timeout_seconds": 1800,
+  "exit_code": 0,
+  "elapsed_seconds": 240.23499999998603
+}
