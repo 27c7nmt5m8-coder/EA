@@ -28,12 +28,13 @@ MTFAutoTraderのMQL5配布物。`src/` の本体・Worker・全ヘッダーを�
 ### モデルと役割
 
 - root / orchestrator / integrate / verifyは `gpt-6.1-sol / high`。単純な作業は直接処理し、並列化・独立調査/レビュー・専門分担に具体的な利点がある場合だけ委任する。統合時は実diff・依存関係・テスト・CI・モデル割当を確認する。
-- subagentを使う場合は、正確性に必要な履歴がない限りfull-history forkを既定にしない。task、実diff、関連する変更本文、必要な仕様、verification digest、未解決事項を小さいpacketとして渡し、未変更の既知文脈はexact-hash handleで参照する。新しい独立contextのagent / reviewerがhandleの元本文を保持していない場合は、そのhandleを送信前に必ず展開する。必要情報の追加取得は許可し、context節約を理由に調査範囲やmandatory reviewを狭めない。
+- subagent生成は `fork_turns`・model・reasoning effortを必ず明示する。通常は `fork_turns="none"` とAgent Context Packetを使う。現在のhost contractは文字列 `"none"` / `"all"` / 正の整数文字列で、省略はall。必要な場合だけexplorer / researcherは `"1"`〜`"2"`、workerは `"1"`〜`"3"` を使い、reviewerは必ずnone。実hostが直近N turnをサポートしなければnoneとpacketへ戻し、独自値を作らない。task、実diff、変更本文・必要な依存本文、仕様・Repository rules、protected状態、検証元記録/digest、未解決事項、base/head SHA・content hashを明示供給する。新しいagent / reviewerがhandleの元本文を保持していない場合は送信前に必ず展開する。不足contextは取得してbundleを再構築し、unknown dependencyは調査を継続する。context節約を理由に必要証拠・dependency調査・mandatory reviewを省かない。
+- [spawn helper](tools/workflow_eval/spawn.py) と `python -m tools.workflow_eval.cli spawn-request` は既存packetの検証・全handle展開後に明示spawn引数を生成する。hostを呼び出す機構ではなく、直接host呼び出しをRepositoryから強制/禁止するフックはない。read-only/独立性もprompt policyでありOS制限ではない。利用前に実host contractを再確認する。full-historyは正確性に全履歴が不可欠な理由と明示model/effortを両立できるhostだけで例外許可し、reviewerには使わない。現在のhostではall/省略とoverrideが両立しないためhelperはallを理由付きでも拒否し、noneと必要本文のpacketへ戻す。requested設定と実metadataを区別し、model/effort/継承scope/override効果が観測できなければ `NOT OBSERVABLE` とする。
 - workerは通常 `gpt-6.1-sol / medium`。複数モジュール、注文・資金・lot・SL/TP/BE/trailing・Monte Carlo・Risk/Safety、並行性・状態管理、原因不明のbug、architecture、orchestration・JEV/JEVGrep連携ではHighを選ぶ。
 - explorer / researcherは `gpt-6.1-sol / medium`、read-only。探索・調査の役割ではこの設定を既定とし、複雑・保護領域でより高い推論が必要な場合はroot / orchestrator側でHigh相当の調査へ引き上げる。既存の適切なagentを再利用し、同じ役割を重複作成しない。
 - reviewerは独立contextの `gpt-6.1-sol / high`、read-only。mandatory reviewは省略不可という意味で、protected / high-riskだけでxHighへ上げない。deterministic verification後にHighを実施し、未解決のmaterial uncertainty・重大なレビュー不一致・未解明のroot cause・説明不能な検証挙動・明示的project ruleがある場合のみ、理由と証拠を付けて追加xHighへ昇格する。
 - AstraはSolで能力不足が実証された非常に難しい独立レビューだけ。必要性・確認範囲・コスト増の理由を先に報告し、明示承認後に使用する。自動routing・fallbackは禁止。
-- [.codex/config.toml](.codex/config.toml)はrootと未指定subagentのSol High既定値。役割別のmodel / effortは対応するspawn指定で明示する。`fork_turns`はcontext伝播の制御でありモデル切替ではない。全履歴forkでは親設定を継承する。指定が利用不能なら停止して報告し、旧Solや別モデル・effortへsilent fallbackしない。
+- [.codex/config.toml](.codex/config.toml)はrootと未指定subagentのSol High既定値。役割別のmodel / effortは対応するspawn指定で明示し、親既定値をrole routingに使わない。`fork_turns`はcontext伝播の制御でありモデル切替ではない。全履歴forkでは親設定を継承し、このhostはoverrideとの併用を許可しない。必要model/effort指定が利用不能ならその実行を停止して報告し、旧Solや別モデル・effortへsilent fallbackしない。
 - 新規Sol実行は `gpt-6.1-sol` のみ。旧IDは履歴・provenance・過去料金・互換/negative testに限定する。Jev confidence `0.90`、review skip禁止、EA保護、既存deterministic verificationを維持する。
 
 1. 最新GitHub main・git status・適用指示・関連履歴を確認し、mainを直接変更せず専用branchで作業する。既存の作業変更を保全する。関連open PRの変更・競合を確認して重複実装を避ける。ZIP等でmainとの対応が不明なら反映の制約を明記する。

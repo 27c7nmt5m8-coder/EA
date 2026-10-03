@@ -35,6 +35,24 @@ For delegated work, prefer a task-specific content-addressed context packet over
 
 Astra requires demonstrated Sol insufficiency plus advance explicit user approval after explaining the limitation, review scope and increased cost. It is never an automatic route or fallback. An offline fixture that includes Astra must include this approval as an intended precondition, not claim a live execution occurred.
 
+### Explicit spawn contract and minimal inheritance
+
+Always set `model`, `reasoning_effort`, and `fork_turns` at spawn time. Use `gpt-6.1-sol`: explorer/researcher Medium (read-only), normal worker Medium with all existing High triggers preserved, independent reviewer High (read-only). Root/orchestrator/integrate/verify remains High. Do not depend on parent settings for role routing.
+
+The currently exposed `collaboration.spawn_agent` contract accepts string `"none"`, `"all"`, or a positive integer string, with omitted `fork_turns` defaulting to all. All/omitted inherits parent model/effort and does not accept explicit overrides; none or positive integer strings permit overrides. Recheck the real host contract before use; this is not a universal CLI/API contract. Default every role to `"none"` plus explicit Agent Context Packet. If needed, limit explorer/researcher to `"1"`–`"2"`, worker to `"1"`–`"3"`. Reviewer always uses none. If bounded turn inheritance is unsupported, use none plus packet; never invent `last_n`, numeric values, or a new fork format.
+
+[spawn.py](../../../tools/workflow_eval/spawn.py) validates current bundle/packet evidence, expands every handle for the fresh recipient, preserves exact bytes, and generates the five tool arguments. It rejects stale/forged evidence, unresolved expansion, and a verification digest without its matching original record. Unknown dependency explicitly requires investigation, not approval. Supply specification, Repository rules, unresolved questions, actual diff, changed/dependency text, protected state, verification record/digest and original logs needed for judgment. `--complex-work` asserts any existing worker High trigger; it cannot lower protected, unknown, multiple-module or detected complex/orchestration work.
+
+From the repository root, create the existing bundle under ignored `.workflow-eval/`, then run:
+
+```text
+python -m tools.workflow_eval.cli spawn-request .workflow-eval/bundle.json --role reviewer --task-name review_change --spec-file .workflow-eval/spec.md --test-evidence .workflow-eval/verification.json
+```
+
+Add `--packet` for an existing packet; handles are expanded before transmission. Omit `--test-evidence` only when no verification record exists, and explicitly report checks as unexecuted. The output `.workflow-eval/spawn-request.json` is an argument object for the host tool, not a spawn or proof of execution. Pass those exact fields to the supported host tool. Do not attach unrelated parent conversation or implementation conclusions to independent review. Necessary additional file/log retrieval remains allowed.
+
+Full-history is an exception only when correctness requires all history, a concrete reason is recorded, and the host supports explicit model/effort alongside it. It is never a reviewer route. On this host that combination is unsupported, so the helper rejects all even with a reason; use none plus expanded evidence. There is no repository hook enforcing arbitrary direct host calls; the helper controls calls using its output, and AGENTS/this skill govern direct calls. Read-only and reviewer independence are prompt policies, not filesystem permissions. Actual selected model, effort, inherited turn scope, full-history use and override effect require host metadata; unavailable fields are **NOT OBSERVABLE**, never inferred PASS from requested settings or an agent's self-report.
+
 ### Minimum routing floor
 
 Set a capability floor before optimizing speed or cost. Treat authentication, authorization, secrets/credentials, destructive operations or deletion, migrations, concurrency, cryptography, payments, security boundaries, and production-critical architecture as high-risk. In this EA, also treat live trading, order execution/ownership/duplicate prevention, Magic/Symbol ownership, SL/TP/BE/trailing, lot sizing, risk percentage/modes/Monte Carlo/portfolio/Fintokei, spread/cost safety, FailOpen, Worker protocol, price drift, unresolved orders, and other safety mechanisms as high-risk.

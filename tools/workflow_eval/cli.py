@@ -70,6 +70,13 @@ def main(argv=None):
     p = sub.add_parser('bundle'); p.add_argument('--base', default='origin/main'); p.add_argument('--task-file', required=True); p.add_argument('--related', action='append', default=[])
     p = sub.add_parser('packet'); p.add_argument('bundle'); p.add_argument('--prior'); p.add_argument('--test-evidence'); p.add_argument('--expand', action='append', default=[])
     p.add_argument('--recipient-has-content', action='store_true', help='Emit handles only for an existing recipient retaining the exact prior full text; never for a fresh reviewer')
+    p = sub.add_parser('spawn-request', help='Generate explicit tool arguments; does not spawn or enforce host policy')
+    p.add_argument('bundle'); p.add_argument('--packet'); p.add_argument('--test-evidence')
+    p.add_argument('--role', choices=['explorer', 'worker', 'researcher', 'reviewer'], required=True)
+    p.add_argument('--task-name', required=True); p.add_argument('--spec-file', required=True)
+    p.add_argument('--question', action='append', default=[])
+    p.add_argument('--complex-work', action='store_true')
+    p.add_argument('--fork-turns', default='none', help='String none, or role-bounded positive turn count; all is incompatible with overrides on this host')
     p = sub.add_parser('triage'); p.add_argument('bundle'); p.add_argument('--test-evidence'); p.add_argument('--live-jev', action='store_true')
     p = sub.add_parser('report'); p.add_argument('rows')
     p = sub.add_parser('decompose'); p.add_argument('rows')
@@ -106,6 +113,18 @@ def main(argv=None):
         if args.expand:
             packet = expand_context_packet(packet, bundle, args.expand, root=root)
         path = output(root, 'context-packet.json', packet)
+    elif args.command == 'spawn-request':
+        from .spawn import build_spawn_request
+        bundle = load_packet_evidence(args.bundle)
+        packet = load_packet_evidence(args.packet) if args.packet else None
+        verification = load_packet_evidence(args.test_evidence) if args.test_evidence else None
+        request = build_spawn_request(root, args.role, args.task_name, bundle,
+                                      specification=Path(args.spec_file).read_text(encoding='utf-8'),
+                                      repository_rules=(root / 'AGENTS.md').read_text(encoding='utf-8'),
+                                      unresolved_questions=args.question, packet=packet,
+                                      verification=verification, complex_work=args.complex_work,
+                                      fork_turns=args.fork_turns)
+        path = output(root, 'spawn-request.json', request)
     elif args.command == 'triage':
         bundle = load(args.bundle)
         test = load(args.test_evidence) if args.test_evidence else {}
