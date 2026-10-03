@@ -17,6 +17,22 @@ def load(path):
     return json.loads(Path(path).read_text(encoding='utf-8'))
 
 
+def load_packet_evidence(path):
+    def unique_fields(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError('duplicate_json_field')
+            result[key] = value
+        return result
+
+    def finite_only(value):
+        raise ValueError('nonfinite_json_value')
+
+    return json.loads(Path(path).read_text(encoding='utf-8'),
+                      object_pairs_hook=unique_fields, parse_constant=finite_only)
+
+
 def dataset_cases(dataset):
     return [dict(case, context_blocks=case['context_blocks']+dataset.get('common_context_blocks', []))
             for case in dataset['cases']]
@@ -53,6 +69,7 @@ def main(argv=None):
     p = sub.add_parser('events-report'); p.add_argument('events_file')
     p = sub.add_parser('bundle'); p.add_argument('--base', default='origin/main'); p.add_argument('--task-file', required=True); p.add_argument('--related', action='append', default=[])
     p = sub.add_parser('packet'); p.add_argument('bundle'); p.add_argument('--prior'); p.add_argument('--test-evidence'); p.add_argument('--expand', action='append', default=[])
+    p.add_argument('--recipient-has-content', action='store_true', help='Emit handles only for an existing recipient retaining the exact prior full text; never for a fresh reviewer')
     p = sub.add_parser('triage'); p.add_argument('bundle'); p.add_argument('--test-evidence'); p.add_argument('--live-jev', action='store_true')
     p = sub.add_parser('report'); p.add_argument('rows')
     p = sub.add_parser('decompose'); p.add_argument('rows')
@@ -81,12 +98,13 @@ def main(argv=None):
         task = Path(args.task_file).read_text(encoding='utf-8')
         path = output(root, 'bundle.json', build_bundle(root, args.base, args.related, task))
     elif args.command == 'packet':
-        bundle = load(args.bundle)
-        prior = load(args.prior) if args.prior else None
-        verification = load(args.test_evidence) if args.test_evidence else None
-        packet = build_context_packet(bundle, prior=prior, verification=verification)
+        bundle = load_packet_evidence(args.bundle)
+        prior = load_packet_evidence(args.prior) if args.prior else None
+        verification = load_packet_evidence(args.test_evidence) if args.test_evidence else None
+        packet = build_context_packet(bundle, prior=prior, verification=verification,
+                                      root=root, recipient_has_content=args.recipient_has_content)
         if args.expand:
-            packet = expand_context_packet(packet, bundle, args.expand)
+            packet = expand_context_packet(packet, bundle, args.expand, root=root)
         path = output(root, 'context-packet.json', packet)
     elif args.command == 'triage':
         bundle = load(args.bundle)

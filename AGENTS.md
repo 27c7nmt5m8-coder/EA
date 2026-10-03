@@ -7,7 +7,7 @@ MTFAutoTraderのMQL5配布物。`src/` の本体・Worker・全ヘッダーを�
 - システム・開発者指示と実行権限の範囲内で「現在の明示依頼 → EA固有の安全・品質ルール → Skill等の一般手順」を優先する。依頼範囲や安全機構の変更許可を推測しない。軽微な不明点は証拠に基づく最小変更で進め、仮定を報告する。許可済み作業の再確認は不要。
 - 未承認の売買仕様変更、破壊的変更、重大な結果を分ける未解決の選択は確認し、独立した調査は続ける。範囲外の重大不具合は勝手に直さず報告する。指示による停止・確認・逸脱はファイルパスと該当ルールを引用し、環境・権限不足と区別する。
 - 調査順序は「変更対象 → git diff / 検索 → 関連関数・節 → 関連履歴 → 必要な依存先」。毎回のRepository全文・全docs・全Skill・全履歴の読み直しは禁止。必要な時だけ広げ、必要な確認は省略しない。
-- 非自明な作業で同じ文脈をsubagent / reviewerへ渡す場合は、可能なら `tools.workflow_eval.context` のcontent-addressed packetを使う。変更ファイルは本文を保持し、exact SHAが一致する未変更の関連文脈だけをhandle化する。protected、unknown dependency、未解決のexpansionでは再利用を無効化し、handleの中身が判断に必要・不確実なら必ず展開する。これはcontext転送の圧縮だけであり、レビュー・検証・モデル能力を置き換えない。
+- 非自明な作業で同じ文脈をsubagent / reviewerへ渡す場合は、可能なら `tools.workflow_eval.context` のcontent-addressed packetを使う。変更ファイルは本文を保持し、exact SHAと本文が一致する未変更の関連文脈だけをhandle化する。protected、unknown dependency、未解決のexpansion、古いbundleでは再利用を無効化する。packetの既定はfresh向け全文。reuseは現在のRepositoryとの照合と、受信者がpriorの全文を実際に保持する明示指定がある場合だけ許可し、priorのhandleだけではreuseしない。handleの中身が判断に必要・不確実なら必ず展開する。verification digestは元検証記録の識別だけであり、判断には元記録と必要なログを取得し、失敗・警告・未実行を省かない。これはcontext転送の圧縮だけであり、レビュー・検証・モデル能力を置き換えない。
 - 現在のRepository / Git状態を正本とし、古いPR番号・SHA・過去チャットのversionを基準にしない。一時的なPR・SHA・診断状況は本書へ残さない。重複・古い指示は既存表現へ統合し、安全ルールは削らない。
 
 ## EA固有の保護

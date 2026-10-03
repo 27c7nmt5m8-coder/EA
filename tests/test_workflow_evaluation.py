@@ -328,13 +328,13 @@ class WorkflowEvaluation(unittest.TestCase):
         self.assertEqual(got['status'], 'UNKNOWN')
 
 
-    def test_context_selection_deduplicates_identical_text_without_losing_requirements(self):
+    def test_context_selection_keeps_distinct_ids_with_identical_text(self):
         m = self.module('context')
         task = dict(context_blocks=[dict(id='a', text='same evidence'),
                                     dict(id='b', text='same evidence')],
                     selected_context_ids=['a', 'b'], required_context_ids=['a', 'b'])
         got = m.select_context(task)
-        self.assertEqual(got['text'], 'same evidence')
+        self.assertEqual(got['text'], 'same evidence\n\nsame evidence')
         self.assertEqual(got['missing_context'], [])
 
     def test_context_packet_reuses_only_exact_unchanged_low_risk_related_text(self):
@@ -352,7 +352,7 @@ class WorkflowEvaluation(unittest.TestCase):
             prior = m.build_context_packet(prior_bundle)
             changed.write_text('after\n', encoding='utf-8')
             bundle = m.build_bundle(root, 'HEAD', ['docs/reference.md'], 'Update developer note')
-            packet = m.build_context_packet(bundle, prior=prior)
+            packet = m.build_context_packet(bundle, prior=prior, root=root, recipient_has_content=True)
             modes = {b['path']: b['content_mode'] for b in packet['blocks']}
             self.assertEqual(modes['docs/dev-note.md'], 'full')
             self.assertEqual(modes['docs/reference.md'], 'reused_exact')
@@ -360,7 +360,7 @@ class WorkflowEvaluation(unittest.TestCase):
             self.assertNotIn('text', reused)
             self.assertEqual(packet['reused_paths'], ['docs/reference.md'])
             self.assertTrue(packet['fresh_context_requires_expansion'])
-            expanded = m.expand_context_packet(packet, bundle, ['docs/reference.md'])
+            expanded = m.expand_context_packet(packet, bundle, ['docs/reference.md'], root=root)
             restored = next(b for b in expanded['blocks'] if b['path'] == 'docs/reference.md')
             self.assertEqual(restored['text'], related.read_bytes().decode('utf-8'))
             self.assertEqual(expanded['reused_paths'], [])
@@ -382,7 +382,7 @@ class WorkflowEvaluation(unittest.TestCase):
             source.write_text('int Value(){ return 2; }\n', encoding='utf-8')
             bundle = m.build_bundle(root, 'HEAD', ['docs/reference.md'], 'Update module')
             self.assertEqual(bundle['dependency'], 'unknown')
-            packet = m.build_context_packet(bundle, prior=prior)
+            packet = m.build_context_packet(bundle, prior=prior, root=root, recipient_has_content=True)
             self.assertEqual(packet['reused_paths'], [])
             self.assertFalse(packet['fresh_context_requires_expansion'])
             self.assertTrue(all(b['content_mode'] == 'full' for b in packet['blocks']))
