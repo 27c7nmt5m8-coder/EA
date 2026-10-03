@@ -1,0 +1,24 @@
+{
+  "client_date": "2026-10-04",
+  "windows": "Windows 11 Pro",
+  "build": 26200,
+  "cpu": "AMD Ryzen 3 7335U",
+  "cores": 4,
+  "logical_processors": 8,
+  "hypervisor_present": true,
+  "dedicated_vm": "NOT_CONFIRMED",
+  "sandbox_executable": "ABSENT",
+  "elevated": false,
+  "power_plan": "Balanced (read only)",
+  "isolation": "Priority C: separate EA-free MT5 profile and owned terminal/agent/controller/load process tree",
+  "affinity_set_calls": 0,
+  "priority_set_calls": 0,
+  "windows_security_changes": "NONE",
+  "gui_operations": 0,
+  "source_base_commit": "928d1f9a6c9c391536acfea6bca00b415995db79",
+  "diagnostic_tool_sha256": {
+    "mc_affinity_observer.py": "f33a8b65d1e4f69ccf74d9ede2583a8823b2a09c59bb563cd0b6de69595b0016",
+    "mc_isolated_contention.py": "69fb82cb5a8c08de7b53321cb36787925499619036f65292b595335535f0fae6"
+  },
+  "observations": "Process lifetime intervals from one-second polling, not exact API caller/queue trace"
+}

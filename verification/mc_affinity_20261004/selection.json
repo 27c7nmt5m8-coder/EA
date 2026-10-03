@@ -1,0 +1,11 @@
+{
+  "logical_conditions": 12,
+  "retaken_conditions": 2,
+  "excluded": [
+    "CodexMCMultiAffinity20261004R3_N2_M0_CPU_CONTENTION",
+    "CodexMCMultiAffinity20261004R3_N2_M2_CPU_CONTENTION"
+  ],
+  "reason": "External large aggregation overlapped first N2 Current CPU run; retake paired CPU timing",
+  "product_parameters_changed": false,
+  "source_manifest_sha256": "631fe3497fa13823d3117dde00d2dae6549090cd50722eaa9f480216642618d6"
+}
