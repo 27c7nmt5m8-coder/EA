@@ -7,6 +7,7 @@ MTFAutoTraderのMQL5配布物。`src/` の本体・Worker・全ヘッダーを�
 - システム・開発者指示と実行権限の範囲内で「現在の明示依頼 → EA固有の安全・品質ルール → Skill等の一般手順」を優先する。依頼範囲や安全機構の変更許可を推測しない。軽微な不明点は証拠に基づく最小変更で進め、仮定を報告する。許可済み作業の再確認は不要。
 - 未承認の売買仕様変更、破壊的変更、重大な結果を分ける未解決の選択は確認し、独立した調査は続ける。範囲外の重大不具合は勝手に直さず報告する。指示による停止・確認・逸脱はファイルパスと該当ルールを引用し、環境・権限不足と区別する。
 - 調査順序は「変更対象 → git diff / 検索 → 関連関数・節 → 関連履歴 → 必要な依存先」。毎回のRepository全文・全docs・全Skill・全履歴の読み直しは禁止。必要な時だけ広げ、必要な確認は省略しない。
+- 非自明な作業で同じ文脈をsubagent / reviewerへ渡す場合は、可能なら `tools.workflow_eval.context` のcontent-addressed packetを使う。変更ファイルは本文を保持し、exact SHAと本文が一致する未変更の関連文脈だけをhandle化する。protected、unknown dependency、未解決のexpansion、古いbundleでは再利用を無効化する。packetの既定はfresh向け全文。reuseは現在のRepositoryとの照合と、受信者がpriorの全文を実際に保持する明示指定がある場合だけ許可し、priorのhandleだけではreuseしない。handleの中身が判断に必要・不確実なら必ず展開する。verification digestは元検証記録の識別だけであり、判断には元記録と必要なログを取得し、失敗・警告・未実行を省かない。これはcontext転送の圧縮だけであり、レビュー・検証・モデル能力を置き換えない。
 - 現在のRepository / Git状態を正本とし、古いPR番号・SHA・過去チャットのversionを基準にしない。一時的なPR・SHA・診断状況は本書へ残さない。重複・古い指示は既存表現へ統合し、安全ルールは削らない。
 
 ## EA固有の保護
@@ -27,11 +28,13 @@ MTFAutoTraderのMQL5配布物。`src/` の本体・Worker・全ヘッダーを�
 ### モデルと役割
 
 - root / orchestrator / integrate / verifyは `gpt-6.1-sol / high`。単純な作業は直接処理し、並列化・独立調査/レビュー・専門分担に具体的な利点がある場合だけ委任する。統合時は実diff・依存関係・テスト・CI・モデル割当を確認する。
+- subagent生成は `fork_turns`・model・reasoning effortを必ず明示する。通常は `fork_turns="none"` とAgent Context Packetを使う。現在のhost contractは文字列 `"none"` / `"all"` / 正の整数文字列で、省略はall。必要な場合だけexplorer / researcherは `"1"`〜`"2"`、workerは `"1"`〜`"3"` を使い、reviewerは必ずnone。実hostが直近N turnをサポートしなければnoneとpacketへ戻し、独自値を作らない。task、実diff、変更本文・必要な依存本文、仕様・Repository rules、protected状態、検証元記録/digest、未解決事項、base/head SHA・content hashを明示供給する。新しいagent / reviewerがhandleの元本文を保持していない場合は送信前に必ず展開する。不足contextは取得してbundleを再構築し、unknown dependencyは調査を継続する。context節約を理由に必要証拠・dependency調査・mandatory reviewを省かない。
+- [spawn helper](tools/workflow_eval/spawn.py) と `python -m tools.workflow_eval.cli spawn-request` は既存packetの検証・全handle展開後に明示spawn引数を生成する。hostを呼び出す機構ではなく、直接host呼び出しをRepositoryから強制/禁止するフックはない。read-only/独立性もprompt policyでありOS制限ではない。利用前に実host contractを再確認する。full-historyは正確性に全履歴が不可欠な理由と明示model/effortを両立できるhostだけで例外許可し、reviewerには使わない。現在のhostではall/省略とoverrideが両立しないためhelperはallを理由付きでも拒否し、noneと必要本文のpacketへ戻す。requested設定と実metadataを区別し、model/effort/継承scope/override効果が観測できなければ `NOT OBSERVABLE` とする。
 - workerは通常 `gpt-6.1-sol / medium`。複数モジュール、注文・資金・lot・SL/TP/BE/trailing・Monte Carlo・Risk/Safety、並行性・状態管理、原因不明のbug、architecture、orchestration・JEV/JEVGrep連携ではHighを選ぶ。
-- explorer / researcherは通常 `gpt-6-luna / high`、read-only。複雑な依存調査・保護領域の深い探索・複数仕様の比較では `gpt-6.1-sol / medium`。既存の適切なagentを再利用し、同じ役割を重複作成しない。
+- explorer / researcherは `gpt-6.1-sol / medium`、read-only。探索・調査の役割ではこの設定を既定とし、複雑・保護領域でより高い推論が必要な場合はroot / orchestrator側でHigh相当の調査へ引き上げる。既存の適切なagentを再利用し、同じ役割を重複作成しない。
 - reviewerは独立contextの `gpt-6.1-sol / high`、read-only。mandatory reviewは省略不可という意味で、protected / high-riskだけでxHighへ上げない。deterministic verification後にHighを実施し、未解決のmaterial uncertainty・重大なレビュー不一致・未解明のroot cause・説明不能な検証挙動・明示的project ruleがある場合のみ、理由と証拠を付けて追加xHighへ昇格する。
 - AstraはSolで能力不足が実証された非常に難しい独立レビューだけ。必要性・確認範囲・コスト増の理由を先に報告し、明示承認後に使用する。自動routing・fallbackは禁止。
-- [.codex/config.toml](.codex/config.toml)はrootと未指定subagentのSol High既定値。役割別のmodel / effortは対応するspawn指定で明示する。`fork_turns`はcontext伝播の制御でありモデル切替ではない。全履歴forkでは親設定を継承する。指定が利用不能なら停止して報告し、旧Solや別モデル・effortへsilent fallbackしない。
+- [.codex/config.toml](.codex/config.toml)はrootと未指定subagentのSol High既定値。役割別のmodel / effortは対応するspawn指定で明示し、親既定値をrole routingに使わない。`fork_turns`はcontext伝播の制御でありモデル切替ではない。全履歴forkでは親設定を継承し、このhostはoverrideとの併用を許可しない。必要model/effort指定が利用不能ならその実行を停止して報告し、旧Solや別モデル・effortへsilent fallbackしない。
 - 新規Sol実行は `gpt-6.1-sol` のみ。旧IDは履歴・provenance・過去料金・互換/negative testに限定する。Jev confidence `0.90`、review skip禁止、EA保護、既存deterministic verificationを維持する。
 
 1. 最新GitHub main・git status・適用指示・関連履歴を確認し、mainを直接変更せず専用branchで作業する。既存の作業変更を保全する。関連open PRの変更・競合を確認して重複実装を避ける。ZIP等でmainとの対応が不明なら反映の制約を明記する。

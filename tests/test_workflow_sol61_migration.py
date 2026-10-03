@@ -28,6 +28,16 @@ class Sol61Migration(unittest.TestCase):
         self.assertEqual(policy['confidence_threshold'], .90)
         self.assertFalse(policy['review_skip_enabled'])
 
+    def test_role_defaults_use_sol61_without_changing_reviewer_policy(self):
+        agents = (ROOT / 'AGENTS.md').read_text(encoding='utf-8')
+        skill = (ROOT / '.agents/skills/model-orchestrator/SKILL.md').read_text(encoding='utf-8')
+        self.assertIn('root / orchestrator / integrate / verifyは `gpt-6.1-sol / high`', agents)
+        self.assertIn('workerは通常 `gpt-6.1-sol / medium`', agents)
+        self.assertIn('explorer / researcherは `gpt-6.1-sol / medium`', agents)
+        self.assertIn('reviewerは独立contextの `gpt-6.1-sol / high`', agents)
+        self.assertIn('Explorer/researcher use GPT-6.1 Sol Medium', skill)
+        self.assertIn('Reviewers use independent Sol High contexts', skill)
+
     def test_latest_routing_cases_preserve_high_first_and_astra_approval(self):
         cases = json.loads((ROOT / '.agents/skills/model-orchestrator/fixtures/routing_cases.json').read_text())
         observed = json.loads((ROOT / '.agents/skills/model-orchestrator/fixtures/routing_dry_run.json').read_text())
