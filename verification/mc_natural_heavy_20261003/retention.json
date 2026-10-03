@@ -1,0 +1,597 @@
+{
+  "format": 1,
+  "cases": {
+    "CodexMCMultiNaturalJune20261003_N3_M0_NORMAL": {
+      "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_snapshots.csv": {
+        "sha256": "74eca5eefdf8582f1dc9c08af16fdf33a2001d52f7bb2f568aed7d91bbca87f2",
+        "origin_sha256": "74eca5eefdf8582f1dc9c08af16fdf33a2001d52f7bb2f568aed7d91bbca87f2",
+        "selection": "ALL"
+      },
+      "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_replay.csv": {
+        "sha256": "522901db1003c5d8cde93c5a2945e8860779499a272cc1eef98e15499490ddfd",
+        "origin_sha256": "522901db1003c5d8cde93c5a2945e8860779499a272cc1eef98e15499490ddfd",
+        "selection": "ALL"
+      },
+      "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_guards.csv": {
+        "sha256": "a971a7bea30854b8977cbd66b05c2ec4e73c8b8d40b65d38624ce2d76206705c",
+        "origin_sha256": "a971a7bea30854b8977cbd66b05c2ec4e73c8b8d40b65d38624ce2d76206705c",
+        "selection": "ALL"
+      },
+      "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_requests.csv": {
+        "sha256": "b9f61520aa5263226a9083ece5eecb72e204fbc81575f1d7c003cf93d5c5e07d",
+        "origin_sha256": "b9f61520aa5263226a9083ece5eecb72e204fbc81575f1d7c003cf93d5c5e07d",
+        "selection": "ALL"
+      },
+      "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_timings.csv": {
+        "sha256": "08fbccf4c931b422bc49f03949e615e334bdc2dacc31c562e2b14b5e184ea640",
+        "origin_sha256": "08fbccf4c931b422bc49f03949e615e334bdc2dacc31c562e2b14b5e184ea640",
+        "selection": "ALL"
+      },
+      "CodexMCV0_20260927Detail_USDJPY_2026.06.01_A2.60_S0.40.csv": {
+        "sha256": "513254ac2229a62cdd97a4a6e6d1edd727dddc53ad7a439d2fac4ba743bb4352",
+        "origin_sha256": "513254ac2229a62cdd97a4a6e6d1edd727dddc53ad7a439d2fac4ba743bb4352",
+        "selection": "ALL"
+      },
+      "lifecycle.csv": {
+        "sha256": "9e7652c171126dda30f5e89cb7502d6b4200df9d2002b36be93e73194a1c8ec0",
+        "origin_sha256": "a0d19529b699fb8746b667108f4449fbe61644fde8da677982b489fca97b9e6a",
+        "origin_filename": "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40.csv",
+        "origin_rows": 5932,
+        "retained_rows": 4469,
+        "columns": [
+          "seq",
+          "symbol",
+          "event",
+          "cycle",
+          "parent",
+          "server_s",
+          "wall_us",
+          "trigger",
+          "input_version",
+          "history_version",
+          "state_version",
+          "samples",
+          "input_digest",
+          "win_rate"
+        ],
+        "selection": [
+          "CALCULATION_FAILED",
+          "CANCEL",
+          "COMPLETE",
+          "INVALIDATE",
+          "REQUEST",
+          "RUN_END",
+          "START"
+        ]
+      },
+      "opportunities.csv": {
+        "sha256": "1b6fa47f5897b940ad71ea53c19b96dd826556d55cd2f091ffb600cb06b6488b",
+        "origin_sha256": "a0d19529b699fb8746b667108f4449fbe61644fde8da677982b489fca97b9e6a",
+        "origin_filename": "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40.csv",
+        "origin_rows": 5932,
+        "retained_rows": 53,
+        "columns": [
+          "event",
+          "symbol",
+          "cycle",
+          "server_s",
+          "wall_us",
+          "trigger",
+          "history_version",
+          "input_version",
+          "input_digest",
+          "state_version",
+          "samples",
+          "win_rate",
+          "ready",
+          "allowed",
+          "active",
+          "history_ok",
+          "history_dirty",
+          "previous_complete_cycle",
+          "valid_cycle",
+          "opp_id",
+          "bar",
+          "score",
+          "position_kind",
+          "accepted_total"
+        ],
+        "selection": "changed opportunity IDs and linked prior claimants",
+        "ids": [
+          "05E7E11DDBBB2CF8",
+          "274FE26B0E7A5398",
+          "4D85F89573553590",
+          "5DEA70A35BAB3F7C",
+          "6422EBAA636ABDCF",
+          "8B102BC8F34054A9",
+          "8CCAFBABBEA1D906",
+          "91C9516DA6FD5FC0",
+          "A0B2B47C60627CDB",
+          "B38661B35098A600",
+          "B8907CEDE75BCC02",
+          "C24A0C31686CC79A",
+          "C9483047A1E90AEA",
+          "CB63388E5E19F4C7",
+          "DB6DCB278C3B92B8",
+          "EFDBB635D83ABB72",
+          "F31CAAC48256DB7D"
+        ]
+      },
+      "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_timer_sections.csv": {
+        "sha256": "b63e8282fad9039953982cb1ab5a95e69e84ee9f6f69a016dd2c67a20e446fb2",
+        "origin_sha256": "b63e8282fad9039953982cb1ab5a95e69e84ee9f6f69a016dd2c67a20e446fb2",
+        "selection": "ALL"
+      },
+      "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_timer_summary.csv": {
+        "sha256": "5fb04581b5f76bcf8e7178017abd4acaeed6f736dd4b951a24189ad10dddc98d",
+        "origin_sha256": "5fb04581b5f76bcf8e7178017abd4acaeed6f736dd4b951a24189ad10dddc98d",
+        "selection": "ALL"
+      }
+    },
+    "CodexMCMultiNaturalJune20261003_N3_M2_NORMAL": {
+      "CodexMCV2_20260927_USDJPY_2026.06.01_A2.60_S0.40_snapshots.csv": {
+        "sha256": "dcc59f4cd31b7e59af33fef0d49fa1efb8103ba5df4f85893c2bd8716c08a51e",
+        "origin_sha256": "dcc59f4cd31b7e59af33fef0d49fa1efb8103ba5df4f85893c2bd8716c08a51e",
+        "selection": "ALL"
+      },
+      "CodexMCV2_20260927_USDJPY_2026.06.01_A2.60_S0.40_replay.csv": {
+        "sha256": "fe7cfd0d99c993dd9ba363a73752ea282f235ba111019099c71cdfb17d45fc10",
+        "origin_sha256": "fe7cfd0d99c993dd9ba363a73752ea282f235ba111019099c71cdfb17d45fc10",
+        "selection": "ALL"
+      },
+      "CodexMCV2_20260927_USDJPY_2026.06.01_A2.60_S0.40_guards.csv": {
+        "sha256": "0663fb2d30818a3c853fce5c03017897218b78eb4d884611975e17afc7f8b61b",
+        "origin_sha256": "0663fb2d30818a3c853fce5c03017897218b78eb4d884611975e17afc7f8b61b",
+        "selection": "ALL"
+      },
+      "CodexMCV2_20260927_USDJPY_2026.06.01_A2.60_S0.40_requests.csv": {
+        "sha256": "4255f14577033761014c9b6ade7ebbb350dca89b5528e033572a28b6af97cacd",
+        "origin_sha256": "4255f14577033761014c9b6ade7ebbb350dca89b5528e033572a28b6af97cacd",
+        "selection": "ALL"
+      },
+      "CodexMCV2_20260927_USDJPY_2026.06.01_A2.60_S0.40_timings.csv": {
+        "sha256": "0ed43f5db396b910ff8526e57a650a7fab10ab3fe293e9a4a6a4338750e681da",
+        "origin_sha256": "0ed43f5db396b910ff8526e57a650a7fab10ab3fe293e9a4a6a4338750e681da",
+        "selection": "ALL"
+      },
+      "CodexMCV2_20260927Detail_USDJPY_2026.06.01_A2.60_S0.40.csv": {
+        "sha256": "dd81a58aba986b5dc561bffa6e5e4a9518147819ef6cdd08197114e15f79f654",
+        "origin_sha256": "dd81a58aba986b5dc561bffa6e5e4a9518147819ef6cdd08197114e15f79f654",
+        "selection": "ALL"
+      },
+      "lifecycle.csv": {
+        "sha256": "ccaa776dd1c196678a6539db39db74b8e14052d7efb5316861eade2213193b8a",
+        "origin_sha256": "27fbefb53a54c0bbf3651eaca2e5e2272a55d3bd5e585b7b8bff0fda6c322155",
+        "origin_filename": "CodexMCV2_20260927_USDJPY_2026.06.01_A2.60_S0.40.csv",
+        "origin_rows": 6446,
+        "retained_rows": 4923,
+        "columns": [
+          "seq",
+          "symbol",
+          "event",
+          "cycle",
+          "parent",
+          "server_s",
+          "wall_us",
+          "trigger",
+          "input_version",
+          "history_version",
+          "state_version",
+          "samples",
+          "input_digest",
+          "win_rate"
+        ],
+        "selection": [
+          "CALCULATION_FAILED",
+          "CANCEL",
+          "COMPLETE",
+          "INVALIDATE",
+          "REQUEST",
+          "RUN_END",
+          "START"
+        ]
+      },
+      "opportunities.csv": {
+        "sha256": "029ad17af5b6b51c9cb5dc1c49fbbe7bc6b8d50497c6d7a8254f079585cee9e5",
+        "origin_sha256": "27fbefb53a54c0bbf3651eaca2e5e2272a55d3bd5e585b7b8bff0fda6c322155",
+        "origin_filename": "CodexMCV2_20260927_USDJPY_2026.06.01_A2.60_S0.40.csv",
+        "origin_rows": 6446,
+        "retained_rows": 40,
+        "columns": [
+          "event",
+          "symbol",
+          "cycle",
+          "server_s",
+          "wall_us",
+          "trigger",
+          "history_version",
+          "input_version",
+          "input_digest",
+          "state_version",
+          "samples",
+          "win_rate",
+          "ready",
+          "allowed",
+          "active",
+          "history_ok",
+          "history_dirty",
+          "previous_complete_cycle",
+          "valid_cycle",
+          "opp_id",
+          "bar",
+          "score",
+          "position_kind",
+          "accepted_total"
+        ],
+        "selection": "changed opportunity IDs and linked prior claimants",
+        "ids": [
+          "05E7E11DDBBB2CF8",
+          "274FE26B0E7A5398",
+          "4D85F89573553590",
+          "5DEA70A35BAB3F7C",
+          "6422EBAA636ABDCF",
+          "8B102BC8F34054A9",
+          "8CCAFBABBEA1D906",
+          "91C9516DA6FD5FC0",
+          "A0B2B47C60627CDB",
+          "B38661B35098A600",
+          "B8907CEDE75BCC02",
+          "C24A0C31686CC79A",
+          "C9483047A1E90AEA",
+          "CB63388E5E19F4C7",
+          "DB6DCB278C3B92B8",
+          "EFDBB635D83ABB72",
+          "F31CAAC48256DB7D"
+        ]
+      },
+      "CodexMCV2_20260927_USDJPY_2026.06.01_A2.60_S0.40_timer_sections.csv": {
+        "sha256": "34a6528daa0eda2a9b6cdc5c201b94a8765f2c9b384095009a4df4186d16207f",
+        "origin_sha256": "34a6528daa0eda2a9b6cdc5c201b94a8765f2c9b384095009a4df4186d16207f",
+        "selection": "ALL"
+      },
+      "CodexMCV2_20260927_USDJPY_2026.06.01_A2.60_S0.40_timer_summary.csv": {
+        "sha256": "cfd23fb9ca9ba98ef1be919f557e1463e8c4fb248d03971dc16ffc3bfda86f63",
+        "origin_sha256": "cfd23fb9ca9ba98ef1be919f557e1463e8c4fb248d03971dc16ffc3bfda86f63",
+        "selection": "ALL"
+      }
+    },
+    "CodexMCMultiNaturalJune20261003_N4_M0_NORMAL": {
+      "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_snapshots.csv": {
+        "sha256": "4a23adb410979fb21a483439d7d0301aa1efeef687ad808aae8d0c877fcdc53c",
+        "origin_sha256": "4a23adb410979fb21a483439d7d0301aa1efeef687ad808aae8d0c877fcdc53c",
+        "selection": "ALL"
+      },
+      "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_replay.csv": {
+        "sha256": "ead18e92597c3ac5d77bb543a9ce0aa1949e1537dc419613ba29f22936424e6b",
+        "origin_sha256": "ead18e92597c3ac5d77bb543a9ce0aa1949e1537dc419613ba29f22936424e6b",
+        "selection": "ALL"
+      },
+      "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_guards.csv": {
+        "sha256": "5f60abae578443abedcc70ca254eb59f0f879ad47e24f0ea7ba9a225eb50cd9f",
+        "origin_sha256": "5f60abae578443abedcc70ca254eb59f0f879ad47e24f0ea7ba9a225eb50cd9f",
+        "selection": "ALL"
+      },
+      "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_requests.csv": {
+        "sha256": "34801f0cebd72bda6edb4fc7ca7ec37665f0b561045facdb9d45938c84495191",
+        "origin_sha256": "34801f0cebd72bda6edb4fc7ca7ec37665f0b561045facdb9d45938c84495191",
+        "selection": "ALL"
+      },
+      "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_timings.csv": {
+        "sha256": "e675e5bdd4b7033844897598e068a2b9c02a1bbf35a00e607c7de253123333b2",
+        "origin_sha256": "e675e5bdd4b7033844897598e068a2b9c02a1bbf35a00e607c7de253123333b2",
+        "selection": "ALL"
+      },
+      "CodexMCV0_20260927Detail_USDJPY_2026.06.01_A2.60_S0.40.csv": {
+        "sha256": "ba6bee065187d0a38e447de4b820adccdbfa96aa311c441e0c5e1a2245e44e8f",
+        "origin_sha256": "ba6bee065187d0a38e447de4b820adccdbfa96aa311c441e0c5e1a2245e44e8f",
+        "selection": "ALL"
+      },
+      "lifecycle.csv": {
+        "sha256": "2c72f58ced2127ad23094cecb70f1566ed098af68de1a8d20eeba536a8bddd0a",
+        "origin_sha256": "cac17e58467434e470d06694136effc1c45e802e58acfe00f65ba3f76025416d",
+        "origin_filename": "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40.csv",
+        "origin_rows": 8656,
+        "retained_rows": 6038,
+        "columns": [
+          "seq",
+          "symbol",
+          "event",
+          "cycle",
+          "parent",
+          "server_s",
+          "wall_us",
+          "trigger",
+          "input_version",
+          "history_version",
+          "state_version",
+          "samples",
+          "input_digest",
+          "win_rate"
+        ],
+        "selection": [
+          "CALCULATION_FAILED",
+          "CANCEL",
+          "COMPLETE",
+          "INVALIDATE",
+          "REQUEST",
+          "RUN_END",
+          "START"
+        ]
+      },
+      "opportunities.csv": {
+        "sha256": "34b333b45d6625f966f5ec0ef6a45aaf8f7d0b364e00e551c1905f4628f59b9c",
+        "origin_sha256": "cac17e58467434e470d06694136effc1c45e802e58acfe00f65ba3f76025416d",
+        "origin_filename": "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40.csv",
+        "origin_rows": 8656,
+        "retained_rows": 189,
+        "columns": [
+          "event",
+          "symbol",
+          "cycle",
+          "server_s",
+          "wall_us",
+          "trigger",
+          "history_version",
+          "input_version",
+          "input_digest",
+          "state_version",
+          "samples",
+          "win_rate",
+          "ready",
+          "allowed",
+          "active",
+          "history_ok",
+          "history_dirty",
+          "previous_complete_cycle",
+          "valid_cycle",
+          "opp_id",
+          "bar",
+          "score",
+          "position_kind",
+          "accepted_total"
+        ],
+        "selection": "changed opportunity IDs and linked prior claimants",
+        "ids": [
+          "056B0494FBEEACD9",
+          "05E7E11DDBBB2CF8",
+          "1B3DBAD157273A48",
+          "2018E320FEABC081",
+          "274FE26B0E7A5398",
+          "285E7A0AC3850103",
+          "415E4C6A33AD9013",
+          "43FB35DBFF74C90E",
+          "457506CBC6838D06",
+          "4C705072B1770081",
+          "4D85F89573553590",
+          "541C973079A20FD5",
+          "558D8CD03229EAA5",
+          "5DEA70A35BAB3F7C",
+          "609FB8189069612D",
+          "618A65BA4C82A4BB",
+          "62A859C1014053DC",
+          "6422EBAA636ABDCF",
+          "71C831FCE0BE0599",
+          "72ACFC0E6F7A56FF",
+          "80CA897EAC58786F",
+          "88521D2A1BBFD26B",
+          "8B102BC8F34054A9",
+          "8CCAFBABBEA1D906",
+          "91A06232C6D4DEF3",
+          "91C9516DA6FD5FC0",
+          "9228A61B9A4D1C4A",
+          "929475D0B542FA6F",
+          "97800E5334E99F82",
+          "984BDE369CD40A2B",
+          "A0B2B47C60627CDB",
+          "A2FF960F5173A3C0",
+          "AB799CF061536A83",
+          "ABCDC594C279C5F9",
+          "AFDA0F7219C20749",
+          "B38661B35098A600",
+          "B8907CEDE75BCC02",
+          "B91187F9D87D6B06",
+          "BE979F95FC03054C",
+          "C24A0C31686CC79A",
+          "C526F777C6AB116E",
+          "C5A1C35E8F2355DF",
+          "C5E2601061A5E171",
+          "C9483047A1E90AEA",
+          "C998C500AF9B2E0D",
+          "CB63388E5E19F4C7",
+          "D2BE9AE37CB3D61E",
+          "D56C0B2C72825835",
+          "DB6DCB278C3B92B8",
+          "DC630CDCA5D8EF2F",
+          "DD412EA18E0249F0",
+          "E8B3B6039866E914",
+          "E8EE21479042B4EE",
+          "EAD9353349415240",
+          "EE711A080BA2C529",
+          "EFDBB635D83ABB72",
+          "F31CAAC48256DB7D",
+          "F88BE0169ACE5A63"
+        ]
+      },
+      "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_timer_sections.csv": {
+        "sha256": "fea4fda16a1266d2e408c5ac3b07c98ccfa905b524f630837a32831f95504fcc",
+        "origin_sha256": "fea4fda16a1266d2e408c5ac3b07c98ccfa905b524f630837a32831f95504fcc",
+        "selection": "ALL"
+      },
+      "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_timer_summary.csv": {
+        "sha256": "9a5aca4329b55b6a48d339f63e96efea8a50b8e2f7a053d952e727da32802828",
+        "origin_sha256": "9a5aca4329b55b6a48d339f63e96efea8a50b8e2f7a053d952e727da32802828",
+        "selection": "ALL"
+      }
+    },
+    "CodexMCMultiNaturalJune20261003_N4_M2_NORMAL": {
+      "CodexMCV2_20260927_USDJPY_2026.06.01_A2.60_S0.40_snapshots.csv": {
+        "sha256": "c9d35755b749dec34ded02f72a1c1a3ceaf6de8aca2f7b865f92e07efccf6cae",
+        "origin_sha256": "c9d35755b749dec34ded02f72a1c1a3ceaf6de8aca2f7b865f92e07efccf6cae",
+        "selection": "ALL"
+      },
+      "CodexMCV2_20260927_USDJPY_2026.06.01_A2.60_S0.40_replay.csv": {
+        "sha256": "dd300c4867dc5041cd8246c3ad577b01c258f75935caa0f2bc847f8d17b9374d",
+        "origin_sha256": "dd300c4867dc5041cd8246c3ad577b01c258f75935caa0f2bc847f8d17b9374d",
+        "selection": "ALL"
+      },
+      "CodexMCV2_20260927_USDJPY_2026.06.01_A2.60_S0.40_guards.csv": {
+        "sha256": "ecddfa4cb285eecd3d67d495af4fd706d66f73e79f53fd7f5873bfbe4c25170e",
+        "origin_sha256": "ecddfa4cb285eecd3d67d495af4fd706d66f73e79f53fd7f5873bfbe4c25170e",
+        "selection": "ALL"
+      },
+      "CodexMCV2_20260927_USDJPY_2026.06.01_A2.60_S0.40_requests.csv": {
+        "sha256": "c4be132c0813e148f353e55549c1406e592f4932763f4cabc05d19c1bf50fc78",
+        "origin_sha256": "c4be132c0813e148f353e55549c1406e592f4932763f4cabc05d19c1bf50fc78",
+        "selection": "ALL"
+      },
+      "CodexMCV2_20260927_USDJPY_2026.06.01_A2.60_S0.40_timings.csv": {
+        "sha256": "5f54a915936c4966837fd963ae891b09aea5231cd955c898ce0c031d8021a9f6",
+        "origin_sha256": "5f54a915936c4966837fd963ae891b09aea5231cd955c898ce0c031d8021a9f6",
+        "selection": "ALL"
+      },
+      "CodexMCV2_20260927Detail_USDJPY_2026.06.01_A2.60_S0.40.csv": {
+        "sha256": "18c3d713abd85e59c961c5e73238b7a030dff321c5c3ea068cbddd878314f170",
+        "origin_sha256": "18c3d713abd85e59c961c5e73238b7a030dff321c5c3ea068cbddd878314f170",
+        "selection": "ALL"
+      },
+      "lifecycle.csv": {
+        "sha256": "96116176bd2c0c145511e1bc6500fd26c3bf5952abd8f790ed7cd385473a6fde",
+        "origin_sha256": "53aa29cf7f646bd684083b4ee32803ea7da984f9c60f22ad957c1450055eb1f2",
+        "origin_filename": "CodexMCV2_20260927_USDJPY_2026.06.01_A2.60_S0.40.csv",
+        "origin_rows": 9828,
+        "retained_rows": 7069,
+        "columns": [
+          "seq",
+          "symbol",
+          "event",
+          "cycle",
+          "parent",
+          "server_s",
+          "wall_us",
+          "trigger",
+          "input_version",
+          "history_version",
+          "state_version",
+          "samples",
+          "input_digest",
+          "win_rate"
+        ],
+        "selection": [
+          "CALCULATION_FAILED",
+          "CANCEL",
+          "COMPLETE",
+          "INVALIDATE",
+          "REQUEST",
+          "RUN_END",
+          "START"
+        ]
+      },
+      "opportunities.csv": {
+        "sha256": "2370f5371a97db9debbc9ba0434d117986c2c84c1119c1280c80c15197783ab6",
+        "origin_sha256": "53aa29cf7f646bd684083b4ee32803ea7da984f9c60f22ad957c1450055eb1f2",
+        "origin_filename": "CodexMCV2_20260927_USDJPY_2026.06.01_A2.60_S0.40.csv",
+        "origin_rows": 9828,
+        "retained_rows": 143,
+        "columns": [
+          "event",
+          "symbol",
+          "cycle",
+          "server_s",
+          "wall_us",
+          "trigger",
+          "history_version",
+          "input_version",
+          "input_digest",
+          "state_version",
+          "samples",
+          "win_rate",
+          "ready",
+          "allowed",
+          "active",
+          "history_ok",
+          "history_dirty",
+          "previous_complete_cycle",
+          "valid_cycle",
+          "opp_id",
+          "bar",
+          "score",
+          "position_kind",
+          "accepted_total"
+        ],
+        "selection": "changed opportunity IDs and linked prior claimants",
+        "ids": [
+          "056B0494FBEEACD9",
+          "05E7E11DDBBB2CF8",
+          "1B3DBAD157273A48",
+          "2018E320FEABC081",
+          "274FE26B0E7A5398",
+          "285E7A0AC3850103",
+          "415E4C6A33AD9013",
+          "43FB35DBFF74C90E",
+          "457506CBC6838D06",
+          "4C705072B1770081",
+          "4D85F89573553590",
+          "541C973079A20FD5",
+          "558D8CD03229EAA5",
+          "5DEA70A35BAB3F7C",
+          "609FB8189069612D",
+          "618A65BA4C82A4BB",
+          "62A859C1014053DC",
+          "6422EBAA636ABDCF",
+          "71C831FCE0BE0599",
+          "72ACFC0E6F7A56FF",
+          "80CA897EAC58786F",
+          "88521D2A1BBFD26B",
+          "8B102BC8F34054A9",
+          "8CCAFBABBEA1D906",
+          "91A06232C6D4DEF3",
+          "91C9516DA6FD5FC0",
+          "9228A61B9A4D1C4A",
+          "929475D0B542FA6F",
+          "97800E5334E99F82",
+          "984BDE369CD40A2B",
+          "A0B2B47C60627CDB",
+          "A2FF960F5173A3C0",
+          "AB799CF061536A83",
+          "ABCDC594C279C5F9",
+          "AFDA0F7219C20749",
+          "B38661B35098A600",
+          "B8907CEDE75BCC02",
+          "B91187F9D87D6B06",
+          "BE979F95FC03054C",
+          "C24A0C31686CC79A",
+          "C526F777C6AB116E",
+          "C5A1C35E8F2355DF",
+          "C5E2601061A5E171",
+          "C9483047A1E90AEA",
+          "C998C500AF9B2E0D",
+          "CB63388E5E19F4C7",
+          "D2BE9AE37CB3D61E",
+          "D56C0B2C72825835",
+          "DB6DCB278C3B92B8",
+          "DC630CDCA5D8EF2F",
+          "DD412EA18E0249F0",
+          "E8B3B6039866E914",
+          "E8EE21479042B4EE",
+          "EAD9353349415240",
+          "EE711A080BA2C529",
+          "EFDBB635D83ABB72",
+          "F31CAAC48256DB7D",
+          "F88BE0169ACE5A63"
+        ]
+      },
+      "CodexMCV2_20260927_USDJPY_2026.06.01_A2.60_S0.40_timer_sections.csv": {
+        "sha256": "dba94bbe026eb826e80f9b83e0c53c7a6b6b16efee7c500a3012edb4ca560422",
+        "origin_sha256": "dba94bbe026eb826e80f9b83e0c53c7a6b6b16efee7c500a3012edb4ca560422",
+        "selection": "ALL"
+      },
+      "CodexMCV2_20260927_USDJPY_2026.06.01_A2.60_S0.40_timer_summary.csv": {
+        "sha256": "b45009557172820b5b768fd0b60571a89dd289bd71580068d37b86726e11ac5b",
+        "origin_sha256": "b45009557172820b5b768fd0b60571a89dd289bd71580068d37b86726e11ac5b",
+        "selection": "ALL"
+      }
+    }
+  },
+  "full_exports_local": ".validation\\natural_june_evidence\\native",
+  "omitted": "Full callbacks, full event timeline, timer/journal/IO rows retained locally by result export hashes; no native Journal/HTML/EX5 committed."
+}

@@ -1,0 +1,121 @@
+{
+  "status": "PASS",
+  "case": "CodexMCMultiNaturalJune20261003_N4_M0_NORMAL",
+  "mode": 0,
+  "load": "NORMAL",
+  "market_window": "JUNE_NATURAL",
+  "symbols": [
+    "USDJPY",
+    "EURUSD",
+    "EURJPY",
+    "XAUUSD"
+  ],
+  "deinit_reason": 1,
+  "shadow_overlap_s": 1.688703,
+  "natural_shadow_overlap": "UNKNOWN",
+  "report_metrics": {
+    "trades": 188,
+    "history_quality": 100.0,
+    "ticks": 670979
+  },
+  "symbol_rows": {
+    "USDJPY": {
+      "shadow_callbacks": 1000,
+      "quote_samples": 1036798,
+      "quote_advances": 364257,
+      "bar_samples": 1036798,
+      "operations": 20000000,
+      "duration_us": 1683677
+    },
+    "EURUSD": {
+      "shadow_callbacks": 1000,
+      "quote_samples": 1036798,
+      "quote_advances": 486351,
+      "bar_samples": 1036798,
+      "operations": 20000000,
+      "duration_us": 1685686
+    },
+    "EURJPY": {
+      "shadow_callbacks": 1000,
+      "quote_samples": 1036798,
+      "quote_advances": 507977,
+      "bar_samples": 1036798,
+      "operations": 20000000,
+      "duration_us": 1687150
+    },
+    "XAUUSD": {
+      "shadow_callbacks": 1000,
+      "quote_samples": 1036798,
+      "quote_advances": 743642,
+      "bar_samples": 1036798,
+      "operations": 20000000,
+      "duration_us": 1688706
+    }
+  },
+  "replay_rows": 886,
+  "actual_replay_rows": 792,
+  "runtime_errors": 0,
+  "warnings": 0,
+  "scheduler": {
+    "mode": "0",
+    "snapshots": "441",
+    "comparisons": "886",
+    "mismatch": "0",
+    "unknown": "0",
+    "prefix": "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40"
+  },
+  "validation": {
+    "requests": "1882",
+    "no_requests": "4145486",
+    "guards": "222",
+    "order_timings": "188",
+    "unknown": "0",
+    "prior_unknown": "0"
+  },
+  "pipeline": {
+    "deinit_reason": "1",
+    "ticks": "670979",
+    "new_bars": "56647",
+    "market_ready": "4147180",
+    "indicator_ready": "3044559",
+    "pattern_reached": "3044559",
+    "signal_buy": "8321",
+    "signal_sell": "9684",
+    "entry_candidate": "376",
+    "risk_reached": "188",
+    "risk_failed": "0",
+    "order_validation": "188",
+    "order_requests": "188",
+    "orders_sent": "188",
+    "orders_failed": "0",
+    "entry_blocked_pattern_none": "3026554",
+    "entry_blocked_score": "10795",
+    "entry_blocked_quote": "1468",
+    "entry_blocked_stops": "833",
+    "spread_reject": "4483",
+    "entry_blocked_location": "50",
+    "position_exists_reject": "454228",
+    "safety_blocked_monte_carlo": "403924",
+    "safety_blocked_risk_cap": "244657",
+    "trading_hours_reject": "0",
+    "trading_hours_filter": "absent"
+  },
+  "exports": {
+    "CodexMCV0_20260927Detail_USDJPY_2026.06.01_A2.60_S0.40.csv": "ba6bee065187d0a38e447de4b820adccdbfa96aa311c441e0c5e1a2245e44e8f",
+    "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40.csv": "cac17e58467434e470d06694136effc1c45e802e58acfe00f65ba3f76025416d",
+    "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_callbacks.csv": "27eb090a2be4400c0b623712abbd048106f358acfb984c7230fada3673b5b672",
+    "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_events.csv": "a606b891f1e3aecd974f249e24830ef3efee64ad75a4103ddbeb387fe064fd29",
+    "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_guards.csv": "5f60abae578443abedcc70ca254eb59f0f879ad47e24f0ea7ba9a225eb50cd9f",
+    "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_journal_io.csv": "c6f4996076c721a9e8f0c677cff11b2f33bb7431ef440a39c8f2a4b9c461b2d3",
+    "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_journal_sections.csv": "c12ffde71e6b11232e57908509fd0448c28322d6186bc2d65edfb9df59b84316",
+    "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_multi_summary.csv": "05e8827ebbea72ac8fc184040b1c94419d5bb5f0e0c9f3d0e915c4b53c33fbc0",
+    "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_replay.csv": "ead18e92597c3ac5d77bb543a9ce0aa1949e1537dc419613ba29f22936424e6b",
+    "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_requests.csv": "34801f0cebd72bda6edb4fc7ca7ec37665f0b561045facdb9d45938c84495191",
+    "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_snapshots.csv": "4a23adb410979fb21a483439d7d0301aa1efeef687ad808aae8d0c877fcdc53c",
+    "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_timer_copies.csv": "4d0b705afdfd7db10d223a06bc0304f62ad8af42dbb8e1f70b73721271c7040a",
+    "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_timer_sections.csv": "fea4fda16a1266d2e408c5ac3b07c98ccfa905b524f630837a32831f95504fcc",
+    "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_timer_summary.csv": "9a5aca4329b55b6a48d339f63e96efea8a50b8e2f7a053d952e727da32802828",
+    "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_timing_summary.csv": "59540ada5269533781978c912e5515f5df679591989d75cd7eca1b18b1ecc7b6",
+    "CodexMCV0_20260927_USDJPY_2026.06.01_A2.60_S0.40_timings.csv": "e675e5bdd4b7033844897598e068a2b9c02a1bbf35a00e607c7de253123333b2"
+  }
+}

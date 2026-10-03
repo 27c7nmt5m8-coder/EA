@@ -1,0 +1,26 @@
+{
+  "base_commit": "790afb93b4c125574e68486fc75d00058410892c",
+  "measurement": "Fresh four-case Tester-only dirty diagnostic source, hashes in manifest and preflight; no historical pass reuse",
+  "post_measurement_analysis": "Exact-cardinality overlap reporting added after launch; native bundles/runner unchanged during runs",
+  "compile": [
+    {
+      "mode": 0,
+      "errors": 0,
+      "warnings": 0,
+      "fresh_ex5": true,
+      "exit_code": 1
+    },
+    {
+      "mode": 2,
+      "errors": 0,
+      "warnings": 0,
+      "fresh_ex5": true,
+      "exit_code": 1
+    }
+  ],
+  "product_source_changed": false,
+  "original_set_changed": false,
+  "windows_security_actions": "NONE",
+  "candidate_adopted": false,
+  "cpu_contention": "NOT_RUN; prior externally observed affinity drift remains unexplained"
+}

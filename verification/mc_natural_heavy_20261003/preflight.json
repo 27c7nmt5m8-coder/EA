@@ -1,0 +1,36 @@
+{
+  "source_base": "790afb93b4c125574e68486fc75d00058410892c",
+  "controller_sha256": {
+    "tools/mc_multisymbol_runner.py": "6c1760b0f8b544a17035c73804283b605b17cd6d02cf2a274f5bdaa4005770bd",
+    "tools/analyze_mc_natural_heavy.py": "df414ca003f172c974425a4e5bfb24e46a9371bf50113eddbc071684b23f2356",
+    "tests/test_mc_natural_heavy.py": "ea3a8e7fc49dfb9755a0101b115570adf5544c3dbf432f8f5e7fceef01231082",
+    "docs/superpowers/plans/2026-10-03-natural-heavy-diagnostics.md": "3c5792152c0d17b9ccb40313ee36bcbc44656ee6b53c37aece7e8dc7a90d097e"
+  },
+  "original_set_sha256": "92e65170040b86bbdec33add10e077886cfd3be692fb824aeca6cc18c8e94e21",
+  "cases": [
+    {
+      "case": "CodexMCMultiNaturalJune20261003_N3_M0_NORMAL",
+      "config_sha256": "647aa7d52bfff2deb8e52192149cc2a9b56f2efd64c93d3a55d510d9a2709af8",
+      "binary_sha256": "9eaa82652cd1db62987deefab6acf1f3c62380683bc91d59e3e4b19221e6e8cc"
+    },
+    {
+      "case": "CodexMCMultiNaturalJune20261003_N3_M2_NORMAL",
+      "config_sha256": "c5af0f13ab7004d9b13691058486d7c00f1cd271527ca584765290021f79e9f4",
+      "binary_sha256": "c562b85673428468ad0dc04a1fd8ba7beeef7898fe7f287f58984cf4820aa4cf"
+    },
+    {
+      "case": "CodexMCMultiNaturalJune20261003_N4_M0_NORMAL",
+      "config_sha256": "ffb29857e0e2de515b7eaabc2e51bc6e5b9239b4b3628056b32f2c46de38007c",
+      "binary_sha256": "9eaa82652cd1db62987deefab6acf1f3c62380683bc91d59e3e4b19221e6e8cc"
+    },
+    {
+      "case": "CodexMCMultiNaturalJune20261003_N4_M2_NORMAL",
+      "config_sha256": "3ed250143a45937401d08b5f1363b18732d3c265f77f5752f7dbb66fcd73d37e",
+      "binary_sha256": "c562b85673428468ad0dc04a1fd8ba7beeef7898fe7f287f58984cf4820aa4cf"
+    }
+  ],
+  "regression_pass": 60,
+  "privacy_known_matches": 0,
+  "controller_ci": "NOT_RUN_FOR_DIRTY_DIFF",
+  "tester_runs": 0
+}

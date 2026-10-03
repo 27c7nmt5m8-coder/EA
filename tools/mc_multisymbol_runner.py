@@ -29,6 +29,10 @@ CASE_SYMBOLS = {
 }
 MODES = (0, 2)
 LOADS = ('NORMAL', 'CPU_CONTENTION')
+MARKET_WINDOWS = {
+    'SEPTEMBER_BASELINE': ('2026.09.14', '2026.09.19'),
+    'JUNE_NATURAL': ('2026.06.01', '2026.06.13'),
+}
 
 
 def build_cases():
@@ -61,11 +65,13 @@ def selection_copy(original: str, symbols: tuple[str, ...]) -> str:
     return ''.join(result)
 
 
-def frozen_config(original: str, expert: str, parameters: str, report: str) -> str:
+def frozen_config(original: str, expert: str, parameters: str, report: str,
+                  *, market_window: str = 'SEPTEMBER_BASELINE') -> str:
     """Allow only three destination names; retain the reference market contract."""
     old = batch.tester_config(original, expert, report)
     values = dict(line.split('=', 1) for line in old.splitlines() if '=' in line)
-    if values['Symbol'] != 'USDJPY' or values['FromDate'] != '2026.09.14' or values['ToDate'] != '2026.09.19':
+    if (market_window not in MARKET_WINDOWS or values['Symbol'] != 'USDJPY' or
+        (values['FromDate'], values['ToDate']) != MARKET_WINDOWS[market_window]):
         raise ValueError('reference market period differs')
     if '\\' in parameters or '/' in parameters or parameters in ('', '.', '..'):
         raise ValueError('unsafe Tester parameters name')
@@ -74,6 +80,31 @@ def frozen_config(original: str, expert: str, parameters: str, report: str) -> s
     if sum(line.startswith('ExpertParameters=') for line in lines) != 1:
         raise ValueError('parameters field missing')
     return '\n'.join(lines) + '\n'
+
+
+def expected_export_prefix(case: dict) -> str:
+    """Bind actual export dates to the hash-verified, explicitly frozen window."""
+    path = Path(case['config'])
+    if sha256(path) != case['config_sha256']:
+        raise ValueError('Tester config changed')
+    window = case.get('market_window', 'SEPTEMBER_BASELINE')
+    text = path.read_text(encoding='utf-8')
+    frozen_config(text, 'validated\\EA.ex5', 'validated.set', 'validated', market_window=window)
+    if case['mode'] not in MODES:
+        raise ValueError('unsupported scheduler mode')
+    return f"CodexMCV{case['mode']}_20260927_USDJPY_{MARKET_WINDOWS[window][0]}_A2.60_S0.40"
+
+
+def validate_case_contract(case: dict) -> None:
+    """Reject metadata drift before any launch, affinity work or result reuse."""
+    window = case.get('market_window', 'SEPTEMBER_BASELINE')
+    count = case['count']
+    if (window not in MARKET_WINDOWS or count not in CASE_SYMBOLS or
+        tuple(case['symbols']) != CASE_SYMBOLS[count] or case['mode'] not in MODES or
+        case['load'] not in LOADS):
+        raise ValueError('unsupported frozen case contract')
+    if window == 'JUNE_NATURAL' and (count not in (3, 4) or case['load'] != 'NORMAL'):
+        raise ValueError('June diagnostic permits only N3/N4 NORMAL')
 
 
 def validate_case_evidence(evidence: dict, symbols: tuple[str, ...]) -> None:
@@ -97,13 +128,19 @@ def sha256(path: Path) -> str:
 def prepare_matrix(original_set: Path, original_config: str, bundles: dict,
                    native_root: Path, evidence_root: Path, expected_set_sha256: str | None = None,
                    namespace: str = 'CodexMCMulti20260928', engine_sha256: dict | None = None,
-                   counts: tuple = (2, 3, 4)) -> list[dict]:
+                   counts: tuple = (2, 3, 4), loads: tuple = LOADS,
+                   market_window: str = 'SEPTEMBER_BASELINE') -> list[dict]:
     """Stage only Tester artifacts; freeze hashes for every subsequent native run."""
     original_set, native_root, evidence_root = map(Path, (original_set, native_root, evidence_root))
     if not re.fullmatch(r'CodexMCMulti[A-Za-z0-9_]+', namespace):
         raise ValueError('unsafe matrix namespace')
     if not counts or len(set(counts)) != len(counts) or not set(counts).issubset(CASE_SYMBOLS):
         raise ValueError('unsupported matrix symbol counts')
+    if not loads or len(set(loads)) != len(loads) or not set(loads).issubset(LOADS):
+        raise ValueError('unsupported matrix loads')
+    if market_window == 'JUNE_NATURAL' and (counts != (3, 4) or loads != ('NORMAL',)):
+        raise ValueError('June diagnostic is bounded to four NORMAL conditions')
+    frozen_config(original_config, 'validated\\EA.ex5', 'validated.set', 'validated', market_window=market_window)
     engine_sha256 = dict(engine_sha256 or {})
     verify_engine({'engine_sha256': engine_sha256})
     digest = sha256(original_set)
@@ -131,7 +168,7 @@ def prepare_matrix(original_set: Path, original_config: str, bundles: dict,
             raise ValueError('bundle mode does not match case')
     manifest = []
     for case in build_cases():
-        if case['count'] not in counts:
+        if case['count'] not in counts or case['load'] not in loads:
             continue
         count, mode, load, symbols = (case[k] for k in ('count', 'mode', 'load', 'symbols'))
         stem = f'{namespace}_N{count}_M{mode}_{load}'
@@ -143,13 +180,13 @@ def prepare_matrix(original_set: Path, original_config: str, bundles: dict,
         if staged_set.exists() or config.exists() or report.exists():
             raise ValueError('Tester destination exists; refusing overwrite')
         selected = selection_copy(original, symbols)
-        prepared = frozen_config(original_config, expert, staged_set.name, stem)
+        prepared = frozen_config(original_config, expert, staged_set.name, stem, market_window=market_window)
         manifest.append(dict(case=stem, count=count, mode=mode, load=load, symbols=list(symbols),
                              expert=expert, config=str(config), report=str(report), set_path=str(staged_set),
                              original_set_sha256=digest, selected_set_sha256=hashlib.sha256(selected.encode('utf-16')).hexdigest(),
                              source_sha256=source_maps[mode], binary_sha256=sha256(Path(bundles[mode]) / expert_names[mode]),
                              config_sha256=hashlib.sha256(prepared.encode('utf-8')).hexdigest(),
-                             engine_sha256=engine_sha256))
+                             engine_sha256=engine_sha256, market_window=market_window))
     # All destinations were checked before the first write. These remain local
     # Tester copies; no product source, original set, or repository config changes.
     for mode, bundle in bundles.items():
@@ -162,7 +199,8 @@ def prepare_matrix(original_set: Path, original_config: str, bundles: dict,
         selected = selection_copy(original, tuple(entry['symbols']))
         Path(entry['set_path']).write_bytes(selected.encode('utf-16'))
         Path(entry['config']).write_bytes(
-            frozen_config(original_config, entry['expert'], Path(entry['set_path']).name, entry['case']).encode('utf-8'))
+            frozen_config(original_config, entry['expert'], Path(entry['set_path']).name, entry['case'],
+                          market_window=market_window).encode('utf-8'))
     evidence_root.mkdir(parents=True)
     (evidence_root / 'manifest.json').write_text(json.dumps(manifest, indent=2, ensure_ascii=True) + '\n', encoding='utf-8')
     return manifest
@@ -178,12 +216,16 @@ def validate_result_binding(result: dict, case: dict) -> None:
     if result.get('status') != 'PASS' or any(result.get(k) != case[k]
                                            for k in ('case', 'mode', 'load', 'symbols')):
         raise ValueError('result does not match frozen case identity')
+    if result.get('market_window', 'SEPTEMBER_BASELINE') != case.get('market_window', 'SEPTEMBER_BASELINE'):
+        raise ValueError('result market window differs')
 
 
 def verify_staged(case: dict) -> None:
+    validate_case_contract(case)
     verify_engine(case)
     if sha256(Path(case['config'])) != case['config_sha256']:
         raise ValueError('Tester config changed')
+    expected_export_prefix(case)
     if sha256(Path(case['set_path'])) != case['selected_set_sha256']:
         raise ValueError('Tester set changed')
     bundle = batch.ROOT / 'MQL5' / 'Experts' / case['expert'].split('\\', 1)[0]
@@ -338,7 +380,7 @@ def collect_native_case(case: dict, evidence_root: Path) -> dict:
         int(mc['mismatch']) or int(mc['unknown']) or int(validation['unknown'])):
         raise ValueError('native diagnostic counters inconsistent')
     prefix = mc['prefix']
-    if prefix != f"CodexMCV{case['mode']}_20260927_USDJPY_2026.09.14_A2.60_S0.40":
+    if prefix != expected_export_prefix(case):
         raise ValueError('case prefix/inputs mismatch')
     bundle = batch.ROOT / 'MQL5' / 'Experts' / case['expert'].split('\\')[0]
     schemas, _, suffixes = batch.schema_contract(bundle)
@@ -406,6 +448,7 @@ def collect_native_case(case: dict, evidence_root: Path) -> dict:
     for name in exports:
         shutil.copyfile(batch.COMMON / name, destination / name)
     result = dict(status='PASS', case=case['case'], mode=case['mode'], load=case['load'],
+                  market_window=case.get('market_window', 'SEPTEMBER_BASELINE'),
                   symbols=case['symbols'], deinit_reason=int(pipeline['deinit_reason']),
                   shadow_overlap_s=float(multi['shadow_overlap_s']),
                   natural_shadow_overlap=multi['natural_shadow_overlap'],
@@ -435,6 +478,7 @@ def main() -> None:
     manifest = json.loads(args.manifest.read_text(encoding='utf-8'))
     root = args.evidence_root
     for case in manifest:
+        validate_case_contract(case)
         verify_engine(case)
     if args.run_matrix:
         if not 1 <= args.max_new <= 12:

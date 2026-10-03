@@ -1,0 +1,100 @@
+{
+  "phase": "PRECOMMIT_DIRTY_DIAGNOSTIC",
+  "base_commit": "790afb93b4c125574e68486fc75d00058410892c",
+  "controller_authoritative_ci": "PENDING_NEW_EXACT_SHA",
+  "local_gates": [
+    "BLOCKED",
+    "BLOCKED",
+    "PASS",
+    "PASS",
+    "PASS"
+  ],
+  "metaeditor": {
+    "status": "PASS",
+    "commit": "790afb93b4c125574e68486fc75d00058410892c",
+    "builds": [
+      {
+        "source": "MTFAutoTrader_3Mode_AI_v2_44.mq5",
+        "status": "PASS",
+        "errors": 0,
+        "warnings": 0
+      },
+      {
+        "source": "MTFAutoTrader_AI_Worker.mq5",
+        "status": "PASS",
+        "errors": 0,
+        "warnings": 0
+      }
+    ],
+    "source_sha256": {
+      "MT3AIProtocol.mqh": "25340f89525ddaa7ffd425fddad0b22919864e0f8ce3db9961775eb299db24de",
+      "MT3Config.mqh": "f75363429a3b1abc1759140910773c2e1a0f58278e83ca757d6a09d1ad117fd7",
+      "MT3Json.mqh": "b392a69a399f8759d725e2ab7c6b30abd4c20656e227a90373ef1304b8b7c429",
+      "MT3PatternStops.mqh": "c336b7e5d113dd11aa8c5792aff49e941c373f971a701ddeb6a9dd637ee63a07",
+      "MT3PortfolioRisk.mqh": "3904bd36f35cecd6c14c5ea0874ee7a9daf76a00eaa2ebe5ba9fe22d21de0787",
+      "MT3ReversalPatterns.mqh": "abb3c28a163e7530bd5db757bca4c74b519e866d00633823b72250d92e4d2289",
+      "MT3Scoring.mqh": "f57d1e185752e0676a08682c70e76cfd8441fb29c35d9c1c05975cf3eea4aa4d",
+      "MT3SymbolState.mqh": "63884c4949b5b134adcd631f8134db3da4ed2ddabd43cd5e6cf5e8d8af622ca4",
+      "MT3TradeJournal.mqh": "df5e19223effd33b1a609bae1927dddae344f598f912912f96d02292ab186f2c",
+      "MT3TradeLog.mqh": "f3b32e3cd6b746bb5c86a03fc687c4e17be4c6e8193de24a96b4dcf9e914234a",
+      "MT3Types.mqh": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2",
+      "MTFAutoTrader_3Mode_AI_v2_44.mq5": "6ef8f35b6343173d5a91ac280cd13702f723ba4678d3bdec4b3274218333aee1",
+      "MTFAutoTrader_AI_Worker.mq5": "2d068d5046ec3d616568227d6e9f6be0d9166af814f48076ac8a000d4922e12c"
+    }
+  },
+  "source_scope": "PASS",
+  "focused_regression": {
+    "passed": 63,
+    "failed": 0
+  },
+  "new_natural_regression": {
+    "passed": 22,
+    "failed": 0
+  },
+  "independent_review": {
+    "status": "PASS",
+    "scope": "diagnostics/evidence only; not product adoption",
+    "passed": 22,
+    "model_requested": "gpt-6.1-sol",
+    "effort_requested": "xhigh",
+    "execution_metadata": "NOT_OBSERVABLE",
+    "fallback": "NONE_REPORTED"
+  },
+  "privacy": {
+    "status": "PASS",
+    "files_scanned": 258,
+    "known_private_matches": 0,
+    "generic_credential_matches": 0,
+    "product_source_hashes": {
+      "MT3AIProtocol.mqh": "25340f89525ddaa7ffd425fddad0b22919864e0f8ce3db9961775eb299db24de",
+      "MT3Config.mqh": "f75363429a3b1abc1759140910773c2e1a0f58278e83ca757d6a09d1ad117fd7",
+      "MT3Json.mqh": "b392a69a399f8759d725e2ab7c6b30abd4c20656e227a90373ef1304b8b7c429",
+      "MT3PatternStops.mqh": "c336b7e5d113dd11aa8c5792aff49e941c373f971a701ddeb6a9dd637ee63a07",
+      "MT3PortfolioRisk.mqh": "3904bd36f35cecd6c14c5ea0874ee7a9daf76a00eaa2ebe5ba9fe22d21de0787",
+      "MT3ReversalPatterns.mqh": "abb3c28a163e7530bd5db757bca4c74b519e866d00633823b72250d92e4d2289",
+      "MT3Scoring.mqh": "f57d1e185752e0676a08682c70e76cfd8441fb29c35d9c1c05975cf3eea4aa4d",
+      "MT3SymbolState.mqh": "63884c4949b5b134adcd631f8134db3da4ed2ddabd43cd5e6cf5e8d8af622ca4",
+      "MT3TradeJournal.mqh": "df5e19223effd33b1a609bae1927dddae344f598f912912f96d02292ab186f2c",
+      "MT3TradeLog.mqh": "f3b32e3cd6b746bb5c86a03fc687c4e17be4c6e8193de24a96b4dcf9e914234a",
+      "MT3Types.mqh": "1abd354e84dece7391d9d2adc623ad49a57cbea76ff3ae0cad2f4ff8fa8277b2",
+      "MTFAutoTrader_3Mode_AI_v2_44.mq5": "6ef8f35b6343173d5a91ac280cd13702f723ba4678d3bdec4b3274218333aee1",
+      "MTFAutoTrader_AI_Worker.mq5": "2d068d5046ec3d616568227d6e9f6be0d9166af814f48076ac8a000d4922e12c"
+    },
+    "product_files_unchanged": 13,
+    "original_set_sha256": "92e65170040b86bbdec33add10e077886cfd3be692fb824aeca6cc18c8e94e21",
+    "original_set_unchanged": true,
+    "product_scope_origin_main_unchanged": true,
+    "windows_security_actions": "NONE",
+    "raw_native_journal_html": "NOT_INCLUDED_OR_COMMITTED; not covered by repository plaintext scan"
+  },
+  "fresh_tester": {
+    "planned": 4,
+    "completed": 4,
+    "runtime_errors": 0,
+    "warnings": 0,
+    "optimization": false,
+    "forward": false
+  },
+  "combined_gate": "INCOMPLETE_UNTIL_EXACT_HEAD_CI",
+  "product_adopted": false
+}
