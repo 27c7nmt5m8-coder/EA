@@ -10,7 +10,7 @@ import json
 import re
 
 from .context import build_context_packet, expand_context_packet, _safe_evidence
-from .triage import ACTIVE_SOL_MODEL
+from .triage import ACTIVE_SOL_MODEL, PROTECTED
 
 ROLE_SCOPES = {'explorer': {'none', '1', '2'},
                'researcher': {'none', '1', '2'},
@@ -32,7 +32,7 @@ def build_spawn_request(root, role, task_name, bundle, *, specification,
     dependencies are investigation tasks, never evidence of review completion.
     Read-only/independence instructions are prompt policy, not OS enforcement.
     """
-    if role not in ROLE_SCOPES:
+    if not isinstance(role, str) or role not in ROLE_SCOPES:
         raise ValueError('invalid_spawn_role')
     if not isinstance(task_name, str) or not re.fullmatch(r'[a-z][a-z0-9_]*', task_name):
         raise ValueError('invalid_spawn_task_name')
@@ -58,14 +58,17 @@ def build_spawn_request(root, role, task_name, bundle, *, specification,
         raise ValueError('context_expansion_required_retrieve_and_rebuild_bundle')
     if expanded['verification'] != current['verification']:
         raise ValueError('verification_evidence_required_or_digest_mismatch')
-    high = (complex_work or expanded['protected'] or expanded['dependency'] == 'unknown'
+    task_evidence = '\n'.join([expanded['task'], expanded['patch'], specification] + unresolved_questions)
+    protected_task = expanded['protected'] or bool(PROTECTED.search(task_evidence))
+    high = (complex_work or protected_task or expanded['dependency'] == 'unknown'
             or len(expanded['changed_paths']) > 1
-            or COMPLEX.search('\n'.join([expanded['task'], expanded['patch'], specification])))
+            or COMPLEX.search(task_evidence))
     effort = 'high' if role == 'reviewer' or (role == 'worker' and high) else 'medium'
     payload = dict(role=role, read_only=role != 'worker', independent_context=role == 'reviewer',
                    specification=specification, repository_rules=repository_rules,
                    context_packet=expanded, verification_evidence=verification,
                    unresolved_questions=unresolved_questions,
+                   protected_task=protected_task,
                    dependency_investigation_required=expanded['dependency'] == 'unknown',
                    instructions=[
                        'Read the actual evidence and acquire any relevant dependencies before deciding.',

@@ -73,6 +73,15 @@ class AgentSpawn(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.request(complex_work='false')
 
+    def test_task_specific_supplements_cannot_lower_worker_high_floor(self):
+        self.assertFalse(self.bundle['protected'])
+        for options in [dict(specification='Inspect lot sizing and order ownership.'),
+                        dict(unresolved_questions=['Is SL/TP preserved?']),
+                        dict(unresolved_questions=['Investigate unresolved root cause.'])]:
+            with self.subTest(options=options):
+                self.assertEqual(self.request(**options)['reasoning_effort'], 'high')
+                self.assertEqual(self.request('explorer', **options)['reasoning_effort'], 'medium')
+
     def test_fresh_reviewer_expands_retained_handles_and_preserves_bytes(self):
         packet = context.build_context_packet(self.bundle, prior=self.prior,
                                               root=self.root, recipient_has_content=True)
