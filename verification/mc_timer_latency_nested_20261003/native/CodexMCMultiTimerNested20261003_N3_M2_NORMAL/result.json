@@ -1,0 +1,107 @@
+{
+  "status": "PASS",
+  "case": "CodexMCMultiTimerNested20261003_N3_M2_NORMAL",
+  "mode": 2,
+  "load": "NORMAL",
+  "symbols": [
+    "USDJPY",
+    "EURUSD",
+    "EURJPY"
+  ],
+  "deinit_reason": 1,
+  "shadow_overlap_s": 1.197184,
+  "natural_shadow_overlap": "UNKNOWN",
+  "report_metrics": {
+    "trades": 78,
+    "history_quality": 100.0,
+    "ticks": 584990
+  },
+  "symbol_rows": {
+    "USDJPY": {
+      "shadow_callbacks": 40,
+      "quote_samples": 431998,
+      "quote_advances": 261721,
+      "bar_samples": 431998,
+      "operations": 20000000,
+      "duration_us": 1185724
+    },
+    "EURUSD": {
+      "shadow_callbacks": 40,
+      "quote_samples": 431998,
+      "quote_advances": 236154,
+      "bar_samples": 431998,
+      "operations": 20000000,
+      "duration_us": 1191996
+    },
+    "EURJPY": {
+      "shadow_callbacks": 40,
+      "quote_samples": 431998,
+      "quote_advances": 291874,
+      "bar_samples": 431998,
+      "operations": 20000000,
+      "duration_us": 1197187
+    }
+  },
+  "replay_rows": 80,
+  "actual_replay_rows": 74,
+  "runtime_errors": 0,
+  "warnings": 0,
+  "scheduler": {
+    "mode": "2",
+    "snapshots": "38",
+    "comparisons": "80",
+    "mismatch": "0",
+    "unknown": "0",
+    "prefix": "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40"
+  },
+  "validation": {
+    "requests": "809",
+    "no_requests": "1295257",
+    "guards": "104",
+    "order_timings": "78",
+    "unknown": "0",
+    "prior_unknown": "0"
+  },
+  "pipeline": {
+    "deinit_reason": "1",
+    "ticks": "584990",
+    "new_bars": "21583",
+    "market_ready": "1295988",
+    "indicator_ready": "1034115",
+    "pattern_reached": "1034115",
+    "signal_buy": "2252",
+    "signal_sell": "3307",
+    "entry_candidate": "156",
+    "risk_reached": "78",
+    "risk_failed": "0",
+    "order_validation": "78",
+    "order_requests": "78",
+    "orders_sent": "78",
+    "orders_failed": "0",
+    "entry_blocked_pattern_none": "1028556",
+    "entry_blocked_score": "3947",
+    "entry_blocked_quote": "220",
+    "entry_blocked_stops": "134",
+    "spread_reject": "1102",
+    "position_exists_reject": "237401",
+    "safety_blocked_monte_carlo": "24550",
+    "trading_hours_reject": "0",
+    "trading_hours_filter": "absent"
+  },
+  "exports": {
+    "CodexMCV2_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv": "fffa98eaca62a35394807f4b87d73a70eaa2120f1d18eb5fb34b074ae3d8514e",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv": "7868360dc31621baa0b9debe5c4f77a2e3e1176457009d10b6cc8ebace77a15c",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv": "65957b54270c9f424e7c29c283c1c35d0430ba27c4cb8c8d0d8665d226939c81",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv": "c12e76919309146f1b88e42b04b177874d1ff7c2843d62c38debc9a34b39baa1",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv": "3459f283ba5dbe6201c72adc5f6a960ef9cb3295e72ae875b281e624eff1f62f",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv": "13517e5a4a1e5baff672819fdd3b9fad953ec5e04247c85dfa79933855b45ce6",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv": "07fc490f1beadb6c909c62b7958dcd72f7d2c6ae4ba45cf23d08d24fa4f57ffd",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv": "bf2efd31a8b31988409249e2feaef9d2f95d060dc16d011c1e887feda3ed7c1f",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv": "c02c12dd1648bdf53017464447fa4fcae28f4fa9c5ba6a727ede9d0d2d7fe2e9",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timer_copies.csv": "4728a062340cbe7b3b9d767b0e4984c2be7ac5ef1f5d2e002da0e9d9eba8001a",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timer_sections.csv": "8aff1771f86e8722eb678a7724da9c9f1bd043320e8921c8a42a7d11c0442f0f",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timer_summary.csv": "3b7cdd0192f3d4e465bb6d0de2f34e7e7e93241e9d65e409d436f3cafab26374",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv": "8215893f3b96411f68d9af9fd37fcba473801aa4420b9b5786e3325d7b5125be",
+    "CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv": "50b86441bc41babec2511a0dd711a392067d644ae2fe2d156639b3d79cfcd7d9"
+  }
+}

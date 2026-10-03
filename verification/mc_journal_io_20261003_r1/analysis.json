@@ -1,0 +1,149 @@
+{
+  "timer": {
+    "observed_timer_count": 431998,
+    "retained_timer_count": 256,
+    "maximum_timer_id": 1,
+    "maximum_us": 275089,
+    "dominant_stage": "scan",
+    "maximum_stages_us": {
+      "maintain": 93,
+      "universe": 1,
+      "scan": 266291,
+      "mc": 0,
+      "shadow": 8216,
+      "dispatch": 2,
+      "journal": 459,
+      "dashboard": 27
+    },
+    "maximum_symbol_scans": [
+      {
+        "symbol": "USDJPY",
+        "duration_us": 266241
+      }
+    ],
+    "maximum_nested_scans": [
+      {
+        "stage": "scan_maintain",
+        "symbol": "USDJPY",
+        "duration_us": 36
+      },
+      {
+        "stage": "scan_lines",
+        "symbol": "USDJPY",
+        "duration_us": 86286
+      },
+      {
+        "stage": "scan_bar",
+        "symbol": "USDJPY",
+        "duration_us": 1
+      },
+      {
+        "stage": "scan_candidate",
+        "symbol": "USDJPY",
+        "duration_us": 179917
+      },
+      {
+        "stage": "indicator_actual",
+        "symbol": "USDJPY",
+        "duration_us": 416
+      },
+      {
+        "stage": "indicator_observer",
+        "symbol": "USDJPY",
+        "duration_us": 44384
+      }
+    ],
+    "unattributed_us": 0,
+    "bookkeeping_max_us": 42,
+    "population_p95_us": "UNKNOWN",
+    "event_arrival_delay": "UNKNOWN",
+    "queue_depth": "UNKNOWN"
+  },
+  "journal": {
+    "maximum_journal_timer_id": 348694,
+    "maximum_journal_us": 232001,
+    "dominant_symbol": "USDJPY",
+    "dominant_phase": "persist",
+    "symbol_phases": {
+      "USDJPY": {
+        "symbol_journal": 232001,
+        "sample_guard": 1,
+        "history_select": 1,
+        "collect_ids": 1,
+        "queue": 6,
+        "persist": 231984,
+        "cursor": 6,
+        "portfolio": 0,
+        "cleanup": 0
+      }
+    },
+    "unattributed_journal_us": 0,
+    "symbol_unattributed_us": {
+      "USDJPY": 2
+    },
+    "total_unpartitioned_journal_us": 2,
+    "population_p95": "UNKNOWN",
+    "queue_depth": "UNKNOWN"
+  },
+  "io": {
+    "maximum_journal_timer_id": 348694,
+    "symbol": "USDJPY",
+    "persist_us": 231984,
+    "dominant_io_stage": "move",
+    "dominant_io_us": 230170,
+    "io_us": {
+      "serialize_json": 90,
+      "serialize_csv": 92,
+      "convert": 5,
+      "open": 1079,
+      "write": 3,
+      "flush": 294,
+      "close": 234,
+      "move": 230170,
+      "delete": 0,
+      "write_total": 231790
+    },
+    "io_calls": {
+      "serialize_json": 1,
+      "serialize_csv": 1,
+      "convert": 2,
+      "open": 2,
+      "write": 2,
+      "flush": 2,
+      "close": 2,
+      "move": 2,
+      "delete": 0,
+      "write_total": 2
+    },
+    "persist_unpartitioned_us": 12,
+    "atomic_unpartitioned_us": 5,
+    "flush_success_status": "UNKNOWN_VOID_RETURN",
+    "queue_depth": "UNKNOWN",
+    "wall_time_is_cpu_time": false
+  },
+  "comparison": {
+    "chart_processed_ticks": true,
+    "symbol_bar_process_total": true,
+    "trades": true,
+    "USDJPY_funnel": true,
+    "USDJPY_outcomes": true,
+    "USDJPY_order_acceptance": true,
+    "EURUSD_funnel": true,
+    "EURUSD_outcomes": true,
+    "EURUSD_order_acceptance": true,
+    "EURJPY_funnel": true,
+    "EURJPY_outcomes": true,
+    "EURJPY_order_acceptance": true
+  },
+  "runtime_errors": 0,
+  "warnings": 0,
+  "replay_rows": 80,
+  "processed_ticks": 584990,
+  "processed_bars": 21583,
+  "trades": 78,
+  "orders_accepted": {
+    "USDJPY": 35,
+    "EURUSD": 13,
+    "EURJPY": 30
+  }
+}

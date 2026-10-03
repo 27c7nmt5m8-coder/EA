@@ -1,0 +1,136 @@
+{
+  "attribution": {
+    "observed_timer_count": 431998,
+    "retained_timer_count": 256,
+    "maximum_timer_id": 164227,
+    "maximum_us": 338653,
+    "dominant_stage": "journal",
+    "maximum_stages_us": {
+      "maintain": 22,
+      "universe": 0,
+      "scan": 226,
+      "mc": 0,
+      "shadow": 1,
+      "dispatch": 0,
+      "journal": 338274,
+      "dashboard": 130
+    },
+    "maximum_symbol_scans": [
+      {
+        "symbol": "USDJPY",
+        "duration_us": 64
+      },
+      {
+        "symbol": "EURUSD",
+        "duration_us": 131
+      },
+      {
+        "symbol": "EURJPY",
+        "duration_us": 31
+      }
+    ],
+    "maximum_nested_scans": [],
+    "unattributed_us": 0,
+    "bookkeeping_max_us": 74,
+    "population_p95_us": "UNKNOWN",
+    "event_arrival_delay": "UNKNOWN",
+    "queue_depth": "UNKNOWN"
+  },
+  "comparison": {
+    "ticks_equal": true,
+    "bars_equal": true,
+    "trades_old": 78,
+    "trades_new": 78,
+    "replay_rows": 80,
+    "runtime_errors": 0,
+    "warnings": 0,
+    "symbols": {
+      "USDJPY": {
+        "funnel_equal": true,
+        "outcomes_equal": true,
+        "orders_old": 35,
+        "orders_new": 35
+      },
+      "EURUSD": {
+        "funnel_equal": true,
+        "outcomes_equal": true,
+        "orders_old": 13,
+        "orders_new": 13
+      },
+      "EURJPY": {
+        "funnel_equal": true,
+        "outcomes_equal": true,
+        "orders_old": 30,
+        "orders_new": 30
+      }
+    }
+  },
+  "copy_calls": [
+    {
+      "timer_id": "1",
+      "server_s": "1789344000",
+      "symbol": "USDJPY",
+      "context": "ACTUAL",
+      "calls": "110",
+      "successful": "110",
+      "failed": "0",
+      "last_error": "4202",
+      "elapsed_us": "360"
+    },
+    {
+      "timer_id": "1",
+      "server_s": "1789344000",
+      "symbol": "USDJPY",
+      "context": "OBSERVER",
+      "calls": "108",
+      "successful": "108",
+      "failed": "0",
+      "last_error": "4202",
+      "elapsed_us": "49599"
+    },
+    {
+      "timer_id": "2",
+      "server_s": "1789344000",
+      "symbol": "EURUSD",
+      "context": "ACTUAL",
+      "calls": "110",
+      "successful": "110",
+      "failed": "0",
+      "last_error": "4202",
+      "elapsed_us": "224"
+    },
+    {
+      "timer_id": "2",
+      "server_s": "1789344000",
+      "symbol": "EURUSD",
+      "context": "OBSERVER",
+      "calls": "108",
+      "successful": "108",
+      "failed": "0",
+      "last_error": "4202",
+      "elapsed_us": "47866"
+    },
+    {
+      "timer_id": "3",
+      "server_s": "1789344000",
+      "symbol": "EURJPY",
+      "context": "ACTUAL",
+      "calls": "110",
+      "successful": "110",
+      "failed": "0",
+      "last_error": "4202",
+      "elapsed_us": "235"
+    },
+    {
+      "timer_id": "3",
+      "server_s": "1789344000",
+      "symbol": "EURJPY",
+      "context": "OBSERVER",
+      "calls": "108",
+      "successful": "108",
+      "failed": "0",
+      "last_error": "4202",
+      "elapsed_us": "46606"
+    }
+  ]
+}

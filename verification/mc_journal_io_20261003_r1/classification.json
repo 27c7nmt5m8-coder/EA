@@ -1,0 +1,818 @@
+[
+  {
+    "path": "docs/superpowers/plans/2026-10-03-timer-latency-diagnostics.md",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fixed design and actual outcome",
+    "bytes": 4194,
+    "sha256": "bdf84fe0f2038a7529826b48ebd225aa37d17742bc257dc5a1a5bfd1c7e6e647"
+  },
+  {
+    "path": "tests/test_journal_io.py",
+    "classification": "VALIDATION_INFRA",
+    "include": true,
+    "reason": "observational and actual-data regression",
+    "bytes": 4817,
+    "sha256": "7a3ae7b03b8ab098fd25c5244a06875d9c0972b3af932a4f562bac64bdc5a769"
+  },
+  {
+    "path": "tests/test_journal_latency.py",
+    "classification": "VALIDATION_INFRA",
+    "include": true,
+    "reason": "observational and actual-data regression",
+    "bytes": 4813,
+    "sha256": "d88dccb0dbdfcb9e4a5fa53c16d9182d138f2e7da147fb5d66e5a37e2891633f"
+  },
+  {
+    "path": "tests/test_timer_latency.py",
+    "classification": "VALIDATION_INFRA",
+    "include": true,
+    "reason": "observational and actual-data regression",
+    "bytes": 9185,
+    "sha256": "f6230fd524831b135f349ab17369a343b606b9fb37e489037383116ab2ab04b0"
+  },
+  {
+    "path": "tests/test_timer_latency_frozen.py",
+    "classification": "VALIDATION_INFRA",
+    "include": true,
+    "reason": "observational and actual-data regression",
+    "bytes": 3388,
+    "sha256": "84fedfd50ee780a36e2d3e6c2e2fa0945bed95b830fe254a2b9898932eabbe60"
+  },
+  {
+    "path": "tools/TesterJournalIOLatencyDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "Tester copy generator or observational header",
+    "bytes": 2086,
+    "sha256": "fc2bbb0204b744ee0809263165b39757c4d63e369a4928486d097d48463718ac"
+  },
+  {
+    "path": "tools/TesterJournalLatencyDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "Tester copy generator or observational header",
+    "bytes": 2450,
+    "sha256": "cadc264c55447530c0217202a90a00a055fc09ac6595ad3623dfb693b3f97610"
+  },
+  {
+    "path": "tools/TesterTimerLatencyDiag.mqh",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "Tester copy generator or observational header",
+    "bytes": 5999,
+    "sha256": "c8691ea467d4cda1cffdc2159962968a8198bde54fe09fabf70528b4e7df3b4f"
+  },
+  {
+    "path": "tools/build_tester_journal_io.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "Tester copy generator or observational header",
+    "bytes": 7898,
+    "sha256": "e2eec44839aa7917796394db583debe521efd767c189d5992c3f7791ecce5099"
+  },
+  {
+    "path": "tools/build_tester_journal_latency.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "Tester copy generator or observational header",
+    "bytes": 7931,
+    "sha256": "38b851b068da5aa914e202a590336ce7ba7b6e943f7af5b3881bb306e60ca53b"
+  },
+  {
+    "path": "tools/build_tester_timer_latency.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "Tester copy generator or observational header",
+    "bytes": 12015,
+    "sha256": "56e085613d4075d270e0c11ba5462442abe930d79c8cbc7947ce33d437d726ce"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/REPORT_JA.md",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical result and measurement provenance",
+    "bytes": 6068,
+    "sha256": "9cbb2e9d03c86d12a20b91202797f16e0ff99335c36979cf54a70da13add6e25"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/REPRODUCE_JA.md",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical result and measurement provenance",
+    "bytes": 4281,
+    "sha256": "ec052810efaca6726a2cf02e1f177272bb6e95efcef17961366a0fde8790594a"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/analysis.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical result and measurement provenance",
+    "bytes": 3543,
+    "sha256": "43bc1a7596da2c3158c3189035dead96fc153d1bc615878e82cf48a93008e76b"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/analyze_evidence.py",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical result and measurement provenance",
+    "bytes": 2994,
+    "sha256": "4fb4f2113b8897f8a82134ca52cb053d27d81e27a43606c41307e3bb1cc74d9d"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/compile_results.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical result and measurement provenance",
+    "bytes": 223,
+    "sha256": "9739d4ada17faac5dea9f86f60cb3160fab7e902fed088dfdf5571bbf4612f35"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/frozen_configs.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical result and measurement provenance",
+    "bytes": 2109,
+    "sha256": "e6e3d8b7ae888bd55b3a86ffb95dd9a88b6814a4849fd056c3b5c9d7ea3c8262"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/matrix/manifest.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "four prepared hash-bound conditions; only M2 NORMAL run",
+    "bytes": 18473,
+    "sha256": "a56a3f5dc8538e161e55ef508f66f68720b131270ea51acdc10b5f8957f7c1d2"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/native/CodexMCMultiJournalIO20261003R1_N3_M2_NORMAL/CodexMCV2_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 49378,
+    "sha256": "fffa98eaca62a35394807f4b87d73a70eaa2120f1d18eb5fb34b074ae3d8514e"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/native/CodexMCMultiJournalIO20261003R1_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 804272,
+    "sha256": "7aad0b4bf24b61ab930857663db5651e5f00e983f930b20f0456472560e518f6"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/native/CodexMCMultiJournalIO20261003R1_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 170785,
+    "sha256": "bfa31ce60bdb381479c1d1ca2343ac147a02e2d40a54ea44d6b320c7b7d2dec3"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/native/CodexMCMultiJournalIO20261003R1_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 231,
+    "sha256": "ceae2c99c728426e3eaa18591674bde304ac0f6c7bb3ac78b9f02e4f4af4c4d8"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/native/CodexMCMultiJournalIO20261003R1_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 17152,
+    "sha256": "3459f283ba5dbe6201c72adc5f6a960ef9cb3295e72ae875b281e624eff1f62f"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/native/CodexMCMultiJournalIO20261003R1_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_journal_io.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "retained top256 attribution fixture required for strict portable regression",
+    "bytes": 472814,
+    "sha256": "a98bcc5d6d0745cfee6c05f67577eb131d1fc208886092ffbceecea35a2ca01d"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/native/CodexMCMultiJournalIO20261003R1_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_journal_sections.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "retained top256 attribution fixture required for strict portable regression",
+    "bytes": 452956,
+    "sha256": "48c6ae9fa26e449c3ac8706b6af331e1a019b8eca28b9ff9d206e80ccebabfd2"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/native/CodexMCMultiJournalIO20261003R1_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 1048,
+    "sha256": "7011d78174dad5d4fa22bdb5a76de782e6fb09d324b055dadfaf0871497dc95f"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/native/CodexMCMultiJournalIO20261003R1_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact numerical bit/sequence equivalence evidence",
+    "bytes": 15156,
+    "sha256": "f44c690009187e49f1074ab3c3583f8b654b6fa9b8ee182257ad4dd933385963"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/native/CodexMCMultiJournalIO20261003R1_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 100890,
+    "sha256": "0334c679c66d38e404d6b7b06510572f18a0de3b2b9008cffbf93904add95bdf"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/native/CodexMCMultiJournalIO20261003R1_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 5409,
+    "sha256": "c79e03033729c43d9e65a5c9af00368bae586592377680d155ce5cf575c1be97"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/native/CodexMCMultiJournalIO20261003R1_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timer_copies.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 2258,
+    "sha256": "9e00fd6ac03327db78629fab74fa47620b99fd3ae483295efcbfc6023f72eea7"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/native/CodexMCMultiJournalIO20261003R1_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timer_sections.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "retained top256 attribution fixture required for strict portable regression",
+    "bytes": 179658,
+    "sha256": "d731559affb35a4958377c08237482b0dda99567a56af6f8321517ecbdde8041"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/native/CodexMCMultiJournalIO20261003R1_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timer_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "retained top256 attribution fixture required for strict portable regression",
+    "bytes": 416,
+    "sha256": "ada735473e51c8b418cb6dc50cfd943f0466f1974ee486587c24b7d74dd41386"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/native/CodexMCMultiJournalIO20261003R1_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 596,
+    "sha256": "1c4c73c5bd135ec6522074bd14cb087980713a378ee17baa8362b1c404f5b240"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/native/CodexMCMultiJournalIO20261003R1_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 8711,
+    "sha256": "9024f3b342695ba3e4381e5e115aacbeed1ef74bec7a2a8dae56b4edac8f20a1"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/native/CodexMCMultiJournalIO20261003R1_N3_M2_NORMAL/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result or explicit blocked attempt identity",
+    "bytes": 567,
+    "sha256": "c562162fe2ab0a9ab012acd6261c5068cf5f8612eb771873d07136812ba04e99"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/native/CodexMCMultiJournalIO20261003R1_N3_M2_NORMAL/result.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result or explicit blocked attempt identity",
+    "bytes": 4554,
+    "sha256": "18619e269fdc7ee4ebc1a0001e8eff606c4695bb2137f0aae0ebf6c00e12f4fd"
+  },
+  {
+    "path": "verification/mc_journal_io_20261003_r1/validation.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical result and measurement provenance",
+    "bytes": 242,
+    "sha256": "2e54a14d18d8aa1037657de5a6ddd7265de96b30617c401ff176c9a84bc005ec"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/analysis.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical result and measurement provenance",
+    "bytes": 2737,
+    "sha256": "aa7a5a32f7155b8b04bb63e60e840caec834bdf610cbc698e0de2214b63c7092"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/compile_results.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical result and measurement provenance",
+    "bytes": 223,
+    "sha256": "9739d4ada17faac5dea9f86f60cb3160fab7e902fed088dfdf5571bbf4612f35"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/matrix/manifest.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 17957,
+    "sha256": "7e2b19ca1efcb1eebc51ec0642d342f41b3101acb7ec6f39ff5d1288ff1f6383"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/native/CodexMCMultiJournal20261003_N3_M2_NORMAL/CodexMCV2_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 49378,
+    "sha256": "fffa98eaca62a35394807f4b87d73a70eaa2120f1d18eb5fb34b074ae3d8514e"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/native/CodexMCMultiJournal20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 804349,
+    "sha256": "f1abc9c35b713501bc33fa4494b40ecf678cb5669e32ccafac950d6b3f0c0aba"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/native/CodexMCMultiJournal20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 170768,
+    "sha256": "cfa06835aa8fdeb17186f93ebdd33634a18c070375e620b86803ea1015e92765"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/native/CodexMCMultiJournal20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 220,
+    "sha256": "3aa1a04f6ab257b8dc9ff5d071cd4a04b53e5a89f99af11471c1f23e772b59af"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/native/CodexMCMultiJournal20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 17152,
+    "sha256": "3459f283ba5dbe6201c72adc5f6a960ef9cb3295e72ae875b281e624eff1f62f"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/native/CodexMCMultiJournal20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_journal_sections.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 461306,
+    "sha256": "b23c875742604a8c8bd0ea8da32f8fbee805f1be710b9851f0cdd5d8ad94fa85"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/native/CodexMCMultiJournal20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 1048,
+    "sha256": "4533e9f50c725aee1519f39350ccb2d4ffdd60f4507545236b56230530e17520"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/native/CodexMCMultiJournal20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact numerical bit/sequence equivalence evidence",
+    "bytes": 15142,
+    "sha256": "b626ff69434fc20fafee64921052b04be7f32cbeb52de1da3d977b54c1bfe47e"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/native/CodexMCMultiJournal20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 100923,
+    "sha256": "4d5b1596465f0d8555c1d04650f1def7bc12cf180256a437944ecf2f61eaf001"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/native/CodexMCMultiJournal20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 5409,
+    "sha256": "66bc543cc0582b01f58912f707fd1ebc6b27f9bc82b8af303236a7f0bf2ed000"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/native/CodexMCMultiJournal20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timer_copies.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 644,
+    "sha256": "dba4bccc340d4c31c7987d1a525a3abc038fddf3c0b44cc560886d27ae58bb1c"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/native/CodexMCMultiJournal20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timer_sections.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 174347,
+    "sha256": "0f439228b26140199996c725fdc29edb2b2ac333be7487aecae13ae2954ed9df"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/native/CodexMCMultiJournal20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timer_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 423,
+    "sha256": "3cab65936d7e7be8f3475a8f8128602c0686fc19e6e9f0192befe45e619839b2"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/native/CodexMCMultiJournal20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 597,
+    "sha256": "8c7b3079f338c03cb7baeb2bed730bf9fb8552781895fc08c2d685092647384a"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/native/CodexMCMultiJournal20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 8712,
+    "sha256": "db62fad1d83e20a89878008ae5e47d9fe50afcd8c3b8215192845476bdba3907"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/native/CodexMCMultiJournal20261003_N3_M2_NORMAL/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result or explicit blocked attempt identity",
+    "bytes": 564,
+    "sha256": "40a94c58e4008a99666c14e0dfafe7e24b7315c6fa667ca94ad99f2941340f51"
+  },
+  {
+    "path": "verification/mc_journal_latency_20261003/native/CodexMCMultiJournal20261003_N3_M2_NORMAL/result.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result or explicit blocked attempt identity",
+    "bytes": 4410,
+    "sha256": "e54261e7471d82d9b25f76f9731181a54f03d69e0010e44561ebe96c0814d4e1"
+  },
+  {
+    "path": "verification/mc_timer_latency_20261003/compile_results.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical result and measurement provenance",
+    "bytes": 223,
+    "sha256": "9739d4ada17faac5dea9f86f60cb3160fab7e902fed088dfdf5571bbf4612f35"
+  },
+  {
+    "path": "verification/mc_timer_latency_20261003/matrix/manifest.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 17489,
+    "sha256": "20fcfeea8628aa5fd2b210c14b6a8c0ea4c0cda1a6135f4984f8a4fe38ffd9fa"
+  },
+  {
+    "path": "verification/mc_timer_latency_20261003/native/CodexMCMultiTimer20261003_N3_M2_CPU_CONTENTION/CodexMCV2_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 49395,
+    "sha256": "d8a5c76809f160bf6b3fb64acad2d77d97b011d14f05c25d9c0f4ae28fae1a36"
+  },
+  {
+    "path": "verification/mc_timer_latency_20261003/native/CodexMCMultiTimer20261003_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 804584,
+    "sha256": "0be56336d0c746cb741c36bbb3273d0b669250bff054b7807bc944506ab4fdb1"
+  },
+  {
+    "path": "verification/mc_timer_latency_20261003/native/CodexMCMultiTimer20261003_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 219446,
+    "sha256": "cf41906a36e82660181559a50a105a240c1357aa962c217e1ddc31913be88a23"
+  },
+  {
+    "path": "verification/mc_timer_latency_20261003/native/CodexMCMultiTimer20261003_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 224,
+    "sha256": "e3fe3f481abe46b4c676f9682abccd8a8818757a50bd6cf1613efb60223d8df6"
+  },
+  {
+    "path": "verification/mc_timer_latency_20261003/native/CodexMCMultiTimer20261003_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 17152,
+    "sha256": "0e3731cd59cfae858a66051fa7ffe7b66aa326c59af735c4fc7920a3896d1cb4"
+  },
+  {
+    "path": "verification/mc_timer_latency_20261003/native/CodexMCMultiTimer20261003_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 1051,
+    "sha256": "6c1beeae5b8a12388f7ce192ea238475b7beed00b0c3e2f6fc242619c0ceac5f"
+  },
+  {
+    "path": "verification/mc_timer_latency_20261003/native/CodexMCMultiTimer20261003_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact numerical bit/sequence equivalence evidence",
+    "bytes": 14886,
+    "sha256": "7dfe3eeab4636975c1af62b3aea17a25984508e6e5ea22455d14e60da30efc3b"
+  },
+  {
+    "path": "verification/mc_timer_latency_20261003/native/CodexMCMultiTimer20261003_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 100945,
+    "sha256": "4ed006eb899cf99b70fdb1312fbf9abb8025b133ba8c2faaafa9c7ad9b12ea00"
+  },
+  {
+    "path": "verification/mc_timer_latency_20261003/native/CodexMCMultiTimer20261003_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 5341,
+    "sha256": "2707ce67d2f62700928da1991017b76ddb5160a5af8386aa23b931f04b6d4593"
+  },
+  {
+    "path": "verification/mc_timer_latency_20261003/native/CodexMCMultiTimer20261003_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timer_sections.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 189900,
+    "sha256": "057aad9304807f6ffaf335c3e3b40a620c3b6d31dc550fe2bed914a044be9e39"
+  },
+  {
+    "path": "verification/mc_timer_latency_20261003/native/CodexMCMultiTimer20261003_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timer_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 455,
+    "sha256": "0b5a702711d716fde51b8e95510a2ed569b68f42d8cf71d754af541dc504bbf5"
+  },
+  {
+    "path": "verification/mc_timer_latency_20261003/native/CodexMCMultiTimer20261003_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 607,
+    "sha256": "fa9e3fc57b03472964ad5b3cb106f69c881688dcdbf56de0fb37398bc3c3e993"
+  },
+  {
+    "path": "verification/mc_timer_latency_20261003/native/CodexMCMultiTimer20261003_N3_M2_CPU_CONTENTION/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 8742,
+    "sha256": "2d0ce3373d830db11dd4bbe21fbfcafabfb3220c89cba03fe96e68af127a48b1"
+  },
+  {
+    "path": "verification/mc_timer_latency_20261003/native/CodexMCMultiTimer20261003_N3_M2_CPU_CONTENTION/affinity.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 1176,
+    "sha256": "872878c22f8b4cf0d46703c79f033355fb73aeaf0fcfd9d11e37c9b9af808b19"
+  },
+  {
+    "path": "verification/mc_timer_latency_20261003/native/CodexMCMultiTimer20261003_N3_M2_CPU_CONTENTION/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result or explicit blocked attempt identity",
+    "bytes": 429,
+    "sha256": "2c999062ff597fbf546980117fdeaf950bd4fdc735a5f0397e7be52c56733351"
+  },
+  {
+    "path": "verification/mc_timer_latency_20261003/native/CodexMCMultiTimer20261003_N3_M2_CPU_CONTENTION/result.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result or explicit blocked attempt identity",
+    "bytes": 4136,
+    "sha256": "ee45f67868731bae0fac17adc2b47f356a55267d625493a3d8f9ab126e65736e"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/REPORT_JA.md",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical result and measurement provenance",
+    "bytes": 4373,
+    "sha256": "4cddbb7f41738b4a5732c69340e9ee7ad5213944d446686f6ff0784add229083"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/analysis.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical result and measurement provenance",
+    "bytes": 3092,
+    "sha256": "d87b683197fb7a80891191c5dee7dac6844215ed5e95ce709dc3d025c65e761d"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/compile_results.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical result and measurement provenance",
+    "bytes": 223,
+    "sha256": "9739d4ada17faac5dea9f86f60cb3160fab7e902fed088dfdf5571bbf4612f35"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/matrix/manifest.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 17609,
+    "sha256": "b59ea8c6be5d15a27e3ec932c249f9e2eb70d9b3bbd06d83c18a4e14e31beef5"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/matrix/manifest_retry.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 4438,
+    "sha256": "ff86b3e06da5c3583567e6c1b629af05c4a8840686394018f04e7a5613e4b4ee"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_CPU_CONTENTION/affinity.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 1348,
+    "sha256": "78f00630d7f35e5de643b5a20ea01b6e8f8d9bf40db0ce471e392e7c8f22d0f3"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_CPU_CONTENTION/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result or explicit blocked attempt identity",
+    "bytes": 627,
+    "sha256": "ee400a151e625ae0350d9789b4376f8a0caf63bdeac1620fa5cc3b84ef6f8ae6"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_CPU_CONTENTION/owned_cleanup.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 81,
+    "sha256": "af903547ac7c3d675aa355f4a77ee60447cbaa1f800f5142edd024754a7567b0"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_CPU_CONTENTION_R1/affinity.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 1099,
+    "sha256": "45accf04e0cc8b2e9ea52cbe08700d596547c5bd6e89f17f716f5f8c7453b1cd"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_CPU_CONTENTION_R1/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result or explicit blocked attempt identity",
+    "bytes": 595,
+    "sha256": "efb369b1aa2591823c1612ce8091f6d47eda0e03047db60e896f68059170c84d"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_NORMAL/CodexMCV2_20260927Detail_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 49378,
+    "sha256": "fffa98eaca62a35394807f4b87d73a70eaa2120f1d18eb5fb34b074ae3d8514e"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 804381,
+    "sha256": "7868360dc31621baa0b9debe5c4f77a2e3e1176457009d10b6cc8ebace77a15c"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_callbacks.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 170989,
+    "sha256": "65957b54270c9f424e7c29c283c1c35d0430ba27c4cb8c8d0d8665d226939c81"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_events.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 222,
+    "sha256": "c12e76919309146f1b88e42b04b177874d1ff7c2843d62c38debc9a34b39baa1"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_guards.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 17152,
+    "sha256": "3459f283ba5dbe6201c72adc5f6a960ef9cb3295e72ae875b281e624eff1f62f"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_multi_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 1048,
+    "sha256": "13517e5a4a1e5baff672819fdd3b9fad953ec5e04247c85dfa79933855b45ce6"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_replay.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact numerical bit/sequence equivalence evidence",
+    "bytes": 15337,
+    "sha256": "07fc490f1beadb6c909c62b7958dcd72f7d2c6ae4ba45cf23d08d24fa4f57ffd"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_requests.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 100958,
+    "sha256": "bf2efd31a8b31988409249e2feaef9d2f95d060dc16d011c1e887feda3ed7c1f"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_snapshots.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 5409,
+    "sha256": "c02c12dd1648bdf53017464447fa4fcae28f4fa9c5ba6a727ede9d0d2d7fe2e9"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timer_copies.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 374,
+    "sha256": "4728a062340cbe7b3b9d767b0e4984c2be7ac5ef1f5d2e002da0e9d9eba8001a"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timer_sections.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 174982,
+    "sha256": "8aff1771f86e8722eb678a7724da9c9f1bd043320e8921c8a42a7d11c0442f0f"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timer_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 420,
+    "sha256": "3b7cdd0192f3d4e465bb6d0de2f34e7e7e93241e9d65e409d436f3cafab26374"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timing_summary.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 599,
+    "sha256": "8215893f3b96411f68d9af9fd37fcba473801aa4420b9b5786e3325d7b5125be"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_NORMAL/CodexMCV2_20260927_USDJPY_2026.09.14_A2.60_S0.40_timings.csv",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": false,
+    "reason": "retained local execution artifact; excluded from distribution",
+    "bytes": 8719,
+    "sha256": "50b86441bc41babec2511a0dd711a392067d644ae2fe2d156639b3d79cfcd7d9"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_NORMAL/attempt.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result or explicit blocked attempt identity",
+    "bytes": 554,
+    "sha256": "05d067d1766fcfde2fda86cb73a2e4e4f0bd487296914a93b9c705827d0cc0a6"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/native/CodexMCMultiTimerNested20261003_N3_M2_NORMAL/result.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "fresh result or explicit blocked attempt identity",
+    "bytes": 4268,
+    "sha256": "0b015aa18bba8a6e2e45f501dff08f271adbb6bef5bf4404a0bb2502ef45ba94"
+  },
+  {
+    "path": "verification/mc_timer_latency_nested_20261003/validation.json",
+    "classification": "DIAGNOSTIC_ONLY",
+    "include": true,
+    "reason": "compact historical result and measurement provenance",
+    "bytes": 2229,
+    "sha256": "d6aed5d759eca21d452935bef9304d9cc16f63c41ce1357cf18140bfbc767b2c"
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "product_integrity": "PASS",
+  "product_files": 13,
+  "set_integrity": "PASS",
+  "privacy": "PASS",
+  "scanned_files": 1112,
+  "known_private_matches": 0,
+  "generic_credential_matches": 0,
+  "windows_security_changed": false
+}
