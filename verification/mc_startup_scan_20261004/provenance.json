@@ -1,0 +1,28 @@
+{
+  "source_base_head": "0ef79aff415fd9176d53a41b555262c29a5a3aee",
+  "source_file_sha256": {
+    "tools/TesterStartupScanDiag.mqh": "d44133aad1dd559aaf34be88e084b50cf27810d881cd5ccf151878de54b4da1b",
+    "tools/build_tester_startup_scan.py": "03b3a6a815bb7d27f8819164018c7f99abda9c51b13e6d20045ba0da46b6b6f8",
+    "tools/analyze_startup_scan.py": "9d6e7b4ce0e4bdf586ef491153eba041957c09d64f0ad5f28b8a294b7655c362",
+    "tools/prepare_startup_scan.py": "c724cedca2ca8bb06e41cd51b26a6a1aee93b957d55bf9047da18db20972430b",
+    "tests/test_startup_scan.py": "76c31b6a81c8d64a7c61a6b3a0561a7cf3602a292fb2413c1b91c254419b3952"
+  },
+  "final_native_runs": 4,
+  "exploratory_runs": 2,
+  "final_compilation_errors": 0,
+  "final_compilation_warnings": 0,
+  "timing_unit": "microsecond wall elapsed; not thread CPU",
+  "queue_wait": "UNKNOWN",
+  "os_scheduling": "UNKNOWN",
+  "root_cause": "MIXED: first timeseries access in product scan plus independent diagnostic opportunity observer",
+  "root_cause_status": "ON_TIMER_ROOT_CAUSE_PARTIAL",
+  "historical_cpu_leaf_attribution": "NOT_RETROSPECTIVELY_MEASURED",
+  "first_scans_replay": "first_scans.json; one full maximum startup Timer tree per mode",
+  "old_journal_relation": "SEPARATE_CALL_PATH; underlying OS/filesystem commonality UNKNOWN",
+  "product_adoption": false,
+  "main_merge": false,
+  "windows_security_actions": "NONE",
+  "diagnostic_regression_passed": 9,
+  "python_regression_passed": 136,
+  "cli_error_values": "MASKED; synthetic invalid argument regression PASS"
+}

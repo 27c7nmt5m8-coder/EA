@@ -1,0 +1,50 @@
+[
+  {
+    "variant": "minimal",
+    "compiles": [
+      {
+        "mode": 0,
+        "errors": 0,
+        "warnings": 0,
+        "cli_exit": 1,
+        "binary_sha256": "240f38868944ee10e692275c035da48dd9c8f90bbe5fded28073f7e1989cffa2",
+        "log_sha256": "c0df2517730b579f1a7d85b8765eb4bf1e80147aa948d59122791909d361eb7a"
+      },
+      {
+        "mode": 2,
+        "errors": 0,
+        "warnings": 0,
+        "cli_exit": 1,
+        "binary_sha256": "0acc9b484da151173df99972073950c6074aa4128ca78ccc412c3e5dda201616",
+        "log_sha256": "af49126ce89b82849870f31606b9ef9effc19e5c9787e0e961b2cf1e2fc6e857"
+      }
+    ],
+    "cases": 2,
+    "reference_sha256": "b66cd5a18aea9f90fad9e9187284fc084000758088213ef63a51832c8fedf8c1",
+    "source_base_commit": "0ef79aff415fd9176d53a41b555262c29a5a3aee"
+  },
+  {
+    "variant": "detailed",
+    "compiles": [
+      {
+        "mode": 0,
+        "errors": 0,
+        "warnings": 0,
+        "cli_exit": 1,
+        "binary_sha256": "9ecd4fe1f4ac0c6b1d4b60a6e86d5c882f189fa64713e0b335b2dcc5aff65619",
+        "log_sha256": "2f25302b9a88a6c1266ed42f69d2bc0caf80b786c672366882ff174f9d006e31"
+      },
+      {
+        "mode": 2,
+        "errors": 0,
+        "warnings": 0,
+        "cli_exit": 1,
+        "binary_sha256": "957e16097739d3d8a1e730e28ef831d80404131f5806b2c8d0f17ea535306311",
+        "log_sha256": "29faecd77fad15c0ab20313b894ef04526d13dc1d4bbc66d2015440e88ab0fa7"
+      }
+    ],
+    "cases": 2,
+    "reference_sha256": "b66cd5a18aea9f90fad9e9187284fc084000758088213ef63a51832c8fedf8c1",
+    "source_base_commit": "0ef79aff415fd9176d53a41b555262c29a5a3aee"
+  }
+]

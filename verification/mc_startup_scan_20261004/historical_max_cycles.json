@@ -1,0 +1,646 @@
+[
+  {
+    "mode": 0,
+    "load": "NORMAL",
+    "case": "CodexMCMultiAffinity20261004R3_N4_M0_NORMAL",
+    "timer_id": 4,
+    "total_us": 289922,
+    "source_sha256": "a6e32766b7598080170ae947180e03ccda72ffe83c251894632e5b1e6b6db275",
+    "sections": [
+      {
+        "timer_id": "4",
+        "server_s": "1789344000",
+        "start_wall_us": "19090507",
+        "end_wall_us": "19380429",
+        "stage": "maintain",
+        "symbol": "ALL",
+        "duration_us": "16",
+        "total_us": "289922"
+      },
+      {
+        "timer_id": "4",
+        "server_s": "1789344000",
+        "start_wall_us": "19090507",
+        "end_wall_us": "19380429",
+        "stage": "universe",
+        "symbol": "ALL",
+        "duration_us": "0",
+        "total_us": "289922"
+      },
+      {
+        "timer_id": "4",
+        "server_s": "1789344000",
+        "start_wall_us": "19090507",
+        "end_wall_us": "19380429",
+        "stage": "scan",
+        "symbol": "ALL",
+        "duration_us": "289104",
+        "total_us": "289922"
+      },
+      {
+        "timer_id": "4",
+        "server_s": "1789344000",
+        "start_wall_us": "19090507",
+        "end_wall_us": "19380429",
+        "stage": "mc",
+        "symbol": "ALL",
+        "duration_us": "1",
+        "total_us": "289922"
+      },
+      {
+        "timer_id": "4",
+        "server_s": "1789344000",
+        "start_wall_us": "19090507",
+        "end_wall_us": "19380429",
+        "stage": "shadow",
+        "symbol": "ALL",
+        "duration_us": "702",
+        "total_us": "289922"
+      },
+      {
+        "timer_id": "4",
+        "server_s": "1789344000",
+        "start_wall_us": "19090507",
+        "end_wall_us": "19380429",
+        "stage": "dispatch",
+        "symbol": "ALL",
+        "duration_us": "1",
+        "total_us": "289922"
+      },
+      {
+        "timer_id": "4",
+        "server_s": "1789344000",
+        "start_wall_us": "19090507",
+        "end_wall_us": "19380429",
+        "stage": "journal",
+        "symbol": "ALL",
+        "duration_us": "47",
+        "total_us": "289922"
+      },
+      {
+        "timer_id": "4",
+        "server_s": "1789344000",
+        "start_wall_us": "19090507",
+        "end_wall_us": "19380429",
+        "stage": "dashboard",
+        "symbol": "ALL",
+        "duration_us": "51",
+        "total_us": "289922"
+      },
+      {
+        "timer_id": "4",
+        "server_s": "1789344000",
+        "start_wall_us": "19090507",
+        "end_wall_us": "19380429",
+        "stage": "symbol_scan",
+        "symbol": "XAUUSD",
+        "duration_us": "289103",
+        "total_us": "289922"
+      },
+      {
+        "timer_id": "4",
+        "server_s": "1789344000",
+        "start_wall_us": "19090507",
+        "end_wall_us": "19380429",
+        "stage": "scan_maintain",
+        "symbol": "XAUUSD",
+        "duration_us": "18",
+        "total_us": "289922"
+      },
+      {
+        "timer_id": "4",
+        "server_s": "1789344000",
+        "start_wall_us": "19090507",
+        "end_wall_us": "19380429",
+        "stage": "scan_lines",
+        "symbol": "XAUUSD",
+        "duration_us": "65135",
+        "total_us": "289922"
+      },
+      {
+        "timer_id": "4",
+        "server_s": "1789344000",
+        "start_wall_us": "19090507",
+        "end_wall_us": "19380429",
+        "stage": "scan_bar",
+        "symbol": "XAUUSD",
+        "duration_us": "1",
+        "total_us": "289922"
+      },
+      {
+        "timer_id": "4",
+        "server_s": "1789344000",
+        "start_wall_us": "19090507",
+        "end_wall_us": "19380429",
+        "stage": "scan_candidate",
+        "symbol": "XAUUSD",
+        "duration_us": "223947",
+        "total_us": "289922"
+      },
+      {
+        "timer_id": "4",
+        "server_s": "1789344000",
+        "start_wall_us": "19090507",
+        "end_wall_us": "19380429",
+        "stage": "indicator_actual",
+        "symbol": "XAUUSD",
+        "duration_us": "267",
+        "total_us": "289922"
+      },
+      {
+        "timer_id": "4",
+        "server_s": "1789344000",
+        "start_wall_us": "19090507",
+        "end_wall_us": "19380429",
+        "stage": "indicator_observer",
+        "symbol": "XAUUSD",
+        "duration_us": "45763",
+        "total_us": "289922"
+      }
+    ],
+    "top_level_residual_us": 0
+  },
+  {
+    "mode": 0,
+    "load": "CPU_CONTENTION",
+    "case": "CodexMCMultiAffinity20261004R3_N4_M0_CPU_CONTENTION",
+    "timer_id": 3,
+    "total_us": 512207,
+    "source_sha256": "574f2808e949cc6401e6330c59703fd3851310b84ff1fc39c969444f8b45d331",
+    "sections": [
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17421541",
+        "end_wall_us": "17933748",
+        "stage": "maintain",
+        "symbol": "ALL",
+        "duration_us": "19",
+        "total_us": "512207"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17421541",
+        "end_wall_us": "17933748",
+        "stage": "universe",
+        "symbol": "ALL",
+        "duration_us": "0",
+        "total_us": "512207"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17421541",
+        "end_wall_us": "17933748",
+        "stage": "scan",
+        "symbol": "ALL",
+        "duration_us": "511102",
+        "total_us": "512207"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17421541",
+        "end_wall_us": "17933748",
+        "stage": "mc",
+        "symbol": "ALL",
+        "duration_us": "1",
+        "total_us": "512207"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17421541",
+        "end_wall_us": "17933748",
+        "stage": "shadow",
+        "symbol": "ALL",
+        "duration_us": "990",
+        "total_us": "512207"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17421541",
+        "end_wall_us": "17933748",
+        "stage": "dispatch",
+        "symbol": "ALL",
+        "duration_us": "0",
+        "total_us": "512207"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17421541",
+        "end_wall_us": "17933748",
+        "stage": "journal",
+        "symbol": "ALL",
+        "duration_us": "42",
+        "total_us": "512207"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17421541",
+        "end_wall_us": "17933748",
+        "stage": "dashboard",
+        "symbol": "ALL",
+        "duration_us": "53",
+        "total_us": "512207"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17421541",
+        "end_wall_us": "17933748",
+        "stage": "symbol_scan",
+        "symbol": "EURJPY",
+        "duration_us": "511100",
+        "total_us": "512207"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17421541",
+        "end_wall_us": "17933748",
+        "stage": "scan_maintain",
+        "symbol": "EURJPY",
+        "duration_us": "22",
+        "total_us": "512207"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17421541",
+        "end_wall_us": "17933748",
+        "stage": "scan_lines",
+        "symbol": "EURJPY",
+        "duration_us": "142921",
+        "total_us": "512207"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17421541",
+        "end_wall_us": "17933748",
+        "stage": "scan_bar",
+        "symbol": "EURJPY",
+        "duration_us": "2",
+        "total_us": "512207"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17421541",
+        "end_wall_us": "17933748",
+        "stage": "scan_candidate",
+        "symbol": "EURJPY",
+        "duration_us": "368154",
+        "total_us": "512207"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17421541",
+        "end_wall_us": "17933748",
+        "stage": "indicator_actual",
+        "symbol": "EURJPY",
+        "duration_us": "330",
+        "total_us": "512207"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17421541",
+        "end_wall_us": "17933748",
+        "stage": "indicator_observer",
+        "symbol": "EURJPY",
+        "duration_us": "103700",
+        "total_us": "512207"
+      }
+    ],
+    "top_level_residual_us": 0
+  },
+  {
+    "mode": 2,
+    "load": "NORMAL",
+    "case": "CodexMCMultiAffinity20261004R3_N4_M2_NORMAL",
+    "timer_id": 3,
+    "total_us": 288736,
+    "source_sha256": "7b605d8da9526710ae132adbc03bac4b16c8ec4067e77071668dffd357b4b630",
+    "sections": [
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17784767",
+        "end_wall_us": "18073503",
+        "stage": "maintain",
+        "symbol": "ALL",
+        "duration_us": "9",
+        "total_us": "288736"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17784767",
+        "end_wall_us": "18073503",
+        "stage": "universe",
+        "symbol": "ALL",
+        "duration_us": "0",
+        "total_us": "288736"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17784767",
+        "end_wall_us": "18073503",
+        "stage": "scan",
+        "symbol": "ALL",
+        "duration_us": "273292",
+        "total_us": "288736"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17784767",
+        "end_wall_us": "18073503",
+        "stage": "mc",
+        "symbol": "ALL",
+        "duration_us": "2",
+        "total_us": "288736"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17784767",
+        "end_wall_us": "18073503",
+        "stage": "shadow",
+        "symbol": "ALL",
+        "duration_us": "15349",
+        "total_us": "288736"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17784767",
+        "end_wall_us": "18073503",
+        "stage": "dispatch",
+        "symbol": "ALL",
+        "duration_us": "1",
+        "total_us": "288736"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17784767",
+        "end_wall_us": "18073503",
+        "stage": "journal",
+        "symbol": "ALL",
+        "duration_us": "48",
+        "total_us": "288736"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17784767",
+        "end_wall_us": "18073503",
+        "stage": "dashboard",
+        "symbol": "ALL",
+        "duration_us": "35",
+        "total_us": "288736"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17784767",
+        "end_wall_us": "18073503",
+        "stage": "symbol_scan",
+        "symbol": "EURJPY",
+        "duration_us": "273291",
+        "total_us": "288736"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17784767",
+        "end_wall_us": "18073503",
+        "stage": "scan_maintain",
+        "symbol": "EURJPY",
+        "duration_us": "10",
+        "total_us": "288736"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17784767",
+        "end_wall_us": "18073503",
+        "stage": "scan_lines",
+        "symbol": "EURJPY",
+        "duration_us": "75391",
+        "total_us": "288736"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17784767",
+        "end_wall_us": "18073503",
+        "stage": "scan_bar",
+        "symbol": "EURJPY",
+        "duration_us": "2",
+        "total_us": "288736"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17784767",
+        "end_wall_us": "18073503",
+        "stage": "scan_candidate",
+        "symbol": "EURJPY",
+        "duration_us": "197886",
+        "total_us": "288736"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17784767",
+        "end_wall_us": "18073503",
+        "stage": "indicator_actual",
+        "symbol": "EURJPY",
+        "duration_us": "288",
+        "total_us": "288736"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17784767",
+        "end_wall_us": "18073503",
+        "stage": "indicator_observer",
+        "symbol": "EURJPY",
+        "duration_us": "46035",
+        "total_us": "288736"
+      }
+    ],
+    "top_level_residual_us": 0
+  },
+  {
+    "mode": 2,
+    "load": "CPU_CONTENTION",
+    "case": "CodexMCMultiAffinity20261004R3_N4_M2_CPU_CONTENTION",
+    "timer_id": 3,
+    "total_us": 464959,
+    "source_sha256": "afc6b28140c9b5a2924ebfc4197eb6ab4dd1a5ade010b7ed000b1305b54b6b52",
+    "sections": [
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17501548",
+        "end_wall_us": "17966507",
+        "stage": "maintain",
+        "symbol": "ALL",
+        "duration_us": "21",
+        "total_us": "464959"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17501548",
+        "end_wall_us": "17966507",
+        "stage": "universe",
+        "symbol": "ALL",
+        "duration_us": "0",
+        "total_us": "464959"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17501548",
+        "end_wall_us": "17966507",
+        "stage": "scan",
+        "symbol": "ALL",
+        "duration_us": "437422",
+        "total_us": "464959"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17501548",
+        "end_wall_us": "17966507",
+        "stage": "mc",
+        "symbol": "ALL",
+        "duration_us": "2",
+        "total_us": "464959"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17501548",
+        "end_wall_us": "17966507",
+        "stage": "shadow",
+        "symbol": "ALL",
+        "duration_us": "27383",
+        "total_us": "464959"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17501548",
+        "end_wall_us": "17966507",
+        "stage": "dispatch",
+        "symbol": "ALL",
+        "duration_us": "19",
+        "total_us": "464959"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17501548",
+        "end_wall_us": "17966507",
+        "stage": "journal",
+        "symbol": "ALL",
+        "duration_us": "60",
+        "total_us": "464959"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17501548",
+        "end_wall_us": "17966507",
+        "stage": "dashboard",
+        "symbol": "ALL",
+        "duration_us": "52",
+        "total_us": "464959"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17501548",
+        "end_wall_us": "17966507",
+        "stage": "symbol_scan",
+        "symbol": "EURJPY",
+        "duration_us": "437420",
+        "total_us": "464959"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17501548",
+        "end_wall_us": "17966507",
+        "stage": "scan_maintain",
+        "symbol": "EURJPY",
+        "duration_us": "19",
+        "total_us": "464959"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17501548",
+        "end_wall_us": "17966507",
+        "stage": "scan_lines",
+        "symbol": "EURJPY",
+        "duration_us": "137923",
+        "total_us": "464959"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17501548",
+        "end_wall_us": "17966507",
+        "stage": "scan_bar",
+        "symbol": "EURJPY",
+        "duration_us": "1",
+        "total_us": "464959"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17501548",
+        "end_wall_us": "17966507",
+        "stage": "scan_candidate",
+        "symbol": "EURJPY",
+        "duration_us": "299477",
+        "total_us": "464959"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17501548",
+        "end_wall_us": "17966507",
+        "stage": "indicator_actual",
+        "symbol": "EURJPY",
+        "duration_us": "313",
+        "total_us": "464959"
+      },
+      {
+        "timer_id": "3",
+        "server_s": "1789344000",
+        "start_wall_us": "17501548",
+        "end_wall_us": "17966507",
+        "stage": "indicator_observer",
+        "symbol": "EURJPY",
+        "duration_us": "62114",
+        "total_us": "464959"
+      }
+    ],
+    "top_level_residual_us": 0
+  }
+]
