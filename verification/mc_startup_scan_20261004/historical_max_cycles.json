@@ -158,7 +158,8 @@
         "total_us": "289922"
       }
     ],
-    "top_level_residual_us": 0
+    "top_level_residual_us": 0,
+    "nested_scan_residual_us": 2
   },
   {
     "mode": 0,
@@ -319,7 +320,8 @@
         "total_us": "512207"
       }
     ],
-    "top_level_residual_us": 0
+    "top_level_residual_us": 0,
+    "nested_scan_residual_us": 1
   },
   {
     "mode": 2,
@@ -480,7 +482,8 @@
         "total_us": "288736"
       }
     ],
-    "top_level_residual_us": 0
+    "top_level_residual_us": 0,
+    "nested_scan_residual_us": 2
   },
   {
     "mode": 2,
@@ -641,6 +644,7 @@
         "total_us": "464959"
       }
     ],
-    "top_level_residual_us": 0
+    "top_level_residual_us": 0,
+    "nested_scan_residual_us": 0
   }
 ]

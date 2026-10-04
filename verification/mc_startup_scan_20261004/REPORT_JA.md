@@ -17,7 +17,7 @@
 |NORMAL / 2|3 / EURJPY|288.736|273.292|75.391|197.886|0.002|15.349|0.048|0|
 |CPU_CONTENTION / 2|3 / EURJPY|464.959|437.422|137.923|299.477|0.002|27.383|0.060|0|
 
-line/candidate内のCopyBufferはnestedであり加算しない。Symbol scanの子4区間との差は各2us。トップ8区間はtotalと完全一致。startup Cycle1..4は同一server time1789344000で各Symbol初回scan。旧419.624msはJournal/FileMove（416.977ms）であり別call path。共通OS/I/O原因は未証明。
+line/candidate内のCopyBufferはnestedであり加算しない。Symbol scanの子4区間との差はNORMAL各2us、CPU20kは1us、CPU500kは0us。トップ8区間はtotalと完全一致。startup Cycle1..4は同一server time1789344000で各Symbol初回scan。旧419.624msはJournal/FileMove（416.977ms）であり別call path。共通OS/I/O原因は未証明。
 
 ## 新しいNORMAL初回scanのexclusive内訳
 
