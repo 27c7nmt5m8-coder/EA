@@ -6,7 +6,7 @@ from pathlib import Path
 import re
 import sys
 
-from .context import build_bundle, build_context_packet, expand_context_packet, is_current, digest
+from .context import build_bundle, build_context_packet, expand_context_packet, is_current, digest, git
 from .telemetry import capture, validate_event, summarize_events
 from .triage import route, call_jev, mandatory_reasons, policy
 from .report import summarize
@@ -77,6 +77,37 @@ def main(argv=None):
     p.add_argument('--question', action='append', default=[])
     p.add_argument('--complex-work', action='store_true')
     p.add_argument('--fork-turns', default='none', help='String none, or role-bounded positive turn count; all is incompatible with overrides on this host')
+    p = sub.add_parser('retention-receipt', help='Record explicitly confirmed full delivery to a continuing recipient')
+    p.add_argument('packet'); p.add_argument('--recipient', required=True)
+    p.add_argument('--continuity', required=True); p.add_argument('--acknowledgement', required=True)
+    p.add_argument('--role', choices=['worker', 'explorer', 'researcher'], required=True)
+    p.add_argument('--observed-model', required=True); p.add_argument('--observed-effort', required=True)
+    p.add_argument('--possession-confirmed', action='store_true')
+    p = sub.add_parser('resume-request', help='Generate continuing-recipient delta or fresh full fallback; never resumes a reviewer')
+    p.add_argument('bundle'); p.add_argument('--prior', required=True); p.add_argument('--receipt', required=True)
+    p.add_argument('--recipient', required=True); p.add_argument('--continuity', required=True)
+    p.add_argument('--role', choices=['worker', 'explorer', 'researcher', 'reviewer'], required=True)
+    p.add_argument('--task-name', required=True); p.add_argument('--spec-file', required=True)
+    p.add_argument('--test-evidence'); p.add_argument('--question', action='append', default=[])
+    p.add_argument('--complex-work', action='store_true'); p.add_argument('--expand-context', action='store_true')
+    for command in ('attestation-identity', 'attestation-record', 'attestation-lookup'):
+        p = sub.add_parser(command, help='Exact completed independent review evidence; never review skip')
+        p.add_argument('bundle'); p.add_argument('--spec-file', required=True)
+        p.add_argument('--test-evidence', required=True); p.add_argument('--instruction-version', required=True)
+        p.add_argument('--question', action='append', default=[])
+        p.add_argument('--reviewer-effort', choices=['high', 'xhigh'], default='high')
+        p.add_argument('--escalation')
+        if command == 'attestation-record':
+            p.add_argument('--review', required=True); p.add_argument('--host-receipt', required=True)
+    p = sub.add_parser('verification-manifest', help='Acquire original runner result and log references')
+    p.add_argument('record'); p.add_argument('--log', action='append', default=[])
+    p.add_argument('--evidence-kind', choices=['runner_result', 'raw_log'], default='runner_result')
+    p = sub.add_parser('verification-context', help='Reacquire originals; manifest only for verified consistent PASS')
+    p.add_argument('manifest'); p.add_argument('--current', required=True)
+    for flag in ('reviewer-request', 'xhigh', 'blocked-judgment', 'unexplained'):
+        p.add_argument('--' + flag, action='store_true')
+    p = sub.add_parser('optimization-measurement', help='Numeric metrics only; null with missing reasons; no cohort inflation')
+    p.add_argument('record')
     p = sub.add_parser('triage'); p.add_argument('bundle'); p.add_argument('--test-evidence'); p.add_argument('--live-jev', action='store_true')
     p = sub.add_parser('report'); p.add_argument('rows')
     p = sub.add_parser('decompose'); p.add_argument('rows')
@@ -125,6 +156,67 @@ def main(argv=None):
                                       verification=verification, complex_work=args.complex_work,
                                       fork_turns=args.fork_turns)
         path = output(root, 'spawn-request.json', request)
+    elif args.command == 'retention-receipt':
+        from .resume import retention_receipt
+        receipt = retention_receipt(root, load_packet_evidence(args.packet),
+            recipient_id=args.recipient, continuity_id=args.continuity,
+            acknowledgement_id=args.acknowledgement, role=args.role,
+            model=args.observed_model, reasoning_effort=args.observed_effort,
+            possession_confirmed=args.possession_confirmed)
+        path = output(root, 'retention-receipt.json', receipt)
+    elif args.command == 'resume-request':
+        from .resume import build_resume_request
+        request = build_resume_request(root, args.role, args.task_name, load_packet_evidence(args.bundle),
+            recipient_id=args.recipient, continuity_id=args.continuity,
+            prior=load_packet_evidence(args.prior), receipt=load_packet_evidence(args.receipt),
+            specification=Path(args.spec_file).read_text(encoding='utf-8'),
+            repository_rules=(root / 'AGENTS.md').read_text(encoding='utf-8'),
+            unresolved_questions=args.question,
+            verification=load_packet_evidence(args.test_evidence) if args.test_evidence else None,
+            complex_work=args.complex_work, context_expansion_requested=args.expand_context)
+        path = output(root, 'resume-request.json', request)
+    elif args.command.startswith('attestation-'):
+        from .attestation import build_identity, create_attestation, save_attestation, lookup_attestation
+        bundle = load_packet_evidence(args.bundle)
+        inputs = dict(specification=Path(args.spec_file).read_text(encoding='utf-8'),
+            repository_rules=(root / 'AGENTS.md').read_text(encoding='utf-8'),
+            verification=load_packet_evidence(args.test_evidence), unresolved_questions=args.question,
+            instruction_version=args.instruction_version, reviewer_effort=args.reviewer_effort,
+            escalation=load_packet_evidence(args.escalation) if args.escalation else None)
+        cache = output_path(root, 'attestations')
+        if args.command == 'attestation-identity':
+            result = build_identity(root, bundle, **inputs)
+        elif args.command == 'attestation-record':
+            result = create_attestation(root, bundle, load_packet_evidence(args.review),
+                                        load_packet_evidence(args.host_receipt), **inputs)
+            save_attestation(cache, result)
+        else:
+            result = lookup_attestation(cache, root, bundle, **inputs)
+        path = output(root, args.command + '.json', result)
+    elif args.command == 'verification-manifest':
+        from .verification_context import build_verification_manifest
+        result = build_verification_manifest(root, args.record, log_paths=args.log,
+                                            evidence_kind=args.evidence_kind)
+        path = output(root, 'verification-manifest.json', result)
+    elif args.command == 'verification-context':
+        from .verification_context import verification_transport
+        current = load_packet_evidence(args.current)
+        if not isinstance(current, dict):
+            raise ValueError('actual_verification_context_required')
+        current = dict(current, source=git(root, 'rev-parse', 'HEAD').decode().strip(),
+                       tree=git(root, 'rev-parse', 'HEAD^{tree}').decode().strip())
+        dirty = bool(git(root, 'status', '--porcelain=v1', '-z', '--', '.',
+                         ':(exclude).workflow-eval', ':(exclude).validation'))
+        result = verification_transport(root, load_packet_evidence(args.manifest),
+            current=current, reviewer_request=args.reviewer_request,
+            xhigh=args.xhigh, blocked_judgment=args.blocked_judgment,
+            unexplained=args.unexplained or dirty)
+        path = output(root, 'verification-context.json', result)
+    elif args.command == 'optimization-measurement':
+        from .optimization_telemetry import measurement
+        row = load_packet_evidence(args.record)
+        task_id, repo = row.pop('task_id'), row.pop('repository')
+        path = output(root, 'optimization-measurement.json', measurement(task_id, repo, **row))
     elif args.command == 'triage':
         bundle = load(args.bundle)
         test = load(args.test_evidence) if args.test_evidence else {}

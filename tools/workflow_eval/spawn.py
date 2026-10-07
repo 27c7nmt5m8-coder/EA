@@ -8,6 +8,7 @@ host. Recheck the host contract before using this adapter on another host.
 """
 import json
 import re
+from .serialization import canonical_json
 
 from .context import build_context_packet, expand_context_packet, _safe_evidence
 from .triage import ACTIVE_SOL_MODEL, PROTECTED
@@ -83,4 +84,4 @@ def build_spawn_request(root, role, task_name, bundle, *, specification,
         payload['instructions'].append('Read-only: do not modify files or external state.')
     return dict(task_name=task_name, model=ACTIVE_SOL_MODEL, reasoning_effort=effort,
                 fork_turns=fork_turns,
-                message=json.dumps(payload, ensure_ascii=False, allow_nan=False))
+                message=canonical_json(payload))
