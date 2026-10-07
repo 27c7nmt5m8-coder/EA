@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import re
 import subprocess
+from .serialization import canonical_json
 
 
 def digest(value):
@@ -296,8 +297,7 @@ def _verification_digest(verification):
         return None
     if not isinstance(verification, dict):
         raise ValueError('invalid_verification')
-    raw = json.dumps(verification, ensure_ascii=False, sort_keys=True,
-                     separators=(',', ':'), allow_nan=False)
+    raw = canonical_json(verification)
     _safe_evidence(verification)
     summary = {}
     for key in VERIFY_SCALARS | {'gates'}:
