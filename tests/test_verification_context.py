@@ -18,12 +18,14 @@ class VerificationContextTests(unittest.TestCase):
                            command=['python', 'check.py'], platform='fictional-local',
                            toolchain={'python': '3.12'}, exit_code=0, status='PASS',
                            passed=3, failed=0, warnings=[], ci_identity=None,
-                           equivalence='LOCAL_ONLY', recorded_at='2026-10-07T00:00:00Z', log_paths=['check.log'])
+                           equivalence='LOCAL_ONLY', recorded_at='2026-10-07T00:00:00Z', log_paths=['check.log'],
+                           protected=False, dependency='known')
         self.log = 'Check one passed\nCheck two passed\nCheck three passed\n'
         self.write_record()
         (self.root / 'check.log').write_bytes(self.log.encode('utf-8'))
         self.current = {k: copy.deepcopy(self.record[k]) for k in
-                        ('source', 'tree', 'scope', 'command', 'platform', 'toolchain', 'equivalence')}
+                        ('source', 'tree', 'scope', 'command', 'platform', 'toolchain', 'equivalence',
+                         'protected', 'dependency')}
 
     def write_record(self):
         (self.root / 'result.json').write_text(json.dumps(self.record), encoding='utf-8')
@@ -45,6 +47,66 @@ class VerificationContextTests(unittest.TestCase):
         self.assertEqual(manifest['artifacts'][1]['sha256'], hashlib.sha256(self.log.encode()).hexdigest())
         self.assertEqual((self.root / 'check.log').read_text(), self.log)
         self.assertIn('ci_identity', manifest['missing_reasons'])
+
+    def test_declared_nested_failures_warnings_or_missing_evidence_expand(self):
+        contradictions = [dict(failed=1), dict(exit_code=1), dict(exit_code=False),
+            dict(passed=-1), dict(warnings=[{'material': True, 'text': 'Check unavailable'}]),
+            dict(warnings=['Unknown diagnostic']), dict(stale=True), dict(stale_evidence=True),
+            dict(acquired=False), dict(missing_context_ids=['missing-note']),
+            dict(missing_context_count=1)]
+        for bad in contradictions:
+            for nested in (False, True):
+                with self.subTest(bad=bad, nested=nested):
+                    record = copy.deepcopy(self.record)
+                    if nested:
+                        record['details'] = dict(status='PASS', **bad)
+                    else:
+                        record.update(bad)
+                    (self.root / 'result.json').write_text(json.dumps(record), encoding='utf-8')
+                    result = self.transport()
+                    self.assertEqual(result['route'], 'original')
+                    self.assertFalse(result['verified_pass'])
+                    self.assertEqual(len(result['originals']), 2)
+
+    def test_missing_or_invalid_timestamp_expands_original(self):
+        for timestamp in (None, '', 'not-a-timestamp', '2026-10-07T00:00:00'):
+            with self.subTest(timestamp=timestamp):
+                self.record['recorded_at'] = timestamp
+                self.write_record()
+                result = self.transport()
+                self.assertEqual(result['route'], 'original')
+                self.assertFalse(result['verified_pass'])
+
+    def test_nested_check_source_mismatch_expands_original(self):
+        for field in ('source', 'commit', 'tree'):
+            for container in ('details', 'checks'):
+                with self.subTest(field=field, container=container):
+                    record = copy.deepcopy(self.record)
+                    check = dict(status='PASS', exit_code=0, **{field: 'c' * 40})
+                    record[container] = [check] if container == 'checks' else check
+                    (self.root / 'result.json').write_text(json.dumps(record), encoding='utf-8')
+                    result = self.transport()
+                    self.assertEqual(result['route'], 'original')
+                    self.assertFalse(result['verified_pass'])
+
+    def test_timestamped_diagnostics_and_counts_expand_without_changing_original(self):
+        for diagnostic in ('FAILED (failures=1)', 'WARNING: Check unavailable', 'Ran 9 tests\nOK'):
+            with self.subTest(diagnostic=diagnostic):
+                text = '2026-10-07T00:00:00.1234567Z ' + diagnostic + '\n'
+                (self.root / 'check.log').write_bytes(text.encode('utf-8'))
+                result = self.transport()
+                self.assertEqual(result['route'], 'original')
+                self.assertFalse(result['verified_pass'])
+                self.assertEqual(result['originals'][1]['text'], text)
+
+    def test_protected_unknown_or_unclassified_scope_uses_original(self):
+        for protected, dependency in ((True, 'known'), (False, 'unknown'), (None, None)):
+            with self.subTest(protected=protected, dependency=dependency):
+                self.record.update(protected=protected, dependency=dependency)
+                self.write_record()
+                result = self.transport()
+                self.assertEqual(result['route'], 'original')
+                self.assertFalse(result['verified_pass'])
 
     def test_all_expansion_demands_retain_manifest_and_full_originals(self):
         for option in ('reviewer_request', 'xhigh', 'blocked_judgment', 'unexplained'):

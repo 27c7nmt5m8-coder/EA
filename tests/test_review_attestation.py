@@ -114,6 +114,36 @@ class ReviewAttestation(unittest.TestCase):
         (self.cache / (original_key + '.json')).write_text(canonical_json(value), encoding='utf-8')
         self.assertFalse(self.m.lookup_attestation(self.cache, self.root, self.bundle, **self.args)['hit'])
 
+    def test_original_nested_failure_or_missing_evidence_cannot_attest(self):
+        original = copy.deepcopy(self.args['verification'])
+        contradictions = [dict(failed=1), dict(exit_code=1),
+            dict(warnings=[{'material': True, 'text': 'Check unavailable'}]),
+            dict(stale=True), dict(stale_evidence=True), dict(acquired=False),
+            dict(missing_context_ids=['missing-note']), dict(commit='c' * 40),
+            dict(source='c' * 40), dict(tree='c' * 40)]
+        for bad in contradictions:
+            with self.subTest(bad=bad):
+                self.args['verification'] = copy.deepcopy(original)
+                self.args['verification']['details'] = dict(status='PASS', **bad)
+                self.refresh_original()
+                with self.assertRaises(ValueError):
+                    self.create()
+                result = self.m.lookup_attestation(self.cache, self.root, self.bundle, **self.args)
+                self.assertFalse(result['hit'])
+                self.assertTrue(result['full_review_required'])
+
+    def test_timestamped_failure_warning_and_count_mismatch_cannot_attest(self):
+        self.args['verification'].update(passed=1, failed=0)
+        for diagnostic in ('FAILED (failures=1)', 'WARNING: Check unavailable', 'Ran 9 tests\nOK'):
+            with self.subTest(diagnostic=diagnostic):
+                (self.root / self.log_path).write_text('2026-10-07T00:00:00Z ' + diagnostic,
+                                                      encoding='utf-8')
+                log = self.artifact(self.log_path, 'log')
+                self.args['verification']['checks'][0]['artifacts'] = [log]
+                self.refresh_original()
+                with self.assertRaises(ValueError):
+                    self.create()
+
     def lookup(self, **overrides):
         return self.m.lookup_attestation(self.cache, self.root, self.bundle,
                                          **dict(self.args, **overrides))

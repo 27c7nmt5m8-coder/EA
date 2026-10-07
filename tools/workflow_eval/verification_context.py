@@ -7,6 +7,7 @@ manifest/hash alone never certifies PASS. Raw logs can contradict a runner
 record but cannot establish successful execution or counts.
 """
 import copy
+from datetime import datetime
 import hashlib
 import json
 from pathlib import Path
@@ -18,8 +19,9 @@ from .serialization import canonical_json
 
 FIELDS = ('source', 'tree', 'scope', 'command', 'platform', 'toolchain',
           'exit_code', 'status', 'passed', 'failed', 'warnings', 'ci_identity',
-          'equivalence', 'recorded_at')
-CURRENT_FIELDS = ('source', 'tree', 'scope', 'command', 'platform', 'toolchain', 'equivalence')
+          'equivalence', 'recorded_at', 'protected', 'dependency')
+CURRENT_FIELDS = ('source', 'tree', 'scope', 'command', 'platform', 'toolchain',
+                  'equivalence', 'protected', 'dependency')
 MANIFEST_FIELDS = set(FIELDS) | {'schema_version', 'evidence_kind', 'artifacts', 'missing_reasons'}
 STATES = {'PASS', 'FAIL', 'BLOCKED', 'UNKNOWN', 'NOT_RUN', 'INCOMPLETE', 'DELEGATED_TO_CI'}
 
@@ -129,23 +131,74 @@ def _sha(value):
     return isinstance(value, str) and re.fullmatch(r'[0-9a-f]{40}', value) is not None
 
 
-def _nested_problems(value):
+def _nested_problems(value, source=None, tree=None):
     if isinstance(value, dict):
+        if source is None:
+            source = value.get('source', value.get('commit'))
+        if tree is None:
+            tree = value.get('tree')
         for name, item in value.items():
+            expected = source if name in ('source', 'commit') else tree if name == 'tree' else None
+            if expected is not None and canonical_json(item) != canonical_json(expected):
+                yield 'contradictory_nested_source'
             if name in ('status', 'full_gate') and item != 'PASS':
                 yield 'contradictory_nested_status'
-            if name in ('unexplained', 'material_uncertainty', 'missing_evidence', 'blocked_judgment') and item is not False:
+            if name in ('unexplained', 'material_uncertainty', 'missing_evidence', 'blocked_judgment',
+                        'stale', 'stale_evidence') and item is not False:
                 yield 'unresolved_record_evidence'
-            yield from _nested_problems(item)
+            if name in ('exit_code', 'failed', 'missing_context_count') and (
+                    type(item) is not int or item != 0):
+                yield 'contradictory_nested_failure_or_missing_context'
+            if name == 'passed' and (type(item) is not int or item < 0):
+                yield 'invalid_nested_count'
+            if name == 'warnings' and (not isinstance(item, list) or any(
+                    not isinstance(w, dict) or w.get('material') is not False
+                    or not isinstance(w.get('text'), str) for w in item)):
+                yield 'material_or_unclassified_nested_warning'
+            if name == 'missing_context_ids' and item != []:
+                yield 'missing_record_context'
+            if name == 'acquired' and item is not True:
+                yield 'unacquired_record_evidence'
+            if name == 'protected' and item is not False:
+                yield 'protected_or_uncertain_record_scope'
+            if name == 'dependency' and item != 'known':
+                yield 'unknown_record_dependency'
+            yield from _nested_problems(item, source, tree)
     elif isinstance(value, list):
         for item in value:
-            yield from _nested_problems(item)
+            yield from _nested_problems(item, source, tree)
+
+
+def _log_problems(text, passed=None, failed=None):
+    # Recognize the transport prefix used by GitHub Actions without modifying
+    # the original artifact or interpreting successful log text as proof.
+    text = re.sub(r'(?m)^\s*\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}'
+                  r'(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})\s+', '', text)
+    if re.search(r'(?im)^\s*(?:FAIL(?:ED|URE)?|ERROR|BLOCKED|WARNING)\b', text):
+        yield 'unexplained_log_diagnostic'
+    if type(passed) is int and type(failed) is int:
+        totals = re.findall(r'(?im)^\s*Ran (\d+) tests?\b', text)
+        counts = re.findall(r'(?i)\b(passed|failed)\s*[:=]\s*(\d+)\b', text)
+        if any(int(n) != passed + failed for n in totals) or any(
+                int(n) != (passed if label.lower() == 'passed' else failed) for label, n in counts):
+            yield 'log_count_mismatch'
 
 
 def _result_reasons(record, metadata, logs):
     reasons = []
     if record is None:
         return ['missing_structured_runner_evidence']
+    try:
+        timestamp = metadata['recorded_at']
+        if not isinstance(timestamp, str) or not timestamp.strip():
+            raise ValueError('timestamp_missing')
+        recorded = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+        if recorded.tzinfo is None or recorded.utcoffset() is None:
+            raise ValueError('timestamp_timezone_unknown')
+    except (ValueError, TypeError, OverflowError):
+        reasons.append('missing_or_invalid_record_timestamp')
+    if metadata['protected'] is not False or metadata['dependency'] != 'known':
+        reasons.append('protected_unknown_or_unclassified_scope')
     if metadata['status'] not in STATES or metadata['status'] != 'PASS':
         reasons.append('result_not_pass')
     if type(metadata['exit_code']) is not int or metadata['exit_code'] != 0:
@@ -196,14 +249,7 @@ def _result_reasons(record, metadata, logs):
     # Diagnostic recognition is conservative and negative-only. No parsed log
     # string, including an OK line, can establish counts or PASS.
     for text in logs:
-        if re.search(r'(?im)^\s*(?:FAIL(?:ED|URE)?|ERROR|BLOCKED|WARNING)\b', text):
-            reasons.append('unexplained_log_diagnostic')
-        if type(passed) is int and type(failed) is int:
-            totals = re.findall(r'(?im)^\s*Ran (\d+) tests?\b', text)
-            counts = re.findall(r'(?i)\b(passed|failed)\s*[:=]\s*(\d+)\b', text)
-            if any(int(n) != passed + failed for n in totals) or any(
-                    int(n) != (passed if label.lower() == 'passed' else failed) for label, n in counts):
-                reasons.append('log_count_mismatch')
+        reasons.extend(_log_problems(text, passed, failed))
     return reasons
 
 

@@ -171,6 +171,15 @@ circular self-hash. Lookup reacquires every declared original and checks exact
 bytes/types; missing or changed artifacts require full review. An acquisition
 flag or digest without the original bodies cannot establish reusable evidence.
 
+Original declared failures, nonzero/unknown exit codes, material/unknown warnings,
+stale flags and missing-context assertions are checked recursively, including
+inside otherwise PASS checks. Nested source/tree identities and timestamp-prefixed
+log diagnostics/counts are also checked. Any contradiction forces original/full review.
+Manifest-only transport also requires a valid timezone-aware `recorded_at`;
+missing/invalid timestamps expand originals rather than inventing freshness.
+The trusted runner record and actual current scope must explicitly agree on
+`protected=false` and `dependency=known`; absent/uncertain classification expands originals.
+
 Metadata-only commit reuse additionally requires original verification declaring
 `source_equivalence=git_tree_exact`, `commit_sensitive=false` and Git-proven equal
 source trees. Never label commit-sensitive CI evidence this way. Base/diff/spec/

@@ -32,7 +32,7 @@ import tempfile
 from . import context
 from .serialization import canonical_hash, canonical_json
 from .triage import ACTIVE_SOL_MODEL, PROTECTED, policy, review_effort
-from .verification_context import _read, _record, _nested_problems
+from .verification_context import _read, _record, _nested_problems, _log_problems
 
 SCHEMA_VERSION = 1
 MAX_CACHE_BYTES = 2 * 1024 * 1024
@@ -142,9 +142,12 @@ def _acquire_artifacts(root, record):
                 or len(raw) != artifact['size_bytes']):
             raise ValueError('original_verification_artifact_unavailable_or_mismatched')
         observed[name] = text
-        if artifact['role'] == 'log' and re.search(
-                r'(?im)^\s*(?:FAIL(?:ED|URE)?|ERROR|BLOCKED|WARNING)\b', text):
+        if artifact['role'] == 'log' and list(_log_problems(text, record.get('passed'), record.get('failed'))):
             raise ValueError('contradictory_original_verification_log')
+    for check in record['checks']:
+        for reference in check['artifacts']:
+            if list(_log_problems(observed[reference['path']], check.get('passed'), check.get('failed'))):
+                raise ValueError('contradictory_original_check_log')
     original = _record(observed[record_names[0]])
     expected = {key: value for key, value in record.items() if key != 'artifacts'}
     if original is None or canonical_json(original) != canonical_json(expected):
