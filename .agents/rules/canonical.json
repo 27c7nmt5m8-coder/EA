@@ -1,0 +1,246 @@
+{
+  "schema_version": 1,
+  "rule_version": "phase2a-1",
+  "rules": {
+    "RULE_AUTHORITY": {
+      "id": "RULE_AUTHORITY",
+      "body": "Within system/developer instructions and execution permissions, prioritize the current explicit request, then EA safety/quality rules, then general skills. Do not infer scope or permission to change safeguards. Resolve minor uncertainty with evidence and a minimum change, reporting assumptions; do not reconfirm authorized work. Ask about unapproved trading specifications, destructive changes or unresolved choices that materially change the outcome while continuing independent investigation. Report significant out-of-scope defects without fixing them. For rule-driven stop/confirmation/deviation, cite the file and exact rule and distinguish environment/permission limitations. Repository-specific stricter safety/review floors remain authoritative unless the current user explicitly authorizes their migration. Use skills only for suitable work; do not add generic plan approval or repeated full-suite gates above the request.",
+      "body_sha256": "d385ae470e74d1d8af3d3d54b7ce696c19c8da80a80a9182047c9846758b0617",
+      "requires": []
+    },
+    "RULE_EVIDENCE_FIRST": {
+      "id": "RULE_EVIDENCE_FIRST",
+      "body": "Inspect the request and changed target, actual Git state/diff/search, related functions/sections and validation, then relevant history/dependencies as evidence requires. Expand for necessary checks, including full files; do not automatically reread all repository/docs/skills/history or repeatedly run the full suite during intermediate edits. Current repository/Git state is authoritative, not old PR numbers, SHAs or chat versions. Do not store transient PR/SHA/diagnostic states in AGENTS; consolidate outdated/duplicate guidance without deleting safety rules. Prefer Git/filesystem/compiler/type-checker/linter/formatter/test-runner/code for repository/existence/build/types/style/tests/numerical facts. Model or Jev judgment never substitutes for a provable fact or deterministic validation.",
+      "body_sha256": "9c488770102b4052883ff61c2bb6586c6d14de7bf0bdefdc1ce327c5a1779656",
+      "requires": []
+    },
+    "RULE_EA_SPECIFICATION": {
+      "id": "RULE_EA_SPECIFICATION",
+      "body": "Treat src main, Worker and all headers as one MQL5 distribution. README_JA.md defines exact behavior/version, VALIDATION_JA.md defines checks and limits, CHANGELOG.md records history. Without explicit requested specification changes, preserve trading behavior and compatibility: trading direction/M1 Entry/Exit/Signal, pattern selection/requirements/PatternScore/conflict/structure reuse prevention; MTF/Trend/MACD/Score thresholds; indicators/UI/inputs; spread/cost gates; SL/TP/BE/trailing, lot/risk modes; orders/closes, duplicate prevention, ownership/Magic/Symbol, Netting/Hedging; Worker protocol/JSON schema/AI timeout/expiry/price drift/FailOpen; persistence/state/saved keys/logs/CSV contracts. Worker must never place orders. Source changes require checking main/Worker/all headers/inputs/saved keys/logs/migration effects. Prefer real MQL5 behavior over mocks; correct an inconsistent mock and never alter product specifications merely to pass a test. Formal specification changes require repository evidence and explicit user authorization where required.",
+      "body_sha256": "95e51d3cba9180b08d4a27dd89aede65c84f5bdf56d55f1380d9a62c02043a53",
+      "requires": []
+    },
+    "RULE_PROTECTED_FAIL_CLOSED": {
+      "id": "RULE_PROTECTED_FAIL_CLOSED",
+      "body": "Never weaken Risk/Safety or bypass protected gates: Monte Carlo, total portfolio risk, Fintokei protection, symbol/account state separation, ownership/order constraints, unresolved-order halt, mutex/owner lock, safety-state persistence, analytics-log failure isolation from trading decisions, PositionIdentifier matching and initial risk R. README defines exact values/conditions. High-risk includes authentication/authorization, credentials, security boundaries, destruction/deletion, migrations/data integrity, concurrency, cryptography, payments, production-critical/major architecture, and EA/financial/live-trading/order/lot/risk/spread-cost/SL/TP/BE/trailing/Worker/FailOpen/price-drift/ownership/duplicate/mutex safety work. Protected/critical/high-risk/EA/financial/order/safety tasks require deterministic verification and mandatory review; no review skip or Jev final approval. Increase deterministic depth before effort; Sol High first and independent High where required. Protected task/context uncertainty fails closed: do not approve incomplete evidence or lower a floor. High-risk status alone does not mandate xHigh or Astra; bounded deterministic bulk subtasks may use Luna only with checked results. Do not downgrade an active task if accumulated context or unresolved risk would be lost.",
+      "body_sha256": "2500e1f4808d2103bb4dcc98695aa7dac0252287f1e22007ae88d5abe979b6aa",
+      "requires": []
+    },
+    "RULE_NO_LIVE_ORDER": {
+      "id": "RULE_NO_LIVE_ORDER",
+      "body": "Never place orders on a live account. PR creation is not authorization for merging or live-account deployment.",
+      "body_sha256": "5fde7e36162f83f52b1c8b693e03b302719df89d6af95776214f7fb98b1d6925",
+      "requires": []
+    },
+    "RULE_SECURITY": {
+      "id": "RULE_SECURITY",
+      "body": "Never expose, print, log, persist or commit TYPESAFE_API_KEY or any secret credential, API key, account information or real trading logs in prompts/stdout/logs/reports/source/diffs/screenshots/fixtures/CI/artifacts/commits/PR descriptions/reviews. Communication fixtures use fictional values. Use approved secret management; web-app API credentials remain server-side. Before external Jev calls, minimize/redact and screen the payload; send no full repository/unrelated files/chat history/unnecessary source. Skip Jev when safe minimization is uncertain. Never weaken the sensitive-evidence scanner or drop required files to force packet acceptance; retrieve/inspect originals through an authorized safe local path and report failed helper transport. Synthetic credential/email-pattern rejection and direct host probe/fixture acceptance do not prove real repository-diff transport.",
+      "body_sha256": "4a07ff685c5ed840358ea8d66deb8d3716cfaad3d1d64db1b85722129b3bd442",
+      "requires": []
+    },
+    "RULE_UNKNOWN_DEPENDENCY_FAIL_CLOSED": {
+      "id": "RULE_UNKNOWN_DEPENDENCY_FAIL_CLOSED",
+      "body": "Unknown dependencies are investigation tasks, never known-none or evidence of completed review. Acquire all relevant dependencies and missing required context, rebuild the bundle and expand unresolved handles; do not silently approve incomplete/missing/stale evidence. Context savings never justify omitting necessary evidence, dependency investigation or mandatory review.",
+      "body_sha256": "c9c3f4ac56bce18508712d8f92688e89621d8b8d6802f9fb763ab586c73a35f2",
+      "requires": []
+    },
+    "RULE_CONTEXT_FULL": {
+      "id": "RULE_CONTEXT_FULL",
+      "body": "Use tools.workflow_eval.context content-addressed Agent Context Packets for nontrivial transfer when practical. Include task, actual diff, full changed/protected bodies required for judgment, needed dependency bodies, relevant specification and repository rules, protected/dependency state, verification originals/digest/logs, unresolved questions, base/head SHAs and content hashes. Changed files retain full body; fresh recipients/reviewers/workers receive full expanded text before deciding. Reuse only unchanged relevant text with exact current SHA and matching body plus explicit assertion this recipient retains prior full text; a prior handle alone never proves possession. Protected work, unknown dependencies, stale bundle/evidence or unresolved expansion disables reuse. --recipient-has-content is only for such existing recipients, never fresh review/worker. Expand any handle required for uncertainty. Packet compression changes transport only, never model/effort floors, dependency breadth, review or deterministic validation.",
+      "body_sha256": "c498ed92c99c9b913b379d4e71dec030b80f0a4d2d089f5fd742b4b56b6c2056",
+      "requires": []
+    },
+    "RULE_VERIFICATION_EVIDENCE": {
+      "id": "RULE_VERIFICATION_EVIDENCE",
+      "body": "Verification digests identify external records only (requires_full_evidence=true), not successful checks: retrieve matching original records and necessary logs before judging, preserving failures/warnings/unknown/unexecuted areas. Keep short output intact and abnormal FAIL/WARNING/UNKNOWN output; only long clear success may be compressed deterministically when shorter and originals remain available. Do not introduce Jev compaction or allow summary/digest to replace evidence.",
+      "body_sha256": "18d3dc0cef3ace8b642d6ae085b4731ec62a65d22b4dc3c76df72e03ceb570f5",
+      "requires": []
+    },
+    "RULE_MODEL_ROLES": {
+      "id": "RULE_MODEL_ROLES",
+      "body": "root / orchestrator / integrate / verifyは `gpt-6.1-sol / high`。workerは通常 `gpt-6.1-sol / medium`。explorer / researcherは `gpt-6.1-sol / medium`。reviewerは独立contextの `gpt-6.1-sol / high`。\n.codex/config.toml sets root and unspecified subagent Sol High defaults. Explicit supported role selections override defaults; never use parent settings for role routing. Worker High triggers include multiple modules, protected/order/capital/lot/SL/TP/BE/trailing/Monte Carlo/Risk/Safety work, concurrency/state management, unknown-root-cause bugs, architecture, orchestration/JEV/JEVGrep integration and unknown dependencies. Explorer/researcher are read-only Medium; deeper complex/protected investigation routes through root/orchestrator High. Reviewer is fresh independent read-only High. Handle simple tasks directly; delegate only for concrete parallelism, specialization or independent investigation/review benefits. Reuse suitable existing agents and avoid duplicate roles. Integration checks actual diff, dependencies, tests, CI and assignments. Defaults do not reconfigure running chats or adapters explicitly selecting models in isolated directories.",
+      "body_sha256": "a78f324e924b40f827db4d0bc419c3aad26b2d3bbff5d7b8dae3001f65ede314",
+      "requires": []
+    },
+    "RULE_MODEL_ROUTING": {
+      "id": "RULE_MODEL_ROUTING",
+      "body": "Use the lowest sufficient actually available model/effort without losing capability, correctness, EA safety or required verification. Check the actual host's models, reasoning levels and authorized switching mechanism; never invent levels or imply guidance switches an active thread. If switching is unavailable, continue the current model and report material limitations; do not create a new task merely to switch without authorization. Luna suits bounded repetitive/structured/read-heavy/bulk/high-volume deterministic scanning, log classification, CSV aggregation, transforms/test execution and candidate sorting with checked results. GPT-6.1 Sol is the substantive implementation/debugging/root-cause/multi-file/MQL5-C++/test-design/review/Strategy-Tester/component-interaction lane: Medium routine implementation, High complex/important/mandatory/independent review and architecture-sensitive work. Higher effort or model availability alone is not evidence of superiority; never force a fixed Luna Low/Medium/High/Sol/Astra escalation chain or trade required evidence for token savings. Routing/Jev are development-only, never added to EA/Worker runtime.",
+      "body_sha256": "26d616dcba04ba513bb3a9348fe5a37971d5f3b04ec068c729de11bc25f1f4be",
+      "requires": []
+    },
+    "RULE_NO_SILENT_FALLBACK": {
+      "id": "RULE_NO_SILENT_FALLBACK",
+      "body": "New active Sol execution uses only gpt-6.1-sol. gpt-6-sol/gpt-5.6-sol identifiers are historical/provenance/past-pricing/backward-compatible parsing/migration/negative-test data only; historical compatibility must never become execution fallback. If required GPT-6.1 Sol or reasoning level is unavailable, stop that execution and report; never silently substitute models or downgrade required floors.",
+      "body_sha256": "b8793c9c6cc8285673c9fff20ecdf014c8e9cdf277dddb4c4e5fdaf573f02e07",
+      "requires": []
+    },
+    "RULE_SPAWN_HOST": {
+      "id": "RULE_SPAWN_HOST",
+      "body": "Always explicitly specify model, reasoning_effort and fork_turns at spawn time. Recheck the actual host contract: this host accepts strings \"none\", \"all\", positive integer strings; omitted/all inherits parent model/effort and forbids overrides. fork_turns is context propagation, not model switching. Default none plus explicit packet; if necessary explorer/researcher use \"1\"–\"2\", worker \"1\"–\"3\", reviewer always none. If bounded inheritance is unsupported, use none plus packet, never invented numeric/last_n formats. Full history is an exception only with a recorded correctness reason and a host supporting explicit model/effort; never for reviewers. This host cannot combine all with overrides, so helper rejects all even with a reason; use none plus expanded evidence. spawn.py/CLI validates current bundle/packet, preserves exact bytes and expands all fresh-recipient handles before producing five host arguments; rejects forged/stale evidence, unresolved expansion and digest without matching original. --complex-work asserts additional High triggers and cannot lower detected protected/unknown/multi-module/complex work. Output is an argument object, not a spawn/proof. Pass exact supported fields; necessary original retrieval remains allowed. Repository has no hook restricting arbitrary direct host calls; helper constrains its own output. Read-only/independence are prompt policies, not OS permissions. Actual model/effort/inherited scope/full-history/override effect need host metadata; unavailable fields are NOT OBSERVABLE, never inferred PASS from settings or self-report.",
+      "body_sha256": "34be6e88a5a1d6114bf70535683916bbe8dd67399760700194230be48ab0b3ad",
+      "requires": []
+    },
+    "RULE_REVIEW_INDEPENDENT": {
+      "id": "RULE_REVIEW_INDEPENDENT",
+      "body": "Mandatory review cannot be omitted. Reviewer is gpt-6.1-sol / high, fresh independent context, fork_turns=\"none\", read-only: inspect actual specification/diff/repository/tests/evidence rather than inheriting implementation conclusions or unrelated parent conversation. Perform deterministic verification first; review never overrides failed deterministic checks. Preserve review_skip_enabled=false and Jev confidence_threshold=0.90; JEV/JEVGrep are not final approval. Independent review uses sufficient context isolation; full required context must be expanded for a fresh reviewer. Protected/mandatory status alone does not impose xHigh.",
+      "body_sha256": "ec1cef694bf912c11dbbae78be330e46fb47ada28b5b85e68634b8712da90afa",
+      "requires": []
+    },
+    "RULE_XHIGH_ESCALATION": {
+      "id": "RULE_XHIGH_ESCALATION",
+      "body": "Use xHigh only as an additional independent evidence-based check when Sol High leaves material uncertainty, independent High reviews materially disagree, root cause remains unresolved after appropriate investigation, deterministic checks show unexplained behavior, or a stricter explicit project rule requires it. Record concrete reason/evidence; provide specification, actual diff, repository evidence, tests and unresolved questions for independent assessment, never just confirmation. Protected/critical/EA/financial status, mandatory review, precaution or stronger-effort availability alone do not trigger xHigh. Prefer deeper deterministic validation and High review first; preserve explicitly required stricter floors and never use a fixed escalation chain. Do not repeat the same root-cause hypothesis and equivalent fix a third time after two failures without new evidence.",
+      "body_sha256": "139e76280bd9819f1d1676b098543d2ba00bea59b024e9c0a381ab58aadcd569",
+      "requires": []
+    },
+    "RULE_ASTRA_APPROVAL": {
+      "id": "RULE_ASTRA_APPROVAL",
+      "body": "Astra is only for exceptionally difficult independent review where collected evidence demonstrates Sol capability insufficiency (including unusually difficult architecture/system redesign judgment); never automatic routing or silent fallback. Before use, report limitation, necessity, scope and increased cost, then obtain explicit user approval. Offline Astra fixtures record approval as intended precondition and never claim actual execution.",
+      "body_sha256": "325df546831ba153f3e0d052c9d6e73af03ba73eb2a34ef82214fd184f9e812f",
+      "requires": []
+    },
+    "RULE_JEV_BOUNDARIES": {
+      "id": "RULE_JEV_BOUNDARIES",
+      "body": "Jev is optional bounded semantic support after deterministic inspection leaves useful ambiguity: lightweight classification, candidate file/test ranking, irregular-log classification, relevance, plausible development routes, continue/stop/retry/escalation or completion triage. No call for clear tasks or after every tool. Never use it for code/patch generation, architecture design, calculations, Git/filesystem/parsing facts or compiler/test/Strategy-Tester results. Exclude all EA trading/Risk/Safety direction/Entry/Score/SL/TP/lot/Monte Carlo/Fintokei/safety design, implementation-route, review, completion and settings decisions. Jev cannot authorize actions or override user/specification/safety/Git/validation. Keep threshold 0.90 and review skip false. Prefer minimal redacted structured task_type/risk_level/candidate_count/test_state/failure_type/changed_area/uncertainty_reason. If user says bypass jev, make no calls. API/runtime/timeout/auth/quota/rate failure, malformed/invalid response, low confidence or ambiguity means no opinion: continue deterministic/default development route, never label success or stop ordinary work. This development fail-open never relaxes EA FailOpen/safety gates. TypeSafe primitives/API/uncertainty guidance belongs in typesafe-ai, not copied across skills.",
+      "body_sha256": "a69d0824042a95998c516a77af9435459e1e33f8d8e4f7a36748ef3b69da8221",
+      "requires": []
+    },
+    "RULE_JEV_SHADOW": {
+      "id": "RULE_JEV_SHADOW",
+      "body": "Choose the default route independently first. Only a useful safe bounded question may record a shadow Jev recommendation/confidence/short reason; actual route stays default, with no model switch, floor reduction or task change. Do not shadow every clear task. Records contain family/effort/status/confidence/outcome, no prompts/raw logs/source/secrets. Automatic routing requires representative evidence of preserved safety/quality/verification/latency/cost and an authorized switching mechanism.",
+      "body_sha256": "041e834f40fbe43ac784f18a1fd2498ed3dedf29ddbf190e5af1dbd8ec267f2a",
+      "requires": []
+    },
+    "RULE_GIT_SAFETY": {
+      "id": "RULE_GIT_SAFETY",
+      "body": "Check latest GitHub main, git status, applicable rules and relevant history; use a dedicated branch, never directly modify main, preserve existing work. Check relevant open PR changes/conflicts to avoid duplication; if ZIP/main correspondence is uncertain report constraints. Avoid unrelated feature deletion or broad refactors. Investigate root causes and reproduce/add regression tests before fixes when possible; never delete/weaken tests. Self-review diff and protection effects, commit to branch, create main-target PR, check CI/review. Never merge without explicit user permission; permission still requires CI/review/necessary real-platform checks. PR creation never authorizes merge/live deployment. Distribution changes update SHA256SUMS.txt in tracked-path order, excluding itself; do not commit generated outputs, include only intended distribution files.",
+      "body_sha256": "d22c9ddac03c6e39b6b980394d0b1086486ec866d7ea4eb0daa1f4529e7c9d45",
+      "requires": []
+    },
+    "RULE_VERIFICATION_GATES": {
+      "id": "RULE_VERIFICATION_GATES",
+      "body": "Broaden checks directly related → related → necessary integration → full gate before PR completion/merge. Required gate is python3 tests/run_all.py; unfinished full gate means draft PR. Reuse trustworthy success only for identical commit/diff/environment/assumptions; reverify on changed code/mock/fixture/dependency/build environment/relevant assumptions. Documentation-only changes need links/commands/diff/checksum checks, not invented runtime regressions. MQL5 changes prioritize available native MetaEditor compile and related real-platform/Strategy Tester/reconnect/restart/reinitialization checks per VALIDATION, without omitting safety/review/regression checks. Distinguish untested native compile, real-platform/market/Strategy Tester/live-broker/forward/real AI/API communication/profitability from mock/static success. Unexecuted is neither pass nor implementation failure. Historical verification/ records are not current proof; updates associate actual run with source SHA.",
+      "body_sha256": "0084252e2271f9af99ff7c6d59eb258b09f3d87ca7f8f0cf94fee564142b0305",
+      "requires": []
+    },
+    "RULE_COMPLETION_AND_STOP": {
+      "id": "RULE_COMPLETION_AND_STOP",
+      "body": "At meaningful decision boundaries inspect actual state/diff, run relevant deterministic checks, collect concise evidence; optionally use Jev only for permitted residual ambiguity. Choose CONTINUE, RETRY with changed hypothesis/method, VERIFY, ESCALATE with reason, or COMPLETE. Stop/report evidence when request conflicts with facts, constraints cannot coexist, unapproved trading/Risk/Safety or substantial out-of-scope change is needed, or continuation risks secret leakage, data corruption, live orders or safety bypass. Resolve ordinary in-scope compile errors/missing dependencies/mistakes. Complete only after implemented requested behavior, passing relevant deterministic checks, scope-matching actual diff, no blocker, required reviews and identification of untested/skipped/blocked/unavailable areas. Never claim an unrun test/build/type/lint/compile/review/CI/Strategy-Tester/forward/live/API/Jev/JEVGrep/model execution passed or happened. Summarize reason/scope/counts/failures/important warnings/unverified areas; detail logs only where needed. Where useful report chosen family/effort/reason/Jev/escalation concisely.",
+      "body_sha256": "9e3b0a4c068b4478ae930b324382f7e1a9e5844a474ade7a67db95c3bc51421a",
+      "requires": []
+    },
+    "RULE_SPAWN_EVIDENCE": {
+      "id": "RULE_SPAWN_EVIDENCE",
+      "body": "Read the actual evidence and acquire any relevant dependencies before deciding.",
+      "body_sha256": "a377fcae7155f9bb2b31b758588ae0464c03c0ceded6fdd5bc3e612eb1421b24",
+      "requires": []
+    },
+    "RULE_SPAWN_DEPENDENCY": {
+      "id": "RULE_SPAWN_DEPENDENCY",
+      "body": "Unknown dependencies require investigation; never silently approve incomplete context.",
+      "body_sha256": "b3ca034311190252c4493913a8316413e0a26156b81a3d9c008a1de730d14545",
+      "requires": []
+    },
+    "RULE_SPAWN_VERIFICATION": {
+      "id": "RULE_SPAWN_VERIFICATION",
+      "body": "Verification digests do not replace original records or required logs. Preserve warnings, failures and unexecuted checks.",
+      "body_sha256": "8e7e57578ac8f59402075ec758dbd6218e47d82a120df3ecf6079fc06897f803",
+      "requires": []
+    },
+    "RULE_SPAWN_REVIEW_AND_ORDER": {
+      "id": "RULE_SPAWN_REVIEW_AND_ORDER",
+      "body": "Preserve mandatory independent Sol High review and deterministic verification; never place live orders.",
+      "body_sha256": "0f5a11737806efcbd4020d30c4add41a5394cdddcea314abeba156086c990b56",
+      "requires": []
+    },
+    "RULE_SPAWN_METADATA": {
+      "id": "RULE_SPAWN_METADATA",
+      "body": "Report actual host execution metadata only when observable; requested settings are not proof.",
+      "body_sha256": "35409a4b73c54e02a4eb2da9e392796c40ab0bae4a53a7e05f5617651598548f",
+      "requires": []
+    },
+    "RULE_SPAWN_REVIEWER": {
+      "id": "RULE_SPAWN_REVIEWER",
+      "body": "Review independently from the specification and actual diff; do not inherit implementation conclusions.",
+      "body_sha256": "4e6b048f5822203b3043e53495ee5f63cde6040e9b758e8f9710504b7f50794a",
+      "requires": []
+    },
+    "RULE_SPAWN_READ_ONLY": {
+      "id": "RULE_SPAWN_READ_ONLY",
+      "body": "Read-only: do not modify files or external state.",
+      "body_sha256": "dc20b64e3993a7494c851c6129d2bd5390926d325db75995dbc0c835632ba5c8",
+      "requires": []
+    }
+  },
+  "consumers": {
+    "agents": [
+      "RULE_AUTHORITY",
+      "RULE_EVIDENCE_FIRST",
+      "RULE_EA_SPECIFICATION",
+      "RULE_PROTECTED_FAIL_CLOSED",
+      "RULE_NO_LIVE_ORDER",
+      "RULE_SECURITY",
+      "RULE_UNKNOWN_DEPENDENCY_FAIL_CLOSED",
+      "RULE_CONTEXT_FULL",
+      "RULE_VERIFICATION_EVIDENCE",
+      "RULE_MODEL_ROLES",
+      "RULE_MODEL_ROUTING",
+      "RULE_NO_SILENT_FALLBACK",
+      "RULE_SPAWN_HOST",
+      "RULE_REVIEW_INDEPENDENT",
+      "RULE_XHIGH_ESCALATION",
+      "RULE_ASTRA_APPROVAL",
+      "RULE_JEV_BOUNDARIES",
+      "RULE_JEV_SHADOW",
+      "RULE_GIT_SAFETY",
+      "RULE_VERIFICATION_GATES",
+      "RULE_COMPLETION_AND_STOP"
+    ],
+    "model-orchestrator": [
+      "RULE_AUTHORITY",
+      "RULE_EVIDENCE_FIRST",
+      "RULE_EA_SPECIFICATION",
+      "RULE_PROTECTED_FAIL_CLOSED",
+      "RULE_NO_LIVE_ORDER",
+      "RULE_SECURITY",
+      "RULE_UNKNOWN_DEPENDENCY_FAIL_CLOSED",
+      "RULE_CONTEXT_FULL",
+      "RULE_VERIFICATION_EVIDENCE",
+      "RULE_MODEL_ROLES",
+      "RULE_MODEL_ROUTING",
+      "RULE_NO_SILENT_FALLBACK",
+      "RULE_SPAWN_HOST",
+      "RULE_REVIEW_INDEPENDENT",
+      "RULE_XHIGH_ESCALATION",
+      "RULE_ASTRA_APPROVAL",
+      "RULE_JEV_BOUNDARIES",
+      "RULE_JEV_SHADOW",
+      "RULE_GIT_SAFETY",
+      "RULE_VERIFICATION_GATES",
+      "RULE_COMPLETION_AND_STOP"
+    ],
+    "typesafe-ai": [
+      "RULE_AUTHORITY",
+      "RULE_EA_SPECIFICATION",
+      "RULE_PROTECTED_FAIL_CLOSED",
+      "RULE_NO_LIVE_ORDER",
+      "RULE_SECURITY",
+      "RULE_JEV_BOUNDARIES",
+      "RULE_JEV_SHADOW",
+      "RULE_REVIEW_INDEPENDENT"
+    ],
+    "spawn-common": [
+      "RULE_SPAWN_EVIDENCE",
+      "RULE_SPAWN_DEPENDENCY",
+      "RULE_SPAWN_VERIFICATION",
+      "RULE_SPAWN_REVIEW_AND_ORDER",
+      "RULE_SPAWN_METADATA"
+    ],
+    "spawn-reviewer": [
+      "RULE_SPAWN_REVIEWER"
+    ],
+    "spawn-read-only": [
+      "RULE_SPAWN_READ_ONLY"
+    ]
+  },
+  "canonical_sha256": "0eeac45a4f0e74f097b6da9aef6282c8ff9dfa54f58b553830d2eec1a80853c6"
+}
