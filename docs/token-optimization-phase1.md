@@ -57,8 +57,10 @@ Do not call `resume-request`, attestation lookup or verification manifest APIs;
 use existing `spawn-request` and original verification logs. Alternatively revert
 this phase commit. No EA or routing configuration migration is involved.
 
-Phase 2 is gated on Phase 1 merge approval and at least three distinct real
-prospective development tasks without material regressions. 30/50-task cohort
+The current [Phase 2A instructions](token-optimization-phase2a.md) supersede the
+original development-start gate: Phase 2A development and a Draft Ready candidate
+may proceed before three distinct real prospective tasks. Main merge still requires
+3/3 without material regressions and explicit user approval. 30/50-task cohort
 milestones and semantic slicing remain outside this phase. Unknown token usage
 is not zero or proof of savings. Byte savings do not prove token savings.
 
@@ -190,7 +192,7 @@ rules/policy/verification and every other identity input must still match.
 | Stage | Items | Prerequisite |
 | --- | --- | --- |
 | Phase 1 | 01, 06, 07, 08, 16 | Exact duplicate only; this PR |
-| Phase 2A | 02, 04, 05, 09, 10, 14, 15 | Approved Phase 1 merge and at least 3 distinct successful prospective tasks; shadow/comparison first |
+| Phase 2A | 02, 04, 05, 09, 10, 14, 15 | Development allowed before 3 tasks; merge needs 3/3 with no material regression and explicit approval; 02/09 remain shadow |
 | Phase 2B | 11, 12, 13, 17, 18, 19 | Stable Phase 2A, quality metrics |
 | Phase 3 | 03 | 30-task evaluation, no material quality regression; unchanged dependencies only, shadow first |
 | Phase 4 | 20 | Sufficient 50-task evaluation, shadow first; production adoption needs approval |

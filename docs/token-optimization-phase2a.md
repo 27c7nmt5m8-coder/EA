@@ -44,6 +44,65 @@ reflection, unresolved includes/symbols/configuration and parsing uncertainty
 require ordinary exploration. Shadow comparison records false negatives and
 cannot silently affect production context selection.
 
+## Commands and evidence
+
+Run from the repository root with a working Python 3.11+ interpreter:
+
+```text
+python -m tools.workflow_eval.cli rules-expand AGENTS.md --consumer agents
+python -m tools.workflow_eval.cli verification-delivery sources.json
+python -m tools.workflow_eval.cli ledger-create accepted-inputs.json
+python -m tools.workflow_eval.cli ledger-validate .workflow-eval/ledger-create.json
+python -m tools.workflow_eval.cli policy-capsule bundle.json --input classification.json
+python -m tools.workflow_eval.cli dependency-index --path tools/workflow_eval/spawn.py
+python -m tools.workflow_eval.cli dependency-shadow .workflow-eval/dependency-index.json --root-path tools/workflow_eval/spawn.py --dependency known --legacy acquired-dependencies.json
+```
+
+Outputs are ignored `.workflow-eval/` artifacts. CLI JSON inputs reject duplicate
+keys and nonfinite values. Verification sources contain distinct source identities,
+Phase 1 manifests and current source/tree identities; the CLI binds current Git
+identity before reacquiring originals. `--reviewer-request`, `--xhigh`,
+`--blocked-judgment` or `--unexplained` expands original evidence. Spawn consumes
+`--verification-delivery` instead of a second copy of `--test-evidence`.
+
+Ledger inputs explicitly supply the accepted specification/decisions, forbidden
+changes, unresolved questions and tracked source provenance. Creation is a record
+of caller-supplied acceptance, not proof of user approval. Updates require a new
+timestamp; replacement decisions retain reasons and superseded identities.
+Rendering stale/incomplete ledgers requires all current authority categories and
+the previously verified full specification; missing authority is BLOCKED.
+
+Capsule classification contains `role`, `task_type`, `changed_paths`, `protected`,
+`dependency`, `repository_area`, `operation_type` and `review_mode`. The report
+binds the bundle, canonical graph, repository/skill documents, current config and
+workflow policy. Required bodies remain complete in `actual_policy`. Candidate
+IDs/hashes are shadow metadata and cannot be delivered alone as policy authority.
+The only smaller candidate profile is routine unprotected documentation work;
+unknown classifications use full rules. Missing or contradictory authority blocks.
+
+The dependency parser records tracked Python AST imports, public interfaces,
+direct symbol/call candidates, literal file/config references and MQL include
+metadata with exact source/dependency hashes. It does not infer runtime semantics
+or completeness. Dynamic imports, reflection, external imports, unsupported syntax,
+generated files, ambiguous resolution and MQL semantics remain unresolved.
+Validation rebuilds facts against current source, index, parser/runtime and Git
+identity. The legacy comparison must separately supply acquired/independent
+provenance, paths, material paths, current source/tree/fingerprint and file hashes.
+These caller assertions do not prove independent exploration. Missing/stale legacy
+evidence produces null TP/FP/FN metrics with reasons. Material false negatives block
+promotion; actual routing always remains ordinary full exploration.
+
+## Measurement limits
+
+Semantic-coverage audit retains original document clauses and exact hashes, mapped
+to acquired canonical rule bodies. Structural coverage tests are not proof of
+language equivalence; independent review evaluates the meaning. Raw AGENTS byte
+reduction alone is not a model-token saving: resolved full bodies must be counted.
+Transport probes compare all required bodies once versus repeated full documents.
+Synthetic verification probes preserve original artifacts and each source alias.
+Neither probe counts as normal development/cohort evidence or quality parity.
+Unavailable token/model-execution observations remain null with missing reasons.
+
 ## Rollback
 
 Use the legacy full spawn payload, full policy/specification, ordinary repository

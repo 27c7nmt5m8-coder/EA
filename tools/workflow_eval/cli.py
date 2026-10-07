@@ -122,6 +122,14 @@ def main(argv=None):
     p.add_argument('ledger'); p.add_argument('--changes', required=True)
     p = sub.add_parser('ledger-render', help='Resolve current requirements or full authority fallback; missing is unknown')
     p.add_argument('ledger'); p.add_argument('--authority'); p.add_argument('--prior-spec-file')
+    p = sub.add_parser('policy-capsule', help='Shadow comparison only; actual required policy remains full')
+    p.add_argument('bundle'); p.add_argument('--input', required=True)
+    p = sub.add_parser('dependency-index', help='Build a scoped content-hash index; no production selection')
+    p.add_argument('--path', action='append', required=True)
+    p = sub.add_parser('dependency-shadow', help='Compare with independently acquired legacy dependencies; ordinary exploration remains actual route')
+    p.add_argument('index'); p.add_argument('--root-path', action='append', required=True)
+    p.add_argument('--legacy'); p.add_argument('--task-file')
+    p.add_argument('--protected', action='store_true'); p.add_argument('--dependency', choices=['known', 'unknown'], default='unknown')
     p = sub.add_parser('optimization-measurement', help='Numeric metrics only; null with missing reasons; no cohort inflation')
     p.add_argument('record')
     p = sub.add_parser('triage'); p.add_argument('bundle'); p.add_argument('--test-evidence'); p.add_argument('--live-jev', action='store_true')
@@ -278,6 +286,21 @@ def main(argv=None):
                     prior_verified_specification=Path(args.prior_spec_file).read_text(encoding='utf-8')
                     if args.prior_spec_file else None)
         path = output(root, args.command + '.json', result)
+    elif args.command == 'policy-capsule':
+        from .policy_capsule import build_policy_capsule
+        result = build_policy_capsule(root, load_packet_evidence(args.bundle), load_packet_evidence(args.input))
+        path = output(root, 'policy-capsule.json', result)
+    elif args.command == 'dependency-index':
+        from .dependency_index import build_dependency_index
+        result = build_dependency_index(root, args.path)
+        path = output(root, 'dependency-index.json', result)
+    elif args.command == 'dependency-shadow':
+        from .dependency_index import compare_dependency_shadow
+        result = compare_dependency_shadow(root, load_packet_evidence(args.index), args.root_path,
+            legacy=load_packet_evidence(args.legacy) if args.legacy else None,
+            task=Path(args.task_file).read_text(encoding='utf-8') if args.task_file else '',
+            protected=args.protected, dependency=args.dependency)
+        path = output(root, 'dependency-shadow.json', result)
     elif args.command == 'triage':
         bundle = load(args.bundle)
         test = load(args.test_evidence) if args.test_evidence else {}
