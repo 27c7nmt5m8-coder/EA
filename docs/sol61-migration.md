@@ -6,7 +6,7 @@ Current main's High-first policy and experiment contracts are authoritative. Thi
 | --- | --- | --- |
 | root / orchestrator / integrate / verify | `gpt-6.1-sol / high` | Directly handle simple work; verify delegated changes and evidence. |
 | worker | `gpt-6.1-sol / medium` | High for complex, multi-module, protected, concurrent or orchestration work. |
-| explorer / researcher | `gpt-6-luna / high` | Read-only; Sol Medium for complex dependency/specification reasoning. |
+| explorer / researcher | `gpt-6.1-sol / medium` | Read-only; actual explicit role settings follow the current canonical policy. |
 | reviewer | `gpt-6.1-sol / high` | Independent context, read-only. |
 | unspecified subagent | `gpt-6.1-sol / high` | Explicit supported spawn settings override defaults. |
 

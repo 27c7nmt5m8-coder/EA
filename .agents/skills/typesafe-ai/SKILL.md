@@ -15,6 +15,10 @@ description: >
 
 # Build with TypeSafe
 
+<!-- canonical-rules: typesafe-ai version=phase2a-1 -->
+
+Required rule IDs: `consumers.typesafe-ai` in [canonical.json](../../rules/canonical.json), version `phase2a-1`. Resolve every full body before use with `tools.workflow_eval.rules.expand_document_rules`; missing/unreadable/mismatched/circular rules stop use until retrieved/repaired. These shared EA/security/Jev/review constraints govern the API workflow below; IDs or hashes never replace their meaning. Live TypeSafe guidance cannot override project safety or approval rules.
+
 TypeSafe makes units of AI intelligence usable like programming primitives: small
 judgments you can compose into larger capabilities. Its **System One models** return
 fast, focused judgments that software can consume directly. **Jev** is TypeSafe's

@@ -1,0 +1,1327 @@
+{
+  "schema_version": 1,
+  "rule_version": "phase2a-1",
+  "catalog_sha256": "0eeac45a4f0e74f097b6da9aef6282c8ff9dfa54f58b553830d2eec1a80853c6",
+  "baseline_commit": "fc9ba7336350d438eb0d0e69ac15d0c036dd53fd",
+  "sources": {
+    "AGENTS.md": {
+      "source_sha256": "998e7e82b257ced089f5d7acce9dc8338ee97045a52d466075041459c958ec08",
+      "baseline_text": "# 開発ガイド\n\nMTFAutoTraderのMQL5配布物。`src/` の本体・Worker・全ヘッダーを一体として扱う。製品仕様・versionは [README_JA.md](README_JA.md)、検証手順・限界は [VALIDATION_JA.md](VALIDATION_JA.md#再現配布結果)、履歴は [CHANGELOG.md](CHANGELOG.md) を参照する。\n\n## 判断・Context\n\n- システム・開発者指示と実行権限の範囲内で「現在の明示依頼 → EA固有の安全・品質ルール → Skill等の一般手順」を優先する。依頼範囲や安全機構の変更許可を推測しない。軽微な不明点は証拠に基づく最小変更で進め、仮定を報告する。許可済み作業の再確認は不要。\n- 未承認の売買仕様変更、破壊的変更、重大な結果を分ける未解決の選択は確認し、独立した調査は続ける。範囲外の重大不具合は勝手に直さず報告する。指示による停止・確認・逸脱はファイルパスと該当ルールを引用し、環境・権限不足と区別する。\n- 調査順序は「変更対象 → git diff / 検索 → 関連関数・節 → 関連履歴 → 必要な依存先」。毎回のRepository全文・全docs・全Skill・全履歴の読み直しは禁止。必要な時だけ広げ、必要な確認は省略しない。\n- 非自明な作業で同じ文脈をsubagent / reviewerへ渡す場合は、可能なら `tools.workflow_eval.context` のcontent-addressed packetを使う。変更ファイルは本文を保持し、exact SHAと本文が一致する未変更の関連文脈だけをhandle化する。protected、unknown dependency、未解決のexpansion、古いbundleでは再利用を無効化する。packetの既定はfresh向け全文。reuseは現在のRepositoryとの照合と、受信者がpriorの全文を実際に保持する明示指定がある場合だけ許可し、priorのhandleだけではreuseしない。handleの中身が判断に必要・不確実なら必ず展開する。verification digestは元検証記録の識別だけであり、判断には元記録と必要なログを取得し、失敗・警告・未実行を省かない。これはcontext転送の圧縮だけであり、レビュー・検証・モデル能力を置き換えない。\n- 現在のRepository / Git状態を正本とし、古いPR番号・SHA・過去チャットのversionを基準にしない。一時的なPR・SHA・診断状況は本書へ残さない。重複・古い指示は既存表現へ統合し、安全ルールは削らない。\n\n## EA固有の保護\n\n- 明示依頼なしにEA売買仕様・互換性を変更しない。READMEのEntry・パターン選択/競合/再利用防止、Score、SL/TP・lot・コスト、注文/決済、インジケーター・UI・入力、Worker通信schema/期限/価格ドリフト/FailOpen、状態・保存キー・ログ/CSV仕様を維持する。Workerから注文を出さない。\n- Risk / Safety機構を弱めない。Monte Carlo・総ポートフォリオリスク・Fintokei保護、銘柄/口座の状態分離・所有判定・発注制約・未解決注文停止・mutex、安全状態の永続化、分析ログ失敗と売買判断の分離、PositionIdentifier照合・初期リスクRを保護する。詳細値・条件はREADMEを参照する。\n- ソース変更では本体・Worker・全ヘッダー・入力・保存キー・ログ・移行処理への影響を確認する。MQL5実仕様をmockより優先し、不整合はmock側を修正する。テストのためだけに製品仕様を変えない。\n- 実口座への注文は禁止。秘密情報・APIキー・口座情報・実ログをソース、fixture、CIログ、artifact等へ保存・掲載しない。通信fixtureには架空値を使う。\n\n## Skill\n\n- 適合する作業でのみSkillを使い、一般的な計画承認・毎回の全テストを上位の依頼へ追加しない。\n- 非自明な開発でモデル選択・昇格が有益なら [model-orchestrator](.agents/skills/model-orchestrator/SKILL.md) を使う。決定論的な確認・検証を優先し、能力・正確性・EA安全性・必要な検証を損なわない最低限十分なモデルと推論レベルを選ぶ。\n- TypeSafeAI / Jevの詳細は [typesafe-ai](.agents/skills/typesafe-ai/SKILL.md) に委ねる。決定論的確認後も限定的な意味判断が有益な場合だけ使い、利用不能時は通常経路へ戻す。`TYPESAFE_API_KEY` を表示・保存しない。EA固有の売買仕様・安全機構・Risk管理・Git/検証ルールを上書きしない。Jevは軽量分類・関連候補整理・ログ分類等の補助に限定し、売買方向、Entry条件、Score、SL/TP、lot、Monte Carlo、Risk、Fintokei保護、安全装置の判断・変更を任せない。\n\n## 開発・Git・レビュー\n\n### モデルと役割\n\n- root / orchestrator / integrate / verifyは `gpt-6.1-sol / high`。単純な作業は直接処理し、並列化・独立調査/レビュー・専門分担に具体的な利点がある場合だけ委任する。統合時は実diff・依存関係・テスト・CI・モデル割当を確認する。\n- subagent生成は `fork_turns`・model・reasoning effortを必ず明示する。通常は `fork_turns=\"none\"` とAgent Context Packetを使う。現在のhost contractは文字列 `\"none\"` / `\"all\"` / 正の整数文字列で、省略はall。必要な場合だけexplorer / researcherは `\"1\"`〜`\"2\"`、workerは `\"1\"`〜`\"3\"` を使い、reviewerは必ずnone。実hostが直近N turnをサポートしなければnoneとpacketへ戻し、独自値を作らない。task、実diff、変更本文・必要な依存本文、仕様・Repository rules、protected状態、検証元記録/digest、未解決事項、base/head SHA・content hashを明示供給する。新しいagent / reviewerがhandleの元本文を保持していない場合は送信前に必ず展開する。不足contextは取得してbundleを再構築し、unknown dependencyは調査を継続する。context節約を理由に必要証拠・dependency調査・mandatory reviewを省かない。\n- [spawn helper](tools/workflow_eval/spawn.py) と `python -m tools.workflow_eval.cli spawn-request` は既存packetの検証・全handle展開後に明示spawn引数を生成する。hostを呼び出す機構ではなく、直接host呼び出しをRepositoryから強制/禁止するフックはない。read-only/独立性もprompt policyでありOS制限ではない。利用前に実host contractを再確認する。full-historyは正確性に全履歴が不可欠な理由と明示model/effortを両立できるhostだけで例外許可し、reviewerには使わない。現在のhostではall/省略とoverrideが両立しないためhelperはallを理由付きでも拒否し、noneと必要本文のpacketへ戻す。requested設定と実metadataを区別し、model/effort/継承scope/override効果が観測できなければ `NOT OBSERVABLE` とする。\n- workerは通常 `gpt-6.1-sol / medium`。複数モジュール、注文・資金・lot・SL/TP/BE/trailing・Monte Carlo・Risk/Safety、並行性・状態管理、原因不明のbug、architecture、orchestration・JEV/JEVGrep連携ではHighを選ぶ。\n- explorer / researcherは `gpt-6.1-sol / medium`、read-only。探索・調査の役割ではこの設定を既定とし、複雑・保護領域でより高い推論が必要な場合はroot / orchestrator側でHigh相当の調査へ引き上げる。既存の適切なagentを再利用し、同じ役割を重複作成しない。\n- reviewerは独立contextの `gpt-6.1-sol / high`、read-only。mandatory reviewは省略不可という意味で、protected / high-riskだけでxHighへ上げない。deterministic verification後にHighを実施し、未解決のmaterial uncertainty・重大なレビュー不一致・未解明のroot cause・説明不能な検証挙動・明示的project ruleがある場合のみ、理由と証拠を付けて追加xHighへ昇格する。\n- AstraはSolで能力不足が実証された非常に難しい独立レビューだけ。必要性・確認範囲・コスト増の理由を先に報告し、明示承認後に使用する。自動routing・fallbackは禁止。\n- [.codex/config.toml](.codex/config.toml)はrootと未指定subagentのSol High既定値。役割別のmodel / effortは対応するspawn指定で明示し、親既定値をrole routingに使わない。`fork_turns`はcontext伝播の制御でありモデル切替ではない。全履歴forkでは親設定を継承し、このhostはoverrideとの併用を許可しない。必要model/effort指定が利用不能ならその実行を停止して報告し、旧Solや別モデル・effortへsilent fallbackしない。\n- 新規Sol実行は `gpt-6.1-sol` のみ。旧IDは履歴・provenance・過去料金・互換/negative testに限定する。Jev confidence `0.90`、review skip禁止、EA保護、既存deterministic verificationを維持する。\n\n1. 最新GitHub main・git status・適用指示・関連履歴を確認し、mainを直接変更せず専用branchで作業する。既存の作業変更を保全する。関連open PRの変更・競合を確認して重複実装を避ける。ZIP等でmainとの対応が不明なら反映の制約を明記する。\n2. 無関係な機能削除・大規模リファクタリングを混ぜない。バグは根本原因を調べ、可能なら修正前に再現・回帰テストを追加する。既存テストは削除・弱体化しない。\n3. 差分と保護への副作用をセルフレビューし、branchにコミットしてmain向けPRを作り、CI・レビュー結果を確認する。ユーザーの明示許可なしにmainへマージしない。許可時もCI・レビュー・必要な実機確認を満たす。PR作成はマージ・実口座導入の許可ではない。\n\n## テスト・実機検証\n\n- 「直接関連 → 関連 → 必要なintegration → PR完成前の全体ゲート」の順に広げる。文書のみはリンク・コマンド・diff・チェックサムを確認し、形式的なランタイム回帰テスト追加は不要。PR完成前・マージ前は `python3 tests/run_all.py` を確認する。同一commit・同一diff・同一前提の信頼できる成功結果は再利用可能。変更時は再検証し、全体ゲート未完了のPRはdraftにする。\n- MQL5変更では利用可能なネイティブコンパイルと関連実機確認を優先する。詳細手順・失敗の切り分け・生成物の扱いはVALIDATIONに従う。必要な安全確認・レビュー・回帰確認を省かず、未実測事項を明示する。未実行を合格や実装の失敗と数えず、mock/静的検証をネイティブ・実機・市場バックテスト・実AI/API通信・収益性の成功と混同しない。\n- 報告は理由・範囲・件数・失敗・重要警告・未検証を要約し、詳細ログは必要箇所だけ確認する。同梱の `verification/` は過去の記録であり、更新時は実行結果と対象ソースSHAを対応させる。\n\n配布変更時は `SHA256SUMS.txt` 自身を除く追跡対象ファイルのSHA-256をパス順に更新する。生成物はコミットせず、意図した配布ファイルだけを含める。\n"
+    },
+    ".agents/skills/model-orchestrator/SKILL.md": {
+      "source_sha256": "f0208d8a4545d5fa1bd1c0a8b63d29ee6a981f3d8febbead0b3d403591031be9",
+      "baseline_text": "---\nname: model-orchestrator\ndescription: Use when non-trivial software-engineering work would benefit from choosing among available model families or reasoning levels, escalating after evidence, or resolving a bounded semantic decision with TypeSafeAI/Jev.\n---\n\n# Model Orchestrator\n\n## Purpose and scope\n\nRoute Codex development work to the lowest sufficient available model and reasoning level while preserving capability, correctness, EA safety, repository rules, and verification quality. Never save tokens by omitting evidence needed for a correct decision. This skill governs the development workflow only; it does not add model routing or Jev to the EA or Worker runtime. Follow [AGENTS.md](../../../AGENTS.md) and the current user request first.\n\n## Evidence first\n\nAt the start of a task, inspect in this order: (1) the request, (2) relevant Git state and diff, (3) directly related files and functions, (4) relevant validation, then (5) dependencies and history when the evidence requires them. Expand the scope when needed; do not omit a necessary full-file check. Do not automatically reread the entire repository, all docs, all skills, or all history, or repeatedly run the full test suite during intermediate edits.\n\nPrefer deterministic tools over model judgment: Git for repository state and changed code; filesystem inspection for existence; compiler, type checker, linter, formatter, and test runner for their respective results; code for numerical calculations. Do not ask Jev to rejudge a directly testable fact or a compiler/test result.\n\n## Direct model routing\n\nCheck the actual host's available models, reasoning levels, and switching mechanism before choosing or reporting one. Do not invent a model or level. Choose directly from task type, complexity, risk, and evidence; never force a Luna Low → Medium → High → Sol → Astra chain. Routing guidance does not switch an active thread's model by itself: use only an available, authorized mechanism. If switching is unavailable, continue with the current model and report that limitation only when it matters; do not create a separate task solely to change models without authorization.\n\n| Lane | Use when | Reasoning choice |\n| --- | --- | --- |\n| Luna | Bounded, repetitive, structured, or high-volume work: repeated test execution, log classification, CSV aggregation, bulk deterministic transforms, repeated repository inspection, or sorting many candidates. | Lowest available level sufficient for the actual ambiguity and volume. |\n| GPT-6.1 Sol (`gpt-6.1-sol`) | Implementation, debugging, root-cause analysis, multi-file changes, MQL5/C++ compatibility, test design, review, Strategy Tester diagnosis, or component interactions. | Medium for routine implementation; High is the standard for complex implementation, important review, mandatory review, and independent review. xHigh is evidence-based escalation and second-pass verification only. |\n| GPT-6 Astra | Exceptionally difficult architecture, system-wide redesign, or high-impact independent review only after GPT-6.1 Sol has demonstrated insufficient capability on collected evidence. | Choose an available level proportional to the unresolved judgment; no automatic Astra routing. |\n\nHigher reasoning effort is not assumed to be always better. Route high-volume aggregation to Luna, routine implementation to GPT-6.1 Sol Medium, and complex diagnosis, architecture-sensitive work, mandatory review and independent review to GPT-6.1 Sol High. A stronger model's availability alone is not evidence for escalation. The model lane never replaces deterministic validation.\n\n### Project roles and configuration\n\nThe project's [.codex/config.toml](../../../.codex/config.toml) sets GPT-6.1 Sol High for root/orchestrator/integrate/verify and unspecified subagents. Choose a worker's model and effort explicitly: Sol Medium for routine implementation, High for complex multi-module, protected, concurrent, architectural or orchestration work. Explorer/researcher use GPT-6.1 Sol Medium in read-only contexts. If their investigation requires stronger reasoning for complex or protected dependencies, route that deeper investigation through root/orchestrator High rather than silently changing the explorer/researcher lane. Reviewers use independent Sol High contexts and remain read-only. Reuse suitable existing agents; delegate only for concrete parallelism, specialization or independence benefits. Explicit supported spawn selections override defaults. `fork_turns` controls context propagation, not model choice; a full-history fork inherits its parent's settings. These defaults do not silently reconfigure an already running chat or CLI adapters that explicitly select a model in an isolated directory.\n\nFor delegated work, prefer a task-specific content-addressed context packet over a full-history fork when correctness does not require the full history. The packet should carry the task, actual diff, full changed/protected content needed for the decision, relevant specification constraints, deterministic verification digest, and unresolved questions. Packet output defaults to full text for fresh recipients. Exact SHA handles require current repository validation plus an explicit assertion that this recipient actually retains the prior full text; matching both the hash and body is required, and a prior handle alone cannot establish possession. Protected work, unknown dependencies, stale evidence, or unresolved expansion disables reuse. Use `packet --recipient-has-content` only for such an existing recipient; omit it for a fresh independent reviewer or worker. A fresh recipient must receive expanded text before review; a hash handle alone is not evidence. A reviewer or worker must also expand any handle needed to resolve uncertainty. Verification digests identify external records only (`requires_full_evidence=true`): retrieve the original verification record and needed logs before judging checks, keeping failures, warnings and unexecuted areas. Packet compression changes transport only: it never lowers the model/effort floor, narrows dependency investigation, skips review, or substitutes for deterministic validation.\n\nAstra requires demonstrated Sol insufficiency plus advance explicit user approval after explaining the limitation, review scope and increased cost. It is never an automatic route or fallback. An offline fixture that includes Astra must include this approval as an intended precondition, not claim a live execution occurred.\n\n### Explicit spawn contract and minimal inheritance\n\nAlways set `model`, `reasoning_effort`, and `fork_turns` at spawn time. Use `gpt-6.1-sol`: explorer/researcher Medium (read-only), normal worker Medium with all existing High triggers preserved, independent reviewer High (read-only). Root/orchestrator/integrate/verify remains High. Do not depend on parent settings for role routing.\n\nThe currently exposed `collaboration.spawn_agent` contract accepts string `\"none\"`, `\"all\"`, or a positive integer string, with omitted `fork_turns` defaulting to all. All/omitted inherits parent model/effort and does not accept explicit overrides; none or positive integer strings permit overrides. Recheck the real host contract before use; this is not a universal CLI/API contract. Default every role to `\"none\"` plus explicit Agent Context Packet. If needed, limit explorer/researcher to `\"1\"`–`\"2\"`, worker to `\"1\"`–`\"3\"`. Reviewer always uses none. If bounded turn inheritance is unsupported, use none plus packet; never invent `last_n`, numeric values, or a new fork format.\n\n[spawn.py](../../../tools/workflow_eval/spawn.py) validates current bundle/packet evidence, expands every handle for the fresh recipient, preserves exact bytes, and generates the five tool arguments. It rejects stale/forged evidence, unresolved expansion, and a verification digest without its matching original record. Unknown dependency explicitly requires investigation, not approval. Supply specification, Repository rules, unresolved questions, actual diff, changed/dependency text, protected state, verification record/digest and original logs needed for judgment. `--complex-work` asserts any existing worker High trigger; it cannot lower protected, unknown, multiple-module or detected complex/orchestration work.\n\nFrom the repository root, create the existing bundle under ignored `.workflow-eval/`, then run:\n\n```text\npython -m tools.workflow_eval.cli spawn-request .workflow-eval/bundle.json --role reviewer --task-name review_change --spec-file .workflow-eval/spec.md --test-evidence .workflow-eval/verification.json\n```\n\nAdd `--packet` for an existing packet; handles are expanded before transmission. Omit `--test-evidence` only when no verification record exists, and explicitly report checks as unexecuted. The output `.workflow-eval/spawn-request.json` is an argument object for the host tool, not a spawn or proof of execution. Pass those exact fields to the supported host tool. Do not attach unrelated parent conversation or implementation conclusions to independent review. Necessary additional file/log retrieval remains allowed.\n\nThe existing conservative sensitive-evidence scanner also rejects synthetic password/token/email patterns in security regression source. If a real task's bundle is rejected, do not weaken the scanner or drop required files to obtain a payload. Explicitly acquire and inspect the necessary original local files through an authorized safe path; report that the helper did not transport that task. Fixture helper tests and direct host probe acceptance do not prove successful packet transport of such a repository diff.\n\nFull-history is an exception only when correctness requires all history, a concrete reason is recorded, and the host supports explicit model/effort alongside it. It is never a reviewer route. On this host that combination is unsupported, so the helper rejects all even with a reason; use none plus expanded evidence. There is no repository hook enforcing arbitrary direct host calls; the helper controls calls using its output, and AGENTS/this skill govern direct calls. Read-only and reviewer independence are prompt policies, not filesystem permissions. Actual selected model, effort, inherited turn scope, full-history use and override effect require host metadata; unavailable fields are **NOT OBSERVABLE**, never inferred PASS from requested settings or an agent's self-report.\n\n### Minimum routing floor\n\nSet a capability floor before optimizing speed or cost. Treat authentication, authorization, secrets/credentials, destructive operations or deletion, migrations, concurrency, cryptography, payments, security boundaries, and production-critical architecture as high-risk. In this EA, also treat live trading, order execution/ownership/duplicate prevention, Magic/Symbol ownership, SL/TP/BE/trailing, lot sizing, risk percentage/modes/Monte Carlo/portfolio/Fintokei, spread/cost safety, FailOpen, Worker protocol, price drift, unresolved orders, and other safety mechanisms as high-risk.\n\nHigh-risk/protected/critical/EA/financial/order/safety work and unknown dependencies require review, prohibit review skip and Jev final approval, and require deterministic verification. Standard mandatory and independent reviews use GPT-6.1 Sol High. High-risk alone does not automatically imply xHigh or Astra. Increase verification depth first; bounded deterministic bulk subtasks may use Luna with checked results. Do not downgrade an active task when its accumulated context or unresolved risk would be lost.\n\nNew active Sol execution uses only `gpt-6.1-sol`. Old `gpt-6-sol` / `gpt-5.6-sol` identifiers may remain only for historical records, migration tests, past prices, or provenance. Historical parsing cannot become an execution fallback. If GPT-6.1 Sol or a required reasoning level is unavailable, stop that execution and report the limitation; never silently substitute another model or downgrade a required floor.\n\nThe workflow policy retains `review_skip_enabled=false` and `confidence_threshold=0.90`. Mandatory reasons mean review cannot be omitted; they do not impose xHigh. Explicit stricter project rules retain authority, except where the current user explicitly authorizes their migration.\n\n## Jev as optional decision support\n\nJev is a bounded semantic judgment service, not a fourth implementation model. After deterministic inspection, consider it only when useful ambiguity remains: choosing among plausible implementation routes, ranking many candidate files/tests, classifying irregular logs, continue/stop or retry/escalation decisions, lightweight review triage, completion assessment, or semantic relevance. A clear task needs no Jev call. Never call it after every tool call.\n\nDo not use Jev for code or patch generation, architecture design itself, calculations, Git/filesystem facts, deterministic parsing, or compiler/test/Strategy Tester outcomes. Exclude all EA trading and Risk/Safety design, implementation-route, review, completion, and settings decisions from Jev. Clear routing cases need no Jev call.\n\nBefore an external Jev request, make a minimal redacted summary. Prefer only structured fields such as `task_type`, `risk_level`, `candidate_count`, `test_state`, `failure_type`, `changed_area`, and `uncertainty_reason`. Do not send the full repository, unrelated files, chat history, credentials, account information, real trading logs, or unnecessary source code. Screen the intended payload for secret-like content; remove it or skip Jev when safe minimization is uncertain. Never put `TYPESAFE_API_KEY` in a prompt, stdout, log, report, fixture, or commit. For TypeSafe primitives, API behavior, and uncertainty handling, use the existing [typesafe-ai skill](../typesafe-ai/SKILL.md); do not duplicate its Choice/Score/Noul guidance here.\n\nIf the user says **bypass jev**, make no Jev calls for that task. On API/runtime unavailability, timeout, authentication or quota/rate failure, malformed/invalid response, low confidence, or ambiguous result, treat Jev as having no opinion and continue with the deterministic/default route. Do not call that a successful Jev judgment or stop ordinary Codex work. This fail-open behavior applies only to development routing; it never relaxes the EA's separate FailOpen or safety gates. Jev output cannot authorize actions or override the user request, EA specification, safety controls, Git rules, or validation gates.\n\n### Shadow routing\n\nChoose the **default route** independently first. When routing evaluation is useful and a safe, bounded Jev question remains, a **shadow route** may record what Jev would recommend, with confidence and a short reason. The **actual route** stays the default route; a shadow recommendation cannot switch the model, lower the risk floor, or change the task. Do not run shadow calls for every clear task. Keep evaluation records only when needed, with route family/level, result status, confidence, and outcome; omit prompts, raw logs, source, and secrets. Consider automatic routing only after representative measurements show preserved safety, task quality, verification, latency, and cost, and an authorized switching mechanism exists.\n\n## Decision loop and escalation\n\nAt each meaningful decision boundary, inspect current state/diff, run relevant deterministic checks, collect concise evidence, and optionally use Jev only for residual semantic uncertainty. Choose one next action: **CONTINUE** (advance), **RETRY** (a changed hypothesis or method), **VERIFY** (check a claim), **ESCALATE** (raise model or reasoning level with a reason), or **COMPLETE** (all completion conditions met).\n\nUse xHigh only as an additional independent check when concrete evidence remains: material uncertainty after Sol High review; significant disagreement between independent High reviews; root cause unresolved after appropriate investigation; unexplained deterministic-check behavior; or an explicit project rule requiring xHigh. Give the new reviewer the specification, actual diff, repository evidence, test results, and unresolved questions; require an independent assessment rather than confirmation of the previous review. Record the reason and evidence. Protected/critical/EA/financial status, mandatory review, stronger effort availability, or precaution alone cannot trigger escalation. Prefer deterministic validation plus High review first; do not use a fixed escalation chain. Astra is reserved for cases Sol demonstrably cannot resolve reliably. Do not repeat the same root-cause hypothesis and equivalent fix a third time after two failures with no new evidence.\n\nStop and report the evidence when the request conflicts with repository facts, constraints cannot coexist, a change requires unapproved trading/Risk/Safety behavior or large out-of-scope work, or continuing risks secret leakage, data corruption, a live order, or safety bypass. Ordinary compile errors, missing dependencies, and routine mistakes within scope should be resolved rather than treated as stop conditions.\n\n## EA safety and verification\n\nThe current [AGENTS.md](../../../AGENTS.md), [README_JA.md](../../../README_JA.md), and [VALIDATION_JA.md](../../../VALIDATION_JA.md) govern exact EA behavior and checks. Model routing and Jev cannot change or bypass trading direction; M1 entry; pattern requirements, PatternScore, conflict or structure-reuse protection; MTF/Trend/MACD scores and thresholds; spread/cost gates; SL/TP/BE/trailing; lots, risk modes, Monte Carlo, portfolio limit, or Fintokei protections; order/close processing and duplicate prevention; Magic/Symbol ownership, Netting/Hedging, unresolved orders, mutex/owner lock; Worker protocol, JSON schema, AI timeout, price drift, FailOpen, or the prohibition on Worker orders; persistence, analytics-log failure isolation, CSV contracts, PositionIdentifier matching, initial risk R, UI/inputs, or other safety mechanisms. A formal specification change needs repository evidence and, where required, an explicit user request. Prefer real MQL5 behavior over mocks; never alter the product merely to pass a mock. Never place live orders.\n\nVerify in proportion to the change: directly related → related → integration → required full gate before PR completion. Reuse a trustworthy success only for the same commit, diff, environment, and assumptions; reverify when code, mock, fixture, dependency, build environment, or relevant assumptions change. Do not delete or weaken existing tests. Documentation-only changes need link, command, diff, and checksum checks rather than invented EA runtime tests. Before completing a PR, follow the repository's `python3 tests/run_all.py` gate; keep it draft if the gate remains incomplete.\n\nKeep short tool output intact. Preserve FAIL/WARNING/UNKNOWN and abnormal output; compress only long, clear success output with deterministic methods when the summary is shorter and the original remains available. Do not introduce Jev-based compaction for this workflow.\n\nFor MQL5 runtime changes, perform available native MetaEditor compilation, related Strategy Tester checks, and relevant reconnect/restart/reinitialization checks. Distinguish untested native compile, Strategy Tester, live broker, and real AI/API communication. Mock success does not establish any of those. For authentication, authorization, secrets, payments, migration, deletion, concurrency, cryptography, EA Risk/Safety, live trading, or major architecture work, deepen deterministic verification and perform Sol High review first, with independent High review when required. Add xHigh only for the concrete escalation evidence above; never skip deterministic checks.\n\nReport **COMPLETE** only after the requested work is implemented, relevant deterministic checks pass, the actual diff fits scope, no blocking failure remains, required high-risk review is done, and untested areas are identified. Never describe an unrun test, build, compile, lint, review, Strategy Tester, forward/live check, or API test as passed. When useful, report the selected model family and reasoning level, the reason, Jev use, and any escalation in one concise note.\n\nFor a small offline routing check from the repository root, compare [fixture expectations](fixtures/routing_cases.json) with [dry-run observations](fixtures/routing_dry_run.json) using `python .agents/skills/model-orchestrator/scripts/evaluate_routing.py`. Their evidence fields describe intended inspection order, not tests actually run. These examples do not call Jev or prove live routing quality; use representative, privacy-safe observations before considering any automatic routing.\n"
+    },
+    ".agents/skills/typesafe-ai/SKILL.md": {
+      "source_sha256": "0ab58b7533ebe4ba5342ad6260d69e492cd0955ca9d3ee20b3c91375eea0203d",
+      "baseline_text": "---\r\nname: typesafe-ai\r\nlicense: MIT\r\ndescription: >\r\n  Build AI-powered software with TypeSafe: small units of AI intelligence you\r\n  can use like programming primitives. Its System One models, including Jev,\r\n  turn natural language and application state into typed judgments and\r\n  probabilities that code can combine. Use when a feature needs programmable\r\n  common sense, when brainstorming what AI could make possible in an app, or\r\n  when an LLM prompt-and-parse step could become a structured decision.\r\n  Applications include routing, ranking, extraction, verification, and\r\n  interactive experiences; these are starting points, not the limits.\r\n  Read live docs and cookbooks to find useful patterns and discover new combinations.\r\n---\r\n\r\n# Build with TypeSafe\r\n\r\nTypeSafe makes units of AI intelligence usable like programming primitives: small\r\njudgments you can compose into larger capabilities. Its **System One models** return\r\nfast, focused judgments that software can consume directly. **Jev** is TypeSafe's\r\nflagship and first System One model. It understands natural language and returns\r\ntyped answers and probabilities rather\r\nthan generating text or reasoning explanations. Code owns the workflow; the model\r\nsupplies programmable common sense where ordinary code needs semantic understanding.\r\n\r\n## Read the live docs\r\n\r\n**The live TypeSafe docs are the source of truth. Read them as part of the task.**\r\nThis skill gives direction; the docs carry current concepts, prompting guidance,\r\nAPI contracts, SDK usage, models, limits, and worked examples.\r\n\r\n- Start with the [documentation index](https://docs.typesafe.ai/llms.txt) to discover\r\n  relevant pages and cookbooks. Use targeted reads rather than loading the entire site.\r\n- Mintlify serves Markdown by appending `.md` to a page path, for example\r\n  [how to build with TypeSafe](https://docs.typesafe.ai/concepts/how-to-build-with-system-one.md).\r\n  Follow links from the index; convert extensionless documentation page links to\r\n  `.md` when useful. Resolve relative links against `https://docs.typesafe.ai`.\r\n- Before writing an integration, read the current API or chosen SDK page and the\r\n  question guidance relevant to the design. For a new workflow, also inspect the\r\n  closest cookbook: it often shows a better decomposition than a generic classifier.\r\n- If the index is unavailable, use the direct links below or the site's navigation.\r\n  If Markdown fetching fails, try the normal page. If live access is unavailable,\r\n  use available local docs or installed SDK types, state that limitation, and avoid\r\n  inventing version-dependent details.\r\n\r\n| Task | Start here; follow the relevant details |\r\n| --- | --- |\r\n| Understand the programming model | [System One](https://docs.typesafe.ai/concepts/system-one.md), [building guide](https://docs.typesafe.ai/concepts/how-to-build-with-system-one.md) |\r\n| Explore what to build | [Use-case map](https://docs.typesafe.ai/concepts/use-case-map.md), then relevant cookbooks from the index |\r\n| Prepare inputs and questions | [State](https://docs.typesafe.ai/concepts/state.md), [primitives](https://docs.typesafe.ai/primitives.md), then the chosen primitive's page |\r\n| Decide how to handle uncertainty | [Confidence](https://docs.typesafe.ai/confidence.md) |\r\n| Write API code | [HTTP API](https://docs.typesafe.ai/api.md), [Python SDK](https://docs.typesafe.ai/sdk/python.md), or [JavaScript SDK](https://docs.typesafe.ai/sdk/javascript.md) |\r\n| Update an older integration | [Migration guide](https://docs.typesafe.ai/migrating-to-v1.md) and the installed SDK's current reference |\r\n\r\n## Find the useful shape\r\n\r\nStart from the behavior the user wants: what will the application show, select,\r\nchange, or hand off? Work backward to the judgments it needs. Keep known rules,\r\ncalculations, exact lookups, and execution in code. Preserve the user's chosen stack\r\nand scope; add TypeSafe where semantic understanding helps.\r\n\r\nWhen brainstorming or choosing an architecture, consider more than classification.\r\nThe patterns below are starting points: combine primitives around the user's goal,\r\nincluding ideas that do not fit an established recipe.\r\n\r\n- **Route and fill known arguments.** A request can select a handler and its typed\r\n  parameters. Ask useful branch-specific questions up front and consume only the\r\n  relevant answers. Explore [function calling](https://docs.typesafe.ai/cookbooks/function_calling.md)\r\n  and [speculative fan-out](https://docs.typesafe.ai/patterns/fan-out.md).\r\n- **Select instead of generate.** Find candidate values or source spans in code,\r\n  use a judgment to select the intended one, then copy or normalize it. Code can\r\n  also assemble source text into a formatted document or reading guide. Explore\r\n  [value extraction](https://docs.typesafe.ai/cookbooks/pre_parsed_value_extraction_cookbook.md)\r\n  and [structure recovery](https://docs.typesafe.ai/cookbooks/autoformat.md).\r\n- **Find and judge evidence.** Retrieve candidates, compare their relevance to a\r\n  query, and select useful context. Explore [reranking](https://docs.typesafe.ai/cookbooks/rerank_typesafe.md)\r\n  and [hierarchical classification](https://docs.typesafe.ai/cookbooks/hierarchical_classification.md).\r\n- **Turn judgments into reusable data.** Score dimensions once, then let code or\r\n  user controls change weights, thresholds, rankings, and views. With labeled\r\n  outcomes, those signals can become classical ML features. Explore\r\n  [composite scoring](https://docs.typesafe.ai/patterns/composite-scoring.md) and\r\n  [feature discovery](https://docs.typesafe.ai/cookbooks/autoresearch_feature_discovery.md).\r\n- **Verify and escalate.** Check specific claims or fields against their evidence;\r\n  send uncertain or failing cases to a person or reasoning model. Explore\r\n  [citation checks](https://docs.typesafe.ai/cookbooks/citation_check.md) and\r\n  [extraction cascades](https://docs.typesafe.ai/cookbooks/sde_cascade.md).\r\n- **Respond to changing state.** Code can retain goals and observations while fresh\r\n  judgments guide the next bounded step. Keep inferred state distinct from observed\r\n  facts, and check freshness before applying a result to a changed situation.\r\n\r\nFor open-ended requests, offer the few directions that best serve the user's goal\r\nand recommend a starting point. For a concrete request, choose the relevant pattern\r\nand build; a brainstorm is not a mandatory detour.\r\n\r\n## Design the judgments\r\n\r\nChoose by what the answer means, then read the relevant primitive page:\r\n\r\n| Need | Primitive | Important distinction |\r\n| --- | --- | --- |\r\n| One of a defined set | [Choice](https://docs.typesafe.ai/primitives/choice.md) | Picks one option; its distribution compares competing options |\r\n| Whether a condition holds | [Noul](https://docs.typesafe.ai/primitives/noul.md) | Probability of yes; no separate confidence; use one per label when several may apply |\r\n| Degree along a described dimension | [Score](https://docs.typesafe.ai/primitives/score.md) | Probability-weighted position on ordered levels; use comparable per-item Scores for graded ranking |\r\n\r\nGive each question enough relevant **state** to answer: source text, identities,\r\nrelationships, policies, and current facts. Prefer named JSON fields when context\r\nhas several parts. Put the judgment in **instructions** and define its possible\r\nanswers in **criteria**. Question IDs are for code and are not sent to the model;\r\ninclude complete meaning in the question. Reference nested state with backticked\r\npaths such as `ticket.messages[0].text`.\r\n\r\nAsk one narrow, coherent judgment per question. Split independently useful dimensions,\r\nwithout destroying the relationship being judged. A bounded action selection or\r\ncontextual interpretation is valid; atomic does not mean literal fact extraction\r\nor a one-sentence limit. Strings work for simple questions. Use structured objects\r\nor arrays when definitions, contrasts, exclusions, or examples clarify instructions\r\nor criteria. Score levels must describe concrete situations and stand on their own.\r\n\r\nKeep the needed answers available. Include a no-match outcome when nothing may fit;\r\nuse a separate presence judgment when it is independently useful. For source-value\r\nselection, check candidate coverage: the model cannot choose an omitted value.\r\n\r\n## Compose and verify\r\n\r\n**Ask independent questions over the same state together**, including useful\r\nspeculative questions. They run in parallel and cannot see one another's answers.\r\nState each speculative premise explicitly; code consumes the applicable answers.\r\nA second request is warranted when an earlier answer is needed to fetch evidence,\r\nconstruct new state, or determine the next options. Extra questions still use tokens;\r\nmeasure actual request budgets, cost, and end-to-end latency.\r\n\r\nUse probabilities and confidence to guide behavior, with thresholds evaluated on\r\nthe user's data and consequences. Choice/Score confidence summarizes distribution\r\nconcentration, not overall workflow correctness or permission to act. A Noul near\r\n0.5 means similar probability for yes and no, not medium intensity. Several\r\nacceptable alternatives can also spread probability; low confidence need not\r\ninvalidate a harmless preference choice. Ignore uncertainty on unused branches.\r\n\r\nKeep policy explicit and raw judgments reusable. Weighted scores suit compensating\r\npreferences; an “any serious violation” rule needs separate conditions. Changing a\r\nweight or display filter need not rerun inference when evidence and question meanings\r\nare unchanged. Typed output guarantees the interface, not truth. System One models\r\nare trained for calibrated decisions; validate their performance in the target domain.\r\n\r\nTest representative cases and the resulting application behavior. For failures,\r\ninspect the exact state, questions, candidates, answers, composition, and observed\r\noutcome. Separate missing evidence, model errors, code errors, and service failures.\r\nTreat cookbook thresholds and demo results as examples to evaluate, not universal\r\nrules or permanent model limitations. Keep API credentials server-side in web apps.\r\n"
+    }
+  },
+  "clauses": [
+    {
+      "id": "AGENTS.md:0",
+      "source_path": "AGENTS.md",
+      "start": 0,
+      "end": 7,
+      "baseline_sha256": "1c3359a8c78aa72a4759768fb6173c0c01456ab644db61fa25dad4cc4c49b48b",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "1c3359a8c78aa72a4759768fb6173c0c01456ab644db61fa25dad4cc4c49b48b",
+      "target_start": 0,
+      "target_end": 7
+    },
+    {
+      "id": "AGENTS.md:1",
+      "source_path": "AGENTS.md",
+      "start": 9,
+      "end": 198,
+      "baseline_sha256": "6d17028f29da84560e58dcaa659ad4099716f9a7ab233b77abf647b281c520f4",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_EA_SPECIFICATION"
+      ],
+      "target_sha256": "95e51d3cba9180b08d4a27dd89aede65c84f5bdf56d55f1380d9a62c02043a53"
+    },
+    {
+      "id": "AGENTS.md:2",
+      "source_path": "AGENTS.md",
+      "start": 200,
+      "end": 213,
+      "baseline_sha256": "7a76609585c60e2f0771d9fd765303ce05e8b209f3edaa4ca06c41e4398b87e8",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "c669ea4837ef88ea5b95f818d44651a72e85dba5277a37716f5244193a784fb1",
+      "target_start": 0,
+      "target_end": 1120
+    },
+    {
+      "id": "AGENTS.md:3",
+      "source_path": "AGENTS.md",
+      "start": 215,
+      "end": 346,
+      "baseline_sha256": "54ce7a9fc7ed2c6494243c0df887140a8cd15cf0f60bbb999124d1f8842d0308",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_AUTHORITY"
+      ],
+      "target_sha256": "d385ae470e74d1d8af3d3d54b7ce696c19c8da80a80a9182047c9846758b0617"
+    },
+    {
+      "id": "AGENTS.md:4",
+      "source_path": "AGENTS.md",
+      "start": 347,
+      "end": 462,
+      "baseline_sha256": "15c29cffa4c2f229167a23f6e85ac9f4614faf4b87a40a3664da2f9a0a2ad695",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_AUTHORITY"
+      ],
+      "target_sha256": "d385ae470e74d1d8af3d3d54b7ce696c19c8da80a80a9182047c9846758b0617"
+    },
+    {
+      "id": "AGENTS.md:5",
+      "source_path": "AGENTS.md",
+      "start": 463,
+      "end": 580,
+      "baseline_sha256": "b6c9423f8bfe31c4e92358db538237dc1691cbe4138f174cb083c2ec9964158d",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_EVIDENCE_FIRST"
+      ],
+      "target_sha256": "9c488770102b4052883ff61c2bb6586c6d14de7bf0bdefdc1ce327c5a1779656"
+    },
+    {
+      "id": "AGENTS.md:6",
+      "source_path": "AGENTS.md",
+      "start": 581,
+      "end": 1042,
+      "baseline_sha256": "539e570457be34c03f381904ed7984c7577caf698645fa2c698346d2cdd00bf9",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_CONTEXT_FULL",
+        "RULE_VERIFICATION_EVIDENCE",
+        "RULE_UNKNOWN_DEPENDENCY_FAIL_CLOSED"
+      ],
+      "target_sha256": "caff07331e7bf85ec776e1d7a25dc51a29d0f08281928ba67e6426f04a34a803"
+    },
+    {
+      "id": "AGENTS.md:7",
+      "source_path": "AGENTS.md",
+      "start": 1043,
+      "end": 1157,
+      "baseline_sha256": "0a880551838b6ad7a67bf21a8533ff5f297b6b1da2bc2a59cd5750e6a4b87f44",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_EVIDENCE_FIRST"
+      ],
+      "target_sha256": "9c488770102b4052883ff61c2bb6586c6d14de7bf0bdefdc1ce327c5a1779656"
+    },
+    {
+      "id": "AGENTS.md:8",
+      "source_path": "AGENTS.md",
+      "start": 1159,
+      "end": 1169,
+      "baseline_sha256": "3a857fb2a46b441980d9ef95d8d4bbe1cf4cc0398a6695ff884384abca1fa533",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "c669ea4837ef88ea5b95f818d44651a72e85dba5277a37716f5244193a784fb1",
+      "target_start": 0,
+      "target_end": 1120
+    },
+    {
+      "id": "AGENTS.md:9",
+      "source_path": "AGENTS.md",
+      "start": 1171,
+      "end": 1338,
+      "baseline_sha256": "46a7b2b58ae8d28ee8cdef31a89fb1e451590370b7e0d352e36ed81a84d424b6",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_EA_SPECIFICATION"
+      ],
+      "target_sha256": "95e51d3cba9180b08d4a27dd89aede65c84f5bdf56d55f1380d9a62c02043a53"
+    },
+    {
+      "id": "AGENTS.md:10",
+      "source_path": "AGENTS.md",
+      "start": 1339,
+      "end": 1508,
+      "baseline_sha256": "ac4f4e450f2b56d8ba0a180542a4057eccf4ef9c3ecd56b1b43012f7e3cf664a",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_PROTECTED_FAIL_CLOSED"
+      ],
+      "target_sha256": "2500e1f4808d2103bb4dcc98695aa7dac0252287f1e22007ae88d5abe979b6aa"
+    },
+    {
+      "id": "AGENTS.md:11",
+      "source_path": "AGENTS.md",
+      "start": 1509,
+      "end": 1611,
+      "baseline_sha256": "be99a921fc822b06b0cc38d2dd1eaf2af08559f8664ab96c5d74c9e811fc330a",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_EA_SPECIFICATION"
+      ],
+      "target_sha256": "95e51d3cba9180b08d4a27dd89aede65c84f5bdf56d55f1380d9a62c02043a53"
+    },
+    {
+      "id": "AGENTS.md:12",
+      "source_path": "AGENTS.md",
+      "start": 1612,
+      "end": 1699,
+      "baseline_sha256": "004992b78d726a25672fe1a515a1a01a78fdcfa71823feb893dfa8e50caa0318",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_NO_LIVE_ORDER",
+        "RULE_SECURITY"
+      ],
+      "target_sha256": "454016760d158b086ba0360a2f60ab380b6dfa704d0c9fc555eaea5ff1187ec7"
+    },
+    {
+      "id": "AGENTS.md:13",
+      "source_path": "AGENTS.md",
+      "start": 1701,
+      "end": 1709,
+      "baseline_sha256": "d5dc8c46b479e58868952499ff4cb6428e316484350850a542f25cce773c69a9",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "c669ea4837ef88ea5b95f818d44651a72e85dba5277a37716f5244193a784fb1",
+      "target_start": 0,
+      "target_end": 1120
+    },
+    {
+      "id": "AGENTS.md:14",
+      "source_path": "AGENTS.md",
+      "start": 1711,
+      "end": 1760,
+      "baseline_sha256": "caddeb74457b14f88656ee3588bb1215e4769f89b3a1c3f36f1167e3eedc96ed",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_AUTHORITY"
+      ],
+      "target_sha256": "d385ae470e74d1d8af3d3d54b7ce696c19c8da80a80a9182047c9846758b0617"
+    },
+    {
+      "id": "AGENTS.md:15",
+      "source_path": "AGENTS.md",
+      "start": 1761,
+      "end": 1911,
+      "baseline_sha256": "683053d0b31da15a6aa208433c479002fc1c3713b56e85d115b3735c4ca68c4e",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_MODEL_ROUTING"
+      ],
+      "target_sha256": "26d616dcba04ba513bb3a9348fe5a37971d5f3b04ec068c729de11bc25f1f4be"
+    },
+    {
+      "id": "AGENTS.md:16",
+      "source_path": "AGENTS.md",
+      "start": 1912,
+      "end": 2202,
+      "baseline_sha256": "1083c7608e8ec6500a0b65e47f236846ac43694a9bf5c507727ac13e093c3556",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_JEV_BOUNDARIES",
+        "RULE_SECURITY"
+      ],
+      "target_sha256": "caf87a45b2d7a5ae0ce4fb6e3f909bbd579e6a8525838a665e4bd677e6b99470"
+    },
+    {
+      "id": "AGENTS.md:17",
+      "source_path": "AGENTS.md",
+      "start": 2204,
+      "end": 2218,
+      "baseline_sha256": "19983723cc53da3f647c552dadd2f4a5e3764e9d1c4decb0d768a2a7514e9004",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "c669ea4837ef88ea5b95f818d44651a72e85dba5277a37716f5244193a784fb1",
+      "target_start": 0,
+      "target_end": 1120
+    },
+    {
+      "id": "AGENTS.md:18",
+      "source_path": "AGENTS.md",
+      "start": 2220,
+      "end": 2230,
+      "baseline_sha256": "3713fe18b5dc31c1e10a65ab315d3fd45514ac16c7bd0df657b1b0472401d612",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "c669ea4837ef88ea5b95f818d44651a72e85dba5277a37716f5244193a784fb1",
+      "target_start": 0,
+      "target_end": 1120
+    },
+    {
+      "id": "AGENTS.md:19",
+      "source_path": "AGENTS.md",
+      "start": 2232,
+      "end": 2379,
+      "baseline_sha256": "0fc03b3f676329bf7453f5b2be736d896da128e0648c22e762501205d57617ab",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_MODEL_ROLES"
+      ],
+      "target_sha256": "a78f324e924b40f827db4d0bc419c3aad26b2d3bbff5d7b8dae3001f65ede314"
+    },
+    {
+      "id": "AGENTS.md:20",
+      "source_path": "AGENTS.md",
+      "start": 2380,
+      "end": 2941,
+      "baseline_sha256": "4218b1c5d258c32126bb41384bb27ffd3e08ad5e4bade0506dc5a5fd5f19594f",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_SPAWN_HOST",
+        "RULE_CONTEXT_FULL",
+        "RULE_UNKNOWN_DEPENDENCY_FAIL_CLOSED"
+      ],
+      "target_sha256": "d34f06fc24bfe74da56f1bff6d67f20b9ecd70fc5ca1853f420f98559d944408"
+    },
+    {
+      "id": "AGENTS.md:21",
+      "source_path": "AGENTS.md",
+      "start": 2942,
+      "end": 3434,
+      "baseline_sha256": "af3162369bf59774fbe22c740793126561920030136bf0a1de6afdea968ae044",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_SPAWN_HOST"
+      ],
+      "target_sha256": "34be6e88a5a1d6114bf70535683916bbe8dd67399760700194230be48ab0b3ad"
+    },
+    {
+      "id": "AGENTS.md:22",
+      "source_path": "AGENTS.md",
+      "start": 3435,
+      "end": 3598,
+      "baseline_sha256": "f63ecc6198f99bd32ab9a88101d195457a19d1c0cb03a7abb2cee14b378b85ef",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_MODEL_ROLES"
+      ],
+      "target_sha256": "a78f324e924b40f827db4d0bc419c3aad26b2d3bbff5d7b8dae3001f65ede314"
+    },
+    {
+      "id": "AGENTS.md:23",
+      "source_path": "AGENTS.md",
+      "start": 3599,
+      "end": 3765,
+      "baseline_sha256": "b3606459d8a11e989eeb7e953e407b990d835810f2b7d60fb9f4162c7010713a",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_MODEL_ROLES"
+      ],
+      "target_sha256": "a78f324e924b40f827db4d0bc419c3aad26b2d3bbff5d7b8dae3001f65ede314"
+    },
+    {
+      "id": "AGENTS.md:24",
+      "source_path": "AGENTS.md",
+      "start": 3766,
+      "end": 4025,
+      "baseline_sha256": "affc748bb668b2cb0a45e0eb8d9cfe4a8fd7d6c6c605b3227df016d5ad798f34",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_REVIEW_INDEPENDENT",
+        "RULE_XHIGH_ESCALATION"
+      ],
+      "target_sha256": "9d40d62da60862114bba10abb8f941802830e382e069732311d499939c5ac4fb"
+    },
+    {
+      "id": "AGENTS.md:25",
+      "source_path": "AGENTS.md",
+      "start": 4026,
+      "end": 4119,
+      "baseline_sha256": "73351b154f5d6c23309a8f722a19e7da952e91c4eec07807340b70829a3555f2",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_ASTRA_APPROVAL"
+      ],
+      "target_sha256": "325df546831ba153f3e0d052c9d6e73af03ba73eb2a34ef82214fd184f9e812f"
+    },
+    {
+      "id": "AGENTS.md:26",
+      "source_path": "AGENTS.md",
+      "start": 4120,
+      "end": 4403,
+      "baseline_sha256": "6ebb87f4efa267a77e75d5658022b10522d6e9eaa1d2361c156955bfe483e2ea",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_MODEL_ROLES",
+        "RULE_SPAWN_HOST",
+        "RULE_NO_SILENT_FALLBACK"
+      ],
+      "target_sha256": "3116286ddd9d1842d1d4678be21b69ea1f8514db9a5d14cd2ddc7c3e5bd0c674"
+    },
+    {
+      "id": "AGENTS.md:27",
+      "source_path": "AGENTS.md",
+      "start": 4404,
+      "end": 4552,
+      "baseline_sha256": "e30b62470c0e3ef806b63e9651d92676fc1eb359afe1ba0934f96a9316c656eb",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_NO_SILENT_FALLBACK",
+        "RULE_REVIEW_INDEPENDENT"
+      ],
+      "target_sha256": "92ca26a4552279f7188de8c158ce69f242fe2090f617cbaa890e2a8f677517cf"
+    },
+    {
+      "id": "AGENTS.md:28",
+      "source_path": "AGENTS.md",
+      "start": 4554,
+      "end": 4692,
+      "baseline_sha256": "b91c56cf29907a594ad4b6c3124aa665ac34d2630d1eb8b655ace22b152840cd",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_GIT_SAFETY"
+      ],
+      "target_sha256": "d22c9ddac03c6e39b6b980394d0b1086486ec866d7ea4eb0daa1f4529e7c9d45"
+    },
+    {
+      "id": "AGENTS.md:29",
+      "source_path": "AGENTS.md",
+      "start": 4693,
+      "end": 4771,
+      "baseline_sha256": "bc695908b0004ea3aa598f65ed5f2bfb817e3374750078d5a122d1e7595ceb67",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_GIT_SAFETY"
+      ],
+      "target_sha256": "d22c9ddac03c6e39b6b980394d0b1086486ec866d7ea4eb0daa1f4529e7c9d45"
+    },
+    {
+      "id": "AGENTS.md:30",
+      "source_path": "AGENTS.md",
+      "start": 4772,
+      "end": 4905,
+      "baseline_sha256": "ae1a644637314664fd5e41b96eb7e4e75f5297b0e15231877973d2d7ba52bdb1",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_GIT_SAFETY",
+        "RULE_NO_LIVE_ORDER"
+      ],
+      "target_sha256": "39f2ce46cec79cf5a4b009df9c753e6f78a7b5319a7e115a85a35a20ece0b191"
+    },
+    {
+      "id": "AGENTS.md:31",
+      "source_path": "AGENTS.md",
+      "start": 4907,
+      "end": 4918,
+      "baseline_sha256": "bca7c80e2b67f958e70c703cef646b928e3e0de85832c7065db0789d7cc7f4a4",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "c669ea4837ef88ea5b95f818d44651a72e85dba5277a37716f5244193a784fb1",
+      "target_start": 0,
+      "target_end": 1120
+    },
+    {
+      "id": "AGENTS.md:32",
+      "source_path": "AGENTS.md",
+      "start": 4920,
+      "end": 5133,
+      "baseline_sha256": "9f64a743af421ede713ac5b8dc70f5f2f6bbe2d3476fab4fb73ad3c12a414a5d",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_VERIFICATION_GATES"
+      ],
+      "target_sha256": "0084252e2271f9af99ff7c6d59eb258b09f3d87ca7f8f0cf94fee564142b0305"
+    },
+    {
+      "id": "AGENTS.md:33",
+      "source_path": "AGENTS.md",
+      "start": 5134,
+      "end": 5307,
+      "baseline_sha256": "0480eed93a491d73d14656fa36b64089331a4c0208539ac0008d82e6ff1c0749",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_VERIFICATION_GATES"
+      ],
+      "target_sha256": "0084252e2271f9af99ff7c6d59eb258b09f3d87ca7f8f0cf94fee564142b0305"
+    },
+    {
+      "id": "AGENTS.md:34",
+      "source_path": "AGENTS.md",
+      "start": 5308,
+      "end": 5408,
+      "baseline_sha256": "63c684f133a7351cf0f4ca40e3a69634ee77a28beeb04c16a03bfdb95d6a8cfa",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_VERIFICATION_GATES",
+        "RULE_COMPLETION_AND_STOP"
+      ],
+      "target_sha256": "b377501320fa78b8bd2ceedf66ebc18563868f79be2ec9850571ed68ea6e96b9"
+    },
+    {
+      "id": "AGENTS.md:35",
+      "source_path": "AGENTS.md",
+      "start": 5410,
+      "end": 5493,
+      "baseline_sha256": "c8c8aa940e8b83348a0e1e6be0b7e7b166d3b60406d20cd627889d2593c8ad3a",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_GIT_SAFETY"
+      ],
+      "target_sha256": "d22c9ddac03c6e39b6b980394d0b1086486ec866d7ea4eb0daa1f4529e7c9d45"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:0",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 0,
+      "end": 261,
+      "baseline_sha256": "f8ccc59c789f0440a47e9cb33f2f10a937647d562e68a2c8ae3b5f075bc22e21",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "f8ccc59c789f0440a47e9cb33f2f10a937647d562e68a2c8ae3b5f075bc22e21",
+      "target_start": 0,
+      "target_end": 261
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:1",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 263,
+      "end": 283,
+      "baseline_sha256": "3c6df5a82e061bb780e41bee65476267239fbcd1528dd731ace7e50c64cba9ce",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "3c6df5a82e061bb780e41bee65476267239fbcd1528dd731ace7e50c64cba9ce",
+      "target_start": 263,
+      "target_end": 283
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:2",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 285,
+      "end": 305,
+      "baseline_sha256": "cc693601f0134cff7017b599ae9e7d1fc8176c4a92eaf2a1a9dbf084cd960c11",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "a7777a81e6c423e65c54621be25b914951bf3f8e4bfd7df9d6699603f9023dac",
+      "target_start": 0,
+      "target_end": 2624
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:3",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 307,
+      "end": 754,
+      "baseline_sha256": "4ef6c7932cf944d427302cde8ac5ef7eff3a47d8828b6ddb54b22d858359a9e4",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_MODEL_ROUTING",
+        "RULE_AUTHORITY"
+      ],
+      "target_sha256": "53f14134f70c0b786d0f33ecf104f85dc65b767489022a5059e9f69badbc2e75"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:4",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 756,
+      "end": 773,
+      "baseline_sha256": "0fd8cbfe14bca4889f186dde0b2fc7106cc4aa727bd8584c23628bb909a63527",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "a7777a81e6c423e65c54621be25b914951bf3f8e4bfd7df9d6699603f9023dac",
+      "target_start": 0,
+      "target_end": 2624
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:5",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 775,
+      "end": 1230,
+      "baseline_sha256": "49678ca10ca34825b54700942eb457835a35bf9aad5817f5bfe5080206f446ca",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_EVIDENCE_FIRST"
+      ],
+      "target_sha256": "9c488770102b4052883ff61c2bb6586c6d14de7bf0bdefdc1ce327c5a1779656"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:6",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 1232,
+      "end": 1559,
+      "baseline_sha256": "04bc80a892c27989252cd31b4166f04c3bcd87a23ee3a338cdc9849ee093f893",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_EVIDENCE_FIRST"
+      ],
+      "target_sha256": "9c488770102b4052883ff61c2bb6586c6d14de7bf0bdefdc1ce327c5a1779656"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:7",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 1561,
+      "end": 1584,
+      "baseline_sha256": "330300dedd0bb303a284828051a73f4e2c49caa46eabb9426faa58fedc8fcf2b",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "a7777a81e6c423e65c54621be25b914951bf3f8e4bfd7df9d6699603f9023dac",
+      "target_start": 0,
+      "target_end": 2624
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:8",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 1586,
+      "end": 2160,
+      "baseline_sha256": "12991dca3a9b73122bdbe3e4aea23b9257ad0fb045fa59d93081b263477d0a32",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_MODEL_ROUTING"
+      ],
+      "target_sha256": "26d616dcba04ba513bb3a9348fe5a37971d5f3b04ec068c729de11bc25f1f4be"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:9",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 2162,
+      "end": 3224,
+      "baseline_sha256": "f06e00fd1134d262167f376eab7270b151f4fd4aaa85e2950e064ea99dc2ed54",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_MODEL_ROUTING",
+        "RULE_ASTRA_APPROVAL"
+      ],
+      "target_sha256": "297b906cdcf644f45fb30a32945f39a36916c7480a468b9e71b71614c140c817"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:10",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 3226,
+      "end": 3609,
+      "baseline_sha256": "a8e38a45df07d982e1fa5e35c18104ca275f29cc454bdf2c90e9bc4b32955364",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_MODEL_ROUTING"
+      ],
+      "target_sha256": "26d616dcba04ba513bb3a9348fe5a37971d5f3b04ec068c729de11bc25f1f4be"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:11",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 3611,
+      "end": 3646,
+      "baseline_sha256": "7db7575c088a1f7e56467a46a11cf3589f3bb8676786c30abdaa498597a87acf",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "a7777a81e6c423e65c54621be25b914951bf3f8e4bfd7df9d6699603f9023dac",
+      "target_start": 0,
+      "target_end": 2624
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:12",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 3648,
+      "end": 4742,
+      "baseline_sha256": "f17dfffadebc21c1cf00ea0a5e2463c47c04d572d817ab8e4e608bb8d2954bb3",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_MODEL_ROLES",
+        "RULE_SPAWN_HOST"
+      ],
+      "target_sha256": "714e25324e124bd08fa401859edaad46ddb010bf574b106346993e64b8287da4"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:13",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 4744,
+      "end": 6182,
+      "baseline_sha256": "b86004ca19e13d51eb49d907f87553d312e5d2660ab53177c46446d202fd70e9",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_CONTEXT_FULL",
+        "RULE_VERIFICATION_EVIDENCE"
+      ],
+      "target_sha256": "427093925cea2fc07adbc98da3720cc6e65d69d4241979fe559b084f0b223fb8"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:14",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 6184,
+      "end": 6507,
+      "baseline_sha256": "5d3b37994b6aa0fb406d7a4c59b19814d0e052f2d1a84c737a9bbc9894c05261",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_ASTRA_APPROVAL"
+      ],
+      "target_sha256": "325df546831ba153f3e0d052c9d6e73af03ba73eb2a34ef82214fd184f9e812f"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:15",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 6509,
+      "end": 6560,
+      "baseline_sha256": "10c89cce0f46a965854dc80a3e3461b1d7207b0b53a0b007a28e61f7a91f4947",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "a7777a81e6c423e65c54621be25b914951bf3f8e4bfd7df9d6699603f9023dac",
+      "target_start": 0,
+      "target_end": 2624
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:16",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 6562,
+      "end": 6895,
+      "baseline_sha256": "6d012d46940afbb57dddd9f74763f362c420b3d8dcd84bf805434dfd3ffcab3e",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_MODEL_ROLES",
+        "RULE_SPAWN_HOST"
+      ],
+      "target_sha256": "714e25324e124bd08fa401859edaad46ddb010bf574b106346993e64b8287da4"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:17",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 6897,
+      "end": 7578,
+      "baseline_sha256": "03c88307d2a7a0f1a6f69f684da9600256c0f318f0168039ce6f41855e98bdea",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_SPAWN_HOST"
+      ],
+      "target_sha256": "34be6e88a5a1d6114bf70535683916bbe8dd67399760700194230be48ab0b3ad"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:18",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 7580,
+      "end": 8301,
+      "baseline_sha256": "5e5e439dafb72f0d5ab5f13706d6edab32d23e8dcdb336239b14892ee7ef6892",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_SPAWN_HOST",
+        "RULE_UNKNOWN_DEPENDENCY_FAIL_CLOSED"
+      ],
+      "target_sha256": "eaca3200deea062edd63cfb596bb9036045d428ec88d7c9038d696cdf6d9fbec"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:19",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 8303,
+      "end": 8398,
+      "baseline_sha256": "4e2f8c15c50ccba6b8309c48bf3d55a8bbcd41533106da919fa5cec791006259",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "a7777a81e6c423e65c54621be25b914951bf3f8e4bfd7df9d6699603f9023dac",
+      "target_start": 0,
+      "target_end": 2624
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:20",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 8400,
+      "end": 8612,
+      "baseline_sha256": "9593b130781cf5bb50ecb9953999d77c5ec04eb19b02dc32d7c32e5ba7533761",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "9593b130781cf5bb50ecb9953999d77c5ec04eb19b02dc32d7c32e5ba7533761",
+      "target_start": 1395,
+      "target_end": 1607
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:21",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 8614,
+      "end": 9131,
+      "baseline_sha256": "e63582f7a495fb9ac49c87c88f6d8ccae5fb488ce31c248fc29e479ca56f6cd8",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_SPAWN_HOST",
+        "RULE_VERIFICATION_GATES",
+        "RULE_REVIEW_INDEPENDENT"
+      ],
+      "target_sha256": "0d59e9d87d7dfc8014ecd4e4d3662683175c13011768eedc12da8a5182d548dd"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:22",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 9133,
+      "end": 9649,
+      "baseline_sha256": "25b952d24d713b1460a0bade1b8ad553f9ded4e4cc093bc89a83817858340951",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_SECURITY"
+      ],
+      "target_sha256": "4a07ff685c5ed840358ea8d66deb8d3716cfaad3d1d64db1b85722129b3bd442"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:23",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 9651,
+      "end": 10433,
+      "baseline_sha256": "d67682d9484d34cbe3c28518fe068647f83faf6884fb1bb600dd2276f9e04f82",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_SPAWN_HOST"
+      ],
+      "target_sha256": "34be6e88a5a1d6114bf70535683916bbe8dd67399760700194230be48ab0b3ad"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:24",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 10435,
+      "end": 10460,
+      "baseline_sha256": "30fdeed3a47002cf294376bf516a8ba3bbf0c747d3374819c66c94ea981adc0d",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "a7777a81e6c423e65c54621be25b914951bf3f8e4bfd7df9d6699603f9023dac",
+      "target_start": 0,
+      "target_end": 2624
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:25",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 10462,
+      "end": 11047,
+      "baseline_sha256": "de273346923bdb79fe6d069b32e6b8fe0a74b159cdcb0c8e09f6c121735f8c1e",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_PROTECTED_FAIL_CLOSED"
+      ],
+      "target_sha256": "2500e1f4808d2103bb4dcc98695aa7dac0252287f1e22007ae88d5abe979b6aa"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:26",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 11049,
+      "end": 11561,
+      "baseline_sha256": "d821bd893cd9f959e64788d4aab5a13b35fb65fb9f595733d21e67119d000cb9",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_PROTECTED_FAIL_CLOSED",
+        "RULE_UNKNOWN_DEPENDENCY_FAIL_CLOSED",
+        "RULE_MODEL_ROLES"
+      ],
+      "target_sha256": "c72ea65a473b1ebb90de3a9f038b8531000389b667c929cfe8104a9b4ea5ceb9"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:27",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 11563,
+      "end": 11976,
+      "baseline_sha256": "de76f8152a63d0871bbc8f1fe72d65499a76fc52237fd74540250df9fe8e544b",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_NO_SILENT_FALLBACK"
+      ],
+      "target_sha256": "b8793c9c6cc8285673c9fff20ecdf014c8e9cdf277dddb4c4e5fdaf573f02e07"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:28",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 11978,
+      "end": 12260,
+      "baseline_sha256": "82e69fe4766c89c13837f0ae42d607f713d2d819b181d4a19591d26b84bbb44f",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_REVIEW_INDEPENDENT",
+        "RULE_AUTHORITY"
+      ],
+      "target_sha256": "f54c1a0beef7a983ed638d29e1875b2f6093a38ddf912de882ee65cfe3c25002"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:29",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 12262,
+      "end": 12297,
+      "baseline_sha256": "091e8bbbe416a1047715aba37f396ca9ef5a31089f51135f7a82caa1be356a5c",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "a7777a81e6c423e65c54621be25b914951bf3f8e4bfd7df9d6699603f9023dac",
+      "target_start": 0,
+      "target_end": 2624
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:30",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 12299,
+      "end": 12756,
+      "baseline_sha256": "a9a7e2e5dda0eb3e2cf81facaf7656372d4c1becc20651f791d6e3651436c909",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_JEV_BOUNDARIES"
+      ],
+      "target_sha256": "a69d0824042a95998c516a77af9435459e1e33f8d8e4f7a36748ef3b69da8221"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:31",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 12758,
+      "end": 13092,
+      "baseline_sha256": "e4e5e8e1d52a29879b280c5deb0978350691f145d61071caacf1905d91589016",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_JEV_BOUNDARIES"
+      ],
+      "target_sha256": "a69d0824042a95998c516a77af9435459e1e33f8d8e4f7a36748ef3b69da8221"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:32",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 13094,
+      "end": 13836,
+      "baseline_sha256": "cd087e68162a27488f1e832f104a614946c60f7927265212a64ddbfd3a0d3d36",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_SECURITY",
+        "RULE_JEV_BOUNDARIES"
+      ],
+      "target_sha256": "4875ce63045adeb8b82b423edc9ae1e33923e6d85985eb5859f11b5f938e2afb"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:33",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 13838,
+      "end": 14455,
+      "baseline_sha256": "7d0331f4910f54d2b4cb53c9178ce820b717b083d1276c6a9a9df50265d8ee0e",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_JEV_BOUNDARIES"
+      ],
+      "target_sha256": "a69d0824042a95998c516a77af9435459e1e33f8d8e4f7a36748ef3b69da8221"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:34",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 14457,
+      "end": 14475,
+      "baseline_sha256": "0cd5e30bebe936e2e0b0abe4b76d27630ba01d577ba693dde6572143a11fe364",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "a7777a81e6c423e65c54621be25b914951bf3f8e4bfd7df9d6699603f9023dac",
+      "target_start": 0,
+      "target_end": 2624
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:35",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 14477,
+      "end": 15211,
+      "baseline_sha256": "5c6ecd14fb766a03b2d739baf0f3c02921a7ee25c08c975c6f323ba7109333f0",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_JEV_SHADOW"
+      ],
+      "target_sha256": "041e834f40fbe43ac784f18a1fd2498ed3dedf29ddbf190e5af1dbd8ec267f2a"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:36",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 15213,
+      "end": 15244,
+      "baseline_sha256": "5537182724b0c21785f5f44173d3ce0706ac0d5953b147055f2973ab528927ca",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "a7777a81e6c423e65c54621be25b914951bf3f8e4bfd7df9d6699603f9023dac",
+      "target_start": 0,
+      "target_end": 2624
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:37",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 15246,
+      "end": 15665,
+      "baseline_sha256": "1996b6655b149385875e697e116cf2df2c77edc06f4af13e0ba4d709bfea43fd",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_COMPLETION_AND_STOP"
+      ],
+      "target_sha256": "9e3b0a4c068b4478ae930b324382f7e1a9e5844a474ade7a67db95c3bc51421a"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:38",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 15667,
+      "end": 16639,
+      "baseline_sha256": "567d346527468656a17ac829d1aae58029f10c8f8f98994a1e21162c5b764044",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_XHIGH_ESCALATION",
+        "RULE_ASTRA_APPROVAL"
+      ],
+      "target_sha256": "802959845e4f7500c549c198c73bd713baeb042f3430b7d455be546a866ed0d8"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:39",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 16641,
+      "end": 17058,
+      "baseline_sha256": "0c8335ca62cd11909901f8c5d857783015297c4a2c5222c8236f16ebea8c1acb",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_COMPLETION_AND_STOP"
+      ],
+      "target_sha256": "9e3b0a4c068b4478ae930b324382f7e1a9e5844a474ade7a67db95c3bc51421a"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:40",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 17060,
+      "end": 17089,
+      "baseline_sha256": "774a41c99edb8155b92112a47a2eb6cdf0e37294370670a31ff3f1a0723ef98b",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "a7777a81e6c423e65c54621be25b914951bf3f8e4bfd7df9d6699603f9023dac",
+      "target_start": 0,
+      "target_end": 2624
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:41",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 17091,
+      "end": 18148,
+      "baseline_sha256": "f98155c59179bfdb0994758b7845c89d3dbd5d1454bff4af1b6a6b71869cb5bf",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_EA_SPECIFICATION",
+        "RULE_PROTECTED_FAIL_CLOSED",
+        "RULE_NO_LIVE_ORDER"
+      ],
+      "target_sha256": "eb020cd780be09a6a38e3e8fa9d6de7590edba92cd4f4597dff4070558db1e20"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:42",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 18150,
+      "end": 18736,
+      "baseline_sha256": "54243fad74224f8841268930bb941c69fb5524301848a766b4fd4dd8530fd7d7",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_VERIFICATION_GATES",
+        "RULE_GIT_SAFETY"
+      ],
+      "target_sha256": "05c7981b78985189d118d722975ad268ec8b343e1731a9ab3a2711895337b1d8"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:43",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 18738,
+      "end": 19008,
+      "baseline_sha256": "1b4de2d27b6a55536e28f047e952f603ebe9a5055a72b4dfd51c0581e74fa1bd",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_VERIFICATION_EVIDENCE"
+      ],
+      "target_sha256": "18d3dc0cef3ace8b642d6ae085b4731ec62a65d22b4dc3c76df72e03ceb570f5"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:44",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 19010,
+      "end": 19681,
+      "baseline_sha256": "9a4360fb0fbb459b861569d21ee12d4951ed630a64ad18d4911f5b9c0d4050ae",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_VERIFICATION_GATES",
+        "RULE_PROTECTED_FAIL_CLOSED",
+        "RULE_XHIGH_ESCALATION"
+      ],
+      "target_sha256": "64f718f276e7352d4ea2e99f8e7fe8ec9b33bb2c8c91ba77f986ce9c9d33f703"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:45",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 19683,
+      "end": 20159,
+      "baseline_sha256": "2b73a00af4eb9046f238822d2894d060472b907481dabafeae4352f8daefb3ee",
+      "target_kind": "canonical_rules",
+      "rule_ids": [
+        "RULE_COMPLETION_AND_STOP"
+      ],
+      "target_sha256": "9e3b0a4c068b4478ae930b324382f7e1a9e5844a474ade7a67db95c3bc51421a"
+    },
+    {
+      "id": ".agents/skills/model-orchestrator/SKILL.md:46",
+      "source_path": ".agents/skills/model-orchestrator/SKILL.md",
+      "start": 20161,
+      "end": 20649,
+      "baseline_sha256": "89f460f3f081655109015269fc8696dfdd7f549c193d310e6f0acdf9d1e44b71",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "a7777a81e6c423e65c54621be25b914951bf3f8e4bfd7df9d6699603f9023dac",
+      "target_start": 0,
+      "target_end": 2624
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:0",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 0,
+      "end": 745,
+      "baseline_sha256": "64bb7ba9cd3dfbe9b99e126d3bb2ccab87feb1a6cf15a58ee8542067369ef80e",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "1c7e22340ddf64877cc167d567d5f2114bc248cc75b422fa788aa7c1ad5c3bff",
+      "target_start": 0,
+      "target_end": 732
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:1",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 749,
+      "end": 770,
+      "baseline_sha256": "3ffd607ffb0a797955bbcc900db59f44f7ffcd51af3363d1f2b84fb246ccce53",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "3ffd607ffb0a797955bbcc900db59f44f7ffcd51af3363d1f2b84fb246ccce53",
+      "target_start": 734,
+      "target_end": 755
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:2",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 774,
+      "end": 1315,
+      "baseline_sha256": "b6d3998b224a66d4ba42981b2490e19aac95db460ec328250b05e5d8ad1a79af",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "21ea8b564ab46ad0a0bf71281311d19caa9835336c77aaab95b4d6e987131530",
+      "target_start": 1294,
+      "target_end": 1829
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:3",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 1319,
+      "end": 1340,
+      "baseline_sha256": "e260eb64a7a5d246b4520e527b228918c132103ecf1c3fe7ad11f0ab71e246d9",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "e260eb64a7a5d246b4520e527b228918c132103ecf1c3fe7ad11f0ab71e246d9",
+      "target_start": 1831,
+      "target_end": 1852
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:4",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 1344,
+      "end": 1572,
+      "baseline_sha256": "e3fd8c8122c07be7584d5a7ab36ac705084c4c2938f3162f73cd22ef584bf464",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "3778ce88f7d8e97eb3a236018775b4a74636223e5ea043fbd50e946d57853f80",
+      "target_start": 1854,
+      "target_end": 2080
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:5",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 1576,
+      "end": 2631,
+      "baseline_sha256": "e3f3fd20c9caa711b9a53c970d86d6fa15c1bbb70ec176ad4171872e161bd8be",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "0aa1101c7694ea1927d0bb865e4feb43b1bbe0e8148e317912fafc336b7b8b5b",
+      "target_start": 2082,
+      "target_end": 3125
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:6",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 2635,
+      "end": 3616,
+      "baseline_sha256": "5a26c358d16185d3388fcc2a3cbeb73c7823eab55d701d4655b4e552bffe468f",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "d9154c29c8fc43f5dfa8f89cb9ca579cb2f6790ad988fe7edb38a0bc441e8406",
+      "target_start": 3127,
+      "target_end": 4101
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:7",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 3620,
+      "end": 3644,
+      "baseline_sha256": "465d0706357e40738dc882056812d215964ef48860455d01ad96daca8c87145d",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "465d0706357e40738dc882056812d215964ef48860455d01ad96daca8c87145d",
+      "target_start": 4103,
+      "target_end": 4127
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:8",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 3648,
+      "end": 3955,
+      "baseline_sha256": "aa9523a8d45d027ae5f6f5c16a685ff26f836f7abea1dfa637d4f9e4bf44a736",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "967753eab9806e7288bdf65bed74cb5af148938c9f1d1133398f6119ffd066b5",
+      "target_start": 4129,
+      "target_end": 4433
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:9",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 3959,
+      "end": 4181,
+      "baseline_sha256": "98076041674c9738c77ea3e2b6bbd9f5d24811a50f676ed108649cd18a0e496d",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "1979203570e2dc2c5f01b2b8a00580c098ad6e47f98f16d2a098fafb752b0b36",
+      "target_start": 4435,
+      "target_end": 4655
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:10",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 4185,
+      "end": 6221,
+      "baseline_sha256": "7f17977a99ca6a27b5f5e95c627deee3f19855b223f6cf67a3344e676523aed2",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "0c648ba73c587193aa8b75bf093f188cfd2a5f88833e0110a0f36b415686262f",
+      "target_start": 4657,
+      "target_end": 6670
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:11",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 6225,
+      "end": 6443,
+      "baseline_sha256": "6ed5df82dc51df839b9c4257c58abf952f740392602f2dc1a5b1e4ac1ff7058e",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "a0bf28435b38acd3f7cb006f1136d978028c6d6a776439595e89a78171db4899",
+      "target_start": 6672,
+      "target_end": 6888
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:12",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 6447,
+      "end": 6470,
+      "baseline_sha256": "bbd24b9c2c6d250b213754b4402a78b5bbe4cc4dbb162414f1e8af66bfba3bd3",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "bbd24b9c2c6d250b213754b4402a78b5bbe4cc4dbb162414f1e8af66bfba3bd3",
+      "target_start": 6890,
+      "target_end": 6913
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:13",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 6474,
+      "end": 6545,
+      "baseline_sha256": "c77424b6c7c44c7f03a02d7b88fd4a7acb3bd472da05404d498ba6874b18d2b6",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "c77424b6c7c44c7f03a02d7b88fd4a7acb3bd472da05404d498ba6874b18d2b6",
+      "target_start": 6915,
+      "target_end": 6986
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:14",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 6549,
+      "end": 7131,
+      "baseline_sha256": "928811e557f4acd1ff0f2cec727fd056d37a71c3bafb15c9471ab5bf46a4a8a6",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "c7f4c50f8ef0487daa8c3acf37da66297d28c679971d4986d8c6b1f6b6e66f3a",
+      "target_start": 6988,
+      "target_end": 7566
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:15",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 7135,
+      "end": 7586,
+      "baseline_sha256": "e0804dad3d8d69b1f0bbe8f4219f01e4c097fece4e8a331410b8f7f373ee6d43",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "787a8a9e80a0684dc6625dd86518a728d85372b33ac1dec7b96563bda702b5b7",
+      "target_start": 7568,
+      "target_end": 8014
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:16",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 7590,
+      "end": 8093,
+      "baseline_sha256": "3a6d36b366accc957b7d8f0ecbd0c8c62c6aab052514783a4e50d4f1b2bc28f7",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "516c0cac3e9bcc38cd9ced3da9138a3bbdb14a0ac28e59232e3fed039490464a",
+      "target_start": 8016,
+      "target_end": 8514
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:17",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 8097,
+      "end": 8344,
+      "baseline_sha256": "19500e04ab0d1e3807ab34ac56bb896bb5f15bf5482107ab61a54718be719cbf",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "87bf8c693677ac5e2aa6d2be5946b6dd6578e4a99d6b7278419754f1618f091e",
+      "target_start": 8516,
+      "target_end": 8761
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:18",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 8348,
+      "end": 8369,
+      "baseline_sha256": "9261627fd0f8f95b41671fc5beaf262d1c3b05af26ee4cdb5a05de9efc1c214c",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "9261627fd0f8f95b41671fc5beaf262d1c3b05af26ee4cdb5a05de9efc1c214c",
+      "target_start": 8763,
+      "target_end": 8784
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:19",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 8373,
+      "end": 8847,
+      "baseline_sha256": "3bf15c6c3afee041af5ec7232bef8e3320b822d7596efca3119c695a73c77d1b",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "266fb9a28ea03989ef3f5e1626bfaa05e576e83453e7522f412312281ad29090",
+      "target_start": 8786,
+      "target_end": 9255
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:20",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 8851,
+      "end": 9333,
+      "baseline_sha256": "fc725aa78b6b5642017b9e6ca1e7f1856b0835d04f6de75637d1320b6586b103",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "5de637ee72c70f30ae0096e187ec834a93c4e0d889053eed6da54d2a17e08bbf",
+      "target_start": 9257,
+      "target_end": 9734
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:21",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 9337,
+      "end": 9762,
+      "baseline_sha256": "56226058892c8e77320676cd955058ebb98215e89b5d583ef52faff820b59434",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "2820401c4533945f5f118f4d0b928196d2bedd51add31ef81b15db53d51297cb",
+      "target_start": 9736,
+      "target_end": 10157
+    },
+    {
+      "id": ".agents/skills/typesafe-ai/SKILL.md:22",
+      "source_path": ".agents/skills/typesafe-ai/SKILL.md",
+      "start": 9766,
+      "end": 10183,
+      "baseline_sha256": "2a73266054f2f3388afff2dad4acbae9a46d53b350664d53991ec9fa14e24734",
+      "target_kind": "document",
+      "rule_ids": [],
+      "target_sha256": "92aa0e694ea56ea7ae0fe78c96c1339630b01e8a6a60c674f3fe2372f72d6d08",
+      "target_start": 10159,
+      "target_end": 10572
+    }
+  ],
+  "unmapped_clause_ids": [],
+  "semantic_equivalence_limit": "Exact inventory/body/hash tests prevent omitted baseline clauses and future target drift. They do not prove natural-language equivalence; independent review must assess the actual baseline-to-target full clause mapping.",
+  "canonical_sha256": "20e661ae047179973f6f2a33f7d3ea5b199efa103fdd212eb4cc6be2343bc3cf"
+}

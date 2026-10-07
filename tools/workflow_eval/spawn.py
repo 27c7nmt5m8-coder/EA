@@ -8,6 +8,7 @@ host. Recheck the host contract before using this adapter on another host.
 """
 import json
 import re
+from pathlib import Path
 from .serialization import canonical_json
 
 from .context import build_context_packet, expand_context_packet, _safe_evidence
@@ -22,10 +23,40 @@ COMPLEX = re.compile(r'(?i)\b(architecture|architectural|orchestration|concurren
                      r'unknown.root.cause|JEV|JEVGrep)\b')
 
 
+def _canonical_policy(root, repository_rules, role):
+    """Resolve full bodies for new consumers; legacy standalone repos stay full.
+
+    IDs document provenance only. A compressed consumer cannot be sent if its
+    authority is missing or corrupt. This never selects a reduced policy set.
+    """
+    catalog_path = Path(root) / '.agents/rules/canonical.json'
+    marked = '<!-- canonical-rules: ' in repository_rules
+    if not marked and not catalog_path.is_file():
+        return repository_rules, None
+    from .rules import expand_document_rules, instruction_texts, required_rule_ids
+    if marked:
+        expanded = expand_document_rules(root, repository_rules, 'agents')
+        repository_rules = expanded['text']
+    else:
+        for body in instruction_texts(root, required_rule_ids(root, 'agents')):
+            if body not in repository_rules:
+                repository_rules += '\n\n' + body
+    consumers = ['spawn-common']
+    if role == 'reviewer':
+        consumers.append('spawn-reviewer')
+    if role != 'worker':
+        consumers.append('spawn-read-only')
+    ids = [rule_id for consumer in consumers
+           for rule_id in required_rule_ids(root, consumer)]
+    texts = instruction_texts(root, ids)
+    # Exact bodies already delivered in the full rules need not be sent twice.
+    return repository_rules, [body for body in texts if body not in repository_rules]
+
+
 def build_spawn_request(root, role, task_name, bundle, *, specification,
                         repository_rules, unresolved_questions, packet=None,
                         verification=None, complex_work=False, fork_turns='none',
-                        full_history_reason=None):
+                        full_history_reason=None, verification_delivery=None):
     """Validate current evidence and prepare a fresh role's explicit tool call.
 
     complex_work is an additional caller assertion of any existing High trigger;
@@ -49,6 +80,22 @@ def build_spawn_request(root, role, task_name, bundle, *, specification,
             or any(not isinstance(q, str) or not q.strip() for q in unresolved_questions)):
         raise ValueError('explicit_spawn_context_required')
     _safe_evidence([specification, repository_rules, unresolved_questions])
+    repository_rules, canonical_instructions = _canonical_policy(root, repository_rules, role)
+    _safe_evidence(repository_rules)
+    if verification_delivery is not None:
+        if verification is not None:
+            raise ValueError('one_verification_representation_required')
+        from .verification_delivery import validate_verification_delivery, expand_verification_delivery
+        from .context import git
+        verification = validate_verification_delivery(root, verification_delivery)
+        tree = git(root, 'rev-parse', 'HEAD^{tree}').decode().strip()
+        if any(alias['current'].get('source') != bundle['head']
+               or alias['current'].get('tree') != tree for alias in verification['aliases']):
+            raise ValueError('verification_delivery_current_source_mismatch')
+        task_evidence = '\n'.join([bundle['task'], bundle['patch'], specification] + unresolved_questions)
+        if (bundle['protected'] or bundle['dependency'] != 'known'
+                or bool(PROTECTED.search(task_evidence)) or bundle['status_porcelain']):
+            verification = expand_verification_delivery(root, verification, unexplained=True)
     # Build through the existing validator even if an already-built packet is
     # supplied. Verification must have its exact safe original, not just a hash.
     current = build_context_packet(bundle, verification=verification, root=root)
@@ -82,6 +129,8 @@ def build_spawn_request(root, role, task_name, bundle, *, specification,
         payload['instructions'].append('Review independently from the specification and actual diff; do not inherit implementation conclusions.')
     if role != 'worker':
         payload['instructions'].append('Read-only: do not modify files or external state.')
+    if canonical_instructions is not None:
+        payload['instructions'] = canonical_instructions
     return dict(task_name=task_name, model=ACTIVE_SOL_MODEL, reasoning_effort=effort,
                 fork_turns=fork_turns,
                 message=canonical_json(payload))

@@ -170,6 +170,25 @@ def _rule_hashes(root, names):
         for ancestor in [parent, *parent.parents]:
             if str(ancestor) != '.':
                 paths.add(ancestor.as_posix() + '/AGENTS.md')
+    # Compressed rule consumers are not complete without their validated source.
+    # A missing catalog must cause a cache miss/full fresh review, not an identity
+    # that accidentally omits the referenced safety authority.
+    marked = any('<!-- canonical-rules: ' in context.local_path(root, name).read_text(encoding='utf-8')
+                 for name in paths if context.local_path(root, name).is_file())
+    catalog = context.local_path(root, '.agents/rules/canonical.json')
+    if marked or catalog.is_file():
+        from .rules import load_catalog, expand_document_rules
+        load_catalog(root)
+        paths.add('.agents/rules/canonical.json')
+        for name in sorted(paths):
+            path = context.local_path(root, name)
+            if not path.is_file():
+                continue
+            document = path.read_text(encoding='utf-8')
+            if '<!-- canonical-rules: ' in document:
+                consumer = ('model-orchestrator' if '/model-orchestrator/' in name else
+                            'typesafe-ai' if '/typesafe-ai/' in name else 'agents')
+                expand_document_rules(root, document, consumer)
     return {name: context.digest(context.local_path(root, name).read_bytes())
             for name in sorted(paths) if context.local_path(root, name).is_file()}
 
@@ -217,7 +236,8 @@ def build_identity(root, bundle, *, specification, repository_rules, verificatio
     # Bind the instruction/validation implementation as well as version labels.
     implementation_hashes = {name: context.digest((module_root / name).read_bytes())
                              for name in ('attestation.py', 'context.py', 'triage.py',
-                                          'serialization.py', 'spawn.py', 'verification_context.py')}
+                                          'serialization.py', 'spawn.py', 'verification_context.py',
+                                          'rules.py', 'verification_delivery.py', 'decision_ledger.py')}
     rules = policy()
     identity = dict(repository=repository, tree=tree, base=bundle['base'],
                     diff_sha256=context.digest(actual_patch),
